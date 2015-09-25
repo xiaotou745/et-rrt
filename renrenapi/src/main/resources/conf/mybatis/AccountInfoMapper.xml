@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.api.dao.inter.IAccountInfoDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.entity.AccountInfo" >
+    <result column="Id" property="id" jdbcType="INTEGER" />
+    <result column="Password" property="password" jdbcType="NVARCHAR" />
+    <result column="UserName" property="username" jdbcType="NVARCHAR" />
+    <result column="LoginName" property="loginname" jdbcType="NVARCHAR" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
+    <result column="AccountType" property="accounttype" jdbcType="INTEGER" />
+    <result column="FADateTime" property="fadatetime" jdbcType="TIMESTAMP" />
+    <result column="FAUser" property="fauser" jdbcType="NVARCHAR" />
+    <result column="LCDateTime" property="lcdatetime" jdbcType="TIMESTAMP" />
+    <result column="LCUser" property="lcuser" jdbcType="NVARCHAR" />
+    <result column="GroupId" property="groupid" jdbcType="INTEGER" />
+    <result column="RoleId" property="roleid" jdbcType="INTEGER" />
+    <result column="LastChangeTime" property="lastchangetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.renrentui.entity.AccountInfo" >
+    insert into AccountInfo (Id, Password, UserName, 
+      LoginName, Status, AccountType, 
+      FADateTime, FAUser, LCDateTime, 
+      LCUser, GroupId, RoleId, 
+      LastChangeTime)
+    values (#{id,jdbcType=INTEGER}, #{password,jdbcType=NVARCHAR}, #{username,jdbcType=NVARCHAR}, 
+      #{loginname,jdbcType=NVARCHAR}, #{status,jdbcType=INTEGER}, #{accounttype,jdbcType=INTEGER}, 
+      #{fadatetime,jdbcType=TIMESTAMP}, #{fauser,jdbcType=NVARCHAR}, #{lcdatetime,jdbcType=TIMESTAMP}, 
+      #{lcuser,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}, 
+      #{lastchangetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.renrentui.entity.AccountInfo" >
+    insert into AccountInfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="password != null" >
+        Password,
+      </if>
+      <if test="username != null" >
+        UserName,
+      </if>
+      <if test="loginname != null" >
+        LoginName,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="accounttype != null" >
+        AccountType,
+      </if>
+      <if test="fadatetime != null" >
+        FADateTime,
+      </if>
+      <if test="fauser != null" >
+        FAUser,
+      </if>
+      <if test="lcdatetime != null" >
+        LCDateTime,
+      </if>
+      <if test="lcuser != null" >
+        LCUser,
+      </if>
+      <if test="groupid != null" >
+        GroupId,
+      </if>
+      <if test="roleid != null" >
+        RoleId,
+      </if>
+      <if test="lastchangetime != null" >
+        LastChangeTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=NVARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginname != null" >
+        #{loginname,jdbcType=NVARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="accounttype != null" >
+        #{accounttype,jdbcType=INTEGER},
+      </if>
+      <if test="fadatetime != null" >
+        #{fadatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fauser != null" >
+        #{fauser,jdbcType=NVARCHAR},
+      </if>
+      <if test="lcdatetime != null" >
+        #{lcdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lcuser != null" >
+        #{lcuser,jdbcType=NVARCHAR},
+      </if>
+      <if test="groupid != null" >
+        #{groupid,jdbcType=INTEGER},
+      </if>
+      <if test="roleid != null" >
+        #{roleid,jdbcType=INTEGER},
+      </if>
+      <if test="lastchangetime != null" >
+        #{lastchangetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

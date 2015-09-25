@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.api.dao.inter.IOrderDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.entity.Order" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="ClienterId" property="clienterid" jdbcType="BIGINT" />
+    <result column="TaskId" property="taskid" jdbcType="BIGINT" />
+    <result column="OrderStatus" property="orderstatus" jdbcType="SMALLINT" />
+    <result column="AuditStatus" property="auditstatus" jdbcType="SMALLINT" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="FinishTime" property="finishtime" jdbcType="TIMESTAMP" />
+    <result column="AuditTime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="AuditName" property="auditname" jdbcType="TIMESTAMP" />
+    <result column="DealLineTime" property="deallinetime" jdbcType="TIMESTAMP" />
+    <result column="CancelTime" property="canceltime" jdbcType="TIMESTAMP" />
+    <result column="CancelName" property="cancelname" jdbcType="NVARCHAR" />
+    <result column="CancelRemark" property="cancelremark" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ClienterId, TaskId, OrderStatus, AuditStatus, CreateTime, FinishTime, AuditTime, 
+    AuditName, DealLineTime, CancelTime, CancelName, CancelRemark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from Order
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from Order
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.renrentui.entity.Order" >
+    insert into Order (Id, ClienterId, TaskId, 
+      OrderStatus, AuditStatus, CreateTime, 
+      FinishTime, AuditTime, AuditName, 
+      DealLineTime, CancelTime, CancelName, 
+      CancelRemark)
+    values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=BIGINT}, #{taskid,jdbcType=BIGINT}, 
+      #{orderstatus,jdbcType=SMALLINT}, #{auditstatus,jdbcType=SMALLINT}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{finishtime,jdbcType=TIMESTAMP}, #{audittime,jdbcType=TIMESTAMP}, #{auditname,jdbcType=TIMESTAMP}, 
+      #{deallinetime,jdbcType=TIMESTAMP}, #{canceltime,jdbcType=TIMESTAMP}, #{cancelname,jdbcType=NVARCHAR}, 
+      #{cancelremark,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.renrentui.entity.Order" >
+    insert into Order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="clienterid != null" >
+        ClienterId,
+      </if>
+      <if test="taskid != null" >
+        TaskId,
+      </if>
+      <if test="orderstatus != null" >
+        OrderStatus,
+      </if>
+      <if test="auditstatus != null" >
+        AuditStatus,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="finishtime != null" >
+        FinishTime,
+      </if>
+      <if test="audittime != null" >
+        AuditTime,
+      </if>
+      <if test="auditname != null" >
+        AuditName,
+      </if>
+      <if test="deallinetime != null" >
+        DealLineTime,
+      </if>
+      <if test="canceltime != null" >
+        CancelTime,
+      </if>
+      <if test="cancelname != null" >
+        CancelName,
+      </if>
+      <if test="cancelremark != null" >
+        CancelRemark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=BIGINT},
+      </if>
+      <if test="taskid != null" >
+        #{taskid,jdbcType=BIGINT},
+      </if>
+      <if test="orderstatus != null" >
+        #{orderstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="auditstatus != null" >
+        #{auditstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishtime != null" >
+        #{finishtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="audittime != null" >
+        #{audittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditname != null" >
+        #{auditname,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deallinetime != null" >
+        #{deallinetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="canceltime != null" >
+        #{canceltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelname != null" >
+        #{cancelname,jdbcType=NVARCHAR},
+      </if>
+      <if test="cancelremark != null" >
+        #{cancelremark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.Order" >
+    update Order
+    <set >
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=BIGINT},
+      </if>
+      <if test="taskid != null" >
+        TaskId = #{taskid,jdbcType=BIGINT},
+      </if>
+      <if test="orderstatus != null" >
+        OrderStatus = #{orderstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="auditstatus != null" >
+        AuditStatus = #{auditstatus,jdbcType=SMALLINT},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishtime != null" >
+        FinishTime = #{finishtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="audittime != null" >
+        AuditTime = #{audittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditname != null" >
+        AuditName = #{auditname,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deallinetime != null" >
+        DealLineTime = #{deallinetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="canceltime != null" >
+        CancelTime = #{canceltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelname != null" >
+        CancelName = #{cancelname,jdbcType=NVARCHAR},
+      </if>
+      <if test="cancelremark != null" >
+        CancelRemark = #{cancelremark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.Order" >
+    update Order
+    set ClienterId = #{clienterid,jdbcType=BIGINT},
+      TaskId = #{taskid,jdbcType=BIGINT},
+      OrderStatus = #{orderstatus,jdbcType=SMALLINT},
+      AuditStatus = #{auditstatus,jdbcType=SMALLINT},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      FinishTime = #{finishtime,jdbcType=TIMESTAMP},
+      AuditTime = #{audittime,jdbcType=TIMESTAMP},
+      AuditName = #{auditname,jdbcType=TIMESTAMP},
+      DealLineTime = #{deallinetime,jdbcType=TIMESTAMP},
+      CancelTime = #{canceltime,jdbcType=TIMESTAMP},
+      CancelName = #{cancelname,jdbcType=NVARCHAR},
+      CancelRemark = #{cancelremark,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

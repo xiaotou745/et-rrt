@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.api.dao.inter.IPublicProvinceCityDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.entity.PublicProvinceCity" >
+    <result column="ID" property="id" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="NVARCHAR" />
+    <result column="Code" property="code" jdbcType="INTEGER" />
+    <result column="ParentCode" property="parentcode" jdbcType="INTEGER" />
+    <result column="Jibie" property="jibie" jdbcType="INTEGER" />
+    <result column="LowerAcronym" property="loweracronym" jdbcType="NVARCHAR" />
+    <result column="UpperAcronym" property="upperacronym" jdbcType="NVARCHAR" />
+    <result column="LowerFullPinyin" property="lowerfullpinyin" jdbcType="NVARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.renrentui.entity.PublicProvinceCity" >
+    insert into PublicProvinceCity (ID, Name, Code, 
+      ParentCode, Jibie, LowerAcronym, 
+      UpperAcronym, LowerFullPinyin)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=NVARCHAR}, #{code,jdbcType=INTEGER}, 
+      #{parentcode,jdbcType=INTEGER}, #{jibie,jdbcType=INTEGER}, #{loweracronym,jdbcType=NVARCHAR}, 
+      #{upperacronym,jdbcType=NVARCHAR}, #{lowerfullpinyin,jdbcType=NVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.renrentui.entity.PublicProvinceCity" >
+    insert into PublicProvinceCity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="code != null" >
+        Code,
+      </if>
+      <if test="parentcode != null" >
+        ParentCode,
+      </if>
+      <if test="jibie != null" >
+        Jibie,
+      </if>
+      <if test="loweracronym != null" >
+        LowerAcronym,
+      </if>
+      <if test="upperacronym != null" >
+        UpperAcronym,
+      </if>
+      <if test="lowerfullpinyin != null" >
+        LowerFullPinyin,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=NVARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=INTEGER},
+      </if>
+      <if test="parentcode != null" >
+        #{parentcode,jdbcType=INTEGER},
+      </if>
+      <if test="jibie != null" >
+        #{jibie,jdbcType=INTEGER},
+      </if>
+      <if test="loweracronym != null" >
+        #{loweracronym,jdbcType=NVARCHAR},
+      </if>
+      <if test="upperacronym != null" >
+        #{upperacronym,jdbcType=NVARCHAR},
+      </if>
+      <if test="lowerfullpinyin != null" >
+        #{lowerfullpinyin,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

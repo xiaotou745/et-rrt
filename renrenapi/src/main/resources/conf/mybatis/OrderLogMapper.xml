@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.api.dao.inter.IOrderLogDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.entity.OrderLog" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="OrderId" property="orderid" jdbcType="BIGINT" />
+    <result column="OptType" property="opttype" jdbcType="SMALLINT" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="OptName" property="optname" jdbcType="NVARCHAR" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, OrderId, OptType, CreateTime, OptName, Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from OrderLog
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from OrderLog
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.renrentui.entity.OrderLog" >
+    insert into OrderLog (Id, OrderId, OptType, 
+      CreateTime, OptName, Remark
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderid,jdbcType=BIGINT}, #{opttype,jdbcType=SMALLINT}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.renrentui.entity.OrderLog" >
+    insert into OrderLog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="opttype != null" >
+        OptType,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="optname != null" >
+        OptName,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=BIGINT},
+      </if>
+      <if test="opttype != null" >
+        #{opttype,jdbcType=SMALLINT},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optname != null" >
+        #{optname,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.OrderLog" >
+    update OrderLog
+    <set >
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=BIGINT},
+      </if>
+      <if test="opttype != null" >
+        OptType = #{opttype,jdbcType=SMALLINT},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optname != null" >
+        OptName = #{optname,jdbcType=NVARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.OrderLog" >
+    update OrderLog
+    set OrderId = #{orderid,jdbcType=BIGINT},
+      OptType = #{opttype,jdbcType=SMALLINT},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      OptName = #{optname,jdbcType=NVARCHAR},
+      Remark = #{remark,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
