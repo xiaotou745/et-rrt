@@ -6,7 +6,6 @@
 <%@page import="com.renrentui.entity.MenuInfo"%>
 <%@page import="com.renrentui.core.util.EnumHelper"%>
 <%@page import="com.renrentui.core.util.HtmlHelper"%>
-<%@page import="com.renrentui.core.enums.BusinessBalanceRecordRecordType"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 	List<MenuInfo> data = (List<MenuInfo>) request.getAttribute("listData");
