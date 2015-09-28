@@ -8,6 +8,7 @@ import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.entity.req.CSendCodeReq;
+import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
@@ -18,11 +19,14 @@ import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
+import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
-
+import com.renrentui.renrenentity.resp.SignUpResp;
+import com.renrentui.renrenentity.req.SignInReq;
 /**
  * 用户相关
  * 
@@ -33,7 +37,7 @@ import com.renrentui.renrenentity.req.ModifyPwdReq;
 public class UsercService implements IUsercService {
 
 	@Autowired
-	IClienterService clienterService;
+	IClienterService  clienterService;
 
 	/**
 	 * C端忘记密码 茹化肖 2015年9月28日10:44:52
@@ -42,16 +46,16 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> forgotPwd(ForgotPwdReq req) {
 		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-		if (req.getPhoneNo().equals(""))// 手机号为空
+		if (req.getPhoneNo()==null||req.getPhoneNo().equals(""))// 手机号为空
 			return resultModel.setCode(ForgotPwdCode.PhoneNull.value()).setMsg(
 					ForgotPwdCode.PhoneNull.desc());
 		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
 			return resultModel.setCode(ForgotPwdCode.PhoneError.value())
 					.setMsg(ForgotPwdCode.PhoneError.desc());
-		if (req.getVerifyCode().equals(""))// 验证码为空
+		if (req.getVerifyCode()==null||req.getVerifyCode().equals(""))// 验证码为空
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value())
 					.setMsg(ForgotPwdCode.VerCodeNull.desc());
-		if (req.getPhoneNo().equals(""))// 验证码不正确 TODO 查缓存看验证码正确
+		if (req.getVerifyCode()=="")// 验证码不正确 TODO 查缓存看验证码正确
 			return resultModel.setCode(ForgotPwdCode.VerCodeError.value())
 					.setMsg(ForgotPwdCode.VerCodeError.desc());
 		if (clienterService.forgotPwdUserc(req))// 修改密码成功
@@ -82,6 +86,50 @@ public class UsercService implements IUsercService {
 	public HttpResultModel<Object> withdraw(CWithdrawFormReq req) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	/*
+	 * C端注册
+	 * WangChao
+	 */
+	@Override
+	public HttpResultModel<Object> signup(SignUpReq req) {
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		if(req.getPhoneNo().equals("")){
+			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(SignUpCode.PhoneNull.desc());
+		}
+		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号不正确
+			return resultModel.setCode(SignUpCode.PhoneFormatError.value()).setMsg(SignUpCode.PhoneFormatError.desc());
+		if(req.getVerifyCode().equals(""))// 验证码不能为空
+			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(SignUpCode.VerCodeNull.desc());
+		if(req.getVerifyCode().equals(""))  //验证码 查缓存  
+			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(SignUpCode.VerCodeError.desc());
+		int id=clienterService.signup(req);
+		if(id>0) {// 注册成功
+			SignUpResp sur = new SignUpResp();
+			sur.setUserId(id);
+			sur.setUserName(req.getName());
+			resultModel.setData(sur).setCode(SignUpCode.Success.value()).setMsg(SignUpCode.Success.desc());
+			return resultModel;
+		}
+		return resultModel.setCode(SignUpCode.Fail.value()).setMsg(SignUpCode.Fail.desc());//注册失败
+	}
+	/**
+	* @Des  C端登陆
+	* @Author WangXuDan
+	* @Date 2015年9月28日15:55:58
+	* @Return
+	*/
+	@Override
+	public HttpResultModel<Object> signIn(SignInReq req) {
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
+			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
+		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
+			return resultModel.setCode(SignInCode.PhoneUnRegistered.value()).setMsg(SignInCode.PhoneUnRegistered.desc());
+		Clienter clienterModel=clienterService.queryClienter(req);
+		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
+			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
+        return resultModel.setData(clienterModel);
 	}
 
 	/**

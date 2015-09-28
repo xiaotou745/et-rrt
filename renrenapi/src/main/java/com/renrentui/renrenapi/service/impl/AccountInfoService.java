@@ -12,6 +12,7 @@ import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 
 
@@ -51,5 +52,24 @@ public class AccountInfoService implements IAccountInfoService{
 	@Override
 	public List<AccountInfo> getByRoleID(int roleID) {
 		return accountInfoDao.getByRoleID(roleID);
+	}
+
+	@Override
+	public int insert(AccountInfo account) {
+		return accountInfoDao.insert(account);
+	}
+
+	@Override
+	public int update(AccountInfo account) {
+		return accountInfoDao.update(account);
+	}
+
+	@Override
+	public int updatePwd(UpdatePwdReq req) {
+		String oldPassword = MD5Util.MD5(req.getOldPwd());
+		String newPassword = MD5Util.MD5(req.getNewPwd());
+		req.setOldPwd(oldPassword);
+		req.setNewPwd(newPassword);
+		return accountInfoDao.updatePwd(req);
 	}
 }

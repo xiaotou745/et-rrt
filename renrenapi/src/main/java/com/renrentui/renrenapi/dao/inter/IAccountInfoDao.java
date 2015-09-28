@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 
 
@@ -14,4 +15,7 @@ public interface IAccountInfoDao {
 	AccountInfo getByID(int userID);
 	int updateRoleID(int userID,int newRoleID);
 	List<AccountInfo> getByRoleID(int roleID);
+	int insert(AccountInfo account);
+	int update(AccountInfo account);
+	int updatePwd(UpdatePwdReq req);
 }

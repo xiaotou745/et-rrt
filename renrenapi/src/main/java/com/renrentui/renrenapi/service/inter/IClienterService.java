@@ -1,7 +1,10 @@
 package com.renrentui.renrenapi.service.inter;
 
+import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.req.SignInReq;
 
 
 /**
@@ -38,4 +41,13 @@ public interface IClienterService {
 	 * @return
 	 */
 	boolean modifyPwdUserc(ModifyPwdReq req);
+
+	int signup(SignUpReq req);
+	/**
+	* @Des 查询C端用户信息  
+	* @Author WangXuDan
+	* @Date 2015年9月28日16:14:35
+	* @Return
+	*/
+	Clienter queryClienter(SignInReq req);
 }

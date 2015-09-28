@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.service.inter;
 import java.util.List;
 
 import com.renrentui.renrenentity.MenuInfo;
+import com.renrentui.renrenentity.domain.MenuEntity;
 import com.renrentui.renrenentity.req.AddNewMenuReq;
 
 public interface IMenuInfoService {
@@ -29,7 +30,7 @@ public interface IMenuInfoService {
 	 * @date 20150828
 	 * @return
 	 */
-	public List<MenuInfo> getAuthSettingList(int userID) ;
+	public List<MenuEntity> getAuthSettingList(int userID) ;
 	
 	/**
 	 * 修改权限时，获取给定角色的权限列表（包括没有权限的menu）
@@ -37,7 +38,7 @@ public interface IMenuInfoService {
 	 * @date 20150902
 	 * @return
 	 */
-	public List<MenuInfo> getRoleAuthSettingList(int roleID) ;
+	public List<MenuEntity> getMenuListByRoleID(int roleID) ;
 	
 	/**
 	 * 根据父id获得所有子菜单

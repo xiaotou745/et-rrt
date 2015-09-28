@@ -8,47 +8,25 @@
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="OptName" property="optname" jdbcType="NVARCHAR" />
   </resultMap>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.AccountAuth" >
-    insert into AccountAuth (id, AccoutId, MenuId, 
-      CreateTime, OptName)
-    values (#{id,jdbcType=INTEGER}, #{accoutid,jdbcType=INTEGER}, #{menuid,jdbcType=INTEGER}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{optname,jdbcType=NVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.AccountAuth" >
-    insert into AccountAuth
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="accoutid != null" >
-        AccoutId,
-      </if>
-      <if test="menuid != null" >
-        MenuId,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="optname != null" >
-        OptName,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="accoutid != null" >
-        #{accoutid,jdbcType=INTEGER},
-      </if>
-      <if test="menuid != null" >
-        #{menuid,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="optname != null" >
-        #{optname,jdbcType=NVARCHAR},
-      </if>
-    </trim>
-  </insert>
+  <select id="getMenuIdsByAccountId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  	select MenuId from AccountAuth with(nolock) where AccoutId=#{accoutid,jdbcType=INTEGER}
+  </select>
+  <update id="modifyAuthList" parameterType="java.util.List">
+	 <foreach collection="list" index="index" item="item">    
+IF EXISTS ( SELECT  1
+            FROM    AccountAuth with(nolock)
+            WHERE   AccoutId = #{item.accoutId,jdbcType=INTEGER} 
+                    AND MenuId = #{item.menuId,jdbcType=INTEGER} )
+    BEGIN
+        DELETE  AccountAuth
+        WHERE   AccoutId = #{item.accoutId,jdbcType=INTEGER}
+                AND MenuId = #{item.menuId,jdbcType=INTEGER}
+    END
+ELSE
+    INSERT  INTO AccountAuth
+            ( AccoutId, MenuId,CreateTime, OptName)
+    VALUES  ( #{item.accoutId,jdbcType=INTEGER}, #{item.menuId,jdbcType=INTEGER},
+    getdate(),#{item.optName,jdbcType=NVARCHAR} )
+     </foreach>
+	</update>
 </mapper>

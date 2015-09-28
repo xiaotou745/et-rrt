@@ -1,6 +1,8 @@
 package com.renrentui.renrenentity;
 
-public class MenuInfo {
+import java.io.Serializable;
+
+public class MenuInfo  implements Serializable{
     private Integer id;
 
     private Integer parId;
