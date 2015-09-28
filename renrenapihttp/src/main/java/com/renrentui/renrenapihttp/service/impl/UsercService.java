@@ -7,15 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.entity.req.CSendCodeReq;
+import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrenentity.Clienter;
-import com.renrentui.renrenentity.req.CWithdrawFormReq;
+import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 /**
@@ -29,6 +33,10 @@ public class UsercService implements IUsercService {
 
 	@Autowired
 	IClienterService clienterService;
+	
+	@Autowired
+	private IClienterBalanceService clienterBalanceService;	
+
 
 	/**
 	 * C端忘记密码 茹化肖 2015年9月28日10:44:52
@@ -69,10 +77,34 @@ public class UsercService implements IUsercService {
 		return null;
 	}
 
-	@Override
-	public HttpResultModel<Object> withdraw(CWithdrawFormReq req) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * C申请提现
+	 * @author 胡灵波
+	 * @date 2015年9月28日 11:30:15
+	 * @return
+	 */
+	@Override	
+	public HttpResultModel<Object> withdraw(ClienterBalanceReq req)
+	{
+		HttpResultModel<Object> resultModel=new HttpResultModel<Object>();
+		
+		if(req.getUserId()<1)
+		{
+			resultModel.setCode(WithdrawState.Failure.value());
+			resultModel.setMsg(WithdrawState.Failure.desc());
+			return resultModel;
+		}
+		ClienterBalance clienterBalanceModel=clienterBalanceService.selectByPrimaryKey(req.getUserId());
+		double amount=clienterBalanceModel.getWithdraw();
+		if(req.getAmount()>amount)
+		{
+			resultModel.setCode(WithdrawState.MoneyError.value());
+			resultModel.setMsg(WithdrawState.MoneyError.desc());
+			return resultModel;
+		}
+		
+		clienterService.WithdrawC(req);
+		return resultModel;
 	}
 
 	/**

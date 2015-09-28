@@ -1,5 +1,6 @@
 package com.renrentui.renrenapi.service.inter;
 
+import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 
@@ -38,4 +39,13 @@ public interface IClienterService {
 	 * @return
 	 */
 	boolean modifyPwdUserc(ModifyPwdReq req);
+	
+	/**
+	 * 用户提现
+	 * 胡灵波
+	 * 2015年9月28日 16:58:06
+	 * @param req
+	 * @return
+	 */
+	void WithdrawC(ClienterBalanceReq req);
 }
