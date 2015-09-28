@@ -2,60 +2,26 @@ package com.renrentui.apihttp.common;
 
 
 public class HttpResultModel<T> {
-	private int Status = HttpReturnRnums.Success.value();
-	private String Message = HttpReturnRnums.Success.desc();
-	private T Result;
-
-	/**
-	 * 状态
-	 * 
-	 * @return
-	 */
-	public int getStatus() {
-		return Status;
+	private int code = HttpReturnRnums.Success.value();
+	private String msg = HttpReturnRnums.Success.desc();
+	private T data;
+	public int getCode() {
+		return code;
 	}
-
-	/**
-	 * 状态
-	 * 
-	 * @param status
-	 */
-	public void setStatus(int status) {
-		Status = status;
+	public void setCode(int code) {
+		this.code = code;
 	}
-
-	/**
-	 * 状态
-	 * 
-	 * @return
-	 */
-	public String getMessage() {
-		return Message;
+	public String getMsg() {
+		return msg;
 	}
-
-	/**
-	 * 状态
-	 * 
-	 * @param message
-	 */
-	public void setMessage(String message) {
-		Message = message;
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public T getResult() {
-		return Result;
+	public T getData() {
+		return data;
 	}
-
-	/**
-	 * 
-	 * @param result
-	 */
-	public void setResult(T result) {
-		Result = result;
+	public void setData(T data) {
+		this.data = data;
 	}
 
 }

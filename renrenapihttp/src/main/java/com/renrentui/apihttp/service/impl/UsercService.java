@@ -2,6 +2,7 @@ package com.renrentui.apihttp.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import com.renrentui.apihttp.common.HttpResultModel;
 import com.renrentui.apihttp.service.inter.IUsercService;
 /**
  * 用户相关 
@@ -10,5 +11,17 @@ import com.renrentui.apihttp.service.inter.IUsercService;
  */
 @Service
 public class UsercService implements IUsercService{
+
+	@Override
+	public HttpResultModel<Object> forgotPwd() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HttpResultModel<Object> modifyPwd() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

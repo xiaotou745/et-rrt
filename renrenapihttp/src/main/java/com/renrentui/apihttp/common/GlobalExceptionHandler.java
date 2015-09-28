@@ -40,9 +40,9 @@ public class GlobalExceptionHandler implements ExceptionMapper {
     public Response toResponse(Throwable ex) {
         //loginfo(ex);
     	HttpResultModel<String> rep=new HttpResultModel<String>();
-        rep.setStatus(HttpReturnRnums.SystemError.value());
-        rep.setMessage(HttpReturnRnums.SystemError.desc());
-        rep.setResult(StringUtils.getStackTrace(ex));
+        rep.setCode(HttpReturnRnums.SystemError.value());
+        rep.setMsg(HttpReturnRnums.SystemError.desc());
+        rep.setData(StringUtils.getStackTrace(ex));
         
         ResponseBuilder rb = Response.status(Response.Status.OK);
         rb.type("application/json;charset=UTF-8");
