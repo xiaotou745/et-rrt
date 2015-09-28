@@ -5,131 +5,133 @@ import java.util.Date;
 public class Order {
     private Long id;
 
-    private Long clienterid;
+    private Long clienterId;
 
-    private Long taskid;
+    private Long taskId;
 
-    private Short orderstatus;
+    private Short orderStatus;
 
-    private Short auditstatus;
+    private Short auditStatus;
 
-    private Date createtime;
+    private Date createTime;
 
-    private Date finishtime;
+    private Date finishTime;
 
-    private Date audittime;
+    private Date auditTime;
 
-    private Date auditname;
+    private Date auditName;
 
-    private Date deallinetime;
+    private Date deadlineTime;
 
-    private Date canceltime;
+    private Date cancelTime;
 
-    private String cancelname;
+    private String cancelName;
 
-    private String cancelremark;
+    private String cancelRemark;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public Long getClienterId() {
+		return clienterId;
+	}
+
+	public void setClienterId(Long clienterId) {
+		this.clienterId = clienterId;
+	}
+
+	public Long getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+	}
+
+	public Short getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(Short orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public Short getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(Short auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getFinishTime() {
+		return finishTime;
+	}
+
+	public void setFinishTime(Date finishTime) {
+		this.finishTime = finishTime;
+	}
+
+	public Date getAuditTime() {
+		return auditTime;
+	}
+
+	public void setAuditTime(Date auditTime) {
+		this.auditTime = auditTime;
+	}
+
+	public Date getAuditName() {
+		return auditName;
+	}
+
+	public void setAuditName(Date auditName) {
+		this.auditName = auditName;
+	}
+
+	public Date getDeadlineTime() {
+		return deadlineTime;
+	}
+
+	public void setDeadlineTime(Date deadlineTime) {
+		this.deadlineTime = deadlineTime;
+	}
+
+	public Date getCancelTime() {
+		return cancelTime;
+	}
+
+	public void setCancelTime(Date cancelTime) {
+		this.cancelTime = cancelTime;
+	}
+
+	public String getCancelName() {
+		return cancelName;
+	}
+
+	public void setCancelName(String cancelName) {
+		this.cancelName = cancelName;
+	}
+
+	public String getCancelRemark() {
+		return cancelRemark;
+	}
+
+	public void setCancelRemark(String cancelRemark) {
+		this.cancelRemark = cancelRemark;
+	}
+
+	public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getClienterid() {
-        return clienterid;
-    }
-
-    public void setClienterid(Long clienterid) {
-        this.clienterid = clienterid;
-    }
-
-    public Long getTaskid() {
-        return taskid;
-    }
-
-    public void setTaskid(Long taskid) {
-        this.taskid = taskid;
-    }
-
-    public Short getOrderstatus() {
-        return orderstatus;
-    }
-
-    public void setOrderstatus(Short orderstatus) {
-        this.orderstatus = orderstatus;
-    }
-
-    public Short getAuditstatus() {
-        return auditstatus;
-    }
-
-    public void setAuditstatus(Short auditstatus) {
-        this.auditstatus = auditstatus;
-    }
-
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
-    public Date getFinishtime() {
-        return finishtime;
-    }
-
-    public void setFinishtime(Date finishtime) {
-        this.finishtime = finishtime;
-    }
-
-    public Date getAudittime() {
-        return audittime;
-    }
-
-    public void setAudittime(Date audittime) {
-        this.audittime = audittime;
-    }
-
-    public Date getAuditname() {
-        return auditname;
-    }
-
-    public void setAuditname(Date auditname) {
-        this.auditname = auditname;
-    }
-
-    public Date getDeallinetime() {
-        return deallinetime;
-    }
-
-    public void setDeallinetime(Date deallinetime) {
-        this.deallinetime = deallinetime;
-    }
-
-    public Date getCanceltime() {
-        return canceltime;
-    }
-
-    public void setCanceltime(Date canceltime) {
-        this.canceltime = canceltime;
-    }
-
-    public String getCancelname() {
-        return cancelname;
-    }
-
-    public void setCancelname(String cancelname) {
-        this.cancelname = cancelname == null ? null : cancelname.trim();
-    }
-
-    public String getCancelremark() {
-        return cancelremark;
-    }
-
-    public void setCancelremark(String cancelremark) {
-        this.cancelremark = cancelremark == null ? null : cancelremark.trim();
-    }
+    
 }

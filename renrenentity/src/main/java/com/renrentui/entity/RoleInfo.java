@@ -5,15 +5,15 @@ import java.util.Date;
 public class RoleInfo {
     private Integer id;
 
-    private String rolename;
+    private String roleName;
 
-    private Date createtime;
+    private Date createTime;
 
     private String remark;
 
-    private String optname;
+    private String optName;
 
-    private Boolean belock;
+    private Boolean beLock;
 
     public Integer getId() {
         return id;
@@ -23,21 +23,7 @@ public class RoleInfo {
         this.id = id;
     }
 
-    public String getRolename() {
-        return rolename;
-    }
-
-    public void setRolename(String rolename) {
-        this.rolename = rolename == null ? null : rolename.trim();
-    }
-
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
+    
 
     public String getRemark() {
         return remark;
@@ -47,19 +33,37 @@ public class RoleInfo {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public String getOptname() {
-        return optname;
-    }
+	public String getRoleName() {
+		return roleName;
+	}
 
-    public void setOptname(String optname) {
-        this.optname = optname == null ? null : optname.trim();
-    }
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 
-    public Boolean getBelock() {
-        return belock;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setBelock(Boolean belock) {
-        this.belock = belock;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getOptName() {
+		return optName;
+	}
+
+	public void setOptName(String optName) {
+		this.optName = optName;
+	}
+
+	public Boolean getBeLock() {
+		return beLock;
+	}
+
+	public void setBeLock(Boolean beLock) {
+		this.beLock = beLock;
+	}
+
+    
 }

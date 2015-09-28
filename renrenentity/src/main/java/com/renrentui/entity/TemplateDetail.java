@@ -3,17 +3,17 @@ package com.renrentui.entity;
 public class TemplateDetail {
     private Long id;
 
-    private Long controlid;
+    private Long controlId;
 
-    private Integer ordernum;
+    private Integer orderNum;
 
     private String name;
 
     private String title;
 
-    private String defaultvalue;
+    private String defaultValue;
 
-    private String controldata;
+    private String controlData;
 
     public Long getId() {
         return id;
@@ -23,21 +23,7 @@ public class TemplateDetail {
         this.id = id;
     }
 
-    public Long getControlid() {
-        return controlid;
-    }
-
-    public void setControlid(Long controlid) {
-        this.controlid = controlid;
-    }
-
-    public Integer getOrdernum() {
-        return ordernum;
-    }
-
-    public void setOrdernum(Integer ordernum) {
-        this.ordernum = ordernum;
-    }
+    
 
     public String getName() {
         return name;
@@ -55,19 +41,36 @@ public class TemplateDetail {
         this.title = title == null ? null : title.trim();
     }
 
-    public String getDefaultvalue() {
-        return defaultvalue;
-    }
+	public Long getControlId() {
+		return controlId;
+	}
 
-    public void setDefaultvalue(String defaultvalue) {
-        this.defaultvalue = defaultvalue == null ? null : defaultvalue.trim();
-    }
+	public void setControlId(Long controlId) {
+		this.controlId = controlId;
+	}
 
-    public String getControldata() {
-        return controldata;
-    }
+	public Integer getOrderNum() {
+		return orderNum;
+	}
 
-    public void setControldata(String controldata) {
-        this.controldata = controldata == null ? null : controldata.trim();
-    }
+	public void setOrderNum(Integer orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public String getControlData() {
+		return controlData;
+	}
+
+	public void setControlData(String controlData) {
+		this.controlData = controlData;
+	}
+
 }

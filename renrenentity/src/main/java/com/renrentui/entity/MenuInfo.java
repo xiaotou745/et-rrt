@@ -3,15 +3,15 @@ package com.renrentui.entity;
 public class MenuInfo {
     private Integer id;
 
-    private Integer parid;
+    private Integer parId;
 
-    private String menuname;
+    private String menuName;
 
-    private Boolean belock;
+    private Boolean beLock;
 
     private String url;
 
-    private Boolean isbutton;
+    private Boolean isButton;
 
     public Integer getId() {
         return id;
@@ -21,29 +21,7 @@ public class MenuInfo {
         this.id = id;
     }
 
-    public Integer getParid() {
-        return parid;
-    }
-
-    public void setParid(Integer parid) {
-        this.parid = parid;
-    }
-
-    public String getMenuname() {
-        return menuname;
-    }
-
-    public void setMenuname(String menuname) {
-        this.menuname = menuname == null ? null : menuname.trim();
-    }
-
-    public Boolean getBelock() {
-        return belock;
-    }
-
-    public void setBelock(Boolean belock) {
-        this.belock = belock;
-    }
+    
 
     public String getUrl() {
         return url;
@@ -53,11 +31,37 @@ public class MenuInfo {
         this.url = url == null ? null : url.trim();
     }
 
-    public Boolean getIsbutton() {
-        return isbutton;
-    }
+	public Integer getParId() {
+		return parId;
+	}
 
-    public void setIsbutton(Boolean isbutton) {
-        this.isbutton = isbutton;
-    }
+	public void setParId(Integer parId) {
+		this.parId = parId;
+	}
+
+	public String getMenuName() {
+		return menuName;
+	}
+
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
+	}
+
+	public Boolean getBeLock() {
+		return beLock;
+	}
+
+	public void setBeLock(Boolean beLock) {
+		this.beLock = beLock;
+	}
+
+	public Boolean getIsButton() {
+		return isButton;
+	}
+
+	public void setIsButton(Boolean isButton) {
+		this.isButton = isButton;
+	}
+
+    
 }

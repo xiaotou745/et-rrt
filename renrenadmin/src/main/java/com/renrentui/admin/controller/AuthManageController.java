@@ -61,7 +61,7 @@ public class AuthManageController {
 	public int getRoleID(int userID) {
 		AccountInfo userAccount = accountService.getByID(userID);
 		if (userAccount!=null) {
-			return userAccount.getRoleid();
+			return userAccount.getRoleId();
 		}
 		return -1;
 	}
@@ -100,8 +100,8 @@ public class AuthManageController {
 		List<AccountAuth> authList = new ArrayList<>();
 		for (String authid : diffList) {
 			AccountAuth authset = new AccountAuth();
-			authset.setAccoutid(userID);
-			authset.setMenuid(Integer.parseInt(authid));
+			authset.setAccoutId(userID);
+			authset.setMenuId(Integer.parseInt(authid));
 			authList.add(authset);
 		}
 		authorityAccountMenuSetService.modifyAuthList(authList);
@@ -126,12 +126,12 @@ public class AuthManageController {
 	@ResponseBody
 	public ResponseBase addNewMenu(MenuInfo req){
 		ResponseBase resp = new ResponseBase();
-		if(StringUtils.isEmpty(req.getMenuname())){
+		if(StringUtils.isEmpty(req.getMenuName())){
 			resp.setMessage("请填写菜单名称");
 		}else{
-			int curId = req.getParid() == null ? 0 : req.getParid();
-			req.setParid(curId);
-			req.setBelock(false);
+			int curId = req.getParId() == null ? 0 : req.getParId();
+			req.setParId(curId);
+			req.setBeLock(false);
 			authorityMenuClassService.addMenu(req);
 			
 			resp.setMessage("添加菜单成功");

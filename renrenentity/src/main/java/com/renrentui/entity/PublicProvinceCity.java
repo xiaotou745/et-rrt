@@ -7,15 +7,15 @@ public class PublicProvinceCity {
 
     private Integer code;
 
-    private Integer parentcode;
+    private Integer parentCode;
 
-    private Integer jibie;
+    private Integer jiBie;
 
-    private String loweracronym;
+    private String loweRacronym;
 
-    private String upperacronym;
+    private String upperRcronym;
 
-    private String lowerfullpinyin;
+    private String lowerFullPinYin;
 
     public Integer getId() {
         return id;
@@ -41,43 +41,5 @@ public class PublicProvinceCity {
         this.code = code;
     }
 
-    public Integer getParentcode() {
-        return parentcode;
-    }
-
-    public void setParentcode(Integer parentcode) {
-        this.parentcode = parentcode;
-    }
-
-    public Integer getJibie() {
-        return jibie;
-    }
-
-    public void setJibie(Integer jibie) {
-        this.jibie = jibie;
-    }
-
-    public String getLoweracronym() {
-        return loweracronym;
-    }
-
-    public void setLoweracronym(String loweracronym) {
-        this.loweracronym = loweracronym == null ? null : loweracronym.trim();
-    }
-
-    public String getUpperacronym() {
-        return upperacronym;
-    }
-
-    public void setUpperacronym(String upperacronym) {
-        this.upperacronym = upperacronym == null ? null : upperacronym.trim();
-    }
-
-    public String getLowerfullpinyin() {
-        return lowerfullpinyin;
-    }
-
-    public void setLowerfullpinyin(String lowerfullpinyin) {
-        this.lowerfullpinyin = lowerfullpinyin == null ? null : lowerfullpinyin.trim();
-    }
+    
 }

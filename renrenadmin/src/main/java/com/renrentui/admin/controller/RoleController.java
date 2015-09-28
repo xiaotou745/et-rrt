@@ -49,8 +49,8 @@ public class RoleController {
 	@ResponseBody
 	public int add(String roleName) {
 		RoleInfo record=new RoleInfo();
-		record.setBelock(false);
-		record.setRolename(roleName);
+		record.setBeLock(false);
+		record.setRoleName(roleName);
 		return roleInfoService.insert(record);
 	}
 	@RequestMapping(value = "authlist", produces = "application/json; charset=utf-8")
@@ -83,8 +83,8 @@ public class RoleController {
 		List<RoleAuth> authList = new ArrayList<>();
 		for (String authid : diffList) {
 			RoleAuth authset = new RoleAuth();
-			authset.setRoleid(roleID);
-			authset.setMenuid(Integer.parseInt(authid));
+			authset.setRoleId(roleID);
+			authset.setMenuId(Integer.parseInt(authid));
 			authList.add(authset);
 		}
 		roleAuthService.modifyAuthList(authList);
@@ -97,8 +97,8 @@ public class RoleController {
 	public int saverole(int roleID,int belock,String newName) {
 		RoleInfo record=new RoleInfo();
 		record.setId(roleID);
-		record.setBelock(belock==1);
-		record.setRolename(newName);
+		record.setBeLock(belock==1);
+		record.setRoleName(newName);
 		return roleInfoService.update(record);
 	}
 }

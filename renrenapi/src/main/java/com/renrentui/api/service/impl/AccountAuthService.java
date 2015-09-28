@@ -30,7 +30,7 @@ public class AccountAuthService implements IAccountAuthService{
 		}
 		boolean result=accountAuthDao.modifyAuthList(authList);
 		if (result) {
-			String key=RedissCacheKey.Menu_Auth+authList.get(0).getAccoutid();
+			String key=RedissCacheKey.Menu_Auth+authList.get(0).getAccoutId();
 			redisService.remove(key);
 		}
 		return result;

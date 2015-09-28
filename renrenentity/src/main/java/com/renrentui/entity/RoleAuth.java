@@ -5,13 +5,13 @@ import java.util.Date;
 public class RoleAuth {
     private Integer id;
 
-    private Integer roleid;
+    private Integer roleId;
 
-    private Integer menuid;
+    private Integer menuId;
 
-    private Date createtime;
+    private Date createTime;
 
-    private String optname;
+    private String optName;
 
     public Integer getId() {
         return id;
@@ -21,35 +21,37 @@ public class RoleAuth {
         this.id = id;
     }
 
-    public Integer getRoleid() {
-        return roleid;
-    }
+	public Integer getRoleId() {
+		return roleId;
+	}
 
-    public void setRoleid(Integer roleid) {
-        this.roleid = roleid;
-    }
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
 
-    public Integer getMenuid() {
-        return menuid;
-    }
+	public Integer getMenuId() {
+		return menuId;
+	}
 
-    public void setMenuid(Integer menuid) {
-        this.menuid = menuid;
-    }
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
+	}
 
-    public Date getCreatetime() {
-        return createtime;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public String getOptname() {
-        return optname;
-    }
+	public String getOptName() {
+		return optName;
+	}
 
-    public void setOptname(String optname) {
-        this.optname = optname == null ? null : optname.trim();
-    }
+	public void setOptName(String optName) {
+		this.optName = optName;
+	}
+
+    
 }

@@ -5,11 +5,11 @@ import java.util.Date;
 public class BusinessLog {
     private Long id;
 
-    private Long businessid;
+    private Long businessId;
 
-    private Date createtime;
+    private Date createTime;
 
-    private String optname;
+    private String optName;
 
     private String remark;
 
@@ -21,35 +21,37 @@ public class BusinessLog {
         this.id = id;
     }
 
-    public Long getBusinessid() {
-        return businessid;
-    }
-
-    public void setBusinessid(Long businessid) {
-        this.businessid = businessid;
-    }
-
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
-    public String getOptname() {
-        return optname;
-    }
-
-    public void setOptname(String optname) {
-        this.optname = optname == null ? null : optname.trim();
-    }
+   
 
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
+        this.remark = remark;
     }
+
+	public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getOptName() {
+		return optName;
+	}
+
+	public void setOptName(String optName) {
+		this.optName = optName;
+	}
 }
