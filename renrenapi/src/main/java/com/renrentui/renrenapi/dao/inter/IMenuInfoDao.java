@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.dao.inter;
 import java.util.List;
 
 import com.renrentui.renrenentity.MenuInfo;
+import com.renrentui.renrenentity.domain.MenuEntity;
 
 public interface IMenuInfoDao {
 	/**
@@ -13,22 +14,14 @@ public interface IMenuInfoDao {
 	 * @return
 	 */
 	public List<MenuInfo> getMenuListByUserID(int userID) ;
-/**
- * 判断给定用户是否有某个菜单的权限
- * @author hailongzhao
- * @date 20150828
- * @param userID
- * @param menuID
- * @return
- */
-	public boolean checkHasAuth(int userID,int menuID) ;
+
 	/**
 	 * 修改权限时，获取给定用户的权限列表（包括没有权限的menu）
 	 * @author hailongzhao
 	 * @date 20150828
 	 * @return
 	 */
-	public List<MenuInfo> getAuthSettingList(int userID) ;
+	public List<MenuEntity> getAuthSettingList(int userID) ;
 	
 	/**
 	 * 修改权限时，获取给定角色的权限列表（包括没有权限的menu）
@@ -36,7 +29,7 @@ public interface IMenuInfoDao {
 	 * @date 20150902
 	 * @return
 	 */
-	public List<MenuInfo> getRoleAuthSettingList(int roleID) ;
+	public List<MenuEntity> getMenuListByRoleID(int roleID) ;
 	
 	/**
 	 * 根据父id获得所有子菜单

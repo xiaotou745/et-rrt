@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.MenuHelper;
+import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IMenuInfoService;
 import com.renrentui.renrenapi.service.inter.IRoleAuthService;
 import com.renrentui.renrenapi.service.inter.IRoleInfoService;
 import com.renrentui.renrenentity.MenuInfo;
 import com.renrentui.renrenentity.RoleAuth;
 import com.renrentui.renrenentity.RoleInfo;
+import com.renrentui.renrenentity.domain.MenuEntity;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 
 @Controller
@@ -47,22 +51,25 @@ public class RoleController {
 	}
 	@RequestMapping("add")
 	@ResponseBody
-	public int add(String roleName) {
+	public int add(HttpServletRequest request,String roleName) {
+		UserContext context = UserContext.getCurrentContext(request);
 		RoleInfo record=new RoleInfo();
 		record.setBeLock(false);
+		record.setRemark("");
+		record.setOptName(context.getUserName());
 		record.setRoleName(roleName);
 		return roleInfoService.insert(record);
 	}
 	@RequestMapping(value = "authlist", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String getAuthList(int roleID) {
-		List<MenuInfo> menuList = menuInfoService.getRoleAuthSettingList(roleID);
+		List<MenuEntity> menuList = menuInfoService.getMenuListByRoleID(roleID);
 		return MenuHelper.getAuthJson(menuList);
 	}
 
 	@RequestMapping("saveauth")
 	@ResponseBody
-	public String saveauth(int roleID, String newAuth, String oldAuth) {
+	public String saveauth(HttpServletRequest request,int roleID, String newAuth, String oldAuth) {
 		List<String> newList = new ArrayList<>();
 		List<String> oldList = new ArrayList<>();
 		List<String> diffList = new ArrayList<>();
@@ -81,9 +88,11 @@ public class RoleController {
 			return "没有任何修改，不需要保存";
 		}
 		List<RoleAuth> authList = new ArrayList<>();
+		UserContext context = UserContext.getCurrentContext(request);
 		for (String authid : diffList) {
 			RoleAuth authset = new RoleAuth();
 			authset.setRoleId(roleID);
+			authset.setOptName(context.getUserName());
 			authset.setMenuId(Integer.parseInt(authid));
 			authList.add(authset);
 		}
@@ -94,9 +103,11 @@ public class RoleController {
 
 	@RequestMapping("saverole")
 	@ResponseBody
-	public int saverole(int roleID,int belock,String newName) {
+	public int saverole(HttpServletRequest request,int roleID,int belock,String newName) {
+		UserContext context = UserContext.getCurrentContext(request);
 		RoleInfo record=new RoleInfo();
 		record.setId(roleID);
+		record.setOptName(context.getUserName());
 		record.setBeLock(belock==1);
 		record.setRoleName(newName);
 		return roleInfoService.update(record);

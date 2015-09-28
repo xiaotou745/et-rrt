@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.entity.req.CSendCodeReq;
@@ -11,10 +12,13 @@ import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
+import com.renrentui.renrencore.cache.redis.RedisService;
+import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
@@ -24,6 +28,7 @@ import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;
 /**
  * 用户相关
@@ -69,12 +74,15 @@ public class UsercService implements IUsercService {
 	 */
 	@Override
 	public HttpResultModel<Object> modifyPwd(ModifyPwdReq req) {
-		HttpResultModel<Object> model=new HttpResultModel<Object>();
-		if(clienterService.isRightPwd(req.getUserId(), req.getNewPwd()))//验证旧密码是否正确
-			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(ModifyPwdCode.OldPwdError.desc());
-		if(clienterService.modifyPwdUserc(req))
-			return model.setCode(ModifyPwdCode.Success.value()).setMsg(ModifyPwdCode.Success.desc());
-		return model.setCode(ModifyPwdCode.Fail.value()).setMsg(ModifyPwdCode.Fail.desc());
+		HttpResultModel<Object> model = new HttpResultModel<Object>();
+		if (clienterService.isRightPwd(req.getUserId(), req.getNewPwd()))// 验证旧密码是否正确
+			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(
+					ModifyPwdCode.OldPwdError.desc());
+		if (clienterService.modifyPwdUserc(req))
+			return model.setCode(ModifyPwdCode.Success.value()).setMsg(
+					ModifyPwdCode.Success.desc());
+		return model.setCode(ModifyPwdCode.Fail.value()).setMsg(
+				ModifyPwdCode.Fail.desc());
 	}
 
 	@Override
@@ -98,10 +106,15 @@ public class UsercService implements IUsercService {
 			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(SignUpCode.VerCodeNull.desc());
 		if(req.getVerifyCode().equals(""))  //验证码 查缓存  
 			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(SignUpCode.VerCodeError.desc());
-		if(clienterService.signup(req))//修改密码成功
-			return resultModel.setCode(SignUpCode.Success.value()).setMsg(SignUpCode.Success.desc());
+		int id=clienterService.signup(req);
+		if(id>0) {// 注册成功
+			SignUpResp sur = new SignUpResp();
+			sur.setUserId(id);
+			sur.setUserName(req.getName());
+			resultModel.setData(sur).setCode(SignUpCode.Success.value()).setMsg(SignUpCode.Success.desc());
+			return resultModel;
+		}
 		return resultModel.setCode(SignUpCode.Fail.value()).setMsg(SignUpCode.Fail.desc());//注册失败
-		 
 	}
 	/**
 	* @Des  C端登陆
@@ -133,14 +146,35 @@ public class UsercService implements IUsercService {
 	public HttpResultModel<Object> sendcode(CSendCodeReq req) {
 		try {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-			
-			long resultValue = SmsUtils.sendSMS("13426401627", "您的验证码是：1234");
+			String code = RandomCodeStrGenerator.generateCodeNum(6);
+			String key = "";
+			// 类型 1注册 2修改密码 3忘记密码
+
+			if (req.getsType() == 1) {
+				// 注册
+				key = RedissCacheKey.RR_Clienter_sendcode_register
+						+ req.getPhoneNo();
+			} else if (req.getsType() == 2) {
+				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
+						+ req.getPhoneNo();
+			} else if (req.getsType() == 3) {
+				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
+						+ req.getPhoneNo();
+			}
+
+			if (key == "")
+				return null;
+			RedisService redis = new RedisService();
+			redis.set(key, code);
+
+			long resultValue = SmsUtils.sendSMS(req.getPhoneNo(), "您的验证码为:"
+					+ code);
 			if (resultValue <= 0) {
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
 						SendSmsType.Fail.desc());// 发送失败
 			}
 			return resultModel.setCode(SendSmsType.Success.value()).setMsg(
-					SendSmsType.Success.desc());// 设置成功 
+					SendSmsType.Success.desc());// 设置成功
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -54,7 +54,7 @@ public class ClienterService implements IClienterService{
 	 * WangChao
 	 */
 	@Override
-	public boolean signup(SignUpReq req) {
+	public int signup(SignUpReq req) {
 		return clienterDao.signup(req); 
 	} 
 	/**

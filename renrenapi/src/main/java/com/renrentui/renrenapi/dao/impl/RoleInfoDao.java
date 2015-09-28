@@ -12,17 +12,17 @@ public class RoleInfoDao extends DaoBase implements IRoleInfoDao{
 
 	@Override
 	public int insert(RoleInfo record) {
-		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IAuthorityRoleDao.insert", record);
+		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRoleInfoDao.insert", record);
 	}
 
 	@Override
 	public int update(RoleInfo record) {
-	    return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IAuthorityRoleDao.update", record);
+	    return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRoleInfoDao.update", record);
 	}
 
 	@Override
 	public List<RoleInfo> selectList() {
-		 return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.IAuthorityRoleDao.selectList");
+		 return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.IRoleInfoDao.selectList");
 	}
 
 }

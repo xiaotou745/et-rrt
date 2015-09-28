@@ -42,7 +42,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 							return true;
 						}
 					}
-					response.sendRedirect(basePath+"/order/list");
+					response.sendRedirect(basePath+"/account/list");
 					return false;
 				}
 			}

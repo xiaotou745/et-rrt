@@ -29,7 +29,7 @@ public class RoleAuthService implements IRoleAuthService{
 			boolean result= roleAuthDao.modifyAuthList(authList);
 			//如果这个角色的权限更新成功，则将该角色下的所有用户的权限缓存移除
 			if (result) {
-				List<AccountInfo> roleAccounts=accountInfoDao.getByRoleID(authList.get(0).getId());
+				List<AccountInfo> roleAccounts=accountInfoDao.getByRoleID(authList.get(0).getRoleId());
 				for (AccountInfo accountInfo : roleAccounts) {
 					String key=RedissCacheKey.Menu_Auth+accountInfo.getId();
 					redisService.remove(key);

@@ -6,10 +6,12 @@ import java.util.List;
 
 
 
+
 import com.renrentui.renrenentity.MenuInfo;
+import com.renrentui.renrenentity.domain.MenuEntity;
 
 public class MenuHelper {
-	public static String getAuthJson(List<MenuInfo> menuList) {
+	public static String getAuthJson(List<MenuEntity> menuList) {
 		if (menuList != null && menuList.size() > 0) {
 			StringBuffer htmlStrBuffer = new StringBuffer();
 			htmlStrBuffer.append("[");
@@ -30,9 +32,9 @@ public class MenuHelper {
 	 * @param menuList
 	 * @return
 	 */
-		private static int createMenu(StringBuffer htmlStrBuffer, int parentID,List<MenuInfo> menuList) {
+		private static int createMenu(StringBuffer htmlStrBuffer, int parentID,List<MenuEntity> menuList) {
 			int hasSub = 0;
-			for (MenuInfo menuEntity : menuList) {
+			for (MenuEntity menuEntity : menuList) {
 				if (menuEntity.getParId() == parentID) {
 					hasSub = 1;
 					htmlStrBuffer.append("{");
@@ -57,8 +59,8 @@ public class MenuHelper {
 						}
 					}
 					// 当前用户有权限的菜单处于选中状态
-					if (menuEntity.getId() != null
-							&& menuEntity.getId() > 0) {
+					if (menuEntity.getMenuId() != null
+							&& menuEntity.getMenuId() > 0) {
 						htmlStrBuffer.append(",\"state\":{\"checked\": \"true\"}");
 					}
 					htmlStrBuffer.append(",\"nodes\":[");
