@@ -33,19 +33,13 @@
     delete from Clienter
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.Clienter" >
-    insert into Clienter (Id, ClienterName, PhoneNo, 
-      Password, LoginName, HeadImage, 
-      CityName, CityCode, Sex, 
-      Age, Education, LastLoginTime, 
-      CreateTime, Status, LastOptName, 
-      LastOptTime)
-    values (#{id,jdbcType=BIGINT}, #{clientername,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{loginname,jdbcType=VARCHAR}, #{headimage,jdbcType=VARCHAR}, 
-      #{cityname,jdbcType=NVARCHAR}, #{citycode,jdbcType=INTEGER}, #{sex,jdbcType=SMALLINT}, 
-      #{age,jdbcType=INTEGER}, #{education,jdbcType=NVARCHAR}, #{lastlogintime,jdbcType=TIMESTAMP}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{lastoptname,jdbcType=NVARCHAR}, 
-      #{lastopttime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.renrentui.renrenentity.req.SignUpReq" >
+	  <selectKey resultType="java.lang.Integer" keyProperty="id"
+				order="AFTER">
+				select @@IDENTITY as id
+	  </selectKey>
+	    insert into Clienter (ClienterName, PhoneNo, Password)
+	    values (#{name,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Clienter" >
     insert into Clienter

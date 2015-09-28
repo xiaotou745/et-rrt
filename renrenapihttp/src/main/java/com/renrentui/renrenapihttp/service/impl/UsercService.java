@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
@@ -18,6 +19,7 @@ import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.resp.SignUpResp;
 /**
  * 用户相关
  * 
@@ -91,10 +93,15 @@ public class UsercService implements IUsercService {
 			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(SignUpCode.VerCodeNull.desc());
 		if(req.getVerifyCode().equals(""))  //验证码 查缓存  
 			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(SignUpCode.VerCodeError.desc());
-		if(clienterService.signup(req))//修改密码成功
-			return resultModel.setCode(SignUpCode.Success.value()).setMsg(SignUpCode.Success.desc());
+		int id=clienterService.signup(req);
+		if(id>0) {// 注册成功
+			SignUpResp sur = new SignUpResp();
+			sur.setUserId(id);
+			sur.setUserName(req.getName());
+			resultModel.setData(sur).setCode(SignUpCode.Success.value()).setMsg(SignUpCode.Success.desc());
+			return resultModel;
+		}
 		return resultModel.setCode(SignUpCode.Fail.value()).setMsg(SignUpCode.Fail.desc());//注册失败
-		 
 	}
 
 	/**
