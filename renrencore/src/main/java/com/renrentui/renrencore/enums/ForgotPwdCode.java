@@ -1,4 +1,4 @@
-package com.renrentui.core.enums;
+package com.renrentui.renrencore.enums;
 /**
  * 
  * C端忘记密码枚举
