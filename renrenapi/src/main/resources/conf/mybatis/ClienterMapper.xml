@@ -33,19 +33,13 @@
     delete from Clienter
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.Clienter" >
-    insert into Clienter (Id, ClienterName, PhoneNo, 
-      Password, LoginName, HeadImage, 
-      CityName, CityCode, Sex, 
-      Age, Education, LastLoginTime, 
-      CreateTime, Status, LastOptName, 
-      LastOptTime)
-    values (#{id,jdbcType=BIGINT}, #{clientername,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{loginname,jdbcType=VARCHAR}, #{headimage,jdbcType=VARCHAR}, 
-      #{cityname,jdbcType=NVARCHAR}, #{citycode,jdbcType=INTEGER}, #{sex,jdbcType=SMALLINT}, 
-      #{age,jdbcType=INTEGER}, #{education,jdbcType=NVARCHAR}, #{lastlogintime,jdbcType=TIMESTAMP}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{lastoptname,jdbcType=NVARCHAR}, 
-      #{lastopttime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.renrentui.renrenentity.req.SignUpReq" >
+	  <selectKey resultType="java.lang.Integer" keyProperty="id"
+				order="AFTER">
+				select @@IDENTITY as id
+	  </selectKey>
+	    insert into Clienter (ClienterName, PhoneNo, Password)
+	    values (#{name,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Clienter" >
     insert into Clienter
@@ -220,4 +214,44 @@
       LastOptTime = #{lastopttime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <!-- 验证手机号是否存在 2015年9月28日11:56:13 茹化肖 -->
+  <select id="isExistPhone" resultType="int" parameterType="java.util.HashMap" >
+    SELECT COUNT(1) FROM  dbo.Clienter AS C (NOLOCK)
+	WHERE C.PhoneNo=#{phoneNo,jdbcType=VARCHAR}
+  </select>
+  <!-- 通过手机号修改密码 -->
+  <update  id="forgotPassword" parameterType="com.renrentui.renrenentity.req.ForgotPwdReq" >
+    UPDATE dbo.Clienter SET Password='${passWord}' WHERE PhoneNo='${phoneNo}'
+  </update>
+  <!-- 验证用户密码是否正确 2015年9月28日11:56:13 茹化肖 -->
+  <select id="isRightPwd" resultType="int" parameterType="java.util.HashMap" >
+    SELECT COUNT(1) FROM  dbo.Clienter AS C (NOLOCK)
+	WHERE C.id=#{uid,jdbcType=BIGINT} AND C.Password=#{md5Pwd,jdbcType=VARCHAR}
+  </select>
+  <!-- 通过CID修改密码 茹化肖 2015年9月28日15:12:18-->
+  <update  id="modifyPwdUserc" parameterType="com.renrentui.renrenentity.req.ModifyPwdReq" >
+    UPDATE dbo.Clienter SET Password='${newPwd}' WHERE id =${userId}
+  </update>
+  <!-- 查询C端用户信息 2015年9月28日16:24:39 WangXuDan -->
+  <select id="queryClienter" resultType="com.renrentui.renrenentity.Clienter" parameterType="com.renrentui.renrenentity.req.SignInReq" >
+    SELECT    Id
+		    , ClienterName
+		    , PhoneNo
+		    , Password
+		    , LoginName
+		    , HeadImage
+		    , CityName
+		    , CityCode
+		    , Sex
+		    , Age
+		    , Education
+		    , LastLoginTime
+		    , CreateTime
+		    , Status
+		    , LastOptName
+		    , LastOptTime
+    FROM  dbo.Clienter AS C (NOLOCK)
+	WHERE C.PhoneNo=#{phoneNo,jdbcType=VARCHAR}
+		AND C.Password=#{Password,jdbcType=VARCHAR}
+  </select>
 </mapper>

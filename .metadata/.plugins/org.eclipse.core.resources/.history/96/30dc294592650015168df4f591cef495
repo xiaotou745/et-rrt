@@ -1,0 +1,13 @@
+package com.renrentui.entity.req;
+/**
+ * 
+ * 提现
+ * @author  胡灵波
+ * 2015年9月28日 11:35:11
+ */
+public class CWithdrawFormReq {
+
+	private String userId;//用户Id
+	private double amount;//提现金额	
+
+}
