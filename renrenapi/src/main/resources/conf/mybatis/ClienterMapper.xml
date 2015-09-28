@@ -226,7 +226,7 @@
 	WHERE C.PhoneNo=#{phoneNo,jdbcType=VARCHAR},
   </select>
   <!-- 通过手机号修改密码 -->
-  <update  id="forgotPassword" parameterType="com.renrentui.entity.req.ForgotPwdReq" >
+  <update  id="forgotPassword" parameterType="com.renrentui.renrenentity.req.ForgotPwdReq" >
     UPDATE dbo.Clienter SET Password='${passWord}' WHERE PhoneNo='${phoneNo}'
   </update>
 </mapper>

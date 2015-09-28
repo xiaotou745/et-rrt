@@ -3,20 +3,20 @@ package com.renrentui.renrenapi.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 @Service
 public class ClienterService implements IClienterService{
-	//@Autowired
-		//private IMenuInfoDao dao;
+	@Autowired
+	private IClienterDao clienterDao;
 	
 	/**
 	 * C端忘记密码
 	 */
 	@Override
 	public boolean forgotPwdUserc(ForgotPwdReq req) {
-		// TODO Auto-generated method stub
-		return false;
+		return clienterDao.forgotPassword(req);
 	}
 	/**
 	 * 手机号是否存在 	C

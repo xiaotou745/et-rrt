@@ -38,7 +38,9 @@ public class UsercService implements IUsercService{
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value()).setMsg(ForgotPwdCode.VerCodeNull.desc());
 		if(req.getPhoneNo().equals(""))//验证码不正确   TODO 查缓存看验证码正确
 			return resultModel.setCode(ForgotPwdCode.VerCodeError.value()).setMsg(ForgotPwdCode.VerCodeError.desc());
-		return resultModel;
+		if(clienterService.forgotPwdUserc(req))//修改密码成功
+			return resultModel.setCode(ForgotPwdCode.Success.value()).setMsg(ForgotPwdCode.Success.desc());
+		return resultModel.setCode(ForgotPwdCode.Fail.value()).setMsg(ForgotPwdCode.Fail.desc());//设置失败
 	}
 	/**
 	 * C端修改密码
