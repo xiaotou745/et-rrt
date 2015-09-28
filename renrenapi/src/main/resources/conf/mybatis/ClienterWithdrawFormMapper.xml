@@ -32,9 +32,9 @@
     insert into ClienterWithdrawForm (ClienterId, Amount, 
       WithdrawNo, WithType, AccountInfo, 
       TrueName, Status )
-    values (#{clienterid,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
-      #{withdrawno,jdbcType=VARCHAR}, #{withtype,jdbcType=SMALLINT}, #{accountinfo,jdbcType=VARCHAR}, 
-      #{truename,jdbcType=NVARCHAR}, #{status,jdbcType=SMALLINT}
+    values (#{clienterId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
+      #{withdrawNo,jdbcType=VARCHAR}, #{withType,jdbcType=SMALLINT}, #{accountInfo,jdbcType=VARCHAR}, 
+      #{trueName,jdbcType=NVARCHAR}, #{status,jdbcType=SMALLINT}
      )
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >

@@ -3,10 +3,10 @@
 <mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterBalanceDao" >
   <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.ClienterBalance" >
     <id column="Id" property="id" jdbcType="BIGINT" />
-    <result column="ClienterId" property="clienterid" jdbcType="BIGINT" />
+    <result column="ClienterId" property="clienterId" jdbcType="BIGINT" />
     <result column="Balance" property="balance" jdbcType="DECIMAL" />
     <result column="Withdraw" property="withdraw" jdbcType="DECIMAL" />
-    <result column="HadWithdraw" property="hadwithdraw" jdbcType="DECIMAL" />
+    <result column="HadWithdraw" property="hadWithdraw" jdbcType="DECIMAL" />
   </resultMap>
   <sql id="Base_Column_List" >
     Id, ClienterId, Balance, Withdraw, HadWithdraw
@@ -88,7 +88,15 @@
       Balance = #{balance,jdbcType=DECIMAL},
       Withdraw = #{withdraw,jdbcType=DECIMAL},
       HadWithdraw = #{hadwithdraw,jdbcType=DECIMAL}
-    where Id = #{id,jdbcType=BIGINT}
+    where Id = #{id,jdbcType=BIGINT}    
+
+  </update>
+   <update id="updateMoneyByKey" parameterType="com.renrentui.renrenentity.req.ClienterBalanceReq" >
+    update ClienterBalance
+    set 
+      Balance =Balance+ #{amount,jdbcType=DECIMAL},
+      Withdraw =Withdraw+ #{amount,jdbcType=DECIMAL}     
+    where ClienterId = #{userId,jdbcType=BIGINT}    
   </update>
   <!-- 获取用户收入  2015年9月28日17:37:27 WangXuDan -->
   <select id="queryClienterBalance" resultType="com.renrentui.renrenentity.ClienterBalance" parameterType="com.renrentui.renrenentity.req.MyIncomeReq" >

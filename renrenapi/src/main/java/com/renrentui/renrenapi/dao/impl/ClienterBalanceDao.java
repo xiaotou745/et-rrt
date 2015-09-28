@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;
 
 
 @Repository
@@ -53,13 +54,18 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 		return 0;
 	}	
 	
+	/**
+	* @Des 更新用户余额，可提现余额
+	* @Author 胡灵波
+	* @Date 2015年9月28日 18:38:05
+	* @Return
+	*/
 	@Override
-	public int updateMoneyByKey(ClienterBalance record)
+	public int updateMoneyByKey(ClienterBalanceReq record)
 	{
-/*		return getMasterSqlSessionUtil()
-				.update("com.edaisong.api.dao.inter.IClienterDao.updateMoneyById",
-						record);*/
-		return 0;
+		return getMasterSqlSessionUtil()
+				.update("com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.updateMoneyByKey",
+						record);	
 	}
 
 }

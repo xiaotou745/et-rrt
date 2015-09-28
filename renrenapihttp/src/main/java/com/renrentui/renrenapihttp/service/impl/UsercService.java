@@ -24,7 +24,6 @@ import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
-import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
@@ -94,7 +93,7 @@ public class UsercService implements IUsercService {
 	}
 
 	/**
-	 * C申请提现
+	 * 用户申请提现
 	 * @author 胡灵波
 	 * @date 2015年9月28日 11:30:15
 	 * @return

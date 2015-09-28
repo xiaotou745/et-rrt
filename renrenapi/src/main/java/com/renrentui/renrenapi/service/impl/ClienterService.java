@@ -3,13 +3,15 @@ package com.renrentui.renrenapi.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
+import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
-
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
@@ -21,7 +23,15 @@ public class ClienterService implements IClienterService{
 	private IClienterDao clienterDao;
 	
 	@Autowired
+	private IClienterBalanceDao clienterBalanceDao;
+	
+	@Autowired
+	private IClienterBalanceRecordDao clienterBalanceRecordDao;	
+	
+	@Autowired
 	private IClienterWithdrawFormDao clienterWithdrawFormDao;	
+	
+	
 	/**
 	 * C端忘记密码
 	 */
@@ -103,7 +113,7 @@ public class ClienterService implements IClienterService{
 	@Override
 	public void WithdrawC(ClienterBalanceReq req)
 	{
-		//创建提现表
+	     //创建提现表
 		ClienterWithdrawForm clienterWithdrawFormModel=new ClienterWithdrawForm();
 		clienterWithdrawFormModel.setClienterId(req.getUserId());
 		clienterWithdrawFormModel.setAmount(req.getAmount());
@@ -114,9 +124,21 @@ public class ClienterService implements IClienterService{
 		clienterWithdrawFormModel.setStatus((short)0);				
 		clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
 		
+		ClienterBalanceReq cBReq=new ClienterBalanceReq();
+		cBReq.setUserId(req.getUserId());
+		cBReq.setAmount(-req.getAmount());
+		clienterBalanceDao.updateMoneyByKey(cBReq);
 		
+	    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
+		clienterBalanceRecordModel.setClienterId(req.getUserId());
+		clienterBalanceRecordModel.setAmount(-req.getAmount());		
+		clienterBalanceRecordModel.setRecordType((short)2);		
+		clienterBalanceRecordModel.setOptName("admin");
+		clienterBalanceRecordModel.setOrderId((long)101);
+		clienterBalanceRecordModel.setRelationNo("001");
+		clienterBalanceRecordModel.setRemark("提现申请");		
+		clienterBalanceRecordDao.insert(clienterBalanceRecordModel);		
 	}
-	
 
 	
 }
