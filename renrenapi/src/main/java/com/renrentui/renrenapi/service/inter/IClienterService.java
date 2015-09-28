@@ -9,7 +9,7 @@ import com.renrentui.renrenentity.req.ForgotPwdReq;
  * @author ofmyi_000
  *
  */
-public interface IUsercService {
+public interface IClienterService {
 	/**
 	 * 忘记密码
 	 * @param req

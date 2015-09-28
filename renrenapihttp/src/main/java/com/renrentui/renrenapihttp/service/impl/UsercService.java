@@ -1,10 +1,13 @@
 package com.renrentui.renrenapihttp.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.core.enums.ForgotPwdCode;
+import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
+import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 /**
  * 用户相关 
@@ -13,6 +16,10 @@ import com.renrentui.renrenentity.req.ForgotPwdReq;
  */
 @Service
 public class UsercService implements IUsercService{
+	
+	
+	@Autowired 
+	IClienterService  clienterService;
 	/**
 	 * C端忘记密码 
 	 * 茹化肖
@@ -24,7 +31,7 @@ public class UsercService implements IUsercService{
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
 		if(req.getPhoneNo().equals(""))//手机号为空
 			return  resultModel.setCode(ForgotPwdCode.PhoneNull.value()).setMsg(ForgotPwdCode.PhoneNull.desc());
-		if(req.getPhoneNo().equals(""))//手机号不正确   TODO 查库验证手机号是否纯在
+		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号不正确
 			return resultModel.setCode(ForgotPwdCode.PhoneError.value()).setMsg(ForgotPwdCode.PhoneError.desc());
 		if(req.getVerifyCode().equals(""))//验证码为空
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value()).setMsg(ForgotPwdCode.VerCodeNull.desc());

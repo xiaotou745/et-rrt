@@ -3,10 +3,10 @@ package com.renrentui.renrenapi.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.renrentui.renrenapi.service.inter.IUsercService;
+import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 @Service
-public class UsercService implements IUsercService{
+public class ClienterService implements IClienterService{
 	//@Autowired
 		//private IMenuInfoDao dao;
 	
