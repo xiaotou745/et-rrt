@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.renrentui.apihttp.common.HttpResultModel;
+import com.renrentui.entity.req.ForgotPwdReq;
 
 /**
  * C端用户模块
@@ -26,7 +27,7 @@ public interface IUsercService {
 	 */
 	@POST
 	@Path("/forgotpwd")
-	 public HttpResultModel<Object> forgotPwd();
+	 public HttpResultModel<Object> forgotPwd(ForgotPwdReq req);
 	/**
 	 * C端忘记密码
 	 * @author 茹化肖
