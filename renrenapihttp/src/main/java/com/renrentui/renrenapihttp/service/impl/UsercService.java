@@ -4,15 +4,19 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
+import com.renrentui.renrencore.cache.redis.RedisService;
+import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.CWithdrawFormReq;
@@ -63,12 +67,15 @@ public class UsercService implements IUsercService {
 	 */
 	@Override
 	public HttpResultModel<Object> modifyPwd(ModifyPwdReq req) {
-		HttpResultModel<Object> model=new HttpResultModel<Object>();
-		if(clienterService.isRightPwd(req.getUserId(), req.getNewPwd()))//验证旧密码是否正确
-			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(ModifyPwdCode.OldPwdError.desc());
-		if(clienterService.modifyPwdUserc(req))
-			return model.setCode(ModifyPwdCode.Success.value()).setMsg(ModifyPwdCode.Success.desc());
-		return model.setCode(ModifyPwdCode.Fail.value()).setMsg(ModifyPwdCode.Fail.desc());
+		HttpResultModel<Object> model = new HttpResultModel<Object>();
+		if (clienterService.isRightPwd(req.getUserId(), req.getNewPwd()))// 验证旧密码是否正确
+			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(
+					ModifyPwdCode.OldPwdError.desc());
+		if (clienterService.modifyPwdUserc(req))
+			return model.setCode(ModifyPwdCode.Success.value()).setMsg(
+					ModifyPwdCode.Success.desc());
+		return model.setCode(ModifyPwdCode.Fail.value()).setMsg(
+				ModifyPwdCode.Fail.desc());
 	}
 
 	@Override
@@ -88,9 +95,29 @@ public class UsercService implements IUsercService {
 	public HttpResultModel<Object> sendcode(CSendCodeReq req) {
 		try {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+			String code = RandomCodeStrGenerator.generateCodeNum(6);
+			String key = "";
+			// 类型 1注册 2修改密码 3忘记密码
 
-			long resultValue = SmsUtils
-					.sendSMS(req.getPhoneNo(), "您的验证码是:1234");
+			if (req.getsType() == 1) {
+				// 注册
+				key = RedissCacheKey.RR_Clienter_sendcode_register
+						+ req.getPhoneNo();
+			} else if (req.getsType() == 2) {
+				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
+						+ req.getPhoneNo();
+			} else if (req.getsType() == 3) {
+				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
+						+ req.getPhoneNo();
+			}
+
+			if (key == "")
+				return null;
+			RedisService redis = new RedisService();
+			redis.set(key, code);
+
+			long resultValue = SmsUtils.sendSMS(req.getPhoneNo(), "您的验证码为:"
+					+ code);
 			if (resultValue <= 0) {
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
 						SendSmsType.Fail.desc());// 发送失败
