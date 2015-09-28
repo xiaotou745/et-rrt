@@ -1,13 +1,18 @@
 package com.renrentui.renrenapihttp.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.core.enums.ForgotPwdCode;
+import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.entity.req.CWithdrawFormReq;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
+import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 /**
@@ -56,6 +61,30 @@ public class UsercService implements IUsercService{
 	@Override
 	public HttpResultModel<Object> withdraw(CWithdrawFormReq req) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+	/**
+	 * 获取验证码
+	 * @author haichao
+	 * @date 2015年9月28日 14:49:55
+	 * @return 
+	 * */
+	@Override
+	public HttpResultModel<Object> sendcode() {//CSendCodeReq req
+		try {
+			HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+			long resultValue=  SmsUtils.sendSMS("13426401627", "您的验证码是：1234");
+			if(resultValue<=0)
+		{	
+				return resultModel.setCode(ForgotPwdCode.Fail.value()).setMsg(ForgotPwdCode.Fail.desc());//设置失败
+		}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
