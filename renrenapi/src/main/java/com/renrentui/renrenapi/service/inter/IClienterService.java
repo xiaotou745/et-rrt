@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 
 
 /**
@@ -23,4 +24,6 @@ public interface IClienterService {
 	 * @return
 	 */
 	boolean isExistPhoneC(String phoneNo);
+
+	boolean signup(SignUpReq req);
 }

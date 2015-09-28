@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 
 public interface IClienterDao {
     int deleteByPrimaryKey(Long id);
@@ -30,4 +31,6 @@ public interface IClienterDao {
 	 * 
 	 */
     boolean forgotPassword(ForgotPwdReq req);
+
+	boolean signup(SignUpReq req);
 }

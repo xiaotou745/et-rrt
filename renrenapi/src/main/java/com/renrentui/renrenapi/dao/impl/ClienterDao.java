@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
+
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 
 
 
@@ -74,6 +76,14 @@ public class ClienterDao extends DaoBase implements IClienterDao{
 		String statement = "com.renrentui.api.dao.inter.IClienterDao.forgotPassword";
 		int res= getMasterSqlSessionUtil().update(statement, req);
 		return res>0;
+	}
+
+	@Override
+	public boolean signup(SignUpReq req) {
+//		String statement = "com.renrentui.api.dao.inter.IClienterDao.insert";
+//		int res= getMasterSqlSessionUtil().insert(statement, req);
+//		return res>0;
+		return true;
 	}
 
 	

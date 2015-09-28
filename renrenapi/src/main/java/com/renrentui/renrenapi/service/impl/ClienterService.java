@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 @Service
 public class ClienterService implements IClienterService{
 	@Autowired
@@ -29,8 +30,12 @@ public class ClienterService implements IClienterService{
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
-
-	
+	/*
+	 * 注册
+	 * WangChao
+	 */
+	@Override
+	public boolean signup(SignUpReq req) {
+		return clienterDao.signup(req); 
+	} 
 }
