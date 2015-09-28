@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="com.renrentui.core.util.PropertyUtils"%>
-<%@page import="com.renrentui.core.util.ParseHelper"%>
-<%@page import="com.renrentui.entity.MenuInfo"%>
-<%@page import="com.renrentui.core.util.EnumHelper"%>
-<%@page import="com.renrentui.core.util.HtmlHelper"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrencore.util.ParseHelper"%>
+<%@page import="com.renrentui.renrenentity.MenuInfo"%>
+<%@page import="com.renrentui.renrencore.util.EnumHelper"%>
+<%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 	List<MenuInfo> data = (List<MenuInfo>) request.getAttribute("listData");
@@ -15,7 +15,7 @@
 <div class="SearchMd">
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
-			<td><%=currentMenu==null?"一级菜单":currentMenu.getMenuname()%></td>
+			<td><%=currentMenu==null?"一级菜单":currentMenu.getMenuName()%></td>
 			<td><input type="button" value="新增菜单" onclick="addNewMenu()" /></td>
 		</tr>
 	</table>
@@ -44,7 +44,7 @@
 						%>
 						<tr class="info">
 							<td><%=data.get(i).getId()%></td>
-							<td><%=ParseHelper.ShowString(data.get(i).getMenuname())%></td>
+							<td><%=ParseHelper.ShowString(data.get(i).getMenuName())%></td>
 							<td>
 								<button type="button" class="btn btn-default btn-sm">修改</button>
 								<button type="button" class="btn btn-default btn-sm">查看子菜单</button>
@@ -77,11 +77,11 @@
 						%>
 						<tr class="info">
 							<td><%=data.get(i).getId()%></td>
-							<td><%=ParseHelper.ShowString(data.get(i).getMenuname())%></td>
+							<td><%=ParseHelper.ShowString(data.get(i).getMenuName())%></td>
 							<td><%=data.get(i).getUrl()%></td>
 							<td><%=data.get(i).getUrl()%></td>
-							<td><%=data.get(i).getParid()%></td>
-							<td><%=data.get(i).getIsbutton()%></td>
+							<td><%=data.get(i).getParId()%></td>
+							<td><%=data.get(i).getIsButton()%></td>
 							<td>
 								<button type="button" class="btn btn-default btn-sm">修改</button>
 								<button type="button" class="btn btn-default btn-sm">添加按钮</button>

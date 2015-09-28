@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IOrderLogDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.OrderLog" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IOrderLogDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.OrderLog" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="OrderId" property="orderid" jdbcType="BIGINT" />
     <result column="OptType" property="opttype" jdbcType="SMALLINT" />
@@ -22,7 +22,7 @@
     delete from OrderLog
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.OrderLog" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.OrderLog" >
     insert into OrderLog (Id, OrderId, OptType, 
       CreateTime, OptName, Remark
       )
@@ -30,7 +30,7 @@
       #{createtime,jdbcType=TIMESTAMP}, #{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.OrderLog" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.OrderLog" >
     insert into OrderLog
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -73,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.OrderLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.OrderLog" >
     update OrderLog
     <set >
       <if test="orderid != null" >
@@ -94,7 +94,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.OrderLog" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.OrderLog" >
     update OrderLog
     set OrderId = #{orderid,jdbcType=BIGINT},
       OptType = #{opttype,jdbcType=SMALLINT},

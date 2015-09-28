@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IClienterBalanceDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.ClienterBalance" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterBalanceDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.ClienterBalance" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="ClienterId" property="clienterid" jdbcType="BIGINT" />
     <result column="Balance" property="balance" jdbcType="DECIMAL" />
@@ -21,13 +21,13 @@
     delete from ClienterBalance
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.ClienterBalance" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterBalance" >
     insert into ClienterBalance (Id, ClienterId, Balance, 
       Withdraw, HadWithdraw)
     values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL}, 
       #{withdraw,jdbcType=DECIMAL}, #{hadwithdraw,jdbcType=DECIMAL})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.ClienterBalance" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterBalance" >
     insert into ClienterBalance
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.ClienterBalance" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.ClienterBalance" >
     update ClienterBalance
     <set >
       <if test="clienterid != null" >
@@ -82,7 +82,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.ClienterBalance" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.ClienterBalance" >
     update ClienterBalance
     set ClienterId = #{clienterid,jdbcType=BIGINT},
       Balance = #{balance,jdbcType=DECIMAL},

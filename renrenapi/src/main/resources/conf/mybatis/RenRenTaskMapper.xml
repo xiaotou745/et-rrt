@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IRenRenTaskDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.RenRenTask" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IRenRenTaskDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.RenRenTask" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="TaskTitle" property="tasktitle" jdbcType="NVARCHAR" />
     <result column="TaskNotice" property="tasknotice" jdbcType="NVARCHAR" />
@@ -38,7 +38,7 @@
     delete from RenRenTask
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.RenRenTask" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.RenRenTask" >
     insert into RenRenTask (Id, TaskTitle, TaskNotice, 
       TaskGeneralInfo, BusinessId, Pusher, 
       CreateName, CreateTime, ModifyName, 
@@ -54,7 +54,7 @@
       #{state,jdbcType=INTEGER}, #{tasktoatlcount,jdbcType=INTEGER}, #{tempateid,jdbcType=BIGINT}, 
       #{link,jdbcType=NVARCHAR}, #{paymentmethod,jdbcType=SMALLINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.RenRenTask" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.RenRenTask" >
     insert into RenRenTask
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -181,7 +181,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.RenRenTask" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.RenRenTask" >
     update RenRenTask
     <set >
       <if test="tasktitle != null" >
@@ -244,7 +244,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.RenRenTask" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.RenRenTask" >
     update RenRenTask
     set TaskTitle = #{tasktitle,jdbcType=NVARCHAR},
       TaskNotice = #{tasknotice,jdbcType=NVARCHAR},

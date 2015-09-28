@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IAccountAuthDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.AccountAuth" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IAccountAuthDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.AccountAuth" >
     <result column="id" property="id" jdbcType="INTEGER" />
     <result column="AccoutId" property="accoutid" jdbcType="INTEGER" />
     <result column="MenuId" property="menuid" jdbcType="INTEGER" />
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="OptName" property="optname" jdbcType="NVARCHAR" />
   </resultMap>
-  <insert id="insert" parameterType="com.renrentui.entity.AccountAuth" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.AccountAuth" >
     insert into AccountAuth (id, AccoutId, MenuId, 
       CreateTime, OptName)
     values (#{id,jdbcType=INTEGER}, #{accoutid,jdbcType=INTEGER}, #{menuid,jdbcType=INTEGER}, 
       #{createtime,jdbcType=TIMESTAMP}, #{optname,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.AccountAuth" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.AccountAuth" >
     insert into AccountAuth
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

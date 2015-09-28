@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IClienterLogDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.ClienterLog" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterLogDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.ClienterLog" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="ClienterId" property="clienterid" jdbcType="BIGINT" />
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
@@ -21,13 +21,13 @@
     delete from ClienterLog
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.ClienterLog" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterLog" >
     insert into ClienterLog (Id, ClienterId, CreateTime, 
       OptName, Remark)
     values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=BIGINT}, #{createtime,jdbcType=TIMESTAMP}, 
       #{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.ClienterLog" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterLog" >
     insert into ClienterLog
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.ClienterLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.ClienterLog" >
     update ClienterLog
     <set >
       <if test="clienterid != null" >
@@ -82,7 +82,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.ClienterLog" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.ClienterLog" >
     update ClienterLog
     set ClienterId = #{clienterid,jdbcType=BIGINT},
       CreateTime = #{createtime,jdbcType=TIMESTAMP},

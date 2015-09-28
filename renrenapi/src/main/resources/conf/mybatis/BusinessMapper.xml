@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IBusinessDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.Business" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IBusinessDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.Business" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="CompanyName" property="companyname" jdbcType="NVARCHAR" />
     <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
     delete from Business
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.Business" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.Business" >
     insert into Business (Id, CompanyName, PhoneNo, 
       PassWord, LoginName, Logo, 
       Address, CityCode, CityName, 
@@ -37,7 +37,7 @@
       #{address,jdbcType=VARCHAR}, #{citycode,jdbcType=INTEGER}, #{cityname,jdbcType=NVARCHAR}, 
       #{website,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.Business" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Business" >
     insert into Business
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -104,7 +104,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.Business" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Business" >
     update Business
     <set >
       <if test="companyname != null" >
@@ -137,7 +137,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.Business" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.Business" >
     update Business
     set CompanyName = #{companyname,jdbcType=NVARCHAR},
       PhoneNo = #{phoneno,jdbcType=VARCHAR},

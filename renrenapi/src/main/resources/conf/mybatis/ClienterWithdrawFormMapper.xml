@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IClienterWithdrawFormDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.ClienterWithdrawForm" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.ClienterWithdrawForm" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="ClienterId" property="clienterid" jdbcType="BIGINT" />
     <result column="Amount" property="amount" jdbcType="DECIMAL" />
@@ -28,7 +28,7 @@
     delete from ClienterWithdrawForm
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.ClienterWithdrawForm" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
     insert into ClienterWithdrawForm (Id, ClienterId, Amount, 
       WithdrawNo, WithType, AccountInfo, 
       TrueName, Status, CreateTime, 
@@ -38,7 +38,7 @@
       #{truename,jdbcType=NVARCHAR}, #{status,jdbcType=SMALLINT}, #{createtime,jdbcType=TIMESTAMP}, 
       #{audittime,jdbcType=TIMESTAMP}, #{auditname,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.ClienterWithdrawForm" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
     insert into ClienterWithdrawForm
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -111,7 +111,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.ClienterWithdrawForm" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
     update ClienterWithdrawForm
     <set >
       <if test="clienterid != null" >
@@ -147,7 +147,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.ClienterWithdrawForm" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
     update ClienterWithdrawForm
     set ClienterId = #{clienterid,jdbcType=BIGINT},
       Amount = #{amount,jdbcType=DECIMAL},

@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IAccountInfoDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.AccountInfo" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IAccountInfoDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.AccountInfo" >
     <result column="Id" property="id" jdbcType="INTEGER" />
-    <result column="Password" property="password" jdbcType="NVARCHAR" />
-    <result column="UserName" property="username" jdbcType="NVARCHAR" />
-    <result column="LoginName" property="loginname" jdbcType="NVARCHAR" />
+    <result column="Password" property="passWord" jdbcType="NVARCHAR" />
+    <result column="UserName" property="userName" jdbcType="NVARCHAR" />
+    <result column="LoginName" property="loginName" jdbcType="NVARCHAR" />
     <result column="Status" property="status" jdbcType="INTEGER" />
-    <result column="AccountType" property="accounttype" jdbcType="INTEGER" />
-    <result column="FADateTime" property="fadatetime" jdbcType="TIMESTAMP" />
-    <result column="FAUser" property="fauser" jdbcType="NVARCHAR" />
-    <result column="LCDateTime" property="lcdatetime" jdbcType="TIMESTAMP" />
-    <result column="LCUser" property="lcuser" jdbcType="NVARCHAR" />
-    <result column="GroupId" property="groupid" jdbcType="INTEGER" />
-    <result column="RoleId" property="roleid" jdbcType="INTEGER" />
-    <result column="LastChangeTime" property="lastchangetime" jdbcType="TIMESTAMP" />
+    <result column="AccountType" property="accountType" jdbcType="INTEGER" />
+    <result column="RoleId" property="roleId" jdbcType="INTEGER" />
+    <result column="LastChangeTime" property="lastChangeTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <insert id="insert" parameterType="com.renrentui.entity.AccountInfo" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.AccountInfo" >
     insert into AccountInfo (Id, Password, UserName, 
       LoginName, Status, AccountType, 
       FADateTime, FAUser, LCDateTime, 
@@ -28,89 +23,58 @@
       #{lcuser,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}, 
       #{lastchangetime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.AccountInfo" >
-    insert into AccountInfo
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="password != null" >
-        Password,
-      </if>
-      <if test="username != null" >
-        UserName,
-      </if>
-      <if test="loginname != null" >
-        LoginName,
-      </if>
-      <if test="status != null" >
-        Status,
-      </if>
-      <if test="accounttype != null" >
-        AccountType,
-      </if>
-      <if test="fadatetime != null" >
-        FADateTime,
-      </if>
-      <if test="fauser != null" >
-        FAUser,
-      </if>
-      <if test="lcdatetime != null" >
-        LCDateTime,
-      </if>
-      <if test="lcuser != null" >
-        LCUser,
-      </if>
-      <if test="groupid != null" >
-        GroupId,
-      </if>
-      <if test="roleid != null" >
-        RoleId,
-      </if>
-      <if test="lastchangetime != null" >
-        LastChangeTime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=NVARCHAR},
-      </if>
-      <if test="username != null" >
-        #{username,jdbcType=NVARCHAR},
-      </if>
-      <if test="loginname != null" >
-        #{loginname,jdbcType=NVARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="accounttype != null" >
-        #{accounttype,jdbcType=INTEGER},
-      </if>
-      <if test="fadatetime != null" >
-        #{fadatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="fauser != null" >
-        #{fauser,jdbcType=NVARCHAR},
-      </if>
-      <if test="lcdatetime != null" >
-        #{lcdatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lcuser != null" >
-        #{lcuser,jdbcType=NVARCHAR},
-      </if>
-      <if test="groupid != null" >
-        #{groupid,jdbcType=INTEGER},
-      </if>
-      <if test="roleid != null" >
-        #{roleid,jdbcType=INTEGER},
-      </if>
-      <if test="lastchangetime != null" >
-        #{lastchangetime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
+  <sql id="queryWhere">
+		1=1
+		<if test="keyword != null and keyword!=''">
+			and UserName like ''%${keyword}%''
+		</if>
+	</sql> 
+<select id="query" resultType="com.renrentui.renrenentity.AccountInfo" parameterType="com.renrentui.renrenentity.req.PagedAccountInfoReq" statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+		' Id desc ',
+		' Id,UserName,LoginName,Status ',
+		' accountinfo(nolock) ',
+		'
+		<include refid="queryWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)} 
+  </select>
+  
+  <select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+   * 
+    from accountinfo
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="getByRoleID" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+* 
+    from accountinfo
+    where RoleId = #{roleID,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from accountinfo
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+
+   <select id="login" parameterType="java.util.Map" resultType="com.renrentui.renrenentity.AccountInfo">
+  	SELECT TOP 1 [Id]
+                ,[Password]
+                ,[UserName]
+                ,[LoginName]
+                ,[Status]
+                ,[AccountType]
+                ,[RoleId]
+            FROM [accountinfo] with(nolock)
+            where LoginName=#{username,jdbcType=NVARCHAR} AND Password=#{password,jdbcType=NVARCHAR}
+  </select>
+  <update id="updateRoleID"  parameterType="java.util.Map" >
+    update accountinfo set roleid=#{newRoleID,jdbcType=INTEGER}
+    where Id = #{userID,jdbcType=INTEGER}
+  </update>
 </mapper>
