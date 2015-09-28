@@ -1,4 +1,4 @@
-package com.renrentui.entity.req;
+package com.renrentui.renrenentity.req;
 /**
  * 
  * 提现

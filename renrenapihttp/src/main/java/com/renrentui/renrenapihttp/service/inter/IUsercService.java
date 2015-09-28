@@ -4,10 +4,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.renrentui.entity.req.CSendCodeReq;
-import com.renrentui.entity.req.CWithdrawFormReq;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
+import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ModifyPwdReq;
 
 
 
@@ -37,7 +37,7 @@ public interface IUsercService {
 	 */
 	@POST
 	@Path("/modifypwd")
-	 public HttpResultModel<Object> modifyPwd();
+	 public HttpResultModel<Object> modifyPwd(ModifyPwdReq req);
 	
 	/**
 	 * C申请提现
