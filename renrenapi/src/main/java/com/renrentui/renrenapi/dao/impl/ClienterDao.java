@@ -1,11 +1,9 @@
 package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-
-
+import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
@@ -14,6 +12,7 @@ import com.renrentui.renrenentity.req.ForgotPwdReq;
 
 
 
+@Repository
 public class ClienterDao extends DaoBase implements IClienterDao{
 
 	@Override
