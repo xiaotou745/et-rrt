@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.ITemplateDetailDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.TemplateDetail" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateDetailDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.TemplateDetail" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="ControlId" property="controlid" jdbcType="BIGINT" />
     <result column="OrderNum" property="ordernum" jdbcType="INTEGER" />
@@ -23,7 +23,7 @@
     delete from TemplateDetail
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.TemplateDetail" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.TemplateDetail" >
     insert into TemplateDetail (Id, ControlId, OrderNum, 
       Name, Title, DefaultValue, 
       ControlData)
@@ -31,7 +31,7 @@
       #{name,jdbcType=NVARCHAR}, #{title,jdbcType=NVARCHAR}, #{defaultvalue,jdbcType=NVARCHAR}, 
       #{controldata,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.TemplateDetail" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.TemplateDetail" >
     insert into TemplateDetail
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.TemplateDetail" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.TemplateDetail" >
     update TemplateDetail
     <set >
       <if test="controlid != null" >
@@ -104,7 +104,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.TemplateDetail" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.TemplateDetail" >
     update TemplateDetail
     set ControlId = #{controlid,jdbcType=BIGINT},
       OrderNum = #{ordernum,jdbcType=INTEGER},

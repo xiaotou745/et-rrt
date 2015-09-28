@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IBusinessRechargeDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.BusinessRecharge" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IBusinessRechargeDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.BusinessRecharge" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="BusinessId" property="businessid" jdbcType="BIGINT" />
     <result column="PayType" property="paytype" jdbcType="INTEGER" />
@@ -25,7 +25,7 @@
     delete from BusinessRecharge
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.BusinessRecharge" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.BusinessRecharge" >
     insert into BusinessRecharge (Id, BusinessId, PayType, 
       OrderNo, PayAmount, PayStatus, 
       PayBy, PayTime, OriginalOrderNo
@@ -35,7 +35,7 @@
       #{payby,jdbcType=NVARCHAR}, #{paytime,jdbcType=TIMESTAMP}, #{originalorderno,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.BusinessRecharge" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.BusinessRecharge" >
     insert into BusinessRecharge
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -96,7 +96,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.BusinessRecharge" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.BusinessRecharge" >
     update BusinessRecharge
     <set >
       <if test="businessid != null" >
@@ -126,7 +126,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.BusinessRecharge" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.BusinessRecharge" >
     update BusinessRecharge
     set BusinessId = #{businessid,jdbcType=BIGINT},
       PayType = #{paytype,jdbcType=INTEGER},

@@ -1,16 +1,16 @@
 
-<%@page import="com.renrentui.core.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ page language="java"
-	import="com.renrentui.api.service.inter.IMenuInfoService"%>
+	import="com.renrentui.renrenapi.service.inter.IMenuInfoService"%>
 <%@ page language="java"
-	import="com.renrentui.core.util.SpringBeanHelper"%>
-<%@ page language="java" import="com.renrentui.entity.MenuInfo"%>
+	import="com.renrentui.renrencore.util.SpringBeanHelper"%>
+<%@ page language="java" import="com.renrentui.renrenentity.MenuInfo"%>
 <%@ page language="java" import="java.util.List"%>
 <%@ page language="java" import="java.util.ArrayList"%>
-<%@page import="com.renrentui.admin.common.UserContext"%>
+<%@page import="com.renrentui.renrenadmin.common.UserContext"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	IMenuInfoService menuService = SpringBeanHelper.getCustomBeanByType(IMenuInfoService.class);

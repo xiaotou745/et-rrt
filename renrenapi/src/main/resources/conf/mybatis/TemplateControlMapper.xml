@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.ITemplateControlDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.TemplateControl" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateControlDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.TemplateControl" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="ControlType" property="controltype" jdbcType="VARCHAR" />
     <result column="ContolName" property="contolname" jdbcType="NVARCHAR" />
@@ -21,13 +21,13 @@
     delete from TemplateControl
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.TemplateControl" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.TemplateControl" >
     insert into TemplateControl (Id, ControlType, ContolName, 
       Status, Remark)
     values (#{id,jdbcType=BIGINT}, #{controltype,jdbcType=VARCHAR}, #{contolname,jdbcType=NVARCHAR}, 
       #{status,jdbcType=SMALLINT}, #{remark,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.TemplateControl" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.TemplateControl" >
     insert into TemplateControl
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.TemplateControl" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.TemplateControl" >
     update TemplateControl
     <set >
       <if test="controltype != null" >
@@ -82,7 +82,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.TemplateControl" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.TemplateControl" >
     update TemplateControl
     set ControlType = #{controltype,jdbcType=VARCHAR},
       ContolName = #{contolname,jdbcType=NVARCHAR},

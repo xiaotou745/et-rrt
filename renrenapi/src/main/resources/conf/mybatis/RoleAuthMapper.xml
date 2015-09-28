@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IRoleAuthDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.RoleAuth" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IRoleAuthDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.RoleAuth" >
     <result column="Id" property="id" jdbcType="INTEGER" />
     <result column="RoleId" property="roleid" jdbcType="INTEGER" />
     <result column="MenuId" property="menuid" jdbcType="INTEGER" />
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
     <result column="OptName" property="optname" jdbcType="NVARCHAR" />
   </resultMap>
-  <insert id="insert" parameterType="com.renrentui.entity.RoleAuth" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.RoleAuth" >
     insert into RoleAuth (Id, RoleId, MenuId, 
       CreateTime, OptName)
     values (#{id,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}, #{menuid,jdbcType=INTEGER}, 
       #{createtime,jdbcType=TIMESTAMP}, #{optname,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.RoleAuth" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.RoleAuth" >
     insert into RoleAuth
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

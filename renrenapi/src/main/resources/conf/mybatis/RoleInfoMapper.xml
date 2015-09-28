@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IRoleInfoDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.RoleInfo" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IRoleInfoDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.RoleInfo" >
     <result column="Id" property="id" jdbcType="INTEGER" />
     <result column="RoleName" property="rolename" jdbcType="VARCHAR" />
     <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
@@ -9,7 +9,7 @@
     <result column="OptName" property="optname" jdbcType="NVARCHAR" />
     <result column="BeLock" property="belock" jdbcType="BIT" />
   </resultMap>
-  <insert id="insert" parameterType="com.renrentui.entity.RoleInfo" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.RoleInfo" >
     insert into RoleInfo (Id, RoleName, CreateTime, 
       Remark, OptName, BeLock
       )
@@ -17,7 +17,7 @@
       #{remark,jdbcType=NVARCHAR}, #{optname,jdbcType=NVARCHAR}, #{belock,jdbcType=BIT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.RoleInfo" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.RoleInfo" >
     insert into RoleInfo
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

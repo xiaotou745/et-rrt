@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@page isErrorPage="true"%>
-<%@page import="com.renrentui.core.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@ page import="java.io.*"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");

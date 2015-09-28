@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<%@page import="com.renrentui.core.util.PropertyUtils"%>
-<%@page import="com.renrentui.entity.RoleInfo"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrenentity.RoleInfo"%>
 <%@page import="java.util.List"%>
-<%@page import="com.renrentui.core.util.HtmlHelper"%>
+<%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");

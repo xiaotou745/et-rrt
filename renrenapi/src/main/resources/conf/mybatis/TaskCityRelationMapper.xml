@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.ITaskCityRelationDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.TaskCityRelation" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.TaskCityRelation" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="TaskId" property="taskid" jdbcType="BIGINT" />
     <result column="CityCode" property="citycode" jdbcType="INTEGER" />
@@ -21,13 +21,13 @@
     delete from TaskCityRelation
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.TaskCityRelation" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
     insert into TaskCityRelation (Id, TaskId, CityCode, 
       BusinessId, CityName)
     values (#{id,jdbcType=BIGINT}, #{taskid,jdbcType=BIGINT}, #{citycode,jdbcType=INTEGER}, 
       #{businessid,jdbcType=BIGINT}, #{cityname,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.TaskCityRelation" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
     insert into TaskCityRelation
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.TaskCityRelation" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
     update TaskCityRelation
     <set >
       <if test="taskid != null" >
@@ -82,7 +82,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.TaskCityRelation" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
     update TaskCityRelation
     set TaskId = #{taskid,jdbcType=BIGINT},
       CityCode = #{citycode,jdbcType=INTEGER},
