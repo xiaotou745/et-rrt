@@ -37,16 +37,16 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> forgotPwd(ForgotPwdReq req) {
 		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-		if (req.getPhoneNo().equals(""))// 手机号为空
+		if (req.getPhoneNo()==null||req.getPhoneNo().equals(""))// 手机号为空
 			return resultModel.setCode(ForgotPwdCode.PhoneNull.value()).setMsg(
 					ForgotPwdCode.PhoneNull.desc());
 		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
 			return resultModel.setCode(ForgotPwdCode.PhoneError.value())
 					.setMsg(ForgotPwdCode.PhoneError.desc());
-		if (req.getVerifyCode().equals(""))// 验证码为空
+		if (req.getVerifyCode()==null||req.getVerifyCode().equals(""))// 验证码为空
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value())
 					.setMsg(ForgotPwdCode.VerCodeNull.desc());
-		if (req.getPhoneNo().equals(""))// 验证码不正确 TODO 查缓存看验证码正确
+		if (req.getVerifyCode()=="")// 验证码不正确 TODO 查缓存看验证码正确
 			return resultModel.setCode(ForgotPwdCode.VerCodeError.value())
 					.setMsg(ForgotPwdCode.VerCodeError.desc());
 		if (clienterService.forgotPwdUserc(req))// 修改密码成功
