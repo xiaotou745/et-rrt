@@ -40,7 +40,7 @@ public class SmsUtils {
 				Content.replaceAll("<br/>", " "), "utf-8");// 发送内容
 		String surl="http://api.bjszrk.com/sdk/BatchSend.aspx?CorpID="
 				+ CorpID + "&Pwd=" + Pwd + "&Mobile=" + Mobile + "&Content="
-				+ send_content + "[饿势力]&Cell=&SendTime=&encode=utf-8";
+				+ send_content + "【饿势力】&Cell=&SendTime=&encode=utf-8";
 		System.out.print(surl);
 		url = new URL(surl);
 		BufferedReader in = null;
