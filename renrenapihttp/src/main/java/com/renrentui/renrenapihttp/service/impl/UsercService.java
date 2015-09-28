@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.core.enums.ForgotPwdCode;
+import com.renrentui.entity.req.CWithdrawFormReq;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
@@ -47,6 +48,11 @@ public class UsercService implements IUsercService{
 	 */
 	@Override
 	public HttpResultModel<Object> modifyPwd() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public HttpResultModel<Object> withdraw(CWithdrawFormReq req) {
 		// TODO Auto-generated method stub
 		return null;
 	}
