@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
 
@@ -46,6 +47,7 @@ public interface IClienterDao {
 	 * @return
 	 */
 	boolean modifyPwdUserc(ModifyPwdReq req);
+	boolean signup(SignUpReq req);
 	/**
 	* @Des 查询C端用户信息  
 	* @Author WangXuDan
