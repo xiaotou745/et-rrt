@@ -1,9 +1,16 @@
 package com.renrentui.apihttp.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renrentui.api.service.inter.IClienterBalanceService;
+import com.renrentui.api.service.inter.IClienterWithdrawFormService;
 import com.renrentui.apihttp.common.HttpResultModel;
 import com.renrentui.apihttp.service.inter.IUsercService;
+import com.renrentui.core.enums.WithdrawState;
+import com.renrentui.entity.ClienterBalance;
+import com.renrentui.entity.ClienterWithdrawForm;
+import com.renrentui.entity.req.CWithdrawFormReq;
 import com.renrentui.entity.req.ForgotPwdReq;
 /**
  * 用户相关 
@@ -12,6 +19,13 @@ import com.renrentui.entity.req.ForgotPwdReq;
  */
 @Service
 public class UsercService implements IUsercService{
+	
+	@Autowired
+	private IClienterBalanceService clienterBalanceService;
+	
+	
+	@Autowired
+	private IClienterWithdrawFormService clienterWithdrawFormService;
 	/**
 	 * C端忘记密码 
 	 * 茹化肖
@@ -34,5 +48,34 @@ public class UsercService implements IUsercService{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	/**
+	 * C申请提现
+	 * @author 胡灵波
+	 * @date 2015年9月28日 11:30:15
+	 * @return
+	 */
+	@Override	
+	public HttpResultModel<Object> withdraw(CWithdrawFormReq req)
+	{
+		HttpResultModel<Object> resultModel=new HttpResultModel<Object>();
+		
+		if(req.getUserId()<1)
+		{
+			resultModel.setCode(WithdrawState.Failure.value());
+			resultModel.setMsg(WithdrawState.Failure.desc());
+			return resultModel;
+		}
+		ClienterBalance clienterBalanceModel=clienterBalanceService.selectByPrimaryKey(req.getUserId());
+		double amount=clienterBalanceModel.getWithdraw();
+		if(req.getAmount()>amount)
+		{
+			resultModel.setCode(WithdrawState.MoneyError.value());
+			resultModel.setMsg(WithdrawState.MoneyError.desc());
+			return resultModel;
+		}
+		
+		
+		return resultModel;
+	}
 }

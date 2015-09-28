@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.renrentui.apihttp.common.HttpResultModel;
+import com.renrentui.entity.req.CWithdrawFormReq;
 import com.renrentui.entity.req.ForgotPwdReq;
 
 /**
@@ -37,4 +38,14 @@ public interface IUsercService {
 	@POST
 	@Path("/modifypwd")
 	 public HttpResultModel<Object> modifyPwd();
+	
+	/**
+	 * C申请提现
+	 * @author 胡灵波
+	 * @date 2015年9月28日 11:30:15
+	 * @return
+	 */
+	@POST
+	@Path("/withdraw")
+	 public HttpResultModel<Object> withdraw(CWithdrawFormReq req);
 }
