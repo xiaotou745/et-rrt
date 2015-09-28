@@ -90,4 +90,14 @@
       HadWithdraw = #{hadwithdraw,jdbcType=DECIMAL}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <!-- 获取用户收入  2015年9月28日17:37:27 WangXuDan -->
+  <select id="queryClienterBalance" resultType="com.renrentui.renrenentity.ClienterBalance" parameterType="com.renrentui.renrenentity.req.MyIncomeReq" >
+    SELECT    Id
+		    , ClienterId
+		    , Balance
+		    , Withdraw
+		    , HadWithdraw
+    FROM  dbo.ClienterBalance AS CB (NOLOCK)
+	WHERE CB.ClienterId=#{userId}
+  </select>
 </mapper>

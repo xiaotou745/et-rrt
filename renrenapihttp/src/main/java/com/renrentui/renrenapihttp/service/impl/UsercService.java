@@ -16,13 +16,16 @@ import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
+import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.resp.SignUpResp;
@@ -59,7 +62,10 @@ public class UsercService implements IUsercService {
 		if (req.getVerifyCode() == null || req.getVerifyCode().equals(""))// 验证码为空
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value())
 					.setMsg(ForgotPwdCode.VerCodeNull.desc());
-		if (req.getVerifyCode() == "")// 验证码不正确 TODO 查缓存看验证码正确
+		RedisService redis = new RedisService();
+		String key=RedissCacheKey.RR_Clienter_sendcode_forgetPassword+ req.getPhoneNo();//RedisKey
+		String redisValueString= redis.get(key, String.class);
+		if (!req.getVerifyCode().equals(redisValueString))// 验证码不正确 
 			return resultModel.setCode(ForgotPwdCode.VerCodeError.value())
 					.setMsg(ForgotPwdCode.VerCodeError.desc());
 		if (clienterService.forgotPwdUserc(req))// 修改密码成功
@@ -131,19 +137,16 @@ public class UsercService implements IUsercService {
 	 * @Return
 	 */
 	@Override
-	public HttpResultModel<Object> signIn(SignInReq req) {
-		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-		if (req.getPhoneNo().equals("") || req.getPassWord().equals(""))// 手机号或密码为空
-			return resultModel.setCode(SignInCode.PhoneOrPwdNull.value())
-					.setMsg(SignInCode.PhoneOrPwdNull.desc());
-		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号未注册
-			return resultModel.setCode(SignInCode.PhoneUnRegistered.value())
-					.setMsg(SignInCode.PhoneUnRegistered.desc());
-		Clienter clienterModel = clienterService.queryClienter(req);
-		if (clienterModel == null || clienterModel.getId() <= 0)// 手机号或密码错误
-			return resultModel.setCode(SignInCode.PhoneOrPwdError.value())
-					.setMsg(SignInCode.PhoneOrPwdError.desc());
-		return resultModel.setData(clienterModel);
+	public HttpResultModel<Object> signin(SignInReq req) {
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
+			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
+		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
+			return resultModel.setCode(SignInCode.PhoneUnRegistered.value()).setMsg(SignInCode.PhoneUnRegistered.desc());
+		Clienter clienterModel=clienterService.queryClienter(req);
+		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
+			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
+		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(clienterModel);
 	}
 
 	/**
@@ -195,6 +198,23 @@ public class UsercService implements IUsercService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	/**
+	* @Des 获取用户收入 
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:31:59
+	* @Return
+	*/
+	@Override
+	public HttpResultModel<Object> myincome(MyIncomeReq req) {
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		if(!clienterService.isExistUserC(req.getUserId()))//用户不存在
+			return  resultModel.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(MyIncomeCode.UserIdUnexist.desc());
+		ClienterBalance clienterBalanceModel=clienterService.queryClienterBalance(req);
+		if(clienterBalanceModel==null||clienterBalanceModel.getId()<=0)//手机号或密码错误
+			return resultModel.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(MyIncomeCode.QueryIncomeError.desc());
+		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(clienterBalanceModel);
+		
 	}
 
 }

@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -64,6 +66,26 @@ public class ClienterService implements IClienterService{
 	@Override
 	public Clienter queryClienter(SignInReq req) {
 		return clienterDao.queryClienter(req);
+	}
+	/**
+	* @Des 根据用户Id判断是否存在  
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:18:18
+	* @Return
+	*/
+	@Override
+	public boolean isExistUserC(long userId) {
+		return clienterDao.isExistUserC(userId);
+	}
+	/**
+	* @Des 获取用户收入 
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:31:59
+	* @Return
+	*/
+	@Override
+	public ClienterBalance queryClienterBalance(MyIncomeReq req) {
+		return clienterDao.queryClienterBalance(req);
 	}
 	
 
