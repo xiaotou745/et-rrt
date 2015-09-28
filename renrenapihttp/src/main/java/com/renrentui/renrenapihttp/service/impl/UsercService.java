@@ -3,13 +3,13 @@ package com.renrentui.renrenapihttp.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.renrentui.entity.req.CWithdrawFormReq;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 /**
