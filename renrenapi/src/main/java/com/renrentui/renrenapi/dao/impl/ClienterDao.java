@@ -4,10 +4,13 @@ import java.util.HashMap;
 
 import org.springframework.stereotype.Repository;
 
+
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -117,6 +120,33 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		String statement = "com.renrentui.api.dao.inter.IClienterDao.insert";
 		int res = getMasterSqlSessionUtil().insert(statement, req);
 		return req.getId();
+	}
+	/**
+	* @Des 根据用户Id判断是否存在  
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:18:18
+	* @Return
+	*/
+	@Override
+	public boolean isExistUserC(long userId) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.isExistUserC";
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userId", userId);
+		int res= getReadOnlySqlSessionUtil().selectOne(statement,paramMap);
+		return res>0;
+	}
+	/**
+	* @Des 获取用户收入 
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:31:59
+	* @Return
+	*/
+	@Override
+	public ClienterBalance queryClienterBalance(MyIncomeReq req) {
+		ClienterBalance result = getReadOnlySqlSessionUtil().selectOne(
+				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.queryClienterBalance",
+				req);
+		return result;
 	}
 
 }
