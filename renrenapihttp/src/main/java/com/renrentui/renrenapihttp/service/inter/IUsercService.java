@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 import com.renrentui.entity.req.CWithdrawFormReq;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignInReq;
 
 
 
@@ -47,4 +48,13 @@ public interface IUsercService {
 	@POST
 	@Path("/withdraw")
 	 public HttpResultModel<Object> withdraw(CWithdrawFormReq req);
+	/**
+	* @Des C端登陆 
+	* @Author WangXuDan
+	* @Date 2015年9月28日14:44:21
+	* @Return
+	*/
+	@POST
+	@Path("/signin")
+	 public HttpResultModel<Object> signIn(SignInReq req);
 }

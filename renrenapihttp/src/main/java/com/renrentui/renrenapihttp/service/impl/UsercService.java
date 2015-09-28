@@ -8,8 +8,10 @@ import com.renrentui.entity.req.CWithdrawFormReq;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
+import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.SignInReq;
 /**
  * 用户相关 
  * @author 茹化肖
@@ -57,6 +59,23 @@ public class UsercService implements IUsercService{
 	public HttpResultModel<Object> withdraw(CWithdrawFormReq req) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	/**
+	* @Des  C端登陆
+	* @Author WangXuDan
+	* @Date 2015年9月28日15:55:58
+	* @Return
+	*/
+	@Override
+	public HttpResultModel<Object> signIn(SignInReq req) {
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
+			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
+		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
+			return resultModel.setCode(SignInCode.PhoneUnRegistered.value()).setMsg(SignInCode.PhoneUnRegistered.desc());
+//		if(clienterService.forgotPwdUserc(req))//修改密码成功
+//			return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc());
+		return resultModel.setCode(SignInCode.Fail.value()).setMsg(SignInCode.Fail.desc());
 	}
 
 }
