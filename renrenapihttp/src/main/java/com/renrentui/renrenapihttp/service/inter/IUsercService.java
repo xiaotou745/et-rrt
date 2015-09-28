@@ -56,7 +56,7 @@ public interface IUsercService {
 	 * @date 2015年9月28日 14:49:55
 	 * @return 
 	 * */
-//	@POST
+	@POST
 	@Path("/sendcode")
 	public HttpResultModel<Object> sendcode(CSendCodeReq req);
 }
