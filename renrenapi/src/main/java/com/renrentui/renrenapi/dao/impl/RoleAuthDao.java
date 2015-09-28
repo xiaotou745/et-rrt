@@ -16,7 +16,7 @@ public class RoleAuthDao extends DaoBase implements
 	@Override
 	public boolean modifyAuthList(List<RoleAuth> authList) {
 		return getMasterSqlSessionUtil()
-				.update("com.renrentui.renrenapi.dao.inter.IAuthorityRoleMentMenuSetDao.modifyAuthList",
+				.update("com.renrentui.renrenapi.dao.inter.IRoleAuthDao.modifyAuthList",
 						authList) > 0;
 	}
 

@@ -30,7 +30,7 @@
 
 	<jaxrs:server id="myService" address="/">
 		<jaxrs:serviceBeans>
-			<ref bean="commonService" />
+<!-- 			<ref bean="commonService" /> -->
 			<ref bean="usercService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>

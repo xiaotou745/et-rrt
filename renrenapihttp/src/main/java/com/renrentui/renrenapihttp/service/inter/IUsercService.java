@@ -8,7 +8,10 @@ import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.MyIncomeReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.req.SignInReq;
 
 
 
@@ -59,4 +62,29 @@ public interface IUsercService {
 	@POST
 	@Path("/sendcode")
 	public HttpResultModel<Object> sendcode(CSendCodeReq req);
+	/*
+	 * C端注册
+	 * wang chao 
+	 */
+	@POST
+	@Path("/signup")
+	public HttpResultModel<Object> signup(SignUpReq req);
+	/**
+	* @Des C端登陆 
+	* @Author WangXuDan
+	* @Date 2015年9月28日14:44:21
+	* @Return
+	*/
+	@POST
+	@Path("/signin")
+	public HttpResultModel<Object> signin(SignInReq req);
+	/**
+	* @Des  C端获取用户收入
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:11:11
+	* @Return
+	*/
+	public HttpResultModel<Object> myincome(MyIncomeReq req);
+	
+	
 }

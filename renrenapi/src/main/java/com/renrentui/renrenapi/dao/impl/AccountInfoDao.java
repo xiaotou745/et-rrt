@@ -10,6 +10,7 @@ import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IAccountInfoDao;
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 
 @Repository
@@ -49,6 +50,24 @@ public class AccountInfoDao extends DaoBase implements IAccountInfoDao {
 	public List<AccountInfo> getByRoleID(int roleID) {
 		return getReadOnlySqlSessionUtil().selectList(
 				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.getByRoleID", roleID);
+	}
+
+	@Override
+	public int insert(AccountInfo account) {
+		return getMasterSqlSessionUtil().insert(
+				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.insert", account);
+	}
+
+	@Override
+	public int update(AccountInfo account) {
+		return getMasterSqlSessionUtil().update(
+				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.update", account);
+	}
+
+	@Override
+	public int updatePwd(UpdatePwdReq req) {
+		return getMasterSqlSessionUtil().update(
+				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.updatePwd", req);
 	}
 
 }

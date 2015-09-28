@@ -18,14 +18,14 @@ $(function(){
 			var second=parseInt(timeSection.innerHTML);
 			if(second<=0){
 				clearInterval(intervalId);
-				window.location.href = "<%=basePath%>/order/list";
+				window.location.href = "<%=basePath%>/account/list";
 			}else{
 				timeSection.innerHTML=second-1;
 			}
 		},1000);
 
 	$("#indexbtn").click(function() {
-		window.location.href = "<%=basePath%>/order/list";
+		window.location.href = "<%=basePath%>/account/list";
 	});
 });
 </script>

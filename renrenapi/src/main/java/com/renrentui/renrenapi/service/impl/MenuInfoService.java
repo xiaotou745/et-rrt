@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 
 
+
 import com.renrentui.renrenapi.dao.inter.IMenuInfoDao;
 import com.renrentui.renrenapi.service.inter.IMenuInfoService;
 import com.renrentui.renrenentity.MenuInfo;
+import com.renrentui.renrenentity.domain.MenuEntity;
 import com.renrentui.renrenentity.req.AddNewMenuReq;
 
 @Service
@@ -40,13 +42,13 @@ public class MenuInfoService implements IMenuInfoService {
 	}
 
 	@Override
-	public List<MenuInfo> getAuthSettingList(int userID) {
+	public List<MenuEntity> getAuthSettingList(int userID) {
 		return dao.getAuthSettingList(userID);
 	}
 
 	@Override
-	public List<MenuInfo> getRoleAuthSettingList(int roleID) {
-		return dao.getRoleAuthSettingList(roleID);
+	public List<MenuEntity> getMenuListByRoleID(int roleID) {
+		return dao.getMenuListByRoleID(roleID);
 	}
 
 	@Override

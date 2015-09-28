@@ -1550,3 +1550,8 @@ Caused by: java.io.FileNotFoundException: D:\renrenditui\.metadata\.plugins\org.
 2015-09-28 18:02:24,857 [Worker-73] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
 2015-09-28 18:02:24,857 [Worker-73] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2015-09-28 18:02:24,857 [Worker-73] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-28 18:12:04,876 [Worker-77] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-28 18:12:04,876 [Worker-77] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 37 resources
+2015-09-28 18:12:04,876 [Worker-77] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-28 18:12:04,876 [Worker-77] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapi\src\test\resources
+2015-09-28 18:12:16,211 [Stop Help Server] INFO  o.e.j.server.handler.ContextHandler - stopped o.e.j.s.ServletContextHandler{/help,null}

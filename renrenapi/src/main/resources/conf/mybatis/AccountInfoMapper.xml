@@ -12,17 +12,32 @@
     <result column="LastChangeTime" property="lastChangeTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <insert id="insert" parameterType="com.renrentui.renrenentity.AccountInfo" >
-    insert into AccountInfo (Id, Password, UserName, 
+    insert into AccountInfo (Password, UserName, 
       LoginName, Status, AccountType, 
-      FADateTime, FAUser, LCDateTime, 
-      LCUser, GroupId, RoleId, 
-      LastChangeTime)
-    values (#{id,jdbcType=INTEGER}, #{password,jdbcType=NVARCHAR}, #{username,jdbcType=NVARCHAR}, 
-      #{loginname,jdbcType=NVARCHAR}, #{status,jdbcType=INTEGER}, #{accounttype,jdbcType=INTEGER}, 
-      #{fadatetime,jdbcType=TIMESTAMP}, #{fauser,jdbcType=NVARCHAR}, #{lcdatetime,jdbcType=TIMESTAMP}, 
-      #{lcuser,jdbcType=NVARCHAR}, #{groupid,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER}, 
-      #{lastchangetime,jdbcType=TIMESTAMP})
+       RoleId, LastChangeTime)
+    values (#{passWord,jdbcType=NVARCHAR}, #{userName,jdbcType=NVARCHAR}, 
+      #{loginName,jdbcType=NVARCHAR}, #{status,jdbcType=INTEGER}, #{accountType,jdbcType=INTEGER}, 
+    #{roleId,jdbcType=INTEGER}, getdate())
   </insert>
+    <update id="update" parameterType="com.renrentui.renrenentity.AccountInfo" >
+    update AccountInfo
+    <set >
+    	LastChangeTime=getdate(),
+      <if test="userName != null and userName!=''" >
+        userName = #{userName,jdbcType=NVARCHAR},
+      </if>
+      <if test="loginName != null and loginName!=''" >
+        loginName = #{loginName,jdbcType=NVARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="passWord != null and passWord!=''" >
+        passWord = #{passWord,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
   <sql id="queryWhere">
 		1=1
 		<if test="keyword != null and keyword!=''">
@@ -32,7 +47,7 @@
 <select id="query" resultType="com.renrentui.renrenentity.AccountInfo" parameterType="com.renrentui.renrenentity.req.PagedAccountInfoReq" statementType="CALLABLE">
 {call Sp_CustomPage2015_V1(
 		' Id desc ',
-		' Id,UserName,LoginName,Status ',
+		' * ',
 		' accountinfo(nolock) ',
 		'
 		<include refid="queryWhere" />
@@ -76,5 +91,9 @@
   <update id="updateRoleID"  parameterType="java.util.Map" >
     update accountinfo set roleid=#{newRoleID,jdbcType=INTEGER}
     where Id = #{userID,jdbcType=INTEGER}
+  </update>
+    <update id="updatePwd"  parameterType="com.renrentui.renrenentity.domain.UpdatePwdReq" >
+    update accountinfo set Password=#{newPwd,jdbcType=NVARCHAR}
+    where Id = #{userId,jdbcType=INTEGER} and Password=#{oldPwd,jdbcType=NVARCHAR}
   </update>
 </mapper>
