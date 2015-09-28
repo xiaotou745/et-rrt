@@ -15,11 +15,14 @@ import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.util.SmsUtils;
+import com.renrentui.renrencore.enums.SignInCode;
+import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.resp.SignUpResp;
+import com.renrentui.renrenentity.req.SignInReq;
 /**
  * 用户相关
  * 
@@ -102,6 +105,24 @@ public class UsercService implements IUsercService {
 			return resultModel;
 		}
 		return resultModel.setCode(SignUpCode.Fail.value()).setMsg(SignUpCode.Fail.desc());//注册失败
+	}
+	/**
+	* @Des  C端登陆
+	* @Author WangXuDan
+	* @Date 2015年9月28日15:55:58
+	* @Return
+	*/
+	@Override
+	public HttpResultModel<Object> signIn(SignInReq req) {
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
+			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
+		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
+			return resultModel.setCode(SignInCode.PhoneUnRegistered.value()).setMsg(SignInCode.PhoneUnRegistered.desc());
+		Clienter clienterModel=clienterService.queryClienter(req);
+		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
+			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
+        return resultModel.setData(clienterModel);
 	}
 
 	/**

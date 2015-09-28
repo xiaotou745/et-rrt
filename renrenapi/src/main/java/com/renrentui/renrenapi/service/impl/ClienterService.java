@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.req.SignInReq;
 @Service
 public class ClienterService implements IClienterService{
 	@Autowired
@@ -53,6 +55,16 @@ public class ClienterService implements IClienterService{
 	public int signup(SignUpReq req) {
 		return clienterDao.signup(req); 
 	} 
+	/**
+	* @Des 查询C端用户信息  
+	* @Author WangXuDan
+	* @Date 2015年9月28日16:14:35
+	* @Return
+	*/
+	@Override
+	public Clienter queryClienter(SignInReq req) {
+		return clienterDao.queryClienter(req);
+	}
 	
 
 	

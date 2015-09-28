@@ -232,4 +232,26 @@
   <update  id="modifyPwdUserc" parameterType="com.renrentui.renrenentity.req.ModifyPwdReq" >
     UPDATE dbo.Clienter SET Password='${newPwd}' WHERE id =${userId}
   </update>
+  <!-- 查询C端用户信息 2015年9月28日16:24:39 WangXuDan -->
+  <select id="queryClienter" resultType="com.renrentui.renrenentity.Clienter" parameterType="com.renrentui.renrenentity.req.SignInReq" >
+    SELECT    Id
+		    , ClienterName
+		    , PhoneNo
+		    , Password
+		    , LoginName
+		    , HeadImage
+		    , CityName
+		    , CityCode
+		    , Sex
+		    , Age
+		    , Education
+		    , LastLoginTime
+		    , CreateTime
+		    , Status
+		    , LastOptName
+		    , LastOptTime
+    FROM  dbo.Clienter AS C (NOLOCK)
+	WHERE C.PhoneNo=#{phoneNo,jdbcType=VARCHAR}
+		AND C.Password=#{Password,jdbcType=VARCHAR}
+  </select>
 </mapper>

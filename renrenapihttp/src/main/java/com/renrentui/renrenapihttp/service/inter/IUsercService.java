@@ -10,6 +10,7 @@ import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.req.SignInReq;
 
 
 
@@ -67,4 +68,13 @@ public interface IUsercService {
 	@POST
 	@Path("/signup")
 	public HttpResultModel<Object> signup(SignUpReq req);
+	/**
+	* @Des C端登陆 
+	* @Author WangXuDan
+	* @Date 2015年9月28日14:44:21
+	* @Return
+	*/
+	@POST
+	@Path("/signin")
+	 public HttpResultModel<Object> signIn(SignInReq req);
 }
