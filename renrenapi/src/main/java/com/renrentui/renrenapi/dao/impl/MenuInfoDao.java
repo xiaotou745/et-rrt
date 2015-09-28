@@ -10,6 +10,7 @@ import java.util.List;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,7 @@ import com.renrentui.renrenapi.dao.inter.IMenuInfoDao;
 import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrenentity.MenuInfo;
+import com.renrentui.renrenentity.domain.MenuEntity;
 
 
 @Repository
@@ -31,10 +33,11 @@ public class MenuInfoDao extends DaoBase implements
 	public List<MenuInfo> getMenuListByUserID(int accountId) {
 		String key=RedissCacheKey.Menu_Auth+accountId;
 		List<MenuInfo> result=redisService.get(key, List.class);
+		result=null;
 		if (result==null||result.size()==0) {
 			List<MenuInfo> list = getReadOnlySqlSessionUtil()
 					.selectList(
-							"com.renrentui.renrenapi.dao.inter.IAuthorityMenuClassDao.getMenuListByUserID",
+							"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getMenuListByUserID",
 							accountId);
 			redisService.set(key, list);
 			return list;
@@ -44,18 +47,18 @@ public class MenuInfoDao extends DaoBase implements
 	}
 
 	@Override
-	public List<MenuInfo> getAuthSettingList(int userID) {
+	public List<MenuEntity> getAuthSettingList(int userID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.renrentui.renrenapi.dao.inter.IAuthorityMenuClassDao.getAuthSettingList",
+						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getAuthSettingList",
 						userID);
 	}
 
 	@Override
-	public List<MenuInfo> getRoleAuthSettingList(int roleID) {
+	public List<MenuEntity> getMenuListByRoleID(int roleID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.renrentui.renrenapi.dao.inter.IAuthorityMenuClassDao.getRoleAuthSettingList",
+						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getMenuListByRoleID",
 						roleID);
 	}
 
@@ -63,7 +66,7 @@ public class MenuInfoDao extends DaoBase implements
 	public List<MenuInfo> getListMenuByParId(int parId) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.renrentui.renrenapi.dao.inter.IAuthorityMenuClassDao.getListMenuByParId",
+						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getListMenuByParId",
 						parId);
 	}
 
@@ -71,7 +74,7 @@ public class MenuInfoDao extends DaoBase implements
 	public MenuInfo getMenuById(int id) {
 		return getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.renrentui.renrenapi.dao.inter.IAuthorityMenuClassDao.getMenuById",
+						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getMenuById",
 						id);
 	}
 
@@ -79,15 +82,7 @@ public class MenuInfoDao extends DaoBase implements
 	public boolean addMenu(MenuInfo req) {
 		return getMasterSqlSessionUtil()
 				.insert(
-						"com.renrentui.renrenapi.dao.inter.IAuthorityMenuClassDao.addMenu",
+						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.addMenu",
 						req) > 0;
 	}
-
-	@Override
-	public boolean checkHasAuth(int userID, int menuID) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
 }

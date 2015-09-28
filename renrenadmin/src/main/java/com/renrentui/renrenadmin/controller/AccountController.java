@@ -1,6 +1,7 @@
 package com.renrentui.renrenadmin.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.LoginUtil;
@@ -21,14 +23,20 @@ import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.common.LoginHelper;
 import com.renrentui.renrenapi.service.inter.IAccountAuthService;
 import com.renrentui.renrenapi.service.inter.IAccountInfoService;
+import com.renrentui.renrenapi.service.inter.IMenuInfoService;
+import com.renrentui.renrenapi.service.inter.IRoleInfoService;
 import com.renrentui.renrencore.cache.redis.RedisService;
+import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrencore.util.CookieUtils;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.AccountInfo;
+import com.renrentui.renrenentity.MenuInfo;
+import com.renrentui.renrenentity.RoleInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.SimpleUserInfoModel;
+import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 
 @Controller
@@ -40,13 +48,19 @@ public class AccountController {
 	private IAccountInfoService accountInfoService;
 	@Autowired
 	private IAccountAuthService accountAuthService;
+	@Autowired
+	private IMenuInfoService menuService;
 
+	@Autowired
+	private IRoleInfoService authorityRoleService;
 	@RequestMapping("list")
 	public ModelAndView list() {
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "用户设置");
 		view.addObject("currenttitle", "用户管理");
 		view.addObject("viewPath", "account/list");
+		List<RoleInfo> datalist=authorityRoleService.selectList();
+		view.addObject("roleData", datalist);
 		return view;
 	}
 
@@ -64,12 +78,43 @@ public class AccountController {
 		ModelAndView mv = new ModelAndView("account/code");
 		return mv;
 	}
-	
+	@RequestMapping("adduser")
+	@ResponseBody
+	public int addUser(HttpServletRequest request,AccountInfo account) {
+		if (account==null||
+				account.getLoginName()==null||
+				account.getLoginName().isEmpty()||
+				account.getUserName()==null||
+				account.getUserName().isEmpty()
+				) {
+			return -1;
+		}
+		account.setAccountType(0);
+		account.setRoleId(0);
+		String password = MD5Util.MD5(account.getPassWord());
+		account.setPassWord(password);
+		return accountInfoService.insert(account);
+	}
+
+	@RequestMapping("updateuser")
+	@ResponseBody
+	public int updateUser(HttpServletRequest request,AccountInfo account) {
+		if (account.getPassWord()!=null||!account.getPassWord().isEmpty()) {
+			String password = MD5Util.MD5(account.getPassWord());
+			account.setPassWord(password);
+		}
+		return accountInfoService.update(account);
+	}
+	@RequestMapping("getuserinfo")
+	@ResponseBody
+	public AccountInfo getUserInfo(HttpServletRequest request,int userId) {
+		return accountInfoService.getByID(userId);
+	}
 	@RequestMapping(value = "login", method = { RequestMethod.POST })
 	public void login(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam String username, @RequestParam String password, @RequestParam String code,
 			 Integer rememberMe) throws ServletException, IOException {
-		String basePath = PropertyUtils.getProperty("java.admin.url");
+		String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 		Date loginTime = new Date();
 		String sessionCode = LoginHelper.getAuthCode(request,LoginUtil.ADMIN_JSESSIONID);
 		//一次性验证码,防止暴力破解
@@ -78,7 +123,7 @@ public class AccountController {
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
-			response.sendRedirect(basePath+"/order/list");
+			response.sendRedirect(basePath+"/account/list");
 			return;
 		}
 
@@ -138,5 +183,20 @@ public class AccountController {
 		CookieUtils.deleteCookie(request, response,LoginUtil.LOGIN_COOKIE_NAME);
 		response.sendRedirect(PropertyUtils.getProperty("java.renrenadmin.url") + "/");
 
+	}
+	@RequestMapping(value = "changepwd")
+	public ModelAndView changePwd(){
+		ModelAndView view = new ModelAndView("adminView");
+		view.addObject("subtitle", "管理员");
+		view.addObject("currenttitle", "修改密码");
+		view.addObject("viewPath", "account/changepwd");
+		return view;
+	}
+	@RequestMapping(value = "updatepwd")
+	@ResponseBody
+	public int updatePwd(HttpServletRequest request, UpdatePwdReq req){
+		UserContext context = UserContext.getCurrentContext(request);
+		req.setUserId(context.getId());
+		return accountInfoService.updatePwd(req);
 	}
 }

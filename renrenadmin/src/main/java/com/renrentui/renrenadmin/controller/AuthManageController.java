@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.MenuHelper;
+import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IAccountInfoService;
 import com.renrentui.renrenapi.service.inter.IAccountAuthService;
 import com.renrentui.renrenapi.service.inter.IMenuInfoService;
@@ -22,6 +25,7 @@ import com.renrentui.renrenentity.MenuInfo;
 import com.renrentui.renrenentity.RoleInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenentity.domain.MenuEntity;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 
 @Controller
@@ -70,13 +74,13 @@ public class AuthManageController {
 	@RequestMapping(value = "authlist", produces= "application/json; charset=utf-8")
 	@ResponseBody
 	public String getAuthList(int userID) {
-		List<MenuInfo> menuList = authorityMenuClassService.getAuthSettingList(userID);
+		List<MenuEntity> menuList = authorityMenuClassService.getAuthSettingList(userID);
 		return MenuHelper.getAuthJson(menuList);
 	}
 
 	@RequestMapping("saveauth")
 	@ResponseBody
-	public String saveauth(int userID, String newAuth, String oldAuth) {
+	public String saveauth(HttpServletRequest request,int userID, String newAuth, String oldAuth) {
 		List<String> newList = new ArrayList<>();
 		List<String> oldList = new ArrayList<>();
 		List<String> diffList = new ArrayList<>();
@@ -95,9 +99,11 @@ public class AuthManageController {
 			return "没有任何修改，不需要保存";
 		}
 		List<AccountAuth> authList = new ArrayList<>();
+		UserContext context = UserContext.getCurrentContext(request);
 		for (String authid : diffList) {
 			AccountAuth authset = new AccountAuth();
 			authset.setAccoutId(userID);
+			authset.setOptName(context.getUserName());
 			authset.setMenuId(Integer.parseInt(authid));
 			authList.add(authset);
 		}
