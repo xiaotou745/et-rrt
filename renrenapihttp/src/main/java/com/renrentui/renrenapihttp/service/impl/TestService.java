@@ -3,8 +3,11 @@ package com.renrentui.renrenapihttp.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
+import org.springframework.stereotype.Service;
+
 import com.renrentui.renrencore.util.SmsUtils;
 
+@Service
 public class TestService {
 
 	public static void main(String[] args) {

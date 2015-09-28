@@ -4,11 +4,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import com.renrentui.entity.req.CWithdrawFormReq;
+import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
-import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.SignUpReq;
+import com.renrentui.renrenentity.req.ModifyPwdReq;
 
 
 
@@ -38,7 +39,7 @@ public interface IUsercService {
 	 */
 	@POST
 	@Path("/modifypwd")
-	 public HttpResultModel<Object> modifyPwd();
+	 public HttpResultModel<Object> modifyPwd(ModifyPwdReq req);
 	
 	/**
 	 * C申请提现
@@ -49,6 +50,16 @@ public interface IUsercService {
 	@POST
 	@Path("/withdraw")
 	 public HttpResultModel<Object> withdraw(CWithdrawFormReq req);
+	
+	/**
+	 * 获取验证码
+	 * @author haichao
+	 * @date 2015年9月28日 14:49:55
+	 * @return 
+	 * */
+	@POST
+	@Path("/sendcode")
+	public HttpResultModel<Object> sendcode(CSendCodeReq req);
 	/*
 	 * C端注册
 	 * wang chao 
