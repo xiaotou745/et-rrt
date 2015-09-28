@@ -6,11 +6,14 @@ import java.net.MalformedURLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
+import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
@@ -80,7 +83,7 @@ public class UsercService implements IUsercService {
 	 * @return
 	 * */
 	@Override
-	public HttpResultModel<Object> sendcode() {// CSendCodeReq req
+	public HttpResultModel<Object> sendcode(CSendCodeReq req) {
 		try {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
 			
