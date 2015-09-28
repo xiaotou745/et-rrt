@@ -55,7 +55,10 @@ public class UsercService implements IUsercService {
 		if (req.getVerifyCode()==null||req.getVerifyCode().equals(""))// 验证码为空
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value())
 					.setMsg(ForgotPwdCode.VerCodeNull.desc());
-		if (req.getVerifyCode()=="")// 验证码不正确 TODO 查缓存看验证码正确
+		RedisService redis = new RedisService();
+		String key=RedissCacheKey.RR_Clienter_sendcode_forgetPassword+ req.getPhoneNo();//RedisKey
+		String redisValueString= redis.get(key, String.class);
+		if (!req.getVerifyCode().equals(redisValueString))// 验证码不正确 
 			return resultModel.setCode(ForgotPwdCode.VerCodeError.value())
 					.setMsg(ForgotPwdCode.VerCodeError.desc());
 		if (clienterService.forgotPwdUserc(req))// 修改密码成功
