@@ -29,15 +29,20 @@ public class ClienterService implements IClienterService{
 	public boolean isExistPhoneC(String phoneNo) {
 		return clienterDao.isExistPhone(phoneNo);
 	}
+	/**
+	 * 根据用户ID 验证密码是否正确
+	 */
 	@Override
 	public boolean isRightPwd(int uid, String md5Pwd) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return clienterDao.isRightPwd(uid, md5Pwd);
 	}
+	/**
+	 * C端修改密码
+	 */
 	@Override
 	public boolean modifyPwdUserc(ModifyPwdReq req) {
-		// TODO Auto-generated method stub
-		return false;
+		return clienterDao.modifyPwdUserc(req);
 	}
 	
 	
