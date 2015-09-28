@@ -18,6 +18,7 @@ import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+
 /**
  * 用户相关
  * 
@@ -62,10 +63,11 @@ public class UsercService implements IUsercService {
 	 */
 	@Override
 	public HttpResultModel<Object> modifyPwd(ModifyPwdReq req) {
-		HttpResultModel<Object> model=new HttpResultModel<Object>();
-		if(""=="")//验证旧密码是否正确
-			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(ModifyPwdCode.OldPwdError.desc());
-		
+		HttpResultModel<Object> model = new HttpResultModel<Object>();
+		if ("" == "")// 验证旧密码是否正确
+			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(
+					ModifyPwdCode.OldPwdError.desc());
+
 		return null;
 	}
 
@@ -86,14 +88,15 @@ public class UsercService implements IUsercService {
 	public HttpResultModel<Object> sendcode(CSendCodeReq req) {
 		try {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-			
-			long resultValue = SmsUtils.sendSMS("13426401627", "您的验证码是：1234");
+
+			long resultValue = SmsUtils
+					.sendSMS(req.getPhoneNo(), "您的验证码是:1234");
 			if (resultValue <= 0) {
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
 						SendSmsType.Fail.desc());// 发送失败
 			}
 			return resultModel.setCode(SendSmsType.Success.value()).setMsg(
-					SendSmsType.Success.desc());// 设置成功 
+					SendSmsType.Success.desc());// 设置成功
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
