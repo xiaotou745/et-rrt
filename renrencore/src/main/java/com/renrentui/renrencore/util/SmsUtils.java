@@ -37,10 +37,10 @@ public class SmsUtils {
 		String CorpID = "BJZX01876";// 账户名
 		String Pwd = "123456";// 密码
 		String send_content = URLEncoder.encode(
-				Content.replaceAll("<br/>", " "), "utf-8");// 发送内容
+				Content.replaceAll("<br/>", ""), "utf-8");// 发送内容
 		String surl="http://api.bjszrk.com/sdk/BatchSend.aspx?CorpID="
 				+ CorpID + "&Pwd=" + Pwd + "&Mobile=" + Mobile + "&Content="
-				+ send_content + "【饿势力】&Cell=&SendTime=&encode=utf-8";
+				+ send_content + "%e3%80%90%e9%a5%bf%e5%8a%bf%e5%8a%9b%e3%80%91&encode=utf-8";
 		System.out.print(surl);
 		url = new URL(surl);
 		BufferedReader in = null;
