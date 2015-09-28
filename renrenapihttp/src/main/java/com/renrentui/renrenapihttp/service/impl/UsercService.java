@@ -63,12 +63,12 @@ public class UsercService implements IUsercService {
 	 */
 	@Override
 	public HttpResultModel<Object> modifyPwd(ModifyPwdReq req) {
-		HttpResultModel<Object> model = new HttpResultModel<Object>();
-		if ("" == "")// 验证旧密码是否正确
-			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(
-					ModifyPwdCode.OldPwdError.desc());
-
-		return null;
+		HttpResultModel<Object> model=new HttpResultModel<Object>();
+		if(clienterService.isRightPwd(req.getUserId(), req.getNewPwd()))//验证旧密码是否正确
+			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(ModifyPwdCode.OldPwdError.desc());
+		if(clienterService.modifyPwdUserc(req))
+			return model.setCode(ModifyPwdCode.Success.value()).setMsg(ModifyPwdCode.Success.desc());
+		return model.setCode(ModifyPwdCode.Fail.value()).setMsg(ModifyPwdCode.Fail.desc());
 	}
 
 	@Override
