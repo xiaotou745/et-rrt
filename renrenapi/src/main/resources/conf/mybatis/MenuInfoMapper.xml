@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IMenuInfoDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.MenuInfo" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IMenuInfoDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.MenuInfo" >
     <result column="Id" property="id" jdbcType="INTEGER" />
     <result column="ParId" property="parid" jdbcType="INTEGER" />
     <result column="MenuName" property="menuname" jdbcType="VARCHAR" />
@@ -9,13 +9,13 @@
     <result column="Url" property="url" jdbcType="VARCHAR" />
     <result column="IsButton" property="isbutton" jdbcType="BIT" />
   </resultMap>
-  <insert id="insert" parameterType="com.renrentui.entity.MenuInfo" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.MenuInfo" >
     insert into MenuInfo (Id, ParId, MenuName, 
       BeLock, Url, IsButton)
     values (#{id,jdbcType=INTEGER}, #{parid,jdbcType=INTEGER}, #{menuname,jdbcType=VARCHAR}, 
       #{belock,jdbcType=BIT}, #{url,jdbcType=VARCHAR}, #{isbutton,jdbcType=BIT})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.MenuInfo" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.MenuInfo" >
     insert into MenuInfo
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

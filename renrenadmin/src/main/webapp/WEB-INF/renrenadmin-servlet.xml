@@ -23,8 +23,8 @@
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/**" location="/resources/" />
 	<mvc:interceptors>
- 		<bean class="com.renrentui.renrenapi.common.GlobalLogInteceptor">
- 			<property name="sourceSys" value="admin"></property> 
+ 		<bean class="com.renrentui.renrenadmin.common.GlobalLogInteceptor">
+ 			<property name="sourceSys" value="renrenadmin"></property> 
  		</bean>
 		<bean class="com.renrentui.renrenadmin.common.AuthInteceptor" />
 	</mvc:interceptors>

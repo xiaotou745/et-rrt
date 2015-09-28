@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IBusinessBalanceDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.BusinessBalance" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.BusinessBalance" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="BusinessId" property="businessid" jdbcType="BIGINT" />
     <result column="Balance" property="balance" jdbcType="DECIMAL" />
@@ -19,13 +19,13 @@
     delete from BusinessBalance
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.BusinessBalance" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.BusinessBalance" >
     insert into BusinessBalance (Id, BusinessId, Balance
       )
     values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.BusinessBalance" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.BusinessBalance" >
     insert into BusinessBalance
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -50,7 +50,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.BusinessBalance" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.BusinessBalance" >
     update BusinessBalance
     <set >
       <if test="businessid != null" >
@@ -62,7 +62,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.BusinessBalance" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.BusinessBalance" >
     update BusinessBalance
     set BusinessId = #{businessid,jdbcType=BIGINT},
       Balance = #{balance,jdbcType=DECIMAL}

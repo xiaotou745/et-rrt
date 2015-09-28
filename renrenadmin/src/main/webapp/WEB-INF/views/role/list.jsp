@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<%@page import="com.renrentui.core.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="java.util.List"%>
-<%@page import="com.renrentui.entity.MenuInfo"%>
+<%@page import="com.renrentui.renrenentity.MenuInfo"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 %>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IOrderDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.Order" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IOrderDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.Order" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="ClienterId" property="clienterid" jdbcType="BIGINT" />
     <result column="TaskId" property="taskid" jdbcType="BIGINT" />
@@ -30,7 +30,7 @@
     delete from Order
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.Order" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.Order" >
     insert into Order (Id, ClienterId, TaskId, 
       OrderStatus, AuditStatus, CreateTime, 
       FinishTime, AuditTime, AuditName, 
@@ -42,7 +42,7 @@
       #{deallinetime,jdbcType=TIMESTAMP}, #{canceltime,jdbcType=TIMESTAMP}, #{cancelname,jdbcType=NVARCHAR}, 
       #{cancelremark,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.Order" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Order" >
     insert into Order
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -127,7 +127,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.Order" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Order" >
     update Order
     <set >
       <if test="clienterid != null" >
@@ -169,7 +169,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.Order" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.Order" >
     update Order
     set ClienterId = #{clienterid,jdbcType=BIGINT},
       TaskId = #{taskid,jdbcType=BIGINT},

@@ -1,10 +1,10 @@
-<%@page import="com.renrentui.core.consts.GlobalSettings"%>
+<%@page import="com.renrentui.renrencore.consts.GlobalSettings"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.renrentui.core.util.PropertyUtils"%>
-<%@page import="com.renrentui.admin.common.LoginUtil" %>
-<%@page import="com.renrentui.core.util.PropertyUtils"%>
-<%@page import="com.renrentui.admin.common.LoginUtil"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrenadmin.common.LoginUtil" %>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrenadmin.common.LoginUtil"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 %>
@@ -12,7 +12,7 @@
 	boolean isLogin = LoginUtil.checkIsLogin(request,response);
 	if(isLogin){
 		//如果登录,跳转到首页
-		response.sendRedirect(basePath+"/order/list");
+		response.sendRedirect(basePath+"/account/list");
 	}
 %>
 <!DOCTYPE html>
@@ -35,7 +35,7 @@
 			<!-- 			<div>
 				<h1 class="logo-name">H+</h1>
 			</div> -->
-			<h2>管理后台</h2>
+			<h2>人人地推管理后台</h2>
 			<form class="m-t" role="form" action="<%=basePath%>/account/login"
 				method="post">
 				<div class="form-group">

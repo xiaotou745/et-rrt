@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.IClienterDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.Clienter" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.Clienter" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="ClienterName" property="clientername" jdbcType="NVARCHAR" />
     <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR" />
@@ -33,7 +33,7 @@
     delete from Clienter
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.Clienter" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.Clienter" >
     insert into Clienter (Id, ClienterName, PhoneNo, 
       Password, LoginName, HeadImage, 
       CityName, CityCode, Sex, 
@@ -47,7 +47,7 @@
       #{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{lastoptname,jdbcType=NVARCHAR}, 
       #{lastopttime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.Clienter" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Clienter" >
     insert into Clienter
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -150,7 +150,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.Clienter" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Clienter" >
     update Clienter
     <set >
       <if test="clientername != null" >
@@ -201,7 +201,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.Clienter" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.Clienter" >
     update Clienter
     set ClienterName = #{clientername,jdbcType=NVARCHAR},
       PhoneNo = #{phoneno,jdbcType=VARCHAR},

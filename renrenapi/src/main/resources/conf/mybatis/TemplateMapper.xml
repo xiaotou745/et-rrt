@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.api.dao.inter.ITemplateDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.entity.Template" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.Template" >
     <id column="Id" property="id" jdbcType="BIGINT" />
     <result column="BusinessId" property="businessid" jdbcType="BIGINT" />
     <result column="TemplateName" property="templatename" jdbcType="NVARCHAR" />
@@ -23,7 +23,7 @@
     delete from Template
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.entity.Template" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.Template" >
     insert into Template (Id, BusinessId, TemplateName, 
       CreateTime, LastOptName, LastOptTime, 
       Status)
@@ -31,7 +31,7 @@
       #{createtime,jdbcType=TIMESTAMP}, #{lastoptname,jdbcType=NVARCHAR}, #{lastopttime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=SMALLINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.entity.Template" >
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Template" >
     insert into Template
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -80,7 +80,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.entity.Template" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Template" >
     update Template
     <set >
       <if test="businessid != null" >
@@ -104,7 +104,7 @@
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.entity.Template" >
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.Template" >
     update Template
     set BusinessId = #{businessid,jdbcType=BIGINT},
       TemplateName = #{templatename,jdbcType=NVARCHAR},

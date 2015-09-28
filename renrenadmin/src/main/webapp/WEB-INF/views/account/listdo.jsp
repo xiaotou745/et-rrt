@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-	<%@page import="com.renrentui.common.PagedResponse"%>
-<%@page import="com.renrentui.core.util.PageHelper"%>
+	<%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
+<%@page import="com.renrentui.renrencore.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.renrentui.entity.AccountInfo"%>
+<%@page import="com.renrentui.renrenentity.AccountInfo"%>
 <%@page import="java.util.List"%>
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
@@ -29,8 +29,8 @@
 		%>
 		<tr>
 			<td><%=list.get(i).getId()%></td>
-			<td><%=list.get(i).getUsername()%></td>
-			<td><%=list.get(i).getLoginname()%></td>
+			<td><%=list.get(i).getUserName()%></td>
+			<td><%=list.get(i).getLoginName()%></td>
 			<td><%=list.get(i).getStatus() == 1 ? "√" : "×"%></td>
 			<td><a href="javascript:void(0)" onclick="modify(<%=list.get(i).getId()%>)">编辑</a></td>
 		</tr>
