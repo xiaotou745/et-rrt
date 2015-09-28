@@ -3,9 +3,9 @@ package com.renrentui.entity;
 public class TemplateControl {
     private Long id;
 
-    private String controltype;
+    private String controlType;
 
-    private String contolname;
+    private String contolName;
 
     private Short status;
 
@@ -19,21 +19,7 @@ public class TemplateControl {
         this.id = id;
     }
 
-    public String getControltype() {
-        return controltype;
-    }
-
-    public void setControltype(String controltype) {
-        this.controltype = controltype == null ? null : controltype.trim();
-    }
-
-    public String getContolname() {
-        return contolname;
-    }
-
-    public void setContolname(String contolname) {
-        this.contolname = contolname == null ? null : contolname.trim();
-    }
+   
 
     public Short getStatus() {
         return status;
@@ -50,4 +36,20 @@ public class TemplateControl {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	public String getContolName() {
+		return contolName;
+	}
+
+	public void setContolName(String contolName) {
+		this.contolName = contolName;
+	}
+
+	public String getControlType() {
+		return controlType;
+	}
+
+	public void setControlType(String controlType) {
+		this.controlType = controlType;
+	}
 }

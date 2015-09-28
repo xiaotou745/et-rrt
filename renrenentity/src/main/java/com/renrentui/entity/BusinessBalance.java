@@ -1,13 +1,13 @@
 package com.renrentui.entity;
 
-import java.math.BigDecimal;
+
 
 public class BusinessBalance {
     private Long id;
 
-    private Long businessid;
+    private Long businessId;
 
-    private BigDecimal balance;
+    private Double balance;
 
     public Long getId() {
         return id;
@@ -17,19 +17,21 @@ public class BusinessBalance {
         this.id = id;
     }
 
-    public Long getBusinessid() {
-        return businessid;
-    }
+    
 
-    public void setBusinessid(Long businessid) {
-        this.businessid = businessid;
-    }
-
-    public BigDecimal getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
+
+	public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
 }

@@ -3,13 +3,13 @@ package com.renrentui.entity;
 public class TaskCityRelation {
     private Long id;
 
-    private Long taskid;
+    private Long taskId;
 
-    private Integer citycode;
+    private Integer cityCode;
 
-    private Long businessid;
+    private Long businessId;
 
-    private String cityname;
+    private String cityName;
 
     public Long getId() {
         return id;
@@ -19,35 +19,37 @@ public class TaskCityRelation {
         this.id = id;
     }
 
-    public Long getTaskid() {
-        return taskid;
-    }
+	public Long getTaskId() {
+		return taskId;
+	}
 
-    public void setTaskid(Long taskid) {
-        this.taskid = taskid;
-    }
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+	}
 
-    public Integer getCitycode() {
-        return citycode;
-    }
+	public Integer getCityCode() {
+		return cityCode;
+	}
 
-    public void setCitycode(Integer citycode) {
-        this.citycode = citycode;
-    }
+	public void setCityCode(Integer cityCode) {
+		this.cityCode = cityCode;
+	}
 
-    public Long getBusinessid() {
-        return businessid;
-    }
+	public Long getBusinessId() {
+		return businessId;
+	}
 
-    public void setBusinessid(Long businessid) {
-        this.businessid = businessid;
-    }
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
 
-    public String getCityname() {
-        return cityname;
-    }
+	public String getCityName() {
+		return cityName;
+	}
 
-    public void setCityname(String cityname) {
-        this.cityname = cityname == null ? null : cityname.trim();
-    }
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+    
 }

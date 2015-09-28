@@ -3,23 +3,23 @@ package com.renrentui.entity;
 public class Business {
     private Long id;
 
-    private String companyname;
+    private String companyName;
 
-    private String phoneno;
+    private String phoneNo;
 
-    private String password;
+    private String passWord;
 
-    private String loginname;
+    private String loginName;
 
     private String logo;
 
     private String address;
 
-    private Integer citycode;
+    private Integer cityCode;
 
-    private String cityname;
+    private String cityName;
 
-    private String website;
+    private String webSite;
 
     public Long getId() {
         return id;
@@ -29,39 +29,65 @@ public class Business {
         this.id = id;
     }
 
-    public String getCompanyname() {
-        return companyname;
-    }
+   
 
-    public void setCompanyname(String companyname) {
-        this.companyname = companyname == null ? null : companyname.trim();
-    }
+    public String getCompanyName() {
+		return companyName;
+	}
 
-    public String getPhoneno() {
-        return phoneno;
-    }
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno == null ? null : phoneno.trim();
-    }
+	public String getPhoneNo() {
+		return phoneNo;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
 
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
-    }
+	public String getPassWord() {
+		return passWord;
+	}
 
-    public String getLoginname() {
-        return loginname;
-    }
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
 
-    public void setLoginname(String loginname) {
-        this.loginname = loginname == null ? null : loginname.trim();
-    }
+	public String getLoginName() {
+		return loginName;
+	}
 
-    public String getLogo() {
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+
+	public Integer getCityCode() {
+		return cityCode;
+	}
+
+	public void setCityCode(Integer cityCode) {
+		this.cityCode = cityCode;
+	}
+
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	public String getWebSite() {
+		return webSite;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
+
+	public String getLogo() {
         return logo;
     }
 
@@ -77,27 +103,5 @@ public class Business {
         this.address = address == null ? null : address.trim();
     }
 
-    public Integer getCitycode() {
-        return citycode;
-    }
-
-    public void setCitycode(Integer citycode) {
-        this.citycode = citycode;
-    }
-
-    public String getCityname() {
-        return cityname;
-    }
-
-    public void setCityname(String cityname) {
-        this.cityname = cityname == null ? null : cityname.trim();
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website == null ? null : website.trim();
-    }
+   
 }

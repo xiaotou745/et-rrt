@@ -5,29 +5,19 @@ import java.util.Date;
 public class AccountInfo {
     private Integer id;
 
-    private String password;
+    private String passWord;
 
-    private String username;
+    private String userName;
 
-    private String loginname;
+    private String loginName;
 
     private Integer status;
 
-    private Integer accounttype;
+    private Integer accountType;
 
-    private Date fadatetime;
+    private Integer roleId;
 
-    private String fauser;
-
-    private Date lcdatetime;
-
-    private String lcuser;
-
-    private Integer groupid;
-
-    private Integer roleid;
-
-    private Date lastchangetime;
+    private Date lastChangeTime;
 
     public Integer getId() {
         return id;
@@ -37,31 +27,57 @@ public class AccountInfo {
         this.id = id;
     }
 
-    public String getPassword() {
-        return password;
-    }
+    
 
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
-    }
+    public String getPassWord() {
+		return passWord;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public String getLoginname() {
-        return loginname;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public void setLoginname(String loginname) {
-        this.loginname = loginname == null ? null : loginname.trim();
-    }
+	public String getLoginName() {
+		return loginName;
+	}
 
-    public Integer getStatus() {
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+
+	public Integer getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(Integer accountType) {
+		this.accountType = accountType;
+	}
+
+	public Integer getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
+
+	public Date getLastChangeTime() {
+		return lastChangeTime;
+	}
+
+	public void setLastChangeTime(Date lastChangeTime) {
+		this.lastChangeTime = lastChangeTime;
+	}
+
+	public Integer getStatus() {
         return status;
     }
 
@@ -69,67 +85,5 @@ public class AccountInfo {
         this.status = status;
     }
 
-    public Integer getAccounttype() {
-        return accounttype;
-    }
-
-    public void setAccounttype(Integer accounttype) {
-        this.accounttype = accounttype;
-    }
-
-    public Date getFadatetime() {
-        return fadatetime;
-    }
-
-    public void setFadatetime(Date fadatetime) {
-        this.fadatetime = fadatetime;
-    }
-
-    public String getFauser() {
-        return fauser;
-    }
-
-    public void setFauser(String fauser) {
-        this.fauser = fauser == null ? null : fauser.trim();
-    }
-
-    public Date getLcdatetime() {
-        return lcdatetime;
-    }
-
-    public void setLcdatetime(Date lcdatetime) {
-        this.lcdatetime = lcdatetime;
-    }
-
-    public String getLcuser() {
-        return lcuser;
-    }
-
-    public void setLcuser(String lcuser) {
-        this.lcuser = lcuser == null ? null : lcuser.trim();
-    }
-
-    public Integer getGroupid() {
-        return groupid;
-    }
-
-    public void setGroupid(Integer groupid) {
-        this.groupid = groupid;
-    }
-
-    public Integer getRoleid() {
-        return roleid;
-    }
-
-    public void setRoleid(Integer roleid) {
-        this.roleid = roleid;
-    }
-
-    public Date getLastchangetime() {
-        return lastchangetime;
-    }
-
-    public void setLastchangetime(Date lastchangetime) {
-        this.lastchangetime = lastchangetime;
-    }
+    
 }

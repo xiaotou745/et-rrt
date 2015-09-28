@@ -5,13 +5,13 @@ import java.util.Date;
 public class OrderLog {
     private Long id;
 
-    private Long orderid;
+    private Long orderId;
 
-    private Short opttype;
+    private Short optType;
 
-    private Date createtime;
+    private Date createTime;
 
-    private String optname;
+    private String optName;
 
     private String remark;
 
@@ -23,39 +23,41 @@ public class OrderLog {
         this.id = id;
     }
 
-    public Long getOrderid() {
-        return orderid;
-    }
+    
 
-    public void setOrderid(Long orderid) {
-        this.orderid = orderid;
-    }
+    public Long getOrderId() {
+		return orderId;
+	}
 
-    public Short getOpttype() {
-        return opttype;
-    }
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setOpttype(Short opttype) {
-        this.opttype = opttype;
-    }
+	public Short getOptType() {
+		return optType;
+	}
 
-    public Date getCreatetime() {
-        return createtime;
-    }
+	public void setOptType(Short optType) {
+		this.optType = optType;
+	}
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public String getOptname() {
-        return optname;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public void setOptname(String optname) {
-        this.optname = optname == null ? null : optname.trim();
-    }
+	public String getOptName() {
+		return optName;
+	}
 
-    public String getRemark() {
+	public void setOptName(String optName) {
+		this.optName = optName;
+	}
+
+	public String getRemark() {
         return remark;
     }
 

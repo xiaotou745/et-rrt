@@ -1,17 +1,17 @@
 package com.renrentui.entity;
 
-import java.math.BigDecimal;
+
 
 public class ClienterBalance {
     private Long id;
 
-    private Long clienterid;
+    private Long clienterId;
 
-    private BigDecimal balance;
+    private Double balance;
 
-    private BigDecimal withdraw;
+    private Double withdraw;
 
-    private BigDecimal hadwithdraw;
+    private Double hadWithdraw;
 
     public Long getId() {
         return id;
@@ -21,35 +21,38 @@ public class ClienterBalance {
         this.id = id;
     }
 
-    public Long getClienterid() {
-        return clienterid;
-    }
 
-    public void setClienterid(Long clienterid) {
-        this.clienterid = clienterid;
-    }
-
-    public BigDecimal getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 
-    public BigDecimal getWithdraw() {
+    public Double getWithdraw() {
         return withdraw;
     }
 
-    public void setWithdraw(BigDecimal withdraw) {
+    public void setWithdraw(Double withdraw) {
         this.withdraw = withdraw;
     }
 
-    public BigDecimal getHadwithdraw() {
-        return hadwithdraw;
-    }
+	public Long getClienterId() {
+		return clienterId;
+	}
 
-    public void setHadwithdraw(BigDecimal hadwithdraw) {
-        this.hadwithdraw = hadwithdraw;
-    }
+	public void setClienterId(Long clienterId) {
+		this.clienterId = clienterId;
+	}
+
+	public Double getHadWithdraw() {
+		return hadWithdraw;
+	}
+
+	public void setHadWithdraw(Double hadWithdraw) {
+		this.hadWithdraw = hadWithdraw;
+	}
+
+   
 }

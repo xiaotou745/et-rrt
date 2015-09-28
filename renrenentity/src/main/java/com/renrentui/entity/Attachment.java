@@ -5,15 +5,15 @@ import java.util.Date;
 public class Attachment {
     private Long id;
 
-    private Long businessid;
+    private Long businessId;
 
-    private Long taskid;
+    private Long taskId;
 
-    private String attachmentname;
+    private String attachmentName;
 
-    private String attachurl;
+    private String attachUrl;
 
-    private Date uploadtime;
+    private Date uploadTime;
 
     public Long getId() {
         return id;
@@ -23,43 +23,45 @@ public class Attachment {
         this.id = id;
     }
 
-    public Long getBusinessid() {
-        return businessid;
-    }
+	public Long getBusinessId() {
+		return businessId;
+	}
 
-    public void setBusinessid(Long businessid) {
-        this.businessid = businessid;
-    }
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
 
-    public Long getTaskid() {
-        return taskid;
-    }
+	public Long getTaskId() {
+		return taskId;
+	}
 
-    public void setTaskid(Long taskid) {
-        this.taskid = taskid;
-    }
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+	}
 
-    public String getAttachmentname() {
-        return attachmentname;
-    }
+	public String getAttachmentName() {
+		return attachmentName;
+	}
 
-    public void setAttachmentname(String attachmentname) {
-        this.attachmentname = attachmentname == null ? null : attachmentname.trim();
-    }
+	public void setAttachmentName(String attachmentName) {
+		this.attachmentName = attachmentName;
+	}
 
-    public String getAttachurl() {
-        return attachurl;
-    }
+	public String getAttachUrl() {
+		return attachUrl;
+	}
 
-    public void setAttachurl(String attachurl) {
-        this.attachurl = attachurl == null ? null : attachurl.trim();
-    }
+	public void setAttachUrl(String attachUrl) {
+		this.attachUrl = attachUrl;
+	}
 
-    public Date getUploadtime() {
-        return uploadtime;
-    }
+	public Date getUploadTime() {
+		return uploadTime;
+	}
 
-    public void setUploadtime(Date uploadtime) {
-        this.uploadtime = uploadtime;
-    }
+	public void setUploadTime(Date uploadTime) {
+		this.uploadTime = uploadTime;
+	}
+
+    
 }

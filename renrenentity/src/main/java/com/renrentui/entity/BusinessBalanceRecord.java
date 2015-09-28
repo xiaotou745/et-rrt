@@ -1,26 +1,26 @@
 package com.renrentui.entity;
 
-import java.math.BigDecimal;
+
 import java.util.Date;
 
 public class BusinessBalanceRecord {
     private Long id;
 
-    private Long businessid;
+    private Long businessId;
 
-    private BigDecimal amount;
+    private Double amount;
 
-    private BigDecimal afteramount;
+    private Double afterAmount;
 
-    private Short recordtype;
+    private Short recordType;
 
-    private String optname;
+    private String optName;
 
-    private Date operatetime;
+    private Date operateTime;
 
-    private Long orderid;
+    private Long orderId;
 
-    private String relationno;
+    private String relationNo;
 
     private String remark;
 
@@ -32,71 +32,75 @@ public class BusinessBalanceRecord {
         this.id = id;
     }
 
-    public Long getBusinessid() {
-        return businessid;
-    }
+    
 
-    public void setBusinessid(Long businessid) {
-        this.businessid = businessid;
-    }
-
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public BigDecimal getAfteramount() {
-        return afteramount;
-    }
+    
 
-    public void setAfteramount(BigDecimal afteramount) {
-        this.afteramount = afteramount;
-    }
+    public Long getBusinessId() {
+		return businessId;
+	}
 
-    public Short getRecordtype() {
-        return recordtype;
-    }
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
 
-    public void setRecordtype(Short recordtype) {
-        this.recordtype = recordtype;
-    }
+	public Double getAfterAmount() {
+		return afterAmount;
+	}
 
-    public String getOptname() {
-        return optname;
-    }
+	public void setAfterAmount(Double afterAmount) {
+		this.afterAmount = afterAmount;
+	}
 
-    public void setOptname(String optname) {
-        this.optname = optname == null ? null : optname.trim();
-    }
+	public Short getRecordType() {
+		return recordType;
+	}
 
-    public Date getOperatetime() {
-        return operatetime;
-    }
+	public void setRecordType(Short recordType) {
+		this.recordType = recordType;
+	}
 
-    public void setOperatetime(Date operatetime) {
-        this.operatetime = operatetime;
-    }
+	public String getOptName() {
+		return optName;
+	}
 
-    public Long getOrderid() {
-        return orderid;
-    }
+	public void setOptName(String optName) {
+		this.optName = optName;
+	}
 
-    public void setOrderid(Long orderid) {
-        this.orderid = orderid;
-    }
+	public Date getOperateTime() {
+		return operateTime;
+	}
 
-    public String getRelationno() {
-        return relationno;
-    }
+	public void setOperateTime(Date operateTime) {
+		this.operateTime = operateTime;
+	}
 
-    public void setRelationno(String relationno) {
-        this.relationno = relationno == null ? null : relationno.trim();
-    }
+	public Long getOrderId() {
+		return orderId;
+	}
 
-    public String getRemark() {
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getRelationNo() {
+		return relationNo;
+	}
+
+	public void setRelationNo(String relationNo) {
+		this.relationNo = relationNo;
+	}
+
+	public String getRemark() {
         return remark;
     }
 

@@ -5,11 +5,11 @@ import java.util.Date;
 public class ClienterLog {
     private Long id;
 
-    private Long clienterid;
+    private Long clienterId;
 
-    private Date createtime;
+    private Date createTime;
 
-    private String optname;
+    private String optName;
 
     private String remark;
 
@@ -21,29 +21,7 @@ public class ClienterLog {
         this.id = id;
     }
 
-    public Long getClienterid() {
-        return clienterid;
-    }
-
-    public void setClienterid(Long clienterid) {
-        this.clienterid = clienterid;
-    }
-
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
-    public String getOptname() {
-        return optname;
-    }
-
-    public void setOptname(String optname) {
-        this.optname = optname == null ? null : optname.trim();
-    }
+    
 
     public String getRemark() {
         return remark;
@@ -52,4 +30,28 @@ public class ClienterLog {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	public Long getClienterId() {
+		return clienterId;
+	}
+
+	public void setClienterId(Long clienterId) {
+		this.clienterId = clienterId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getOptName() {
+		return optName;
+	}
+
+	public void setOptName(String optName) {
+		this.optName = optName;
+	}
 }

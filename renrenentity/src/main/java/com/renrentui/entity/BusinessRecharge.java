@@ -1,26 +1,90 @@
 package com.renrentui.entity;
 
-import java.math.BigDecimal;
+
 import java.util.Date;
 
 public class BusinessRecharge {
     private Long id;
 
-    private Long businessid;
+    private Long businessId;
 
-    private Integer paytype;
+    private Integer payType;
 
-    private String orderno;
+    private String orderNo;
 
-    private BigDecimal payamount;
+    public Long getBusinessId() {
+		return businessId;
+	}
 
-    private Integer paystatus;
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
 
-    private String payby;
+	public Integer getPayType() {
+		return payType;
+	}
 
-    private Date paytime;
+	public void setPayType(Integer payType) {
+		this.payType = payType;
+	}
 
-    private String originalorderno;
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public Double getPayAmount() {
+		return payAmount;
+	}
+
+	public void setPayAmount(Double payAmount) {
+		this.payAmount = payAmount;
+	}
+
+	public Integer getPayStatus() {
+		return payStatus;
+	}
+
+	public void setPayStatus(Integer payStatus) {
+		this.payStatus = payStatus;
+	}
+
+	public String getPayBy() {
+		return payBy;
+	}
+
+	public void setPayBy(String payBy) {
+		this.payBy = payBy;
+	}
+
+	public Date getPayTime() {
+		return payTime;
+	}
+
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
+	}
+
+	public String getOriginalOrderNo() {
+		return originalOrderNo;
+	}
+
+	public void setOriginalOrderNo(String originalOrderNo) {
+		this.originalOrderNo = originalOrderNo;
+	}
+
+	private Double payAmount;
+
+    private Integer payStatus;
+
+    private String payBy;
+
+    private Date payTime;
+
+    private String originalOrderNo;
 
     public Long getId() {
         return id;
@@ -30,67 +94,5 @@ public class BusinessRecharge {
         this.id = id;
     }
 
-    public Long getBusinessid() {
-        return businessid;
-    }
-
-    public void setBusinessid(Long businessid) {
-        this.businessid = businessid;
-    }
-
-    public Integer getPaytype() {
-        return paytype;
-    }
-
-    public void setPaytype(Integer paytype) {
-        this.paytype = paytype;
-    }
-
-    public String getOrderno() {
-        return orderno;
-    }
-
-    public void setOrderno(String orderno) {
-        this.orderno = orderno == null ? null : orderno.trim();
-    }
-
-    public BigDecimal getPayamount() {
-        return payamount;
-    }
-
-    public void setPayamount(BigDecimal payamount) {
-        this.payamount = payamount;
-    }
-
-    public Integer getPaystatus() {
-        return paystatus;
-    }
-
-    public void setPaystatus(Integer paystatus) {
-        this.paystatus = paystatus;
-    }
-
-    public String getPayby() {
-        return payby;
-    }
-
-    public void setPayby(String payby) {
-        this.payby = payby == null ? null : payby.trim();
-    }
-
-    public Date getPaytime() {
-        return paytime;
-    }
-
-    public void setPaytime(Date paytime) {
-        this.paytime = paytime;
-    }
-
-    public String getOriginalorderno() {
-        return originalorderno;
-    }
-
-    public void setOriginalorderno(String originalorderno) {
-        this.originalorderno = originalorderno == null ? null : originalorderno.trim();
-    }
+    
 }

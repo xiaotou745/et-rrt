@@ -5,15 +5,15 @@ import java.util.Date;
 public class Template {
     private Long id;
 
-    private Long businessid;
+    private Long businessId;
 
-    private String templatename;
+    private String templateName;
 
-    private Date createtime;
+    private Date createTime;
 
-    private String lastoptname;
+    private String lastOptName;
 
-    private Date lastopttime;
+    private Date lastOptTime;
 
     private Short status;
 
@@ -25,47 +25,49 @@ public class Template {
         this.id = id;
     }
 
-    public Long getBusinessid() {
-        return businessid;
-    }
+   
 
-    public void setBusinessid(Long businessid) {
-        this.businessid = businessid;
-    }
+    public Long getBusinessId() {
+		return businessId;
+	}
 
-    public String getTemplatename() {
-        return templatename;
-    }
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
 
-    public void setTemplatename(String templatename) {
-        this.templatename = templatename == null ? null : templatename.trim();
-    }
+	public String getTemplateName() {
+		return templateName;
+	}
 
-    public Date getCreatetime() {
-        return createtime;
-    }
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public String getLastoptname() {
-        return lastoptname;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public void setLastoptname(String lastoptname) {
-        this.lastoptname = lastoptname == null ? null : lastoptname.trim();
-    }
+	public String getLastOptName() {
+		return lastOptName;
+	}
 
-    public Date getLastopttime() {
-        return lastopttime;
-    }
+	public void setLastOptName(String lastOptName) {
+		this.lastOptName = lastOptName;
+	}
 
-    public void setLastopttime(Date lastopttime) {
-        this.lastopttime = lastopttime;
-    }
+	public Date getLastOptTime() {
+		return lastOptTime;
+	}
 
-    public Short getStatus() {
+	public void setLastOptTime(Date lastOptTime) {
+		this.lastOptTime = lastOptTime;
+	}
+
+	public Short getStatus() {
         return status;
     }
 

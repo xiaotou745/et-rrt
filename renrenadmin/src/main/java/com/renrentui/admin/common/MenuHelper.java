@@ -30,27 +30,27 @@ public class MenuHelper {
 		private static int createMenu(StringBuffer htmlStrBuffer, int parentID,List<MenuInfo> menuList) {
 			int hasSub = 0;
 			for (MenuInfo menuEntity : menuList) {
-				if (menuEntity.getParid() == parentID) {
+				if (menuEntity.getParId() == parentID) {
 					hasSub = 1;
 					htmlStrBuffer.append("{");
 					htmlStrBuffer.append("\"id\":\"" + menuEntity.getId() + "\"");
-					htmlStrBuffer.append(",\"parentid\":\"" + menuEntity.getParid()+ "\"");
-					if (menuEntity.getIsbutton()) {
+					htmlStrBuffer.append(",\"parentid\":\"" + menuEntity.getParId()+ "\"");
+					if (menuEntity.getIsButton()) {
 						htmlStrBuffer.append(",\"isbutton\":\"1\"");
 					} else {
 						htmlStrBuffer.append(",\"isbutton\":\"0\"");
 					}
 					if (parentID == 0) {
 						htmlStrBuffer.append(",\"text\":\""
-								+ menuEntity.getMenuname() + "\"");
+								+ menuEntity.getMenuName() + "\"");
 					} else {
-						if (menuEntity.getIsbutton()) {
+						if (menuEntity.getIsButton()) {
 							htmlStrBuffer.append(",\"text\":\"<font color='#A5A552'>"
-									+ menuEntity.getMenuname() + "</font>\"");
+									+ menuEntity.getMenuName() + "</font>\"");
 						} 
 						else {
 							htmlStrBuffer.append(",\"text\":\"<font color='#AAAAFF'>"
-									+ menuEntity.getMenuname() + "</font>\"");
+									+ menuEntity.getMenuName() + "</font>\"");
 						}
 					}
 					// 当前用户有权限的菜单处于选中状态

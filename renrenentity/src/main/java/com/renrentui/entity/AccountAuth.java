@@ -5,13 +5,45 @@ import java.util.Date;
 public class AccountAuth {
     private Integer id;
 
-    private Integer accoutid;
+    public Integer getAccoutId() {
+		return accoutId;
+	}
 
-    private Integer menuid;
+	public void setAccoutId(Integer accoutId) {
+		this.accoutId = accoutId;
+	}
 
-    private Date createtime;
+	public Integer getMenuId() {
+		return menuId;
+	}
 
-    private String optname;
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getOptName() {
+		return optName;
+	}
+
+	public void setOptName(String optName) {
+		this.optName = optName;
+	}
+
+	private Integer accoutId;
+
+    private Integer menuId;
+
+    private Date createTime;
+
+    private String optName;
 
     public Integer getId() {
         return id;
@@ -21,35 +53,5 @@ public class AccountAuth {
         this.id = id;
     }
 
-    public Integer getAccoutid() {
-        return accoutid;
-    }
-
-    public void setAccoutid(Integer accoutid) {
-        this.accoutid = accoutid;
-    }
-
-    public Integer getMenuid() {
-        return menuid;
-    }
-
-    public void setMenuid(Integer menuid) {
-        this.menuid = menuid;
-    }
-
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
-    public String getOptname() {
-        return optname;
-    }
-
-    public void setOptname(String optname) {
-        this.optname = optname == null ? null : optname.trim();
-    }
+    
 }
