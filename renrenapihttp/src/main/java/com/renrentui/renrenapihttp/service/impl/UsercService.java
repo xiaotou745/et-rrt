@@ -140,7 +140,9 @@ public class UsercService implements IUsercService {
 		if (req.getVerifyCode().equals(""))// 验证码不能为空
 			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
 					SignUpCode.VerCodeNull.desc());
-		if (req.getVerifyCode().equals("")) // 验证码 查缓存
+		String key=RedissCacheKey.RR_Clienter_sendcode_register+ req.getPhoneNo();//注册key
+		String redisValueString= redisService.get(key, String.class);
+		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
 			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
 					SignUpCode.VerCodeError.desc());
 		int id = clienterService.signup(req);
