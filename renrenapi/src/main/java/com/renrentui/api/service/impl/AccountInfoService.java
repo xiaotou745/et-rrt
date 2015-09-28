@@ -12,7 +12,8 @@ import com.renrentui.core.cache.redis.RedisService;
 import com.renrentui.core.consts.RedissCacheKey;
 import com.renrentui.core.security.MD5Util;
 import com.renrentui.entity.AccountInfo;
-import com.renrentui.entity.req.PagedAccountReq;
+import com.renrentui.entity.req.PagedAccountInfoReq;
+
 
 @Service
 public class AccountInfoService implements IAccountInfoService{
@@ -22,7 +23,7 @@ public class AccountInfoService implements IAccountInfoService{
 	@Autowired
 	private RedisService redisService;
 	@Override
-	public PagedResponse<AccountInfo> queryAccount(PagedAccountReq req) {
+	public PagedResponse<AccountInfo> queryAccount(PagedAccountInfoReq req) {
 		return  accountInfoDao.queryAccount(req);
 	}
 

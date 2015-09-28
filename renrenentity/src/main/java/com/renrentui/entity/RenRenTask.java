@@ -1,6 +1,6 @@
 package com.renrentui.entity;
 
-import java.math.BigDecimal;
+
 import java.util.Date;
 
 public class RenRenTask {
@@ -32,7 +32,7 @@ public class RenRenTask {
 
     private Integer availableCount;
 
-    private BigDecimal amount;
+    private Double amount;
 
     private Integer state;
 
@@ -64,11 +64,11 @@ public class RenRenTask {
 
     
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -89,6 +89,126 @@ public class RenRenTask {
     public void setLink(String link) {
         this.link = link == null ? null : link.trim();
     }
+
+	public String getTaskTitle() {
+		return taskTitle;
+	}
+
+	public void setTaskTitle(String taskTitle) {
+		this.taskTitle = taskTitle;
+	}
+
+	public String getTaskNotice() {
+		return taskNotice;
+	}
+
+	public void setTaskNotice(String taskNotice) {
+		this.taskNotice = taskNotice;
+	}
+
+	public String getTaskGeneralInfo() {
+		return taskGeneralInfo;
+	}
+
+	public void setTaskGeneralInfo(String taskGeneralInfo) {
+		this.taskGeneralInfo = taskGeneralInfo;
+	}
+
+	public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
+
+	public String getCreateName() {
+		return createName;
+	}
+
+	public void setCreateName(String createName) {
+		this.createName = createName;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getModifyName() {
+		return modifyName;
+	}
+
+	public void setModifyName(String modifyName) {
+		this.modifyName = modifyName;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public Date getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(Date beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public Double getTaskCycle() {
+		return taskCycle;
+	}
+
+	public void setTaskCycle(Double taskCycle) {
+		this.taskCycle = taskCycle;
+	}
+
+	public Integer getAvailableCount() {
+		return availableCount;
+	}
+
+	public void setAvailableCount(Integer availableCount) {
+		this.availableCount = availableCount;
+	}
+
+	public Integer getTaskToatlCount() {
+		return taskToatlCount;
+	}
+
+	public void setTaskToatlCount(Integer taskToatlCount) {
+		this.taskToatlCount = taskToatlCount;
+	}
+
+	public Long getTempateId() {
+		return tempateId;
+	}
+
+	public void setTempateId(Long tempateId) {
+		this.tempateId = tempateId;
+	}
+
+	public Short getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(Short paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
 
     
 }

@@ -17,7 +17,7 @@ import com.renrentui.api.service.inter.IRoleInfoService;
 import com.renrentui.entity.MenuInfo;
 import com.renrentui.entity.RoleAuth;
 import com.renrentui.entity.RoleInfo;
-import com.renrentui.entity.req.PagedAccountReq;
+import com.renrentui.entity.req.PagedAccountInfoReq;
 
 @Controller
 @RequestMapping("role")
@@ -39,7 +39,7 @@ public class RoleController {
 	}
 
 	@RequestMapping("listdo")
-	public ModelAndView listdo(PagedAccountReq req) {
+	public ModelAndView listdo(PagedAccountInfoReq req) {
 		ModelAndView model = new ModelAndView("role/listdo");
 		List<RoleInfo> datalist=roleInfoService.selectList();
 		model.addObject("listData", datalist);

@@ -3,7 +3,7 @@ package com.renrentui.entity.req;
 import com.renrentui.common.PagedRequestBase;
 
 
-public class PagedAccountReq extends PagedRequestBase{
+public class PagedAccountInfoReq extends PagedRequestBase{
 
 	public int getId() {
 		return Id;
