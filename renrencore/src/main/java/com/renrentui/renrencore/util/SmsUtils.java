@@ -35,9 +35,11 @@ public class SmsUtils {
 		String Pwd = "123456";// 密码
 		String send_content = URLEncoder.encode(
 				Content.replaceAll("<br/>", " "), "utf-8");// 发送内容
-		url = new URL("http://api.bjszrk.com/sdk/BatchSend.aspx?CorpID="
+		String surl="http://api.bjszrk.com/sdk/BatchSend.aspx?CorpID="
 				+ CorpID + "&Pwd=" + Pwd + "&Mobile=" + Mobile + "&Content="
-				+ send_content + "&Cell=&SendTime=&encode=utf-8");
+				+ send_content + "&Cell=&SendTime=&encode=utf-8";
+		System.out.print(surl);
+		url = new URL(surl);
 		BufferedReader in = null;
 		long inputLine = 0;
 		try {

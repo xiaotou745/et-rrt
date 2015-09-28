@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ModifyPwdReq;
 @Service
 public class ClienterService implements IClienterService{
 	@Autowired
@@ -26,8 +27,22 @@ public class ClienterService implements IClienterService{
 	 */
 	@Override
 	public boolean isExistPhoneC(String phoneNo) {
-		// TODO Auto-generated method stub
-		return false;
+		return clienterDao.isExistPhone(phoneNo);
+	}
+	/**
+	 * 根据用户ID 验证密码是否正确
+	 */
+	@Override
+	public boolean isRightPwd(int uid, String md5Pwd) {
+		
+		return clienterDao.isRightPwd(uid, md5Pwd);
+	}
+	/**
+	 * C端修改密码
+	 */
+	@Override
+	public boolean modifyPwdUserc(ModifyPwdReq req) {
+		return clienterDao.modifyPwdUserc(req);
 	}
 	
 	
