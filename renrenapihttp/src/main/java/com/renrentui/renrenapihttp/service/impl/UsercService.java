@@ -90,9 +90,10 @@ public class UsercService implements IUsercService {
 			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
 		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
 			return resultModel.setCode(SignInCode.PhoneUnRegistered.value()).setMsg(SignInCode.PhoneUnRegistered.desc());
-//		if(clienterService.forgotPwdUserc(req))//修改密码成功
-//			return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc());
-		return resultModel.setCode(SignInCode.Fail.value()).setMsg(SignInCode.Fail.desc());
+		Clienter clienterModel=clienterService.queryClienter(req);
+		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
+			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
+        return resultModel.setData(clienterModel);
 	}
 
 	/**

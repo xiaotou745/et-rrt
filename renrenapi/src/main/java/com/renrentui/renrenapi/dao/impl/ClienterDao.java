@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -8,6 +9,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.req.SignInReq;
 
 
 
@@ -99,6 +101,20 @@ public class ClienterDao extends DaoBase implements IClienterDao{
 		int res= getMasterSqlSessionUtil().update(statement, req);
 		return res>0;
 	}
+	/**
+	* @Des 查询C端用户信息  
+	* @Author WangXuDan
+	* @Date 2015年9月28日16:14:35
+	* @Return
+	*/
+	@Override
+	public Clienter queryClienter(SignInReq req) {
+		Clienter result = getReadOnlySqlSessionUtil().selectOne(
+				"com.renrentui.renrenapi.dao.inter.IClienterDao.queryClienter",
+				req);
+		return result;
+	}
+	
 
 	
 }
