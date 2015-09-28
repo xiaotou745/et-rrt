@@ -18,14 +18,11 @@ import com.renrentui.api.service.inter.IRoleInfoService;
 import com.renrentui.common.PagedResponse;
 import com.renrentui.common.ResponseBase;
 import com.renrentui.core.util.StringUtils;
-
 import com.renrentui.entity.AccountAuth;
 import com.renrentui.entity.AccountInfo;
-
 import com.renrentui.entity.MenuInfo;
 import com.renrentui.entity.RoleInfo;
-import com.renrentui.entity.req.AddNewMenuReq;
-import com.renrentui.entity.req.PagedAccountReq;
+import com.renrentui.entity.req.PagedAccountInfoReq;
 
 @Controller
 @RequestMapping("authmanage")
@@ -50,7 +47,7 @@ public class AuthManageController {
 	}
 
 	@RequestMapping("listdo")
-	public ModelAndView listdo(PagedAccountReq req) {
+	public ModelAndView listdo(PagedAccountInfoReq req) {
 		PagedResponse<AccountInfo> resp = accountService.queryAccount(req);
 		ModelAndView model = new ModelAndView("authmanage/listdo");
 		model.addObject("listData", resp);

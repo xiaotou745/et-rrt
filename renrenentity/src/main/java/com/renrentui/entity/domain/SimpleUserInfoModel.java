@@ -24,9 +24,6 @@ public class SimpleUserInfoModel implements Serializable {
 	@JsonProperty("LoginName")
 	private String loginName;
 	
-	@JsonProperty("GroupId")
-	private int groupId;
-	
 	@JsonProperty("RoleId")
 	private int roleId;
 	
@@ -63,14 +60,6 @@ public class SimpleUserInfoModel implements Serializable {
 
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
-	}
-
-	public int getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(int groupId) {
-		this.groupId = groupId;
 	}
 
 	public int getRoleId() {

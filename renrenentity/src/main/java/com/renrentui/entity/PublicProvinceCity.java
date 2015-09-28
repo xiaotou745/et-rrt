@@ -41,5 +41,45 @@ public class PublicProvinceCity {
         this.code = code;
     }
 
+	public Integer getParentCode() {
+		return parentCode;
+	}
+
+	public void setParentCode(Integer parentCode) {
+		this.parentCode = parentCode;
+	}
+
+	public Integer getJiBie() {
+		return jiBie;
+	}
+
+	public void setJiBie(Integer jiBie) {
+		this.jiBie = jiBie;
+	}
+
+	public String getLoweRacronym() {
+		return loweRacronym;
+	}
+
+	public void setLoweRacronym(String loweRacronym) {
+		this.loweRacronym = loweRacronym;
+	}
+
+	public String getUpperRcronym() {
+		return upperRcronym;
+	}
+
+	public void setUpperRcronym(String upperRcronym) {
+		this.upperRcronym = upperRcronym;
+	}
+
+	public String getLowerFullPinYin() {
+		return lowerFullPinYin;
+	}
+
+	public void setLowerFullPinYin(String lowerFullPinYin) {
+		this.lowerFullPinYin = lowerFullPinYin;
+	}
+
     
 }

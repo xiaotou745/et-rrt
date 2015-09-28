@@ -51,12 +51,12 @@
 			<%
 			        String parentClass="";
 					for (MenuInfo menu : menuList) {
-						if (menu.getParid() == 0) {
+						if (menu.getParId() == 0) {
 							parentClass="";
 							List<MenuInfo> data=new ArrayList<>();
 							for (MenuInfo itemMenu : menuList) {
-								if (itemMenu.getParid() == menu.getId()
-										&& itemMenu.getIsbutton() == false) {
+								if (itemMenu.getParId() == menu.getId()
+										&& itemMenu.getIsButton() == false) {
 									if(viewPath.equals(itemMenu.getUrl().substring(1))){
 										parentClass=" class='active' ";
 									}
@@ -66,30 +66,17 @@
 							if(data.size()>0){
 								%>
 								<li <%=parentClass%>><a href="#"><i class="fa fa-th-large"></i>
-										<span class="nav-label"><%=menu.getMenuname()%></span> <span
+										<span class="nav-label"><%=menu.getMenuName()%></span> <span
 										class="fa arrow"></span></a>
 									<ul class="nav nav-second-level">
 										<%
 								for (MenuInfo submenu : data) {
-									
-									//此时表示这个页面需要跳转到老后台
-									if(submenu.getUrl()!=null&&
-									!submenu.getUrl().isEmpty()&&
-									context.getLoginFrom()==0){
-										%>
-										<li><a href=""><%=submenu.getMenuname()%></a></li>
-										<%
-									}else{
 									%>
-									<li <%=viewPath.equals(submenu.getUrl().substring(1))?"class='active'":""%>><a href="<%=basePath+submenu.getUrl()%>"><%=submenu.getMenuname()%></a></li>
-
-									<%	}
-								}
-								%>
+									<li <%=viewPath.equals(submenu.getUrl().substring(1))?"class='active'":""%>><a href="<%=basePath+submenu.getUrl()%>"><%=submenu.getMenuName()%></a></li>
+									<%}%>
 								</ul></li>
 							<%
-							}
-							
+							}	
 					}
 				}	
 			%>

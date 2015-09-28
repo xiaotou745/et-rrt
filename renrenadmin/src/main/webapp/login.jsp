@@ -21,7 +21,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
-<title>e代送管理后台</title>
+<title>人人地推管理后台</title>
 <link href="<%=basePath%>/css/bootstrap.min.css" rel="stylesheet" />
 <link href="<%=basePath%>/css/font-awesome.css" rel="stylesheet" />
 <link href="<%=basePath%>/css/animate.css" rel="stylesheet" />

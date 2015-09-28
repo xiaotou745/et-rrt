@@ -10,13 +10,13 @@ import com.renrentui.api.common.DaoBase;
 import com.renrentui.api.dao.inter.IAccountInfoDao;
 import com.renrentui.common.PagedResponse;
 import com.renrentui.entity.AccountInfo;
-import com.renrentui.entity.req.PagedAccountReq;
+import com.renrentui.entity.req.PagedAccountInfoReq;
 
 @Repository
 public class AccountInfoDao extends DaoBase implements IAccountInfoDao {
 	// 查询所有管理后台用户列表
 	@Override
-	public PagedResponse<AccountInfo> queryAccount(PagedAccountReq req) {
+	public PagedResponse<AccountInfo> queryAccount(PagedAccountInfoReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList(
 				"com.renrentui.renrenapi.dao.inter.IAccountDao.query", req);
 	}

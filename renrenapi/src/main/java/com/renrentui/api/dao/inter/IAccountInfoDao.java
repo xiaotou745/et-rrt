@@ -2,16 +2,14 @@ package com.renrentui.api.dao.inter;
 
 import java.util.List;
 
-
-
-
 import com.renrentui.common.PagedResponse;
 import com.renrentui.entity.AccountInfo;
-import com.renrentui.entity.req.PagedAccountReq;
+import com.renrentui.entity.req.PagedAccountInfoReq;
+
 
 
 public interface IAccountInfoDao {
-	public  PagedResponse<AccountInfo>  queryAccount(PagedAccountReq req);
+	public  PagedResponse<AccountInfo>  queryAccount(PagedAccountInfoReq req);
 	AccountInfo login(String username,String password);
 	AccountInfo getByID(int userID);
 	int updateRoleID(int userID,int newRoleID);
