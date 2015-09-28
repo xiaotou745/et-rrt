@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
@@ -12,12 +13,15 @@ import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
+import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.req.CWithdrawFormReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -106,7 +110,7 @@ public class UsercService implements IUsercService {
 	* @Return
 	*/
 	@Override
-	public HttpResultModel<Object> signIn(SignInReq req) {
+	public HttpResultModel<Object> signin(SignInReq req) {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
 		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
 			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
@@ -115,7 +119,7 @@ public class UsercService implements IUsercService {
 		Clienter clienterModel=clienterService.queryClienter(req);
 		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
 			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
-        return resultModel.setData(clienterModel);
+		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(clienterModel);
 	}
 
 	/**
@@ -145,6 +149,23 @@ public class UsercService implements IUsercService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	/**
+	* @Des 获取用户收入 
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:31:59
+	* @Return
+	*/
+	@Override
+	public HttpResultModel<Object> myincome(MyIncomeReq req) {
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		if(!clienterService.isExistUserC(req.getUserId()))//用户不存在
+			return  resultModel.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(MyIncomeCode.UserIdUnexist.desc());
+		ClienterBalance clienterBalanceModel=clienterService.queryClienterBalance(req);
+		if(clienterBalanceModel==null||clienterBalanceModel.getId()<=0)//手机号或密码错误
+			return resultModel.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(MyIncomeCode.QueryIncomeError.desc());
+		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(clienterBalanceModel);
+		
 	}
 
 }
