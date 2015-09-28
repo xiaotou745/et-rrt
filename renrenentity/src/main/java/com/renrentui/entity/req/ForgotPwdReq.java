@@ -8,7 +8,7 @@ package com.renrentui.entity.req;
 public class ForgotPwdReq {
 
 	private String phoneNo;//手机号
-	private String pwssWord;//新密码
+	private String passWord;//新密码
 	private String verifyCode;//验证码
 	public String getPhoneNo() {
 		return phoneNo;
@@ -16,11 +16,12 @@ public class ForgotPwdReq {
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public String getPwssWord() {
-		return pwssWord;
+
+	public String getPassWord() {
+		return passWord;
 	}
-	public void setPwssWord(String pwssWord) {
-		this.pwssWord = pwssWord;
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
 	public String getVerifyCode() {
 		return verifyCode;

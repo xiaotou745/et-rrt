@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.renrentui.apihttp.common.HttpResultModel;
 import com.renrentui.apihttp.service.inter.IUsercService;
+import com.renrentui.core.enums.ForgotPwdCode;
 import com.renrentui.entity.req.ForgotPwdReq;
 /**
  * 用户相关 
@@ -20,8 +21,16 @@ public class UsercService implements IUsercService{
 	 */
 	@Override
 	public HttpResultModel<Object> forgotPwd(ForgotPwdReq req) {
-		// TODO Auto-generated method stub
-		return null;
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		if(req.getPhoneNo().equals(""))//手机号为空
+			return  resultModel.setCode(ForgotPwdCode.PhoneNull.value()).setMsg(ForgotPwdCode.PhoneNull.desc());
+		if(req.getPhoneNo().equals(""))//手机号不正确   TODO 查库验证手机号是否纯在
+			return resultModel.setCode(ForgotPwdCode.PhoneError.value()).setMsg(ForgotPwdCode.PhoneError.desc());
+		if(req.getVerifyCode().equals(""))//验证码为空
+			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value()).setMsg(ForgotPwdCode.VerCodeNull.desc());
+		if(req.getPhoneNo().equals(""))//验证码不正确   TODO 查缓存看验证码正确
+			return resultModel.setCode(ForgotPwdCode.VerCodeError.value()).setMsg(ForgotPwdCode.VerCodeError.desc());
+		return resultModel;
 	}
 	/**
 	 * C端修改密码
