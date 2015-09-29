@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.TaskDetailReq;
 
 /**
  * 任务相关模块
@@ -26,6 +27,6 @@ public interface ITaskService {
 	 */
 	@POST
 	@Path("/taskdetail")
-	 public HttpResultModel<Object> taskDeatil();
+	 public HttpResultModel<Object> taskDeatil(TaskDetailReq req);
 
 }

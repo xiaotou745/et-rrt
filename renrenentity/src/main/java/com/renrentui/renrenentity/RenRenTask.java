@@ -43,8 +43,27 @@ public class RenRenTask {
     private String link;
 
     private Short paymentMethod;
+    private int auditCycle;
 
-    public Long getId() {
+    private String taskNote;
+
+    public int getAuditCycle() {
+		return auditCycle;
+	}
+
+	public void setAuditCycle(int auditCycle) {
+		this.auditCycle = auditCycle;
+	}
+
+	public String getTaskNote() {
+		return taskNote;
+	}
+
+	public void setTaskNote(String taskNote) {
+		this.taskNote = taskNote;
+	}
+
+	public Long getId() {
         return id;
     }
 
