@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.IBusinessDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.Business" >
-    <id column="Id" property="id" jdbcType="BIGINT" />
-    <result column="CompanyName" property="companyname" jdbcType="NVARCHAR" />
-    <result column="PhoneNo" property="phoneno" jdbcType="VARCHAR" />
-    <result column="PassWord" property="password" jdbcType="VARCHAR" />
-    <result column="LoginName" property="loginname" jdbcType="VARCHAR" />
-    <result column="Logo" property="logo" jdbcType="NVARCHAR" />
-    <result column="Address" property="address" jdbcType="VARCHAR" />
-    <result column="CityCode" property="citycode" jdbcType="INTEGER" />
-    <result column="CityName" property="cityname" jdbcType="NVARCHAR" />
-    <result column="WebSite" property="website" jdbcType="VARCHAR" />
-  </resultMap>
   <sql id="Base_Column_List" >
     Id, CompanyName, PhoneNo, PassWord, LoginName, Logo, Address, CityCode, CityName, 
     WebSite
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultType="com.renrentui.renrenentity.Business"
+   parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from Business
@@ -188,4 +177,9 @@
       WebSite = #{website,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+    <select id="getAllList" resultType="com.renrentui.renrenentity.Business" >
+    select 
+    <include refid="Base_Column_List" />
+    from Business with(nolock)
+  </select>
 </mapper>

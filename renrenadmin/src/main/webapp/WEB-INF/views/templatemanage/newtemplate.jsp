@@ -3,10 +3,12 @@
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrenentity.AccountInfo"%>
 <%@page import="com.renrentui.renrenentity.RoleInfo"%>
+<%@page import="com.renrentui.renrenentity.Business"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
+List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 %>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<fieldset>
@@ -18,7 +20,7 @@
 						<div class="form-group">
 							<label class="col-sm-4 control-label">所属商家: </label>
 							<div class="col-sm-8">
-								<%=HtmlHelper.getSelect("businessId", null, "name", "id", 0,"0", "全部", "width:143px")%>
+								<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,null, "全部", "width:143px")%>
 							</div>
 						</div>
 					</div>

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
+import com.renrentui.renrenapi.service.inter.IBusinessServce;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.util.ParseHelper;
+import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateDetail;
 import com.renrentui.renrenentity.domain.TemplateModel;
@@ -24,19 +26,22 @@ import com.renrentui.renrenentity.domain.TemplateModel;
 public class TemplateController {
 	@Autowired
 	private ITemplateService templateService;
+	@Autowired
+	private IBusinessServce businessService;
 	@RequestMapping("newtemplate")
 	public ModelAndView newTemplate() {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "模板管理");
 		model.addObject("currenttitle", "新建模板");
 		model.addObject("viewPath", "templatemanage/newtemplate");
+		List<Business> datalist=businessService.getAllList();
+		model.addObject("businessData", datalist);
 		return model;
 	}
 
 	@RequestMapping("savetemplate")
 	@ResponseBody
 	public int saveTemplate(HttpServletRequest request,String tempName,String tempRemark,Long businessId,String child) {
-		businessId=100l;
 		if (tempName==null||tempName.isEmpty()||
 			tempRemark==null||tempRemark.isEmpty()||
 			businessId==null||businessId<=0||
