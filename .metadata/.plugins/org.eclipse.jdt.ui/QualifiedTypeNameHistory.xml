@@ -11,12 +11,14 @@
 <fullyQualifiedTypeName name="com.renrentui.api.service.inter.IClienterBalanceService"/>
 <fullyQualifiedTypeName name="com.renrentui.entity.ClienterBalance"/>
 <fullyQualifiedTypeName name="com.renrentui.renrenapi.common.DaoBase"/>
-<fullyQualifiedTypeName name="com.renrentui.renrenapi.dao.inter.IClienterBalanceDao"/>
 <fullyQualifiedTypeName name="com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao"/>
 <fullyQualifiedTypeName name="com.renrentui.renrenapi.service.inter.IClienterBalanceService"/>
 <fullyQualifiedTypeName name="com.renrentui.renrencore.enums.WithdrawState"/>
 <fullyQualifiedTypeName name="com.renrentui.renrenentity.ClienterBalance"/>
 <fullyQualifiedTypeName name="com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService"/>
-<fullyQualifiedTypeName name="com.renrentui.renrenentity.req.ClienterBalanceReq"/>
 <fullyQualifiedTypeName name="com.renrentui.renrenentity.ClienterWithdrawForm"/>
+<fullyQualifiedTypeName name="com.renrentui.renrenapi.dao.inter.IClienterBalanceDao"/>
+<fullyQualifiedTypeName name="com.renrentui.renrenentity.req.ClienterBalanceReq"/>
+<fullyQualifiedTypeName name="com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao"/>
+<fullyQualifiedTypeName name="com.renrentui.renrenentity.ClienterBalanceRecord"/>
 </qualifiedTypeNameHistroy>

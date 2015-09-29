@@ -86,6 +86,8 @@ public interface IUsercService {
 	* @Date 2015年9月28日17:11:11
 	* @Return
 	*/
+	@POST
+	@Path("/myincome")
 	public HttpResultModel<Object> myincome(MyIncomeReq req);
 	
 	/**
