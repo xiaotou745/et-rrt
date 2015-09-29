@@ -86,6 +86,18 @@ public class RedisService {
 	}
 
 	/**
+	 * 获取所有相似key
+	 * 
+	 * @param keyPattern
+	 *            模糊键
+	 * @author haichao
+	 * @date 2015年9月29日 13:10:05
+	 * */
+	public Set<String> keys(String keyPattern){
+		return redisTemplate.keys("*"+suffxKey(keyPattern)+"*");
+	}
+
+	/**
 	 * 给key添加后缀或前缀
 	 * 
 	 * @author hailongzhao
