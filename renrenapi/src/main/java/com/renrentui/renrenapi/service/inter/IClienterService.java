@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
@@ -66,5 +67,13 @@ public interface IClienterService {
 	* @Return
 	*/
 	ClienterBalance queryClienterBalance(MyIncomeReq req);
+	/**
+	 * 用户提现
+	 * 胡灵波
+	 * 2015年9月28日 16:58:06
+	 * @param req
+	 * @return
+	 */
+	void WithdrawC(ClienterBalanceReq req);
 	
 }

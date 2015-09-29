@@ -29,14 +29,13 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
-    insert into ClienterWithdrawForm (Id, ClienterId, Amount, 
+    insert into ClienterWithdrawForm (ClienterId, Amount, 
       WithdrawNo, WithType, AccountInfo, 
-      TrueName, Status, CreateTime, 
-      AuditTime, AuditName)
-    values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
-      #{withdrawno,jdbcType=VARCHAR}, #{withtype,jdbcType=SMALLINT}, #{accountinfo,jdbcType=VARCHAR}, 
-      #{truename,jdbcType=NVARCHAR}, #{status,jdbcType=SMALLINT}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{audittime,jdbcType=TIMESTAMP}, #{auditname,jdbcType=NVARCHAR})
+      TrueName, Status )
+    values (#{clienterId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
+      #{withdrawNo,jdbcType=VARCHAR}, #{withType,jdbcType=SMALLINT}, #{accountInfo,jdbcType=VARCHAR}, 
+      #{trueName,jdbcType=NVARCHAR}, #{status,jdbcType=SMALLINT}
+     )
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
     insert into ClienterWithdrawForm

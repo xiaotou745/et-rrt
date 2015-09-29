@@ -6,7 +6,7 @@ import java.net.MalformedURLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
-
+import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
@@ -18,18 +18,19 @@ import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
-import com.renrentui.renrenentity.req.CWithdrawFormReq;
-import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;
+
 /**
  * 用户相关
  * 
@@ -40,7 +41,13 @@ import com.renrentui.renrenentity.req.SignInReq;
 public class UsercService implements IUsercService {
 
 	@Autowired
-	IClienterService  clienterService;
+	IClienterService clienterService;
+	
+	@Autowired
+	private IClienterBalanceService clienterBalanceService;	
+
+	@Autowired
+	RedisService redisService;
 
 	/**
 	 * C端忘记密码 茹化肖 2015年9月28日10:44:52
@@ -49,16 +56,18 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> forgotPwd(ForgotPwdReq req) {
 		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-		if (req.getPhoneNo()==null||req.getPhoneNo().equals(""))// 手机号为空
+		if (req.getPhoneNo() == null || req.getPhoneNo().equals(""))// 手机号为空
 			return resultModel.setCode(ForgotPwdCode.PhoneNull.value()).setMsg(
 					ForgotPwdCode.PhoneNull.desc());
 		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
 			return resultModel.setCode(ForgotPwdCode.PhoneError.value())
 					.setMsg(ForgotPwdCode.PhoneError.desc());
-		if (req.getVerifyCode()==null||req.getVerifyCode().equals(""))// 验证码为空
+		if (req.getVerifyCode() == null || req.getVerifyCode().equals(""))// 验证码为空
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value())
 					.setMsg(ForgotPwdCode.VerCodeNull.desc());
-		if (req.getVerifyCode()=="")// 验证码不正确 TODO 查缓存看验证码正确
+		String key=RedissCacheKey.RR_Clienter_sendcode_forgetPassword+ req.getPhoneNo();//RedisKey
+		String redisValueString= redisService.get(key, String.class);
+		if (!req.getVerifyCode().equals(redisValueString))// 验证码不正确 
 			return resultModel.setCode(ForgotPwdCode.VerCodeError.value())
 					.setMsg(ForgotPwdCode.VerCodeError.desc());
 		if (clienterService.forgotPwdUserc(req))// 修改密码成功
@@ -85,43 +94,76 @@ public class UsercService implements IUsercService {
 				ModifyPwdCode.Fail.desc());
 	}
 
-	@Override
-	public HttpResultModel<Object> withdraw(CWithdrawFormReq req) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * 用户申请提现
+	 * @author 胡灵波
+	 * @date 2015年9月28日 11:30:15
+	 * @return
+	 */
+	@Override	
+	public HttpResultModel<Object> withdraw(ClienterBalanceReq req)
+	{
+		HttpResultModel<Object> resultModel=new HttpResultModel<Object>();
+		
+		if(req.getUserId()<1)
+		{
+			resultModel.setCode(WithdrawState.Failure.value());
+			resultModel.setMsg(WithdrawState.Failure.desc());
+			return resultModel;
+		}
+		ClienterBalance clienterBalanceModel=clienterBalanceService.selectByPrimaryKey(req.getUserId());
+		double amount=clienterBalanceModel.getWithdraw();
+		if(req.getAmount()>amount)
+		{
+			resultModel.setCode(WithdrawState.MoneyError.value());
+			resultModel.setMsg(WithdrawState.MoneyError.desc());
+			return resultModel;
+		}
+		
+		clienterService.WithdrawC(req);
+		return resultModel;
 	}
+
 	/*
-	 * C端注册
-	 * WangChao
+	 * C端注册 WangChao
 	 */
 	@Override
 	public HttpResultModel<Object> signup(SignUpReq req) {
-		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
-		if(req.getPhoneNo().equals("")){
-			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(SignUpCode.PhoneNull.desc());
+		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+		if (req.getPhoneNo().equals("")) {
+			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(
+					SignUpCode.PhoneNull.desc());
 		}
-		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号不正确
-			return resultModel.setCode(SignUpCode.PhoneFormatError.value()).setMsg(SignUpCode.PhoneFormatError.desc());
-		if(req.getVerifyCode().equals(""))// 验证码不能为空
-			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(SignUpCode.VerCodeNull.desc());
-		if(req.getVerifyCode().equals(""))  //验证码 查缓存  
-			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(SignUpCode.VerCodeError.desc());
-		int id=clienterService.signup(req);
-		if(id>0) {// 注册成功
+		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
+			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
+					.setMsg(SignUpCode.PhoneFormatError.desc());
+		if (req.getVerifyCode().equals(""))// 验证码不能为空
+			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
+					SignUpCode.VerCodeNull.desc());
+		String key=RedissCacheKey.RR_Clienter_sendcode_register+ req.getPhoneNo();//注册key
+		String redisValueString= redisService.get(key, String.class);
+		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
+			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
+					SignUpCode.VerCodeError.desc());
+		int id = clienterService.signup(req);
+		if (id > 0) {// 注册成功
 			SignUpResp sur = new SignUpResp();
 			sur.setUserId(id);
 			sur.setUserName(req.getName());
-			resultModel.setData(sur).setCode(SignUpCode.Success.value()).setMsg(SignUpCode.Success.desc());
+			resultModel.setData(sur).setCode(SignUpCode.Success.value())
+					.setMsg(SignUpCode.Success.desc());
 			return resultModel;
 		}
-		return resultModel.setCode(SignUpCode.Fail.value()).setMsg(SignUpCode.Fail.desc());//注册失败
+		return resultModel.setCode(SignUpCode.Fail.value()).setMsg(
+				SignUpCode.Fail.desc());// 注册失败
 	}
+
 	/**
-	* @Des  C端登陆
-	* @Author WangXuDan
-	* @Date 2015年9月28日15:55:58
-	* @Return
-	*/
+	 * @Des C端登陆
+	 * @Author WangXuDan
+	 * @Date 2015年9月28日15:55:58
+	 * @Return
+	 */
 	@Override
 	public HttpResultModel<Object> signin(SignInReq req) {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
@@ -155,18 +197,19 @@ public class UsercService implements IUsercService {
 				key = RedissCacheKey.RR_Clienter_sendcode_register
 						+ req.getPhoneNo();
 			} else if (req.getsType() == 2) {
+				// 修改密码
 				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
 						+ req.getPhoneNo();
 			} else if (req.getsType() == 3) {
+				// 忘记密码
 				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
 						+ req.getPhoneNo();
 			}
 
 			if (key == "")
 				return null;
-			RedisService redis = new RedisService();
-			redis.set(key, code);
-
+//			String str = redisService.get(key, String.class);
+			redisService.set(key, code, 60 * 5);
 			long resultValue = SmsUtils.sendSMS(req.getPhoneNo(), "您的验证码为:"
 					+ code);
 			if (resultValue <= 0) {

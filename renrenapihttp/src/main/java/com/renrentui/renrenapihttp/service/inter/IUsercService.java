@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 
 import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
-import com.renrentui.renrenentity.req.CWithdrawFormReq;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
@@ -51,7 +51,7 @@ public interface IUsercService {
 	 */
 	@POST
 	@Path("/withdraw")
-	 public HttpResultModel<Object> withdraw(CWithdrawFormReq req);
+	 public HttpResultModel<Object> withdraw(ClienterBalanceReq req);
 	
 	/**
 	 * 获取验证码
