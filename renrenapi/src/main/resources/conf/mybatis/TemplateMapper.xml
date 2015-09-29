@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.Template" >
-    <id column="Id" property="id" jdbcType="BIGINT" />
-    <result column="BusinessId" property="businessid" jdbcType="BIGINT" />
-    <result column="TemplateName" property="templatename" jdbcType="NVARCHAR" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="LastOptName" property="lastoptname" jdbcType="NVARCHAR" />
-    <result column="LastOptTime" property="lastopttime" jdbcType="TIMESTAMP" />
-    <result column="Status" property="status" jdbcType="SMALLINT" />
-  </resultMap>
   <sql id="Base_Column_List" >
     Id, BusinessId, TemplateName, CreateTime, LastOptName, LastOptTime, Status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="detail" resultType="com.renrentui.renrenentity.Template" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from Template
@@ -24,86 +15,19 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.Template" >
-    insert into Template (Id, BusinessId, TemplateName, 
-      CreateTime, LastOptName, LastOptTime, 
+  	  <selectKey resultType="java.lang.Long" keyProperty="id"
+				order="AFTER">
+				select @@IDENTITY as id
+	  </selectKey>
+    insert into Template (BusinessId, TemplateName, 
+      CreateTime, LastOptName, LastOptTime, remark,
       Status)
-    values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=BIGINT}, #{templatename,jdbcType=NVARCHAR}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{lastoptname,jdbcType=NVARCHAR}, #{lastopttime,jdbcType=TIMESTAMP}, 
+    values (#{businessId,jdbcType=BIGINT}, #{templateName,jdbcType=NVARCHAR}, 
+      getdate(), #{lastOptName,jdbcType=NVARCHAR}, getdate(), #{remark,jdbcType=NVARCHAR},
       #{status,jdbcType=SMALLINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Template" >
-    insert into Template
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="businessid != null" >
-        BusinessId,
-      </if>
-      <if test="templatename != null" >
-        TemplateName,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="lastoptname != null" >
-        LastOptName,
-      </if>
-      <if test="lastopttime != null" >
-        LastOptTime,
-      </if>
-      <if test="status != null" >
-        Status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="businessid != null" >
-        #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="templatename != null" >
-        #{templatename,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastoptname != null" >
-        #{lastoptname,jdbcType=NVARCHAR},
-      </if>
-      <if test="lastopttime != null" >
-        #{lastopttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=SMALLINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Template" >
-    update Template
-    <set >
-      <if test="businessid != null" >
-        BusinessId = #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="templatename != null" >
-        TemplateName = #{templatename,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastoptname != null" >
-        LastOptName = #{lastoptname,jdbcType=NVARCHAR},
-      </if>
-      <if test="lastopttime != null" >
-        LastOptTime = #{lastopttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        Status = #{status,jdbcType=SMALLINT},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
+  
+  
   <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.Template" >
     update Template
     set BusinessId = #{businessid,jdbcType=BIGINT},
@@ -114,4 +38,26 @@
       Status = #{status,jdbcType=SMALLINT}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <sql id="queryTemplateWhere">
+		1=1
+		<if test="keyword != null and keyword!=''">
+			and UserName like ''%${keyword}%''
+		</if>
+	</sql> 
+<select id="queryTemplate" resultType="com.renrentui.renrenentity.Template" 
+parameterType="com.renrentui.renrenentity.req.PagedTemplateReq" statementType="CALLABLE">
+{call Sp_CustomPage2015_V1(
+		' Id desc ',
+		' * ',
+		' Template(nolock) ',
+		'
+		<include refid="queryTemplateWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)} 
+  </select>
 </mapper>
