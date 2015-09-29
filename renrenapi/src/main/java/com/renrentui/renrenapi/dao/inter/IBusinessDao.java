@@ -16,6 +16,6 @@ public interface IBusinessDao {
     int updateByPrimaryKeySelective(Business record);
 
     int updateByPrimaryKey(Business record);
-    
+        PagedResponse<Business> getBusinessList(PagedBusinessReq req);
     List<Business> getAllList();
 }
