@@ -2,21 +2,23 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="clienterBalanceService" key="selection"/>
+		<item value="operator" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="Operator"/>
+			<item value="clienter"/>
 			<item value="clienterBalanceService"/>
 			<item value=".int"/>
 			<item value="int"/>
 			<item value="com.renrentui.renrenapi.dao.inter.IClienterBalanceDao"/>
 			<item value="com.renrentui.renrenapi.dao.inter.IClienterBalanceDao."/>
 			<item value="clienterWithdrawFormService"/>
-			<item value="get"/>
 		</list>
 		<list key="replacehistory">
+			<item value="clienter"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
