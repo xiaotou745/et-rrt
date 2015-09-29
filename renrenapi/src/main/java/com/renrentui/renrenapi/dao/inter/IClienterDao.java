@@ -11,9 +11,7 @@ import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 public interface IClienterDao {
     int deleteByPrimaryKey(Long id);
-
-    int insert(Clienter record);
-
+ 
     int insertSelective(Clienter record);
 
     Clienter selectByPrimaryKey(Long id);
@@ -50,7 +48,8 @@ public interface IClienterDao {
 	 * @return
 	 */
 	boolean modifyPwdUserc(ModifyPwdReq req);
-	int signup(SignUpReq req);
+	
+	long signup(SignUpReq req);
 	/**
 	* @Des 查询C端用户信息  
 	* @Author WangXuDan

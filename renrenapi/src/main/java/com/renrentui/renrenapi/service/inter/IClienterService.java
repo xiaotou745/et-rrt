@@ -46,7 +46,7 @@ public interface IClienterService {
 	 */
 	boolean modifyPwdUserc(ModifyPwdReq req);
 
-	int signup(SignUpReq req);
+	long signup(SignUpReq req);
 	/**
 	* @Des 查询C端用户信息  
 	* @Author WangXuDan

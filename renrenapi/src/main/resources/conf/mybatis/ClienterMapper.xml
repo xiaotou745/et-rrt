@@ -34,12 +34,13 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.req.SignUpReq" >
-	  <selectKey resultType="java.lang.Integer" keyProperty="id"
+	  <selectKey resultType="java.lang.Long" keyProperty="id"
 				order="AFTER">
 				select @@IDENTITY as id
 	  </selectKey>
 	    insert into Clienter (ClienterName, PhoneNo, Password)
-	    values (#{name,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+	    values (#{name,jdbcType=NVARCHAR}, #{phoneNo,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR});
+<!-- 		values('1','1','1') -->
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Clienter" >
     insert into Clienter

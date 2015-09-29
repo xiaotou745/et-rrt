@@ -21,11 +21,9 @@
     delete from ClienterBalance
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterBalance" >
-    insert into ClienterBalance (Id, ClienterId, Balance, 
-      Withdraw, HadWithdraw)
-    values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL}, 
-      #{withdraw,jdbcType=DECIMAL}, #{hadwithdraw,jdbcType=DECIMAL})
+  <insert id="insert" parameterType="java.lang.Long" >
+    insert into ClienterBalance (ClienterId)
+    values (#{clienterid,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterBalance" >
     insert into ClienterBalance
