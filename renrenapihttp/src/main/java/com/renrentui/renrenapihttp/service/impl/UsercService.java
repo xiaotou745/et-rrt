@@ -8,7 +8,6 @@ import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
-import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
@@ -18,6 +17,7 @@ import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.enums.SignUpCode;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
@@ -136,7 +136,7 @@ public class UsercService implements IUsercService {
 			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(
 					SignUpCode.PhoneNull.desc());
 		}
-		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
+		if (clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
 			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
 					.setMsg(SignUpCode.PhoneFormatError.desc());
 		if (req.getVerifyCode().equals(""))// 验证码不能为空

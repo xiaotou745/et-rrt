@@ -1,4 +1,9 @@
 package com.renrentui.renrenentity.domain;
+
+import java.util.ArrayList;
+
+import com.renrentui.renrencore.enums.PaymentMethodType;
+
 /**
  * 任务详情实体 
  * @author ofmyi_000
@@ -6,8 +11,9 @@ package com.renrentui.renrenentity.domain;
  */
 public class TaskDetail {
 	
-	public  TaskDetail() {
-		this.contractInfo=new ContractInfo();
+	public TaskDetail()
+	{
+		this.controlInfo=new ArrayList<ControlInfo>();
 	}
 	private Long id;
 	private String taskTitle;
@@ -20,7 +26,29 @@ public class TaskDetail {
 	private String taskNote;
 	private Long businessId;
 	private Long tempateId;
-	private ContractInfo contractInfo;
+	private String pusher;
+	private String templateName;
+	private ArrayList<ControlInfo> controlInfo;
+	private int isHad;
+	public int getIsHad() {
+		return isHad;
+	}
+	public void setIsHad(int isHad) {
+		this.isHad = isHad;
+	}
+	public String getTemplateName() {
+		return templateName;
+	}
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
+	public String getPusher() {
+		return pusher;
+	}
+	public void setPusher(String pusher) {
+		this.pusher = pusher;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,8 +85,8 @@ public class TaskDetail {
 	public void setAvailableCount(int availableCount) {
 		this.availableCount = availableCount;
 	}
-	public int getPaymentMethod() {
-		return paymentMethod;
+	public String getPaymentMethod() {
+		return PaymentMethodType.getEnum(paymentMethod).desc() ;
 	}
 	public void setPaymentMethod(int paymentMethod) {
 		this.paymentMethod = paymentMethod;
@@ -87,11 +115,11 @@ public class TaskDetail {
 	public void setTempateId(Long tempateId) {
 		this.tempateId = tempateId;
 	}
-	public ContractInfo getContractInfo() {
-		return contractInfo;
+	public ArrayList<ControlInfo> getControlInfo() {
+		return controlInfo;
 	}
-	public void setContractInfo(ContractInfo contractInfo) {
-		this.contractInfo = contractInfo;
+	public void setControlInfo(ArrayList<ControlInfo> controlInfo) {
+		this.controlInfo = controlInfo;
 	}
 	
 }
