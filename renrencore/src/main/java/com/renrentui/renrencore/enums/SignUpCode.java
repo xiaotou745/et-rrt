@@ -1,4 +1,4 @@
-package com.renrentui.core.enums;
+package com.renrentui.renrencore.enums;
 
 public enum SignUpCode {
 

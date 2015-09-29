@@ -1,6 +1,8 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.req.TaskDetailReq;
 
 public interface IRenRenTaskDao {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +16,6 @@ public interface IRenRenTaskDao {
     int updateByPrimaryKeySelective(RenRenTask record);
 
     int updateByPrimaryKey(RenRenTask record);
+    
+    TaskDetail getTaskDetail(TaskDetailReq req);
 }
