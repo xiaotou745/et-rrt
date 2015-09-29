@@ -246,5 +246,28 @@ public class UsercService implements IUsercService {
 		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(clienterBalanceModel);
 		
 	}
+	/**
+	 * 获取缓存验证码
+	 */
+	@Override
+	public String vercode(String phoneNo, int type) {
+		String key = "";
+		// 类型 1注册 2修改密码 3忘记密码
+		if (type == 1) {
+			// 注册
+			key = RedissCacheKey.RR_Clienter_sendcode_register
+					+ phoneNo;
+		} else if (type == 2) {
+			// 修改密码
+			key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
+					+ phoneNo;
+		} else if (type == 3) {
+			// 忘记密码
+			key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
+					+ phoneNo;
+		}
+		String redisValueString= redisService.get(key, String.class);
+		return redisValueString;
+	}
 
 }
