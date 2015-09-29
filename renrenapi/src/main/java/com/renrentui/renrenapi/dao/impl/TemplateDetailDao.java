@@ -1,8 +1,11 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+
 import org.springframework.stereotype.Repository;
+
 import com.renrentui.renrenentity.domain.ControlInfo;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
@@ -28,9 +31,9 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.insertList", recordList);
 	}
 	/**
-	 * »ñÈ¡ºÏÍ¬µÄÏêÏ¸¿Ø¼şĞÅÏ¢
-	 * Èã»¯Ğ¤
-	 * 2015Äê9ÔÂ29ÈÕ13:39:58
+	 * ï¿½ï¿½È¡ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½Ø¼ï¿½ï¿½ï¿½Ï¢
+	 * ï¿½ã»¯Ğ¤
+	 * 2015ï¿½ï¿½9ï¿½ï¿½29ï¿½ï¿½13:39:58
 	 * 
 	 */
 	@Override

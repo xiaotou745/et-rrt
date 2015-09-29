@@ -33,7 +33,7 @@
       #{item.controlData,jdbcType=NVARCHAR});
 		</foreach>
 	</update>
-  <!-- ¸ù¾ÝºÏÍ¬Ä£°åID²éÑ¯¿Ø¼þÐÅÏ¢ Èã»¯Ð¤ 2015Äê9ÔÂ29ÈÕ13:49:49 -->
+  <!-- èŽ·å–æ¨¡æ¿çš„æŽ§ä»¶è¯¦æƒ…13:49:49 -->
   <select id="getTemplateList" resultType="com.renrentui.renrenentity.domain.ControlInfo" parameterType="java.util.HashMap" >
     SELECT  TC.ControlType ,
         Title ,
