@@ -8,7 +8,6 @@ import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
-import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
@@ -25,6 +24,7 @@ import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
