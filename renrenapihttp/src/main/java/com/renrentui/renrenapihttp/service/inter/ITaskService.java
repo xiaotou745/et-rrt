@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
+import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 
@@ -27,6 +28,6 @@ public interface ITaskService {
 	 */
 	@POST
 	@Path("/taskdetail")
-	 public HttpResultModel<Object> taskDeatil(TaskDetailReq req);
+	 public HttpResultModel<TaskDetail> taskDeatil(TaskDetailReq req);
 
 }
