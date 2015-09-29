@@ -1,11 +1,13 @@
 package com.renrentui.renrenapihttp.service.inter;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
+import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
@@ -84,7 +86,11 @@ public interface IUsercService {
 	* @Date 2015年9月28日17:11:11
 	* @Return
 	*/
+	@POST
+	@Path("/myincome")
 	public HttpResultModel<Object> myincome(MyIncomeReq req);
+	
+
 	
 	
 }

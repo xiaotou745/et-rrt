@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.springframework.stereotype.Repository;
 
 
+
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
@@ -14,6 +15,7 @@ import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 @Repository
 public class ClienterDao extends DaoBase implements IClienterDao {
@@ -142,8 +144,8 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	* @Return
 	*/
 	@Override
-	public ClienterBalance queryClienterBalance(MyIncomeReq req) {
-		ClienterBalance result = getReadOnlySqlSessionUtil().selectOne(
+	public MyIncomeResp queryClienterBalance(MyIncomeReq req) {
+		MyIncomeResp result = getReadOnlySqlSessionUtil().selectOne(
 				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.queryClienterBalance",
 				req);
 		return result;
