@@ -136,7 +136,7 @@ public class UsercService implements IUsercService {
 			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(
 					SignUpCode.PhoneNull.desc());
 		}
-		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
+		if (clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
 			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
 					.setMsg(SignUpCode.PhoneFormatError.desc());
 		if (req.getVerifyCode().equals(""))// 验证码不能为空
