@@ -2,6 +2,8 @@ package com.renrentui.renrenentity.domain;
 
 import java.util.ArrayList;
 
+import com.renrentui.renrencore.enums.PaymentMethodType;
+
 /**
  * 任务详情实体 
  * @author ofmyi_000
@@ -83,8 +85,8 @@ public class TaskDetail {
 	public void setAvailableCount(int availableCount) {
 		this.availableCount = availableCount;
 	}
-	public int getPaymentMethod() {
-		return paymentMethod;
+	public String getPaymentMethod() {
+		return PaymentMethodType.getEnum(paymentMethod).desc() ;
 	}
 	public void setPaymentMethod(int paymentMethod) {
 		this.paymentMethod = paymentMethod;
