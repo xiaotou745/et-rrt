@@ -32,6 +32,7 @@
 		<jaxrs:serviceBeans>
 <!-- 			<ref bean="commonService" /> -->
 			<ref bean="usercService" />
+			<ref bean="taskService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:inInterceptors>
 			<!-- <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean> -->

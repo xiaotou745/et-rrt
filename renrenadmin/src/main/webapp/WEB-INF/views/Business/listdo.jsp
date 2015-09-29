@@ -8,7 +8,7 @@
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 
 <%
-	String basePath =PropertyUtils.getProperty("java.admin.url");
+String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
 
 <table

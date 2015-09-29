@@ -43,7 +43,7 @@ import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
 
 @Controller
-@RequestMapping("account")
+@RequestMapping("business")
 public class BusinessController {
 	@Autowired
 	private IBusinessService businessService;
@@ -73,12 +73,12 @@ public class BusinessController {
 	 * @throws ParseException 
 	 */	
 	@RequestMapping("listdo")
-	public ModelAndView listdo(PagedBusinessReq req) throws Exception {		
+	public ModelAndView listdo(PagedBusinessReq req)  {		
 		
 		PagedResponse<Business> resp = businessService.getBusinessList(req);
 		ModelAndView model = new ModelAndView("business/listdo");
 		model.addObject("listData", resp);
-		return model;
+		return model;		
 	}		
 	
 }

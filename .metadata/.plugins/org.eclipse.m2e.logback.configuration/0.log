@@ -2107,3 +2107,125 @@ Caused by: java.io.FileNotFoundException: D:\renrenditui\.metadata\.plugins\org.
 2015-09-29 11:37:33,302 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
 2015-09-29 11:37:33,302 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2015-09-29 11:37:33,302 [Worker-119] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 11:39:12,739 [Worker-131] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:39:12,739 [Worker-131] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2015-09-29 11:39:12,740 [Worker-131] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:39:12,740 [Worker-131] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapi\src\test\resources
+2015-09-29 11:39:12,797 [Worker-131] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:39:12,798 [Worker-131] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapihttp\src\main\resources
+2015-09-29 11:39:12,798 [Worker-131] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:39:12,798 [Worker-131] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapihttp\src\test\resources
+2015-09-29 11:39:57,962 [Worker-132] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update started
+2015-09-29 11:39:58,237 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrenadmin:0.0.1-SNAPSHOT @ D:\renrenditui\renrenadmin\pom.xml.
+2015-09-29 11:39:58,572 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrenapi:0.0.1-SNAPSHOT @ D:\renrenditui\renrenapi\pom.xml.
+2015-09-29 11:39:58,618 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrenapihttp:0.0.1-SNAPSHOT @ D:\renrenditui\renrenapihttp\pom.xml.
+2015-09-29 11:39:58,667 [Worker-132] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.sun.xml.bind:jaxb-impl:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+2015-09-29 11:39:58,667 [Worker-132] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.sun.xml.bind:jaxb-core:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+2015-09-29 11:39:58,842 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrencore:0.0.1-SNAPSHOT @ D:\renrenditui\renrencore\pom.xml.
+2015-09-29 11:39:58,890 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrenentity:0.0.1-SNAPSHOT @ D:\renrenditui\renrenentity\pom.xml.
+2015-09-29 11:39:59,935 [Worker-132] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.sun.xml.bind:jaxb-impl:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+2015-09-29 11:39:59,939 [Worker-132] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.sun.xml.bind:jaxb-core:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+2015-09-29 11:40:00,465 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrenadmin/src/main/java
+2015-09-29 11:40:00,465 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrenadmin/src/test/java
+2015-09-29 11:40:00,711 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrenapi/src/main/java
+2015-09-29 11:40:00,711 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /renrenapi/src/main/resources
+2015-09-29 11:40:00,711 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrenapi/src/test/java
+2015-09-29 11:40:00,775 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrenapihttp/src/main/java
+2015-09-29 11:40:00,775 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrenapihttp/src/test/java
+2015-09-29 11:40:00,954 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrencore/src/main/java
+2015-09-29 11:40:00,954 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /renrencore/src/main/resources
+2015-09-29 11:40:00,954 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrencore/src/test/java
+2015-09-29 11:40:01,003 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrenentity/src/main/java
+2015-09-29 11:40:01,003 [Worker-132] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /renrenentity/src/test/java
+2015-09-29 11:40:01,590 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrenadmin:0.0.1-SNAPSHOT @ D:\renrenditui\renrenadmin\pom.xml.
+2015-09-29 11:40:02,211 [Worker-132] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for renrenadmin
+2015-09-29 11:40:02,432 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrenapi:0.0.1-SNAPSHOT @ D:\renrenditui\renrenapi\pom.xml.
+2015-09-29 11:40:02,573 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.maven.ide.eclipse.wtp.WarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrenapihttp:0.0.1-SNAPSHOT @ D:\renrenditui\renrenapihttp\pom.xml.
+2015-09-29 11:40:02,970 [Worker-132] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.sun.xml.bind:jaxb-impl:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+2015-09-29 11:40:02,974 [Worker-132] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.sun.xml.bind:jaxb-core:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+2015-09-29 11:40:03,264 [Worker-132] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for renrenapihttp
+2015-09-29 11:40:03,358 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrencore:0.0.1-SNAPSHOT @ D:\renrenditui\renrencore\pom.xml.
+2015-09-29 11:40:03,502 [Worker-132] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: renrentui:renrenentity:0.0.1-SNAPSHOT @ D:\renrenditui\renrenentity\pom.xml.
+2015-09-29 11:40:03,564 [Worker-132] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Update completed: 5 sec
+2015-09-29 11:40:04,504 [Worker-135] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:04,504 [Worker-135] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2015-09-29 11:40:04,521 [Worker-135] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:04,521 [Worker-135] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrencore\src\test\resources
+2015-09-29 11:40:04,809 [Worker-135] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:04,809 [Worker-135] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenentity\src\main\resources
+2015-09-29 11:40:04,809 [Worker-135] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:04,809 [Worker-135] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenentity\src\test\resources
+2015-09-29 11:40:06,261 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:06,261 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 37 resources
+2015-09-29 11:40:06,278 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:06,278 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapi\src\test\resources
+2015-09-29 11:40:06,593 [Worker-134] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.sun.xml.bind:jaxb-impl:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+2015-09-29 11:40:06,609 [Worker-134] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.sun.xml.bind:jaxb-core:jar:2.2.11 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+2015-09-29 11:40:06,836 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:06,836 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapihttp\src\main\resources
+2015-09-29 11:40:06,836 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:06,836 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapihttp\src\test\resources
+2015-09-29 11:40:07,681 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:07,681 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 11:40:07,681 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:40:07,681 [Worker-134] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 11:43:43,793 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:43:43,793 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 11:43:43,794 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:43:43,794 [Worker-129] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 11:45:06,553 [Worker-136] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:45:06,553 [Worker-136] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 11:45:06,553 [Worker-136] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:45:06,553 [Worker-136] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 11:48:39,594 [Worker-120] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:48:39,594 [Worker-120] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 11:48:39,594 [Worker-120] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:48:39,594 [Worker-120] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 11:48:49,181 [Worker-136] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:48:49,181 [Worker-136] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 11:48:49,181 [Worker-136] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:48:49,181 [Worker-136] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 11:55:11,794 [Worker-139] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:55:11,796 [Worker-139] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 37 resources
+2015-09-29 11:55:11,796 [Worker-139] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 11:55:11,796 [Worker-139] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapi\src\test\resources
+2015-09-29 13:05:50,701 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:05:50,701 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2015-09-29 13:05:50,701 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:05:50,701 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapi\src\test\resources
+2015-09-29 13:17:05,353 [Worker-142] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:17:05,353 [Worker-142] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 13:17:05,353 [Worker-142] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:17:05,369 [Worker-142] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 13:24:56,965 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:24:56,973 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 13:24:56,975 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:24:56,975 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 13:32:32,699 [Worker-153] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:32:32,699 [Worker-153] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 13:32:32,699 [Worker-153] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:32:32,699 [Worker-153] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 13:34:17,391 [Worker-150] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:34:17,392 [Worker-150] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 13:34:17,400 [Worker-150] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:34:17,400 [Worker-150] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 13:37:26,879 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:37:26,879 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 1 resource
+2015-09-29 13:37:26,881 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:37:26,881 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenapi\src\test\resources
+2015-09-29 13:40:43,276 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:40:43,276 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 13:40:43,277 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:40:43,277 [Worker-147] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 13:44:17,973 [Worker-146] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:44:17,973 [Worker-146] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 13:44:17,974 [Worker-146] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:44:17,974 [Worker-146] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 13:50:33,079 [Worker-161] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:50:33,079 [Worker-161] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 13:50:33,087 [Worker-161] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:50:33,087 [Worker-161] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources
+2015-09-29 13:51:45,921 [Worker-146] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:51:45,921 [Worker-146] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\main\resources
+2015-09-29 13:51:45,923 [Worker-146] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2015-09-29 13:51:45,923 [Worker-146] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory D:\renrenditui\renrenadmin\src\test\resources

@@ -66,7 +66,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 	{
 		PagedResponse<Business> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.renrentui.renrenapi.dao.inter.IBusinessDao.getBusinessList",
+						"com.renrentui.renrenapi.dao.inter.IBusinessDao.getBusinessList",						 
 						req);
 		return model;
 	}
