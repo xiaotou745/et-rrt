@@ -33,8 +33,8 @@ public class BusinessDao extends DaoBase implements IBusinessDao {
 
 	@Override
 	public int insert(Business record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().insert(
+				"com.renrentui.renrenapi.dao.inter.IBusinessDao.insert", record);
 	}
 
 	@Override

@@ -46,8 +46,8 @@ import com.renrentui.renrenentity.req.PagedBusinessReq;
 @RequestMapping("business")
 public class BusinessController {
 	@Autowired
-	private IBusinessService businessService;
-	
+	private IBusinessService businessService;	
+
 	/**
 	 * 商户列表管理页面 
 	 * @author hulignbo
@@ -69,16 +69,24 @@ public class BusinessController {
 	 * @author hulignbo
 	 * @Date 2015年9月29日 11:17:53
 	 * @param search 查询条件实体
-	 * @return
-	 * @throws ParseException 
+	 * @return	
 	 */	
 	@RequestMapping("listdo")
-	public ModelAndView listdo(PagedBusinessReq req)  {		
+	public ModelAndView listdo(PagedBusinessReq req)  {			
 		
 		PagedResponse<Business> resp = businessService.getBusinessList(req);
-		ModelAndView model = new ModelAndView("business/listdo");
+		ModelAndView model = new ModelAndView("business/listdo");		
 		model.addObject("listData", resp);
 		return model;		
 	}		
+	
+	
+	@RequestMapping("addbusiness")
+	@ResponseBody
+	public int addBusiness(Business record) {
+	
+		return businessService.Add(record);
+	}
+
 	
 }

@@ -1,7 +1,0 @@
-#Tomcat publish data
-#Tue Sep 29 13:51:47 CST 2015
-org.eclipse.jst.j2ee.server\:renrenapi=WEB-INF/lib/renrenapi-0.0.1-SNAPSHOT.jar
-org.eclipse.jst.jee.server\:/binary\:D\:\\repository\\org\\springframework\\spring-web\\4.1.1.RELEASE\\spring-web-4.1.1.RELEASE.jar=WEB-INF/lib/spring-web-4.1.1.RELEASE.jar
-org.eclipse.jst.j2ee.server\:renrencore=WEB-INF/lib/renrencore-0.0.1-SNAPSHOT.jar
-org.eclipse.jst.j2ee.server\:renrenentity=WEB-INF/lib/renrenentity-0.0.1-SNAPSHOT.jar
-org.eclipse.jst.jee.server\:/binary\:D\:\\repository\\org\\springframework\\spring-web\\4.1.4.RELEASE\\spring-web-4.1.4.RELEASE.jar=WEB-INF/lib/spring-web-4.1.4.RELEASE.jar

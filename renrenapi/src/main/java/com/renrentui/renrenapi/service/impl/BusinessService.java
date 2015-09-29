@@ -33,6 +33,14 @@ public class BusinessService implements IBusinessService{
 		// TODO Auto-generated method stub
 		return businessDao.getBusinessList(req);
 	}
+
+	@Override
+	public int Add(Business record) {
+		record.setPassWord("111111");
+		record.setLogo("");
+		record.setCityCode(0);			
+		return businessDao.insert(record);
+	}
 		
 	
 }

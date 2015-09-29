@@ -1,5 +1,6 @@
 package com.renrentui.renrenapi.service.inter;
 
+import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
@@ -17,4 +18,6 @@ public interface IBusinessService {
 	 * @return
 	 */
 	PagedResponse<Business> getBusinessList(PagedBusinessReq req);	
+	
+	int Add(Business record);
 }

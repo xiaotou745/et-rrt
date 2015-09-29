@@ -66,14 +66,14 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.Business" >
-    insert into Business (Id, CompanyName, PhoneNo, 
+    insert into Business ( CompanyName, PhoneNo, 
       PassWord, LoginName, Logo, 
       Address, CityCode, CityName, 
       WebSite)
-    values (#{id,jdbcType=BIGINT}, #{companyname,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{loginname,jdbcType=VARCHAR}, #{logo,jdbcType=NVARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{citycode,jdbcType=INTEGER}, #{cityname,jdbcType=NVARCHAR}, 
-      #{website,jdbcType=VARCHAR})
+    values (#{companyName,jdbcType=NVARCHAR}, #{phoneNo,jdbcType=VARCHAR}, 
+      #{passWord,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{logo,jdbcType=NVARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{cityCode,jdbcType=INTEGER}, #{cityName,jdbcType=NVARCHAR}, 
+      #{webSite,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Business" >
     insert into Business
