@@ -17,6 +17,7 @@ import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.MyIncomeResp;
 @Service
 public class ClienterService implements IClienterService{
 	@Autowired
@@ -99,7 +100,7 @@ public class ClienterService implements IClienterService{
 	* @Return
 	*/
 	@Override
-	public ClienterBalance queryClienterBalance(MyIncomeReq req) {
+	public MyIncomeResp queryClienterBalance(MyIncomeReq req) {
 		return clienterDao.queryClienterBalance(req);
 	}
 	

@@ -7,6 +7,7 @@ import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 public interface IClienterDao {
     int deleteByPrimaryKey(Long id);
@@ -70,5 +71,5 @@ public interface IClienterDao {
 	* @Date 2015年9月28日17:31:59
 	* @Return
 	*/
-	ClienterBalance queryClienterBalance(MyIncomeReq req);
+	MyIncomeResp queryClienterBalance(MyIncomeReq req);
 }

@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
+
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.core.enums.SignUpCode;
@@ -28,6 +29,7 @@ import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.re
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.resp.MyIncomeResp;
 import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;
 
@@ -238,7 +240,7 @@ public class UsercService implements IUsercService {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
 		if(!clienterService.isExistUserC(req.getUserId()))//用户不存在
 			return  resultModel.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(MyIncomeCode.UserIdUnexist.desc());
-		ClienterBalance clienterBalanceModel=clienterService.queryClienterBalance(req);
+		MyIncomeResp clienterBalanceModel=clienterService.queryClienterBalance(req);
 		if(clienterBalanceModel==null||clienterBalanceModel.getId()<=0)//手机号或密码错误
 			return resultModel.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(MyIncomeCode.QueryIncomeError.desc());
 		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(clienterBalanceModel);
