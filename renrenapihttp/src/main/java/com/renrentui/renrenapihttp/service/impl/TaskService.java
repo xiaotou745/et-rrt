@@ -9,6 +9,7 @@ import com.renrentui.renrenapi.service.inter.IRenRenTaskServcie;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
 import com.renrentui.renrencore.cache.redis.RedisService;
+import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.TaskDetailReq;
@@ -42,5 +43,21 @@ public class TaskService implements ITaskService{
 		if(detail==null)
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.Fail.value()).setMsg(TaskDetailCode.Fail.desc());
 		return new HttpResultModel<TaskDetail>().setData(detail).setCode(TaskDetailCode.Success.value()).setMsg(TaskDetailCode.Success.desc());
+	}
+	/**
+	 * 领取任务接口
+	 * 茹化肖
+	 * 2015年9月29日15:40:50
+	 * 
+	 */
+	@Override
+	public HttpResultModel<Object> getTask(TaskDetailReq req) {
+		if(req.getTaskId()<=0)//任务ID
+			return new HttpResultModel<Object>().setCode(GetTaskCode.TaskIdErr.value()).setMsg(GetTaskCode.TaskIdErr.desc());
+		if(req.getUserId()<=0)//用户ID
+			return new HttpResultModel<Object>().setCode(GetTaskCode.UserIdErr.value()).setMsg(GetTaskCode.UserIdErr.desc());
+		if(1==1)
+			return new HttpResultModel<Object>().setCode(GetTaskCode.Success.value()).setMsg(GetTaskCode.Success.desc());
+		return null;
 	}
 }

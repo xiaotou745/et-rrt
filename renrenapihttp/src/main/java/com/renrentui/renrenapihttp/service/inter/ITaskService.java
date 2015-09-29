@@ -29,5 +29,15 @@ public interface ITaskService {
 	@POST
 	@Path("/taskdetail")
 	 public HttpResultModel<TaskDetail> taskDeatil(TaskDetailReq req);
+	
+	/**
+	 * 领取任务接口
+	 * @author 茹化肖
+	 * @date 2015年9月28日10:18:57
+	 * @return
+	 */
+	@POST
+	@Path("/gettask")
+	 public HttpResultModel<Object> getTask(TaskDetailReq req);
 
 }

@@ -253,7 +253,7 @@
 		    , LastOptTime
     FROM  dbo.Clienter AS C (NOLOCK)
 	WHERE C.PhoneNo=#{phoneNo,jdbcType=VARCHAR}
-		AND C.Password=#{Password,jdbcType=VARCHAR}
+		AND C.Password=#{password,jdbcType=VARCHAR}
   </select>
   <!-- 根据用户Id判断是否存在  2015年9月28日17:20:58 WangXuDan -->
   <select id="isExistUserC" resultType="int" parameterType="java.util.HashMap" >

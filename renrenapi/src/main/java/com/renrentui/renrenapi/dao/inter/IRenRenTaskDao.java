@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 
@@ -18,4 +19,6 @@ public interface IRenRenTaskDao {
     int updateByPrimaryKey(RenRenTask record);
     
     TaskDetail getTaskDetail(TaskDetailReq req);
+    
+    CheckTask checkTask(TaskDetailReq req);
 }

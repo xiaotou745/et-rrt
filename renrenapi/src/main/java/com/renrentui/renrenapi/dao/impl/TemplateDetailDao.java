@@ -1,58 +1,39 @@
 package com.renrentui.renrenapi.dao.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 
-
+import com.renrentui.renrenentity.domain.ControlInfo;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
 import com.renrentui.renrenentity.TemplateDetail;
-import com.renrentui.renrenentity.domain.ControlInfo;
-import com.renrentui.renrenentity.domain.TaskDetail;
 @Repository
-public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao{
+public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 
 	@Override
 	public int deleteByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().delete(
+				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.deleteByPrimaryKey", id);
 	}
 
 	@Override
 	public int insert(TemplateDetail record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().insert(
+				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.insert", record);
 	}
 
 	@Override
-	public int insertSelective(TemplateDetail record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public TemplateDetail selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(TemplateDetail record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(TemplateDetail record) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertList(List<TemplateDetail> recordList) {
+		return getMasterSqlSessionUtil().insert(
+				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.insertList", recordList);
 	}
 	/**
-	 * 获取合同的详细控件信息
-	 * 茹化肖
-	 * 2015年9月29日13:39:58
+	 * ��ȡ��ͬ����ϸ�ؼ���Ϣ
+	 * �㻯Ф
+	 * 2015��9��29��13:39:58
 	 * 
 	 */
 	@Override
