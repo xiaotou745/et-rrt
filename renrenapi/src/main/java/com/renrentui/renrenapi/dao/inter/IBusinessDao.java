@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.dao.inter;
 
+import java.util.List;
+
 import com.renrentui.renrenentity.Business;
 
 public interface IBusinessDao {
@@ -14,4 +16,6 @@ public interface IBusinessDao {
     int updateByPrimaryKeySelective(Business record);
 
     int updateByPrimaryKey(Business record);
+    
+    List<Business> getAllList();
 }
