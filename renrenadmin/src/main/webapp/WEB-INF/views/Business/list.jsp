@@ -130,6 +130,52 @@ width: 100%;
 		</div>  
 	</div>
 </div>
+<div tabindex="-1" class="modal inmodal" id="businessDeltaShow"
+	role="dialog" aria-hidden="true" style="display: none;">		
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">商户冲值</h4>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+						<br>
+						  <div class="control-group">
+		                <label>公司名称：</label>
+		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
+		                <input name="txtIdD" id="txtIdD" type="hidden">
+		            	</div>
+			            <div class="control-group">
+			                <label>商户电话：</label>
+			                <input name="txtPhoneNoD" id="txtPhoneNoD" disabled="disabled" type="text">
+			            </div>
+			            <div class="control-group">
+			                <label>余&nbsp;&nbsp;额：</label>
+			                <input name="txtAmountD" id="txtAmountD" type="text">元
+			            </div>
+			            <div class="control-group">
+			                <label>备&nbsp;&nbsp;注：</label>
+			                <div class="controls">
+			                    <textarea cols="45" rows="5" id="txtRemarkD	"></textarea>
+			                </div>
+			            </div>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id="txtbusinessDelta">确认</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>
+
+</div>
 
 
 <script>

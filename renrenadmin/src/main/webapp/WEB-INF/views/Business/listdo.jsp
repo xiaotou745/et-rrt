@@ -42,7 +42,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getCityName()%></td>
 			<td><%=data.get(i).getWebSite()%></td>
 			<td>
-			<a href="javascript:void(0)"  onclick="BusinessDelta('<%=data.get(i).getId() %>')" >冲值 </a>
+			<a href="javascript:void(0)"  onclick="BusinessDelta('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>')" >冲值 </a>
 			</td>				
 			
 						
@@ -58,8 +58,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		responsePageList.getTotalPage())%>
 <script type="text/javascript">
    //商户冲值 
-   function BusinessDelta(id) {
-       $('#clienterId').val(0);
+   function BusinessDelta(id, name, phone) {
+ /*       $('#clienterId').val(0);
        $('#clienterName').val('');
        $('#clienterPhone').val('');
        $('#clienterRechargeAmount').val('');
@@ -67,7 +67,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
        $('#clienterId').val(id);
        $('#clienterName').val(name);
        $('#clienterPhone').val(phone); 
-       $('#ClienterRechargeShow').modal('show'); 
+       */
+	   $('#businessDeltaShow').modal('show'); 
    }
   </script>
 	
