@@ -6,8 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import com.renrentui.entity.req.CSendCodeReq;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
+import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
@@ -90,16 +90,7 @@ public interface IUsercService {
 	@Path("/myincome")
 	public HttpResultModel<Object> myincome(MyIncomeReq req);
 	
-	/**
-	* @Des 测试 研发获取缓存验证码,正式线上禁用该接口
-	* @Author 茹化肖
-	* @Date 2015年9月29日09:49:23
-	* @Return
-	*/
-	@GET
-	@Path("/vercode")
-	@Produces("application/json; charset=utf-8")//当前类的所有方法都返回json格式的数据
-	public String vercode(@PathParam("phoneno") String phoneNo,@PathParam("type") int type);
+
 	
 	
 }

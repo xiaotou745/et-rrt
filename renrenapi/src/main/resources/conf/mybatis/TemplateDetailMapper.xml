@@ -33,4 +33,17 @@
       #{item.controlData,jdbcType=NVARCHAR});
 		</foreach>
 	</update>
+  <!-- 根据合同模板ID查询控件信息 茹化肖 2015年9月29日13:49:49 -->
+  <select id="getTemplateList" resultType="com.renrentui.renrenentity.domain.ControlInfo" parameterType="java.util.HashMap" >
+    SELECT  TC.ControlType ,
+        Title ,
+        Name ,
+        DefaultValue ,
+        ControlData ,
+        OrderNum
+FROM    dbo.TemplateDetail AS td ( NOLOCK )
+        LEFT JOIN dbo.TemplateControl AS tc ( NOLOCK ) ON td.ControlId = tc.id
+WHERE   td.TemplateId = #{templateId,jdbcType=INTEGER}
+ORDER BY OrderNum ASC
+  </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.renrentui.core.enums;
+package com.renrentui.renrencore.enums;
 
 public enum SignUpCode {
 
@@ -17,7 +17,7 @@ public enum SignUpCode {
 	/**
 	 * 手机号格式不正确
 	 */
-	PhoneFormatError(1013, "手机号格式不正确"),
+	PhoneFormatError(1013, "手机号已注册过"),
 	/**
 	 * 手机号不能为空
 	 */

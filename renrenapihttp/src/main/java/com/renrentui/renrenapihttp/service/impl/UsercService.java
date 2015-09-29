@@ -8,8 +8,6 @@ import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
-import com.renrentui.entity.req.CSendCodeReq;
-import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
@@ -19,12 +17,14 @@ import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.enums.SignUpCode;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
@@ -136,7 +136,7 @@ public class UsercService implements IUsercService {
 			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(
 					SignUpCode.PhoneNull.desc());
 		}
-		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
+		if (clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
 			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
 					.setMsg(SignUpCode.PhoneFormatError.desc());
 		if (req.getVerifyCode().equals(""))// 验证码不能为空
@@ -246,28 +246,6 @@ public class UsercService implements IUsercService {
 		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(clienterBalanceModel);
 		
 	}
-	/**
-	 * 获取缓存验证码
-	 */
-	@Override
-	public String vercode(String phoneNo, int type) {
-		String key = "";
-		// 类型 1注册 2修改密码 3忘记密码
-		if (type == 1) {
-			// 注册
-			key = RedissCacheKey.RR_Clienter_sendcode_register
-					+ phoneNo;
-		} else if (type == 2) {
-			// 修改密码
-			key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
-					+ phoneNo;
-		} else if (type == 3) {
-			// 忘记密码
-			key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
-					+ phoneNo;
-		}
-		String redisValueString= redisService.get(key, String.class);
-		return redisValueString;
-	}
+
 
 }
