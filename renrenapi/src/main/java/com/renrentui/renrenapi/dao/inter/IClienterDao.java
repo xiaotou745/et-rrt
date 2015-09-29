@@ -1,10 +1,13 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 public interface IClienterDao {
     int deleteByPrimaryKey(Long id);
@@ -55,4 +58,18 @@ public interface IClienterDao {
 	* @Return
 	*/
 	Clienter queryClienter(SignInReq req);
+	/**
+	* @Des 根据用户Id判断是否存在  
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:18:18
+	* @Return
+	*/
+	boolean isExistUserC(long userId);
+	/**
+	* @Des 获取用户收入 
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:31:59
+	* @Return
+	*/
+	MyIncomeResp queryClienterBalance(MyIncomeReq req);
 }

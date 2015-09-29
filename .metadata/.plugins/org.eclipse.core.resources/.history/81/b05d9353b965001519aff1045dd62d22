@@ -1,0 +1,25 @@
+package com.renrentui.renrenapi.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+
+@Service
+public class ClienterBalanceService implements IClienterBalanceService{
+
+	@Autowired
+	private IClienterBalanceDao clienterBalanceDao;
+	
+	
+
+	@Override
+	public  ClienterBalance selectByPrimaryKey(Long id)
+	{
+		ClienterBalance model=clienterBalanceDao.selectByPrimaryKey(id);		
+
+		return model;	
+	}
+}

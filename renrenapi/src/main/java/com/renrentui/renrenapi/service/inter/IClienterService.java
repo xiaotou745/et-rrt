@@ -1,10 +1,14 @@
 package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 
 /**
@@ -50,4 +54,27 @@ public interface IClienterService {
 	* @Return
 	*/
 	Clienter queryClienter(SignInReq req);
+	/**
+	* @Des 根据用户Id判断是否存在 
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:16:32
+	* @Return
+	*/
+	boolean isExistUserC(long userId);
+	/**
+	* @Des 获取用户收入 
+	* @Author WangXuDan
+	* @Date 2015年9月28日17:31:59
+	* @Return
+	*/
+	MyIncomeResp queryClienterBalance(MyIncomeReq req);
+	/**
+	 * 用户提现
+	 * 胡灵波
+	 * 2015年9月28日 16:58:06
+	 * @param req
+	 * @return
+	 */
+	void WithdrawC(ClienterBalanceReq req);
+	
 }

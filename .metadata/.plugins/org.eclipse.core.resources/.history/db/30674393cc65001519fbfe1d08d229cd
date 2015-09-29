@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterBalanceDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.ClienterBalance" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="ClienterId" property="clienterId" jdbcType="BIGINT" />
+    <result column="Balance" property="balance" jdbcType="DECIMAL" />
+    <result column="Withdraw" property="withdraw" jdbcType="DECIMAL" />
+    <result column="HadWithdraw" property="hadWithdraw" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ClienterId, Balance, Withdraw, HadWithdraw
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterBalance
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ClienterBalance
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterBalance" >
+    insert into ClienterBalance (Id, ClienterId, Balance, 
+      Withdraw, HadWithdraw)
+    values (#{id,jdbcType=BIGINT}, #{clienterid,jdbcType=BIGINT}, #{balance,jdbcType=DECIMAL}, 
+      #{withdraw,jdbcType=DECIMAL}, #{hadwithdraw,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterBalance" >
+    insert into ClienterBalance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="clienterid != null" >
+        ClienterId,
+      </if>
+      <if test="balance != null" >
+        Balance,
+      </if>
+      <if test="withdraw != null" >
+        Withdraw,
+      </if>
+      <if test="hadwithdraw != null" >
+        HadWithdraw,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=BIGINT},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="withdraw != null" >
+        #{withdraw,jdbcType=DECIMAL},
+      </if>
+      <if test="hadwithdraw != null" >
+        #{hadwithdraw,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.ClienterBalance" >
+    update ClienterBalance
+    <set >
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=BIGINT},
+      </if>
+      <if test="balance != null" >
+        Balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="withdraw != null" >
+        Withdraw = #{withdraw,jdbcType=DECIMAL},
+      </if>
+      <if test="hadwithdraw != null" >
+        HadWithdraw = #{hadwithdraw,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.ClienterBalance" >
+    update ClienterBalance
+    set ClienterId = #{clienterid,jdbcType=BIGINT},
+      Balance = #{balance,jdbcType=DECIMAL},
+      Withdraw = #{withdraw,jdbcType=DECIMAL},
+      HadWithdraw = #{hadwithdraw,jdbcType=DECIMAL}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 获取用户收入  2015年9月28日17:37:27 WangXuDan -->
+  <select id="queryClienterBalance" resultType="com.renrentui.renrenentity.ClienterBalance" parameterType="com.renrentui.renrenentity.req.MyIncomeReq" >
+    SELECT    Id
+		    , ClienterId
+		    , Balance
+		    , Withdraw
+		    , HadWithdraw
+    FROM  dbo.ClienterBalance AS CB (NOLOCK)
+	WHERE CB.ClienterId=#{userId}
+  </select>
+</mapper>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao" >
+  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.ClienterBalanceRecord" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="ClienterId" property="clienterid" jdbcType="BIGINT" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="AfterAmount" property="afteramount" jdbcType="DECIMAL" />
+    <result column="RecordType" property="recordtype" jdbcType="SMALLINT" />
+    <result column="OptName" property="optname" jdbcType="NVARCHAR" />
+    <result column="OperateTime" property="operatetime" jdbcType="TIMESTAMP" />
+    <result column="OrderId" property="orderid" jdbcType="BIGINT" />
+    <result column="RelationNo" property="relationno" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, ClienterId, Amount, AfterAmount, RecordType, OptName, OperateTime, OrderId, RelationNo, 
+    Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterBalanceRecord
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ClienterBalanceRecord
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterBalanceRecord" >
+       insert into
+		ClienterBalanceRecord
+		(ClienterId,Amount,AfterAmount,RecordType,OptName,OrderId,RelationNo,Remark)
+		select #{clienterId,jdbcType=INTEGER},
+		#{amount,jdbcType=DECIMAL},c.Balance,#{recordtype,jdbcType=SMALLINT},#{optName,jdbcType=NVARCHAR}
+		,#{OrderId,jdbcType=BIGINT},#{relationno,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
+		from dbo.ClienterBalance  as c where Id=#{clienterId,jdbcType=BIGINT} ;
+		select @@IDENTITY
+  </insert>
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterBalanceRecord" >
+    insert into ClienterBalanceRecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="clienterid != null" >
+        ClienterId,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="afteramount != null" >
+        AfterAmount,
+      </if>
+      <if test="recordtype != null" >
+        RecordType,
+      </if>
+      <if test="optname != null" >
+        OptName,
+      </if>
+      <if test="operatetime != null" >
+        OperateTime,
+      </if>
+      <if test="orderid != null" >
+        OrderId,
+      </if>
+      <if test="relationno != null" >
+        RelationNo,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clienterid != null" >
+        #{clienterid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="afteramount != null" >
+        #{afteramount,jdbcType=DECIMAL},
+      </if>
+      <if test="recordtype != null" >
+        #{recordtype,jdbcType=SMALLINT},
+      </if>
+      <if test="optname != null" >
+        #{optname,jdbcType=NVARCHAR},
+      </if>
+      <if test="operatetime != null" >
+        #{operatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=BIGINT},
+      </if>
+      <if test="relationno != null" >
+        #{relationno,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.ClienterBalanceRecord" >
+    update ClienterBalanceRecord
+    <set >
+      <if test="clienterid != null" >
+        ClienterId = #{clienterid,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="afteramount != null" >
+        AfterAmount = #{afteramount,jdbcType=DECIMAL},
+      </if>
+      <if test="recordtype != null" >
+        RecordType = #{recordtype,jdbcType=SMALLINT},
+      </if>
+      <if test="optname != null" >
+        OptName = #{optname,jdbcType=NVARCHAR},
+      </if>
+      <if test="operatetime != null" >
+        OperateTime = #{operatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderid != null" >
+        OrderId = #{orderid,jdbcType=BIGINT},
+      </if>
+      <if test="relationno != null" >
+        RelationNo = #{relationno,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.ClienterBalanceRecord" >
+    update ClienterBalanceRecord
+    set ClienterId = #{clienterid,jdbcType=BIGINT},
+      Amount = #{amount,jdbcType=DECIMAL},
+      AfterAmount = #{afteramount,jdbcType=DECIMAL},
+      RecordType = #{recordtype,jdbcType=SMALLINT},
+      OptName = #{optname,jdbcType=NVARCHAR},
+      OperateTime = #{operatetime,jdbcType=TIMESTAMP},
+      OrderId = #{orderid,jdbcType=BIGINT},
+      RelationNo = #{relationno,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
