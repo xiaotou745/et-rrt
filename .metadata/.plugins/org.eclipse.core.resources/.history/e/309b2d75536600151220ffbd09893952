@@ -1,0 +1,15 @@
+package com.renrentui.renrenentity.req;
+
+import com.renrentui.renrenentity.common.PagedRequestBase;
+
+
+public class PagedBusinessReq extends PagedRequestBase{
+
+    private String companyName;
+
+    private String phoneNo;
+
+    private String loginName;
+
+    private String cityName;   
+}
