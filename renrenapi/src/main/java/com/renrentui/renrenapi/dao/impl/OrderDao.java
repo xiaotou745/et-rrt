@@ -1,10 +1,14 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import javax.swing.text.MaskFormatter;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenentity.Order;
+import com.renrentui.renrenentity.domain.CheckCancelOrder;
+import com.renrentui.renrenentity.req.CancelTaskReq;
 @Repository
 public class OrderDao extends DaoBase implements IOrderDao{
 
@@ -54,6 +58,23 @@ public class OrderDao extends DaoBase implements IOrderDao{
 		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.addOrder";
 		int res = getMasterSqlSessionUtil().insert(statement, order);
 		return res;
+	}
+	/**
+	 * 验证订单是否可以取消
+	 */
+	@Override
+	public CheckCancelOrder checkCancelOrder(CancelTaskReq req) {
+		
+		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IOrderDao.checkCancelOrder", req);
+	}
+	/**
+	 * 取消订单
+	 * 茹化肖
+	 * 2015年9月30日13:50:17
+	 */
+	@Override
+	public int cancelOrder(CancelTaskReq req) {
+		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.cancelOrder", req);
 	}
 
 }

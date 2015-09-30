@@ -1,5 +1,6 @@
 package com.renrentui.renrenapi.service.inter;
 
+import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.common.PagedResponse;
@@ -79,7 +80,7 @@ public interface IClienterService {
 	 * @param req
 	 * @return
 	 */
-	void WithdrawC(ClienterBalanceReq req);
+	WithdrawState WithdrawC(ClienterBalanceReq req);
 	/**
 	* @Des 获取地推员信息列表  
 	* @Author WangXuDan

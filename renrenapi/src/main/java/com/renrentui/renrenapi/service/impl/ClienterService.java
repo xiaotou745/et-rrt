@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
@@ -9,6 +10,8 @@ import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrencore.enums.GetTaskCode;
+import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
@@ -130,23 +133,32 @@ public class ClienterService implements IClienterService{
 	 * @return
 	 */
 	@Override
-	public void WithdrawC(ClienterBalanceReq req)
-	{
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public WithdrawState WithdrawC(ClienterBalanceReq req)
+	{		
+		ClienterBalance clienterBalanceModel= clienterBalanceDao.selectByPrimaryKey(req.getUserId());
+
+		double amount=clienterBalanceModel.getWithdraw();
+		if(req.getAmount()>amount)
+		{	
+			return WithdrawState.MoneyError;
+		}		
+		
 	     //创建提现表
 		ClienterWithdrawForm clienterWithdrawFormModel=new ClienterWithdrawForm();
 		clienterWithdrawFormModel.setClienterId(req.getUserId());
 		clienterWithdrawFormModel.setAmount(req.getAmount());
 		clienterWithdrawFormModel.setWithdrawNo("No001");
 		clienterWithdrawFormModel.setWithType((short)1);
-		clienterWithdrawFormModel.setAccountInfo("010101");
-		clienterWithdrawFormModel.setTrueName("张三");
+		clienterWithdrawFormModel.setAccountInfo(req.getAccountInfo());
+		clienterWithdrawFormModel.setTrueName(req.getTrueName());
 		clienterWithdrawFormModel.setStatus((short)0);				
-		clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
+		int cwfId= clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
 		
 		ClienterBalanceReq cBReq=new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
 		cBReq.setAmount(-req.getAmount());
-		clienterBalanceDao.updateMoneyByKey(cBReq);
+		int cbId= clienterBalanceDao.updateMoneyByKey(cBReq);
 		
 	    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(req.getUserId());
@@ -156,7 +168,13 @@ public class ClienterService implements IClienterService{
 		clienterBalanceRecordModel.setOrderId((long)101);
 		clienterBalanceRecordModel.setRelationNo("001");
 		clienterBalanceRecordModel.setRemark("提现申请");		
-		clienterBalanceRecordDao.insert(clienterBalanceRecordModel);		
+		int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);				
+		
+		if(cwfId>0&&cbId>0&&cbrId>0)
+		{
+			return WithdrawState.Success;
+		}
+		return WithdrawState.Failure;
 	}
 	/**
 	* @Des 获取地推员信息列表  
