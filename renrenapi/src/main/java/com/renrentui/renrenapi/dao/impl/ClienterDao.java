@@ -13,11 +13,14 @@ import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 @Repository
@@ -157,6 +160,19 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.queryClienterBalance",
 				req);
 		return result;
+	}
+	/**
+	* @Des 获取地推员信息列表  
+	* @Author WangXuDan
+	* @Date 2015年9月29日16:15:39
+	* @Return
+	*/
+	@Override
+	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
+		PagedResponse<ClienterResp> resp=new PagedResponse<ClienterResp>();
+		resp = getReadOnlySqlSessionUtil().selectPageList(
+				"com.renrentui.renrenapi.dao.inter.IClienterDao.queryClienterList", req);
+		return resp;
 	}
 
 }
