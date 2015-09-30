@@ -186,7 +186,7 @@
     where Id = #{id,jdbcType=BIGINT}
   </update>
   <!-- 创建一个订单 茹化肖 2015年9月30日09:57:52 -->
-    <insert id="addOrder" parameterType="com.renrentui.renrenentity.Order">
+  <insert id="addOrder" parameterType="com.renrentui.renrenentity.Order">
      <selectKey resultType="java.lang.Long" keyProperty="id"
 				order="AFTER">
 				select @@IDENTITY as id
@@ -203,4 +203,24 @@ VALUES  ( '${orderNo}' ,
           '${deadlineTime}'
         )
   </insert>
+  <!-- 验证订单是否可以取消 2015年9月30日13:36:59茹化肖 -->
+  <select id="checkCancelOrder" parameterType="com.renrentui.renrenentity.req.CancelTaskReq" resultType="com.renrentui.renrenentity.domain.CheckCancelOrder">
+  SELECT CASE WHEN o.OrderStatus=0 AND FinishTime IS NULL THEN 1 ELSE 0 END AS CancelCan,
+CASE WHEN o.OrderStatus=1 AND FinishTime IS NOT NULL THEN 1 ELSE 0 END AS IsComplete,
+CASE WHEN o.OrderStatus=2 OR o.OrderStatus=3 THEN 1 ELSE 0 END AS IsCancle,
+OrderNo,
+TaskId
+FROM  dbo.[Order] AS o 
+WHERE o.id=${orderId} AND ClienterId=${userId}
+  </select>
+  
+    <!-- 取消订单 2015年9月30日13:36:59茹化肖 -->
+  <update id="cancelOrder" parameterType="com.renrentui.renrenentity.req.CancelTaskReq">
+UPDATE dbo.[Order] SET 
+OrderStatus=2,
+CancelTime=GETDATE(),
+CancelName='${userId}',
+CancelRemark='${remark}'
+WHERE id=${orderId}
+  </update>
 </mapper>

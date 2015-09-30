@@ -304,4 +304,9 @@ WHERE rrt.id=${taskId}
 UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
     where Id = #{taskid,jdbcType=BIGINT}
   </update>
+    <!-- 取消任务时  将任务剩余量+1 茹化肖 2015年9月30日10:56:18 -->
+  <update id="addTaskAvailableCount" parameterType="java.util.HashMap" >
+	UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount+1
+    where Id = #{taskid,jdbcType=BIGINT}
+  </update>
 </mapper>
