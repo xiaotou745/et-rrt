@@ -72,11 +72,22 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao{
 		return res;
 	}
 	/**
-	 * 领取任务 减去任务总量
+	 * 领取任务 减去任务剩余量
 	 */
 	@Override
 	public int cutTaskAvailableCount(Long taskID) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.cutTaskAvailableCount";
+		HashMap<String, Object> map=new HashMap<String, Object> ();
+		map.put("taskid", taskID);
+		int res = getMasterSqlSessionUtil().update(statement, map);
+		return res;
+	}
+	/**
+	 * 取消任务 增加任务剩余量
+	 */
+	@Override
+	public int addTaskAvailableCount(Long taskID) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.addTaskAvailableCount";
 		HashMap<String, Object> map=new HashMap<String, Object> ();
 		map.put("taskid", taskID);
 		int res = getMasterSqlSessionUtil().update(statement, map);
