@@ -33,10 +33,17 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 		return 0;
 	}
 
+	/**
+	 * @Des 获取用户金额 
+	 *      注：此处用写串
+	 * @Author 胡灵波
+	 * @Date 2015年9月30日 15:02:48
+	 * @param req
+	 * @return
+	 */
 	@Override
-	public ClienterBalance selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return getReadOnlySqlSessionUtil().selectOne(
+	public ClienterBalance selectByPrimaryKey(Long id) {		
+		return getMasterSqlSessionUtil().selectOne(
 				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.selectByPrimaryKey", id);	
 		        
 		         

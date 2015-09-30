@@ -1,9 +1,10 @@
 package com.renrentui.renrenentity.req;
 /**
  * 
- * 提现
+ * @Des app提现请求参数
  * @author  胡灵波
- * 2015年9月28日 11:35:11
+ * @Date2015年9月28日 11:35:11
+ * @Return
  */
 public class ClienterBalanceReq {
 

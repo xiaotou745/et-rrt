@@ -1,6 +1,9 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 
 public interface IClienterWithdrawFormDao {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +17,6 @@ public interface IClienterWithdrawFormDao {
     int updateByPrimaryKeySelective(ClienterWithdrawForm record);
 
     int updateByPrimaryKey(ClienterWithdrawForm record);
+    
+    PagedResponse<ClienterWithdrawFormDM> getList(PagedClienterWithdrawFormReq req);
 }

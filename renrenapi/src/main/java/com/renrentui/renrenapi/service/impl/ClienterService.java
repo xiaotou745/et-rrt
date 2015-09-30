@@ -125,9 +125,9 @@ public class ClienterService implements IClienterService{
 	}
 	
 	/**
-	 * 用户提现
-	 * 胡灵波
-	 * 2015年9月28日 16:58:06
+	 * @Des 用户提现 
+	 * @Author 胡灵波
+	 * @Date 2015年9月28日 16:58:06
 	 * @param req
 	 * @return
 	 */
