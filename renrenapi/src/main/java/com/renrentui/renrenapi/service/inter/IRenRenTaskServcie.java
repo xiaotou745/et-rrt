@@ -1,5 +1,6 @@
 package com.renrentui.renrenapi.service.inter;
 
+import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 
@@ -13,4 +14,7 @@ public interface IRenRenTaskServcie {
 	 * @return
 	 */
 	public TaskDetail getTaskDetail(TaskDetailReq req);
+	
+	
+	public GetTaskCode getTask(TaskDetailReq req);
 }

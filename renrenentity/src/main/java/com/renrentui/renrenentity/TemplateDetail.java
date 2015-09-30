@@ -14,16 +14,9 @@ public class TemplateDetail {
     private String defaultValue;
 
     private String controlData;
-    private long templateId;
-    public long getTemplateId() {
-		return templateId;
-	}
+    private Long templateId;
 
-	public void setTemplateId(long templateId) {
-		this.templateId = templateId;
-	}
-
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -79,6 +72,14 @@ public class TemplateDetail {
 
 	public void setControlData(String controlData) {
 		this.controlData = controlData;
+	}
+
+	public Long getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(Long templateId) {
+		this.templateId = templateId;
 	}
 
 }

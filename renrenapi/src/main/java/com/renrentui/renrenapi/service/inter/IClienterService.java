@@ -2,12 +2,15 @@ package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
+import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 
@@ -46,7 +49,7 @@ public interface IClienterService {
 	 */
 	boolean modifyPwdUserc(ModifyPwdReq req);
 
-	int signup(SignUpReq req);
+	long signup(SignUpReq req);
 	/**
 	* @Des 查询C端用户信息  
 	* @Author WangXuDan
@@ -76,5 +79,12 @@ public interface IClienterService {
 	 * @return
 	 */
 	void WithdrawC(ClienterBalanceReq req);
+	/**
+	* @Des 获取地推员信息列表  
+	* @Author WangXuDan
+	* @Date 2015年9月29日16:15:39
+	* @Return
+	*/
+	PagedResponse<ClienterResp> queryClienterList(ClienterReq req);
 	
 }

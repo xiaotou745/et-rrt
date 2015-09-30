@@ -28,8 +28,16 @@ public class Order {
     private String cancelName;
 
     private String cancelRemark;
+    private String orderNo;
+    public String getOrderNo() {
+		return orderNo;
+	}
 
-    public Long getId() {
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public Long getId() {
         return id;
     }
 

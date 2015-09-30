@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 @Repository
@@ -54,6 +55,17 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao{
 	public TaskDetail getTaskDetail(TaskDetailReq req) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getTaskDetail";
 		TaskDetail res = getReadOnlySqlSessionUtil().selectOne(statement, req);
+		return res;
+	}
+	/**
+	 * 验证任务是否可以领取(主库查询不加锁)
+	 * 2015年9月29日17:16:32
+	 * 茹化肖
+	 */
+	@Override
+	public CheckTask checkTask(TaskDetailReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.checkTask";
+		CheckTask res = getMasterSqlSessionUtil().selectOne(statement, req);
 		return res;
 	}
 	

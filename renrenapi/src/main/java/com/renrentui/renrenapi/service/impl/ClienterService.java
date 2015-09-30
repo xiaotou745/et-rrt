@@ -9,14 +9,17 @@ import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 @Service
 public class ClienterService implements IClienterService{
@@ -70,7 +73,7 @@ public class ClienterService implements IClienterService{
 	 * WangChao
 	 */
 	@Override
-	public int signup(SignUpReq req) {
+	public long signup(SignUpReq req) {
 		return clienterDao.signup(req); 
 	} 
 	/**
@@ -139,6 +142,16 @@ public class ClienterService implements IClienterService{
 		clienterBalanceRecordModel.setRelationNo("001");
 		clienterBalanceRecordModel.setRemark("提现申请");		
 		clienterBalanceRecordDao.insert(clienterBalanceRecordModel);		
+	}
+	/**
+	* @Des 获取地推员信息列表  
+	* @Author WangXuDan
+	* @Date 2015年9月29日16:15:39
+	* @Return
+	*/
+	@Override
+	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
+		return clienterDao.queryClienterList(req);
 	}
 
 	

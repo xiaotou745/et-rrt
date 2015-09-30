@@ -1,17 +1,12 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.Template;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.TemplateModel;
+import com.renrentui.renrenentity.req.PagedTemplateReq;
 
 public interface ITemplateDao {
-    int deleteByPrimaryKey(Long id);
-
-    int insert(Template record);
-
-    int insertSelective(Template record);
-
-    Template selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(Template record);
-
-    int updateByPrimaryKey(Template record);
+	public int insert(Template record) ;
+	public TemplateModel detail(int templateId) ;
+	public  PagedResponse<Template>  queryTemplate(PagedTemplateReq req);
 }
