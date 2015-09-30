@@ -6,17 +6,22 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
+import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.ClienterLog;
+import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 @Service
 public class ClienterService implements IClienterService{
@@ -31,6 +36,8 @@ public class ClienterService implements IClienterService{
 	
 	@Autowired
 	private IClienterWithdrawFormDao clienterWithdrawFormDao;	
+	@Autowired
+	private IClienterLogDao clienterLogDao;
 	
 	
 	/**
@@ -38,6 +45,11 @@ public class ClienterService implements IClienterService{
 	 */
 	@Override
 	public boolean forgotPwdUserc(ForgotPwdReq req) {
+		ClienterLog log=new ClienterLog();
+		log.setClienterId(Long.valueOf("0"));
+		log.setOptName("地推员电话:"+req.getPhoneNo());
+		log.setRemark("地推员:"+req.getPhoneNo()+"忘记密码修改密码");
+		int reslog=clienterLogDao.addClienterLog(log);//记录C端日志
 		return clienterDao.forgotPassword(req);
 	}
 	/**
@@ -63,6 +75,11 @@ public class ClienterService implements IClienterService{
 	 */
 	@Override
 	public boolean modifyPwdUserc(ModifyPwdReq req) {
+		ClienterLog log=new ClienterLog();
+		log.setClienterId(Long.valueOf(req.getUserId()));
+		log.setOptName("地推员UserID");
+		log.setRemark("地推员修改密码");
+		int reslog=clienterLogDao.addClienterLog(log);//记录C端日志
 		return clienterDao.modifyPwdUserc(req);
 	}
 		/*
@@ -70,7 +87,7 @@ public class ClienterService implements IClienterService{
 	 * WangChao
 	 */
 	@Override
-	public int signup(SignUpReq req) {
+	public long signup(SignUpReq req) {
 		return clienterDao.signup(req); 
 	} 
 	/**
@@ -139,6 +156,16 @@ public class ClienterService implements IClienterService{
 		clienterBalanceRecordModel.setRelationNo("001");
 		clienterBalanceRecordModel.setRemark("提现申请");		
 		clienterBalanceRecordDao.insert(clienterBalanceRecordModel);		
+	}
+	/**
+	* @Des 获取地推员信息列表  
+	* @Author WangXuDan
+	* @Date 2015年9月29日16:15:39
+	* @Return
+	*/
+	@Override
+	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
+		return clienterDao.queryClienterList(req);
 	}
 
 	

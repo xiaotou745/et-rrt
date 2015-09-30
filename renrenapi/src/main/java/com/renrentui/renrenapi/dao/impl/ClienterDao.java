@@ -2,19 +2,25 @@ package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
 
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.springframework.stereotype.Repository;
 
 
+
+import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 @Repository
@@ -25,13 +31,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	@Override
-	public int insert(Clienter record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+ 
 	@Override
 	public int insertSelective(Clienter record) {
 		// TODO Auto-generated method stub
@@ -118,10 +118,21 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	
 
 	@Override
-	public int signup(SignUpReq req) {
-		String statement = "com.renrentui.api.dao.inter.IClienterDao.insert";
-		int res = getMasterSqlSessionUtil().insert(statement, req);
-		return req.getId();
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public long signup(SignUpReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.insert";
+		long res = getMasterSqlSessionUtil().insert(statement, req);
+		long id= req.getId();
+		if(id>0){
+		String inserBalanceString = "com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.insert";
+		int bResult= getMasterSqlSessionUtil().insert(inserBalanceString, id);
+		if(bResult<=0){
+			throw new RuntimeException("添加新用户余额记录失败");
+		}
+		}else {
+			throw new RuntimeException("添加新用户失败");
+		}
+		return id;
 	}
 	/**
 	* @Des 根据用户Id判断是否存在  
@@ -149,6 +160,19 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.queryClienterBalance",
 				req);
 		return result;
+	}
+	/**
+	* @Des 获取地推员信息列表  
+	* @Author WangXuDan
+	* @Date 2015年9月29日16:15:39
+	* @Return
+	*/
+	@Override
+	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
+		PagedResponse<ClienterResp> resp=new PagedResponse<ClienterResp>();
+		resp = getReadOnlySqlSessionUtil().selectPageList(
+				"com.renrentui.renrenapi.dao.inter.IClienterDao.queryClienterList", req);
+		return resp;
 	}
 
 }

@@ -34,12 +34,13 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.req.SignUpReq" >
-	  <selectKey resultType="java.lang.Integer" keyProperty="id"
+	  <selectKey resultType="java.lang.Long" keyProperty="id"
 				order="AFTER">
 				select @@IDENTITY as id
 	  </selectKey>
 	    insert into Clienter (ClienterName, PhoneNo, Password)
-	    values (#{name,jdbcType=NVARCHAR}, #{phoneno,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR})
+	    values (#{name,jdbcType=NVARCHAR}, #{phoneNo,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR});
+<!-- 		values('1','1','1') -->
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Clienter" >
     insert into Clienter
@@ -252,11 +253,63 @@
 		    , LastOptTime
     FROM  dbo.Clienter AS C (NOLOCK)
 	WHERE C.PhoneNo=#{phoneNo,jdbcType=VARCHAR}
-		AND C.Password=#{password,jdbcType=VARCHAR}
+		AND C.Password=#{passWord,jdbcType=VARCHAR}
   </select>
   <!-- 根据用户Id判断是否存在  2015年9月28日17:20:58 WangXuDan -->
   <select id="isExistUserC" resultType="int" parameterType="java.util.HashMap" >
     SELECT COUNT(1) FROM  dbo.Clienter AS C (NOLOCK)
 	WHERE C.Id=#{userId}
+  </select>
+  <!-- 获取地推员列表的分页存储过程_列名 WangXuDan 2015年9月29日16:30:06 -->
+  <sql id="getClienterList_Column">
+	   c.[Id]
+      ,c.[ClienterName]
+      ,c.[PhoneNo]
+      ,c.[Password]
+      ,c.[LoginName]
+      ,c.[HeadImage]
+      ,c.[CityName]
+      ,c.[CityCode]
+      ,c.[Sex]
+      ,c.[Age]
+      ,c.[Education]
+      ,c.[LastLoginTime]
+      ,c.[CreateTime]
+      ,c.[Status]
+      ,c.[LastOptName]
+      ,c.[LastOptTime]
+      ,ISNULL(cb.Balance,0) Balance 
+      ,ISNULL(cb.Withdraw,0) Withdraw
+      ,ISNULL(cb.HadWithdraw,0) HadWithdraw 
+	</sql>
+	
+	<!-- 获取地推员列表的分页存储过程_条件 WangXuDan 2015年9月29日16:30:34 -->
+  	<sql id="getClienterList_Where">
+		1=1
+		<if test="status >=0">
+			AND c.Status=${status}
+		</if>
+		<if test="phoneNo != null and phoneNo != ''">
+			AND c.PhoneNo=''${phoneNo}''
+		</if>
+		<if test="clienterName != null and clienterName != ''">
+			AND c.ClienterName LIKE ''%${clienterName}%''
+		</if>
+	</sql>
+   <!-- 获取地推员列表的分页存储过程 WangXuDan 2015年9月29日16:30:49 -->
+  <select id="queryClienterList" resultType="com.renrentui.renrenentity.resp.ClienterResp" 
+  parameterType="com.renrentui.renrenentity.req.ClienterReq" statementType="CALLABLE">  
+{call Sp_CustomPage2015_V1(
+' c.Id DESC ',
+'<include refid="getClienterList_Column"/> ',
+' dbo.Clienter c WITH(NOLOCK)
+  JOIN dbo.ClienterBalance cb WITH(NOLOCK) ON c.Id=cb.ClienterId ',
+' <include refid="getClienterList_Where"/> ',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+#{totalPage,mode=OUT,jdbcType=VARCHAR}
+)} 
   </select>
 </mapper>

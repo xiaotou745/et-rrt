@@ -72,14 +72,24 @@ public class RedisService {
 		operation.set(suffxKey(key), value, timeout, timeUnit);
 	}
 
-	public <T> T get(String key, Class<T> type) {
+	/**
+	 * 获取Redis值， isSuffxKey=false时不加redis版本及前缀
+	 * */
+	public <T> T get(String key, Class<T> type,Boolean isSuffxKey) {
 		ValueOperations<String, Object> operation = getOperation();
-		Object object = operation.get(suffxKey(key));
+		Object object = operation.get(isSuffxKey?suffxKey(key):key);
 
 		// TODO: 这里没有判断object的类型是否是T，之后再加；
 		return (T) object;
 	}
 
+	/**
+	 * 获取Redis值， isSuffxKey=true+版本及前缀
+	 * */
+	public <T> T get(String key, Class<T> type) {
+		return get(key,type,true);
+	}
+	
 	public void remove(String keyPattern) {
 		Set<String> removeKeys = redisTemplate.keys(suffxKey(keyPattern));
 		redisTemplate.delete(removeKeys);
@@ -94,7 +104,7 @@ public class RedisService {
 	 * @date 2015年9月29日 13:10:05
 	 * */
 	public Set<String> keys(String keyPattern){
-		return redisTemplate.keys("*"+suffxKey(keyPattern)+"*");
+		return redisTemplate.keys("*"+keyPattern+"*");
 	}
 
 	/**

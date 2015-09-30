@@ -1,9 +1,13 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.HashMap;
+
+import org.springframework.stereotype.Repository;
+
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenentity.ClienterLog;
-
+@Repository
 public class ClienterLogDao extends DaoBase implements IClienterLogDao {
 
 	@Override
@@ -11,12 +15,7 @@ public class ClienterLogDao extends DaoBase implements IClienterLogDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	/**
-	 * 
-	 * 记录骑士操作记录
-	 * 茹化肖
-	 * 2015年9月28日16:58:27
-	 */
+
 	@Override
 	public int insert(ClienterLog record) {
 		getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IClienterLogDao.insert", record);
@@ -45,6 +44,18 @@ public class ClienterLogDao extends DaoBase implements IClienterLogDao {
 	public int updateByPrimaryKey(ClienterLog record) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	/**
+	 * 
+	 * 记录骑士操作记录
+	 * 茹化肖
+	 * 2015年9月28日16:58:27
+	 */
+	@Override
+	public int addClienterLog(ClienterLog log) {
+		int res=getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IClienterLogDao.addClienterLog", log);
+		return res;
 	}
 
 }

@@ -144,12 +144,13 @@ public class UsercService implements IUsercService {
 		if (req.getVerifyCode().equals(""))// 验证码不能为空
 			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
 					SignUpCode.VerCodeNull.desc());
+		
 		String key=RedissCacheKey.RR_Clienter_sendcode_register+ req.getPhoneNo();//注册key
 		String redisValueString= redisService.get(key, String.class);
 		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
 			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
 					SignUpCode.VerCodeError.desc());
-		int id = clienterService.signup(req);
+		long id = clienterService.signup(req);
 		if (id > 0) {// 注册成功
 			SignUpResp sur = new SignUpResp();
 			sur.setUserId(id);
@@ -213,7 +214,7 @@ public class UsercService implements IUsercService {
 			if (key == "")
 				return null;
 //			String str = redisService.get(key, String.class);
-			redisService.set(key, code, 60 * 5);
+			redisService.set(key, code);//, 60 * 5
 			long resultValue = SmsUtils.sendSMS(req.getPhoneNo(), "您的验证码为:"
 					+ code);
 			if (resultValue <= 0) {
