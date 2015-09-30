@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,12 +48,16 @@ public class BusinessService implements IBusinessService{
 		return businessDao.getBusinessList(req);
 	}
 
+	@Override
+	public List<Business> getAllList() {
+		return businessDao.getAllList();
+	}
 	/**
 	 * 添加商户
 	 * 胡灵波
 	 * 2015年9月29日 16:58:06
 	 * @param req
-	 * @return
+	 * @return 临时为1
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
@@ -73,7 +79,7 @@ public class BusinessService implements IBusinessService{
 	 * 胡灵波
 	 * 2015年9月29日 16:58:06
 	 * @param req
-	 * @return
+	 * @return   临时为1
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)

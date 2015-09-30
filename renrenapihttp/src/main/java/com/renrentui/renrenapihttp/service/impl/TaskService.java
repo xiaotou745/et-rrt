@@ -22,12 +22,6 @@ import com.renrentui.renrenentity.req.TaskDetailReq;
  */
 @Service
 public class TaskService implements ITaskService{
-//	@Autowired
-//	IClienterService clienterService;
-//	
-//	@Autowired
-//	private IClienterBalanceService clienterBalanceService;	
-//
 	@Autowired
 	IRenRenTaskServcie rrTaskServcie;
 	/**

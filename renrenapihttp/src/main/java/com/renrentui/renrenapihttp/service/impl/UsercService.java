@@ -14,6 +14,7 @@ import com.renrentui.renrenapihttp.service.inter.IUsercService;
 import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
+import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
@@ -112,19 +113,11 @@ public class UsercService implements IUsercService {
 			resultModel.setCode(WithdrawState.Failure.value());
 			resultModel.setMsg(WithdrawState.Failure.desc());
 			return resultModel;
-		}
-		ClienterBalance clienterBalanceModel=clienterBalanceService.selectByPrimaryKey(req.getUserId());
-		double amount=clienterBalanceModel.getWithdraw();
-		if(req.getAmount()>amount)
-		{
-			resultModel.setCode(WithdrawState.MoneyError.value());
-			resultModel.setMsg(WithdrawState.MoneyError.desc());
-			return resultModel;
 		}		
 		
-		clienterService.WithdrawC(req);
-		resultModel.setCode(WithdrawState.Success.value());
-		resultModel.setMsg(WithdrawState.Success.desc());
+		WithdrawState code=clienterService.WithdrawC(req);		
+		resultModel.setCode(code.value());
+		resultModel.setMsg(code.desc());
 		return resultModel;
 	}
 
