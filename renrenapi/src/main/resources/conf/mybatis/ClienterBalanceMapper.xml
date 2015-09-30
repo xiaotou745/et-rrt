@@ -103,6 +103,7 @@
 		    , Balance
 		    , Withdraw
 		    , HadWithdraw
+		    , 0 checking
     FROM  dbo.ClienterBalance AS CB (NOLOCK)
 	WHERE CB.ClienterId=#{userId}
   </select>
