@@ -13,7 +13,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
-	<thead>
+	<thead> 
 		<tr class="tdbg">
 			<th width="%5">编号</th>
 			<th width="10%">公司名称</th>

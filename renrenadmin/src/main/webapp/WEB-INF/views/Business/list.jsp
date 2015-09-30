@@ -12,7 +12,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 #map_contain {
     height: 90%;
     width: 100%;
-    max-width: none;
+    max-width: none; 
 }
 label {
     max-width: none;
