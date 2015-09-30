@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
+import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
@@ -13,6 +14,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
@@ -34,6 +36,8 @@ public class ClienterService implements IClienterService{
 	
 	@Autowired
 	private IClienterWithdrawFormDao clienterWithdrawFormDao;	
+	@Autowired
+	private IClienterLogDao clienterLogDao;
 	
 	
 	/**
@@ -41,6 +45,11 @@ public class ClienterService implements IClienterService{
 	 */
 	@Override
 	public boolean forgotPwdUserc(ForgotPwdReq req) {
+		ClienterLog log=new ClienterLog();
+		log.setClienterId(Long.valueOf("0"));
+		log.setOptName("地推员电话:"+req.getPhoneNo());
+		log.setRemark("地推员:"+req.getPhoneNo()+"忘记密码修改密码");
+		int reslog=clienterLogDao.addClienterLog(log);//记录C端日志
 		return clienterDao.forgotPassword(req);
 	}
 	/**
@@ -66,6 +75,11 @@ public class ClienterService implements IClienterService{
 	 */
 	@Override
 	public boolean modifyPwdUserc(ModifyPwdReq req) {
+		ClienterLog log=new ClienterLog();
+		log.setClienterId(Long.valueOf(req.getUserId()));
+		log.setOptName("地推员UserID");
+		log.setRemark("地推员修改密码");
+		int reslog=clienterLogDao.addClienterLog(log);//记录C端日志
 		return clienterDao.modifyPwdUserc(req);
 	}
 		/*

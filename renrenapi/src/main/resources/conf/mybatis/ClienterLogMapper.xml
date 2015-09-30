@@ -21,9 +21,9 @@
     delete from ClienterLog
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterLog" >
+  <insert id="addClienterLog" parameterType="com.renrentui.renrenentity.ClienterLog" >
     insert into ClienterLog ( ClienterId, OptName, Remark)
-    values (#{clienterid,jdbcType=BIGINT},#{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR})
+    values (${clienterId},'${optName}', '${remark}')
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterLog" >
     insert into ClienterLog

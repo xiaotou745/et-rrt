@@ -12,7 +12,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 #map_contain {
     height: 90%;
     width: 100%;
-    max-width: none;
+    max-width: none; 
 }
 label {
     max-width: none;
@@ -147,7 +147,7 @@ width: 100%;
 						  <div class="control-group">
 		                <label>公司名称：</label>
 		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
-		                <input name="txtIdD" id="txtIdD" type="hidden">
+		                <input name="txtBusinessIdD" id="txtBusinessIdD" type="hidden">
 		            	</div>
 			            <div class="control-group">
 			                <label>商户电话：</label>
@@ -155,7 +155,7 @@ width: 100%;
 			            </div>
 			            <div class="control-group">
 			                <label>余&nbsp;&nbsp;额：</label>
-			                <input name="txtAmountD" id="txtAmountD" type="text">元
+			                <input name="txtAmountD" id="txtAmountD" type="text" value="0">元
 			            </div>
 			            <div class="control-group">
 			                <label>备&nbsp;&nbsp;注：</label>
@@ -167,7 +167,7 @@ width: 100%;
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id="txtbusinessDelta">确认</button>
+					<button class="btn btn-primary" type="button" id="txtbusinessDelta" onclick="AddBusinessDelta()">确认</button>
 				</div>
 			</small>
 		</div>
@@ -246,12 +246,40 @@ function AddBusiness(){
             "cityName": cityName,
             "webSite": webSite                 
         };
-   var url = "<%=basePath%>/business/addbusiness";
-   var la= layer.confirm('是否确认创建商户？', {
-	    btn: ['确认','取消'], //按钮
-	    shade: false //显示遮罩
-	},function(){
-		layer.close(la);
+    var url = "<%=basePath%>/business/addbusiness";
+    var la= layer.confirm('是否确认创建商户？', {
+ 	    btn: ['确认','取消'], //按钮
+ 	    shade: false //显示遮罩
+ 	},function(){
+ 		layer.close(la);
+ 		$.ajax({
+ 	           type: 'POST',
+ 	           url: url,
+ 	           data: paramaters,
+ 	           success: function (result) {
+ 	        	   window.location.href = "<%=basePath%>/business/list";
+ 	        	   //alert(result.message);
+ 	             <%--   if (result.responseCode > 0) {
+ 	                   window.location.href = "<%=basePath%>/business/list";
+ 	               } --%>
+ 	        	  
+ 	           }
+ 	       });
+ 	});   	    
+}
+
+//保存商户
+function AddBusinessDelta(){
+	
+	var businessId= $('#txtBusinessIdD').val();	
+	var balance= $('#txtAmountD').val().trim();	
+   
+    var paramaters = {
+            businessId: businessId,
+            balance: balance                   
+        };
+    
+        var url = "<%=basePath%>/business/addbusinessdelta";  	
 		$.ajax({
 	           type: 'POST',
 	           url: url,
@@ -265,7 +293,7 @@ function AddBusiness(){
 	        	  
 	           }
 	       });
-	});
    	    
 }
+
 </script>

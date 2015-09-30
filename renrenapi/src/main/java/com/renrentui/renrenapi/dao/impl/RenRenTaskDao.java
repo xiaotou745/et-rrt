@@ -1,9 +1,12 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.HashMap;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
+import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -68,5 +71,17 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao{
 		CheckTask res = getMasterSqlSessionUtil().selectOne(statement, req);
 		return res;
 	}
+	/**
+	 * 领取任务 减去任务总量
+	 */
+	@Override
+	public int cutTaskAvailableCount(Long taskID) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.cutTaskAvailableCount";
+		HashMap<String, Object> map=new HashMap<String, Object> ();
+		map.put("taskid", taskID);
+		int res = getMasterSqlSessionUtil().update(statement, map);
+		return res;
+	}
+	
 	
 }

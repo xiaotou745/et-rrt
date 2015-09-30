@@ -103,4 +103,20 @@
       Remark = #{remark,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <!-- 添加订单操作日志 -->
+  <insert id="addOrderLog" parameterType="com.renrentui.renrenentity.OrderLog" >
+INSERT INTO dbo.OrderLog
+        ( OrderNo ,
+          OrderId ,
+          OptType ,
+          OptName ,
+          Remark
+        )
+VALUES  ( '${orderNo}' ,
+          ${orderId} , 
+          ${optType} , 
+          '${optName}' , 
+          '${remark}' 
+        )
+  </insert>
 </mapper>

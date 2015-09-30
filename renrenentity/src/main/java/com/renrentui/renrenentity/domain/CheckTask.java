@@ -8,6 +8,13 @@ public class CheckTask {
 private int blanceCan;
 private int endTimeCan;
 private int orderCan;
+private double taskCycle;
+public double getTaskCycle() {
+	return taskCycle;
+}
+public void setTaskCycle(double taskCycle) {
+	this.taskCycle = taskCycle;
+}
 public int getBlanceCan() {
 	return blanceCan;
 }

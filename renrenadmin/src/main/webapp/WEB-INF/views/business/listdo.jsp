@@ -13,7 +13,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
-	<thead>
+	<thead> 
 		<tr class="tdbg">
 			<th width="%5">编号</th>
 			<th width="10%">公司名称</th>
@@ -59,15 +59,13 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 <script type="text/javascript">
    //商户冲值 
    function BusinessDelta(id, name, phone) {
- /*       $('#clienterId').val(0);
-       $('#clienterName').val('');
-       $('#clienterPhone').val('');
-       $('#clienterRechargeAmount').val('');
-       $('#rechargeLog').val('');
-       $('#clienterId').val(id);
-       $('#clienterName').val(name);
-       $('#clienterPhone').val(phone); 
-       */
+	   $('#txtBusinessIdD').val(0);
+	   $('#txtCompanyNameD').val('');
+	   $('#txtPhoneNoD').val('');
+	   $('#txtRemarkD').val('');
+	   $('#txtBusinessIdD').val(id);
+	   $('#txtCompanyNameD').val(name);
+	   $('#txtPhoneNoD').val(phone);
 	   $('#businessDeltaShow').modal('show'); 
    }
   </script>

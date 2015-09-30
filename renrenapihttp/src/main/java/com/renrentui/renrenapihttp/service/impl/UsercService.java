@@ -121,9 +121,11 @@ public class UsercService implements IUsercService {
 			resultModel.setCode(WithdrawState.MoneyError.value());
 			resultModel.setMsg(WithdrawState.MoneyError.desc());
 			return resultModel;
-		}
+		}		
 		
 		clienterService.WithdrawC(req);
+		resultModel.setCode(WithdrawState.Success.value());
+		resultModel.setMsg(WithdrawState.Success.desc());
 		return resultModel;
 	}
 
