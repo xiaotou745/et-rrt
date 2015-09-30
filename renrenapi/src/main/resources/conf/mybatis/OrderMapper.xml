@@ -187,6 +187,10 @@
   </update>
   <!-- 创建一个订单 茹化肖 2015年9月30日09:57:52 -->
     <insert id="addOrder" parameterType="com.renrentui.renrenentity.Order">
+     <selectKey resultType="java.lang.Long" keyProperty="id"
+				order="AFTER">
+				select @@IDENTITY as id
+	  </selectKey>
 INSERT INTO dbo.[Order]
         ( OrderNo ,
           ClienterId ,
