@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
@@ -17,6 +18,7 @@ import com.renrentui.renrenapi.service.inter.IRenRenTaskServcie;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
+import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -29,6 +31,8 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 	private ITemplateDetailDao templateDetailDao;	
 	@Autowired
 	private IOrderDao orderDao;	
+	@Autowired
+	private IClienterLogDao clienterLogDao;	
 	/**
 	 * 获取任务详情
 	 * 茹化肖
@@ -72,7 +76,12 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 		order.setDeadlineTime(dealLineDate);
 		int res=orderDao.addOrder(order);//添加订单信息
 		int rescut=rereRenTaskDao.cutTaskAvailableCount(req.getTaskId());//扣减任务量
-		if(res>0&&rescut>0){
+		ClienterLog log=new ClienterLog();
+		log.setClienterId(req.getUserId());
+		log.setOptName("地推员ID");
+		log.setRemark("地推员:"+req.getUserId()+"领取任务:"+req.getTaskId()+"订单号:"+orderNoString);
+		int reslog=clienterLogDao.addClienterLog(log);//记录C端日志
+		if(res>0&&rescut>0&&reslog>0){
 			return GetTaskCode.Success;
 		}
 		else {
