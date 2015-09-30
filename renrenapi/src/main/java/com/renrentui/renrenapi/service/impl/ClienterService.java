@@ -11,6 +11,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
@@ -117,8 +118,8 @@ public class ClienterService implements IClienterService{
 	* @Return
 	*/
 	@Override
-	public MyIncomeResp queryClienterBalance(MyIncomeReq req) {
-		return clienterDao.queryClienterBalance(req);
+	public ClienterDetail getUserC(long userId) {
+		return clienterDao.getUserC(userId);
 	}
 	
 	/**

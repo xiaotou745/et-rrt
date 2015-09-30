@@ -260,6 +260,32 @@
     SELECT COUNT(1) FROM  dbo.Clienter AS C (NOLOCK)
 	WHERE C.Id=#{userId}
   </select>
+  <!-- 获取用户信息  2015年9月28日17:37:27 WangXuDan -->
+  <select id="getUserC" resultType="com.renrentui.renrenentity.domain.ClienterDetail" parameterType="java.util.HashMap" >
+    SELECT     c.[Id]
+		      ,c.[ClienterName]
+		      ,c.[PhoneNo]
+		      ,c.[Password]
+		      ,c.[LoginName]
+		      ,c.[HeadImage]
+		      ,c.[CityName]
+		      ,c.[CityCode]
+		      ,c.[Sex]
+		      ,c.[Age]
+		      ,c.[Education]
+		      ,c.[LastLoginTime]
+		      ,c.[CreateTime]
+		      ,c.[Status]
+		      ,c.[LastOptName]
+		      ,c.[LastOptTime]
+		      ,ISNULL(cb.Balance,0) Balance 
+		      ,ISNULL(cb.Withdraw,0) Withdraw
+		      ,ISNULL(cb.HadWithdraw,0) HadWithdraw
+		      ,0  checking
+    FROM  dbo.Clienter c WITH(NOLOCK)
+  	JOIN  dbo.ClienterBalance cb WITH(NOLOCK) ON c.Id=cb.ClienterId
+	WHERE c.Id=#{userId}
+  </select>
   <!-- 获取地推员列表的分页存储过程_列名 WangXuDan 2015年9月29日16:30:06 -->
   <sql id="getClienterList_Column">
 	   c.[Id]

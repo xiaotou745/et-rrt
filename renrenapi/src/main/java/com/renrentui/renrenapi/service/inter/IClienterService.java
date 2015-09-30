@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.service.inter;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
@@ -70,7 +71,7 @@ public interface IClienterService {
 	* @Date 2015年9月28日17:31:59
 	* @Return
 	*/
-	MyIncomeResp queryClienterBalance(MyIncomeReq req);
+	ClienterDetail getUserC(long userId);
 	/**
 	 * 用户提现
 	 * 胡灵波
