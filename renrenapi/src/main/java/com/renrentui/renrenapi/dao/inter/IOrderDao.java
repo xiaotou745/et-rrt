@@ -14,4 +14,6 @@ public interface IOrderDao {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+    
+    int addOrder(Order order);
 }

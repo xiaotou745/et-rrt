@@ -293,9 +293,15 @@ WHERE rrt.id=${taskId}
 SELECT 
 CASE WHEN rrt.AvailableCount>0 THEN 1 ELSE 0 END AS BlanceCan,--1 任务剩余量足够领取
 CASE WHEN rrt.EndTime>GETDATE() THEN 1 ELSE 0 END AS EndTimeCan,--1 任务尚未关闭
-CASE WHEN o.clienterid IS NULL THEN 1 ELSE 0 END AS OrderCan--1 可以领取
+CASE WHEN o.clienterid IS NULL THEN 1 ELSE 0 END AS OrderCan,--1 可以领取
+TaskCycle
 FROM dbo.RenRenTask AS rrt
 LEFT JOIN dbo.[Order] AS o ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
 WHERE rrt.id=${taskId}
   </select>
+  <!-- 领取任务时  将任务剩余量-1 茹化肖 2015年9月30日10:56:18 -->
+  <update id="cutTaskAvailableCount" parameterType="java.util.HashMap" >
+UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
+    where Id = #{taskid,jdbcType=BIGINT}
+  </update>
 </mapper>

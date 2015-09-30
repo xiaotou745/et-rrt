@@ -2,6 +2,8 @@ package com.renrentui.renrenentity;
 
 import java.util.Date;
 
+import com.renrentui.renrencore.util.ParseHelper;
+
 public class Order {
     private Long id;
 
@@ -19,7 +21,7 @@ public class Order {
 
     private Date auditTime;
 
-    private Date auditName;
+    private String auditName;
 
     private Date deadlineTime;
 
@@ -97,16 +99,16 @@ public class Order {
 		this.auditTime = auditTime;
 	}
 
-	public Date getAuditName() {
+	public String getAuditName() {
 		return auditName;
 	}
 
-	public void setAuditName(Date auditName) {
+	public void setAuditName(String auditName) {
 		this.auditName = auditName;
 	}
 
-	public Date getDeadlineTime() {
-		return deadlineTime;
+	public String getDeadlineTime() {
+		return ParseHelper.ToDateString(deadlineTime);
 	}
 
 	public void setDeadlineTime(Date deadlineTime) {

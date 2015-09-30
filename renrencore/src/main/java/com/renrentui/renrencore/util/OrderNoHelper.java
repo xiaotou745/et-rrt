@@ -98,7 +98,7 @@ public class OrderNoHelper {
 	 * @param userId
 	 * @return
 	 */
-	public static String generateOrderCode(int userId) {
+	public static String generateOrderCode(Long userId) {
 		String result = userId
 				+ ParseHelper.ToDateString(new Date(), "yyMMddHHmmss")
 				+ createRandomData(3)

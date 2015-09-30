@@ -185,4 +185,18 @@
       CancelRemark = #{cancelremark,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <!-- 创建一个订单 茹化肖 2015年9月30日09:57:52 -->
+    <insert id="addOrder" parameterType="com.renrentui.renrenentity.Order">
+INSERT INTO dbo.[Order]
+        ( OrderNo ,
+          ClienterId ,
+          TaskId ,
+          DealLineTime 
+        )
+VALUES  ( '${orderNo}' , 
+          ${clienterId} , 
+          ${taskId} , 
+          '${deadlineTime}'
+        )
+  </insert>
 </mapper>
