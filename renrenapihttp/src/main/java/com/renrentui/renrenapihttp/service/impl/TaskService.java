@@ -12,6 +12,8 @@ import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
+import com.renrentui.renrenentity.Order;
+import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
@@ -53,8 +55,8 @@ public class TaskService implements ITaskService{
 			return new HttpResultModel<Object>().setCode(GetTaskCode.TaskIdErr.value()).setMsg(GetTaskCode.TaskIdErr.desc());
 		if(req.getUserId()==null||req.getUserId()<=0)//用户ID
 			return new HttpResultModel<Object>().setCode(GetTaskCode.UserIdErr.value()).setMsg(GetTaskCode.UserIdErr.desc());
-		GetTaskCode code=rrTaskServcie.getTask(req);//领取任务
-		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
+		OrderRetrunModel code=rrTaskServcie.getTask(req);//领取任务
+		return new HttpResultModel<Object>().setCode(code.getCode().value()).setMsg(code.getCode().desc()).setData(code.getOrderId());
 	}
 	/**
 	 * 取消任务接口

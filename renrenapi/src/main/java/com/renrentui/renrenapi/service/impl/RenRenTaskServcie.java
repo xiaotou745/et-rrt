@@ -27,6 +27,7 @@ import com.renrentui.renrenentity.OrderLog;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.CheckTask;
+import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
@@ -65,16 +66,29 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public GetTaskCode getTask(TaskDetailReq req) {
+	public OrderRetrunModel getTask(TaskDetailReq req) {
+		OrderRetrunModel model=new OrderRetrunModel();
 		CheckTask detail=rereRenTaskDao.checkTask(req);//获取任务相关数据
 		if(detail==null)//没有查询到任务相关信息
-			return GetTaskCode.Fail;
+		{
+			 model.setCode(GetTaskCode.Fail);
+			 return model;
+		}
 		if(detail.getBlanceCan()==0)//任务余量不足领取
-			return GetTaskCode.TaskNoBlance;
+		{
+			 model.setCode(GetTaskCode.TaskNoBlance);
+			 return model;
+		}
 		if(detail.getEndTimeCan()==0)//任务过期关闭
-			return GetTaskCode.TaskExpire;
+		{
+			 model.setCode(GetTaskCode.TaskExpire);
+			 return model;
+		}
 		if(detail.getOrderCan()==0)//有未完成的任务
-			return GetTaskCode.TaskHad;
+		{
+			 model.setCode(GetTaskCode.TaskHad);
+			 return model;
+		}
 		//领取任务 插入订单
 		String orderNoString=OrderNoHelper.generateOrderCode(req.getUserId());//生成订单号
 		Order order=new Order();
@@ -101,7 +115,9 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 		orderLog.setRemark("地推员:"+req.getUserId()+"抢单:"+orderNoString);
 		int orderlogres=orderLogDao.addOrderLog(orderLog);//记录订单操作日志
 		if(res>0&&rescut>0&&reslog>0&&orderlogres>0){
-			return GetTaskCode.Success;
+			model.setOrderId(order.getId());
+			model.setCode(GetTaskCode.Success);
+			return model;
 		}
 		else {
 			Error error=new Error("添加订单错误");
