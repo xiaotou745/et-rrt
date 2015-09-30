@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.BusinessBalance;
+import com.renrentui.renrenentity.req.BusinessBalanceReq;
 
 public interface IBusinessBalanceDao {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +15,6 @@ public interface IBusinessBalanceDao {
     int updateByPrimaryKeySelective(BusinessBalance record);
 
     int updateByPrimaryKey(BusinessBalance record);
+    
+    int updateBalanceByBusinessId(BusinessBalanceReq record);
 }
