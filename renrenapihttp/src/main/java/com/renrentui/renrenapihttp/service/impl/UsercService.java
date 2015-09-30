@@ -25,11 +25,14 @@ import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.resp.GetUserCResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 import com.renrentui.renrenentity.resp.SignInResp;
 import com.renrentui.renrenentity.resp.SignUpResp;
@@ -246,14 +249,29 @@ public class UsercService implements IUsercService {
 	* @Return
 	*/
 	@Override
-	public HttpResultModel<Object> myincome(MyIncomeReq req) {
+	public HttpResultModel<Object> getuserc(GetUserCReq req) {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		GetUserCResp resp=new GetUserCResp();
 		if(!clienterService.isExistUserC(req.getUserId()))//用户不存在
 			return  resultModel.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(MyIncomeCode.UserIdUnexist.desc());
-		MyIncomeResp clienterBalanceModel=clienterService.queryClienterBalance(req);
-		if(clienterBalanceModel==null||clienterBalanceModel.getId()<=0)//手机号或密码错误
+		ClienterDetail clienterModel=clienterService.getUserC(req.getUserId());
+		if(clienterModel==null||clienterModel.getId()<=0)//获取信息失败
 			return resultModel.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(MyIncomeCode.QueryIncomeError.desc());
-		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(clienterBalanceModel);
+		resp.setUserId(clienterModel.getId());
+		resp.setUserName(clienterModel.getClienterName());
+		resp.setPhoneNo(clienterModel.getPhoneNo());
+		resp.setHeadImage(clienterModel.getHeadImage());
+		resp.setCityCode(clienterModel.getCityCode());
+		resp.setCityName(clienterModel.getCityName());
+		resp.setSex(clienterModel.getSex());
+		resp.setAge(clienterModel.getAge());
+		resp.setEducation(clienterModel.getEducation());
+		resp.setStatus(clienterModel.getStatus());
+		resp.setBalance(clienterModel.getBalance());
+		resp.setWithdraw(clienterModel.getWithdraw());
+		resp.setHadWithdraw(clienterModel.getHadWithdraw());
+		resp.setChecking(clienterModel.getChecking());
+		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(resp);
 		
 	}
 

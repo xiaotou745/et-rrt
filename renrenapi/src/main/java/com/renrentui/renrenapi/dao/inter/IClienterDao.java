@@ -4,6 +4,7 @@ package com.renrentui.renrenapi.dao.inter;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
@@ -69,12 +70,12 @@ public interface IClienterDao {
 	*/
 	boolean isExistUserC(long userId);
 	/**
-	* @Des 获取用户收入 
+	* @Des 获取用户信息
 	* @Author WangXuDan
 	* @Date 2015年9月28日17:31:59
 	* @Return
 	*/
-	MyIncomeResp queryClienterBalance(MyIncomeReq req);
+	ClienterDetail getUserC(long userId);
 	/**
 	* @Des 获取地推员信息列表  
 	* @Author WangXuDan
