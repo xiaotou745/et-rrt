@@ -214,7 +214,7 @@ FROM  dbo.[Order] AS o
 WHERE o.id=${orderId} AND ClienterId=${userId}
   </select>
   
-    <!-- 取消订单 2015年9月30日13:36:59茹化肖 -->
+  <!-- 取消订单 2015年9月30日13:36:59茹化肖 -->
   <update id="cancelOrder" parameterType="com.renrentui.renrenentity.req.CancelTaskReq">
 UPDATE dbo.[Order] SET 
 OrderStatus=2,
@@ -223,4 +223,16 @@ CancelName='${userId}',
 CancelRemark='${remark}'
 WHERE id=${orderId}
   </update>
+  
+  <!-- 验证合同是否可以提交  2015年9月30日13:36:59茹化肖 -->
+  <select id="checkOrderSubmit" parameterType="com.renrentui.renrenentity.req.SubmitTaskReq" resultType="com.renrentui.renrenentity.domain.CheckSubmitTask">
+SELECT 
+CASE WHEN (o.OrderStatus=0 AND FinishTime IS NULL AND rrt.EndTime>GETDATE()) OR (o.OrderStatus=1 AND o.AuditStatus=3) THEN 1 ELSE 0 END AS SubmitCan,--1  可以提交
+CASE WHEN o.OrderStatus=2 OR o.OrderStatus=3 THEN 1 ELSE 0 END AS IsCancel,-- 1订单已经取消
+CASE WHEN (GETDATE()>rrt.EndTime AND FinishTime IS NULL) THEN 1 ELSE 0 END AS TaskClosed,--任务已经关闭 不可提交
+CASE WHEN o.OrderStatus=1 AND o.AuditStatus=0 THEN 1 ELSE 0 END AS ReSubmit--已经提交 等待审核
+FROM dbo.[Order] AS o
+INNER JOIN dbo.RenRenTask AS rrt ON o .TaskId=rrt.id
+WHERE o.id=${orderId}
+  </select>
 </mapper>

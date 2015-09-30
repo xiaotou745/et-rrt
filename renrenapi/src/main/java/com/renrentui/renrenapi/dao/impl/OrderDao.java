@@ -8,7 +8,9 @@ import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
+import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.SubmitTaskReq;
 @Repository
 public class OrderDao extends DaoBase implements IOrderDao{
 
@@ -75,6 +77,19 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	@Override
 	public int cancelOrder(CancelTaskReq req) {
 		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.cancelOrder", req);
+	}
+	/**
+	 * 验证合同是否可以提交
+	 */
+	@Override
+	public CheckSubmitTask checkOrderSubmit(SubmitTaskReq req) {
+		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IOrderDao.checkOrderSubmit", req);
+	}
+
+	@Override
+	public int submitOrder(SubmitTaskReq req) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

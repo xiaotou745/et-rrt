@@ -18,15 +18,18 @@ import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskServcie;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
+import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.OrderLog;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
+import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 @Service
 public class RenRenTaskServcie implements IRenRenTaskServcie{
@@ -144,6 +147,27 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 			Error error=new Error("取消任务错误");
 			throw new RuntimeErrorException(error);
 		}
+	}
+	/**
+	 * 提交任务
+	 */
+	@Override
+	public SubmitTaskCode submitTask(SubmitTaskReq req) {
+		CheckSubmitTask check=orderDao.checkOrderSubmit(req);
+		if(check==null)
+			return SubmitTaskCode.CantSubmit;
+		if(check.getSubmitCan()==0)//订单不可提交
+		{
+			if(check.getIsCancel()==1)//订单已经取消
+				return SubmitTaskCode.OrderCancel;
+			if(check.getTaskClosed()==1)//任务已关闭 且不是修改后提交
+				return SubmitTaskCode.TaskClosed;
+			if(check.getReSubmit()==1)//任务已经提交待审核 不可重复提交
+				return SubmitTaskCode.ReSubmit;
+			return SubmitTaskCode.CantSubmit;
+		}
+		//更新订单状态
+		return null;
 	}
 
 }

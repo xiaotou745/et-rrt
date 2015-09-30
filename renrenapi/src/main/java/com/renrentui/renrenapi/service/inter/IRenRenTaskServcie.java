@@ -2,8 +2,10 @@ package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
+import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 
 public interface IRenRenTaskServcie {
@@ -26,4 +28,6 @@ public interface IRenRenTaskServcie {
 	 * @return
 	 */
 	public CancelTaskCode cancelTask(CancelTaskReq req);
+	
+	public SubmitTaskCode submitTask(SubmitTaskReq req);
 }
