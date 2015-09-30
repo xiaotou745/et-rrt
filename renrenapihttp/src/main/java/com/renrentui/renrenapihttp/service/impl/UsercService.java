@@ -30,6 +30,7 @@ import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
+import com.renrentui.renrenentity.resp.SignInResp;
 import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;
 
@@ -172,6 +173,7 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> signin(SignInReq req) {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		SignInResp signInResp=new SignInResp();
 		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
 			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
 		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
@@ -179,7 +181,9 @@ public class UsercService implements IUsercService {
 		Clienter clienterModel=clienterService.queryClienter(req);
 		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
 			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
-		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(clienterModel);
+		signInResp.setUserId(clienterModel.getId());
+		signInResp.setUserName(clienterModel.getClienterName());
+		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(signInResp);
 	}
 
 	/**
