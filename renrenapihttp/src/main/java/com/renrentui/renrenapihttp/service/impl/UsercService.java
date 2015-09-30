@@ -31,6 +31,7 @@ import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
+import com.renrentui.renrenentity.resp.SignInResp;
 import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;
 
@@ -165,6 +166,7 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> signin(SignInReq req) {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		SignInResp signInResp=new SignInResp();
 		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
 			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
 		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
@@ -172,7 +174,9 @@ public class UsercService implements IUsercService {
 		Clienter clienterModel=clienterService.queryClienter(req);
 		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
 			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
-		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(clienterModel);
+		signInResp.setUserId(clienterModel.getId());
+		signInResp.setUserName(clienterModel.getClienterName());
+		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(signInResp);
 	}
 
 	/**
@@ -186,29 +190,39 @@ public class UsercService implements IUsercService {
 	public HttpResultModel<Object> sendcode(CSendCodeReq req) {
 		try {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-			String code = RandomCodeStrGenerator.generateCodeNum(6);
 			String key = "";
+			String phoneNo=req.getPhoneNo();
 			// 类型 1注册 2修改密码 3忘记密码
-
+			boolean checkPhoneNo=clienterService.isExistPhoneC(phoneNo);
 			if (req.getsType() == 1) {
 				// 注册
+				//手机号存在
+				if(checkPhoneNo){
+					return resultModel.setCode(SendSmsType.PhoneExists.value()).setMsg(
+							SendSmsType.PhoneExists.desc());//该手机号已经存在，不能注册
+				}
 				key = RedissCacheKey.RR_Clienter_sendcode_register
-						+ req.getPhoneNo();
-			} else if (req.getsType() == 2) {
+						+ phoneNo;
+			} 
+			if(!checkPhoneNo){
+				return resultModel.setCode(SendSmsType.PhoneNotExists.value()).setMsg(
+						SendSmsType.PhoneNotExists.desc());//该手机号不存在，不能修改或忘记密码
+			}
+			if (req.getsType() == 2) {
 				// 修改密码
 				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
-						+ req.getPhoneNo();
+						+ phoneNo;
 			} else if (req.getsType() == 3) {
 				// 忘记密码
 				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
-						+ req.getPhoneNo();
+						+ phoneNo;
 			}
-
 			if (key == "")
-				return null;
-//			String str = redisService.get(key, String.class);
-			redisService.set(key, code);//, 60 * 5
-			long resultValue = SmsUtils.sendSMS(req.getPhoneNo(), "您的验证码为:"
+				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
+						SendSmsType.Fail.desc());// 发送失败
+			String code = RandomCodeStrGenerator.generateCodeNum(6);//获取随机数
+			redisService.set(key, code, 60 * 5);
+			long resultValue = SmsUtils.sendSMS(phoneNo, "您的验证码为:"
 					+ code);
 			if (resultValue <= 0) {
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
