@@ -8,7 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
+import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.req.PagedBusinessReq;
+import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
+
 
 @Repository
 public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdrawFormDao {
@@ -50,7 +56,15 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
+	@Override
+	public	PagedResponse<ClienterWithdrawFormDM> getList(PagedClienterWithdrawFormReq req){
+		PagedResponse<ClienterWithdrawFormDM> model = getReadOnlySqlSessionUtil()
+				.selectPageList(
+						"com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao.getList",						 
+						req);
+		return model;
+	}
 	
 	
 

@@ -26,6 +26,7 @@ import com.renrentui.renrenapi.service.inter.IAccountInfoService;
 import com.renrentui.renrenapi.service.inter.IBusinessBalanceRecordService;
 import com.renrentui.renrenapi.service.inter.IBusinessBalanceService;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
+import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
 import com.renrentui.renrenapi.service.inter.IMenuInfoService;
 import com.renrentui.renrenapi.service.inter.IRoleInfoService;
 import com.renrentui.renrencore.cache.redis.RedisService;
@@ -41,77 +42,52 @@ import com.renrentui.renrenentity.BusinessBalanceRecord;
 import com.renrentui.renrenentity.MenuInfo;
 import com.renrentui.renrenentity.RoleInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
 import com.renrentui.renrenentity.domain.SimpleUserInfoModel;
 import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
+import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 
 @Controller
-@RequestMapping("business")
-public class BusinessController {
+@RequestMapping("clienterwithdraw")
+public class ClienterWithdrawFormController {
 	@Autowired
-	private IBusinessService businessService;		
+	private IClienterWithdrawFormService clienterWithdrawFormService;		
 
 
 	/**
-	 * 商户列表管理页面 
+	 * 用户提现列表管理页面 
 	 * @author hulignbo
-	 * @Date 2015年9月29日 11:17:28
+	 * @Date 2015年9月30日 15:38:27
 	 * @param search 查询条件实体
 	 * @return
 	 */
 	@RequestMapping("list")
 	public ModelAndView list(){		
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "商户");
-		model.addObject("currenttitle", "商户管理");	
-		model.addObject("viewPath", "business/list");
+		model.addObject("subtitle", "账务管理");
+		model.addObject("currenttitle", "提现管理");	
+		model.addObject("viewPath", "clienterwithdraw/list");
 		return model;
 	}	
 	
 	/**
-	 * 商户列表管理页面 
+	 * 用户提现列表管理页面 
 	 * @author hulignbo
-	 * @Date 2015年9月29日 11:17:53
+	 * @Date 2015年9月30日 15:38:58
 	 * @param search 查询条件实体
 	 * @return	
 	 */	
 	@RequestMapping("listdo")
-	public ModelAndView listdo(PagedBusinessReq req)  {			
+	public ModelAndView listdo(PagedClienterWithdrawFormReq req)  {			
 		
-		PagedResponse<Business> resp = businessService.getBusinessList(req);
-		ModelAndView model = new ModelAndView("business/listdo");		
+		PagedResponse<ClienterWithdrawFormDM> resp = clienterWithdrawFormService.getList(req);
+		ModelAndView model = new ModelAndView("clienterwithdraw/listdo");		
 		model.addObject("listData", resp);
 		return model;		
 	}		
-	
-	/**
-	 * 添加商户 
-	 * @author hulignbo
-	 * @Date 2015年9月30日 15:35:12
-	 * @param search 查询条件实体
-	 * @return	
-	 */	
-	@RequestMapping("addbusiness")
-	@ResponseBody
-	public int addBusiness(Business record) {
-	
-		return businessService.Add(record);
-	}
-	
-	/**
-	 * 商户冲值
-	 * @author hulingbo	
-	 * @Date 2015年9月30日 15:35:51
-	 * @param search 查询条件实体
-	 * @return	
-	 */	
-	@RequestMapping("addbusinessdelta")
-	@ResponseBody
-	public int addBusinessDelta(BusinessBalanceReq req) {
-	
-		return businessService.AddBalance(req);
-	}	
+
 	
 }

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 
 
 
@@ -22,5 +25,11 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 	public int Add(ClienterWithdrawForm record) 
 	{
 		return clienterWithdrawFormDao.insert(record);
+	}
+	
+	@Override
+	public	PagedResponse<ClienterWithdrawFormDM> getList(PagedClienterWithdrawFormReq req)
+	{
+		return clienterWithdrawFormDao.getList(req);		
 	}
 }
