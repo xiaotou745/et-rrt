@@ -72,7 +72,7 @@ function funGetRedis(mtype,mkey){
 	});
 }
 function detail(id,key,val){
-	if(key==undefined) return ;
+	if(key==undefined || key=="") return ;
 	var arr=new Array();
 	arr.push("<tr>");
 	arr.push("<td>"+id+"</td>");

@@ -104,7 +104,7 @@ public class RedisService {
 	 * @date 2015年9月29日 13:10:05
 	 * */
 	public Set<String> keys(String keyPattern){
-		return redisTemplate.keys("*"+suffxKey(keyPattern)+"*");
+		return redisTemplate.keys("*"+keyPattern+"*");
 	}
 
 	/**
