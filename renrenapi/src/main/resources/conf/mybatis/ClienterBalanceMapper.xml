@@ -96,15 +96,5 @@
       Withdraw =Withdraw+ #{amount,jdbcType=DECIMAL}     
     where ClienterId = #{userId,jdbcType=BIGINT}    
   </update>
-  <!-- 获取用户收入  2015年9月28日17:37:27 WangXuDan -->
-  <select id="queryClienterBalance" resultType="com.renrentui.renrenentity.resp.MyIncomeResp" parameterType="com.renrentui.renrenentity.req.MyIncomeReq" >
-    SELECT    Id
-		    , ClienterId
-		    , Balance
-		    , Withdraw
-		    , HadWithdraw
-		    , 0 checking
-    FROM  dbo.ClienterBalance AS CB (NOLOCK)
-	WHERE CB.ClienterId=#{userId}
-  </select>
+  
 </mapper>

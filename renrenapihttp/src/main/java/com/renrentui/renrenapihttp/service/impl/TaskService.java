@@ -14,6 +14,7 @@ import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 
 /**
@@ -66,5 +67,15 @@ public class TaskService implements ITaskService{
 			return new HttpResultModel<Object>().setCode(CancelTaskCode.UserIdErr.value()).setMsg(CancelTaskCode.UserIdErr.desc());
 		CancelTaskCode code=rrTaskServcie.cancelTask(req);
 		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
+	}
+	/**
+	 * 提交任务
+	 * 茹化肖
+	 * 2015年9月30日14:53:05
+	 */
+	@Override
+	public HttpResultModel<Object> submitTask(SubmitTaskReq req) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

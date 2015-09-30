@@ -1,13 +1,11 @@
+<%@page import="com.renrentui.renrencore.util.Config"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrenentity.RoleInfo"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
-<%
-String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
-%>
-<script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
+<script src="<%=Config.adminurl%>/js/bootstrap-treeview.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
@@ -24,7 +22,6 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		</div>
 	</div>
 </div>
-
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
@@ -35,7 +32,6 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		</tr>
 	</thead>
 	<tbody id="Content">
-		
 	</tbody>
 </table>
 
@@ -51,7 +47,7 @@ function funGetRedis(mtype,mkey){
 	else{
 		sType = $("input[name='sType']:checked").val();
 	}
-	$.post("<%=basePath%>/admintools/redistools_do",{key:key,sType:sType},function(d){
+	$.post("<%=Config.adminurl%>/admintools/redistools_do",{key:key,sType:sType},function(d){
 		var arr=new Array();
 		if(sType==1)
 			{
