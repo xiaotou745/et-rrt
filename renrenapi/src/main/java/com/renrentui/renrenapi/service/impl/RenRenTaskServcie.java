@@ -183,6 +183,7 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 			return SubmitTaskCode.CantSubmit;
 		}
 		//更新订单状态
+		//插入订单操作记录
 		return null;
 	}
 

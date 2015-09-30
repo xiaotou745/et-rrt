@@ -85,7 +85,12 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	public CheckSubmitTask checkOrderSubmit(SubmitTaskReq req) {
 		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IOrderDao.checkOrderSubmit", req);
 	}
-
+	/**
+	 * 提交合同信息
+	 * 更新订单状态
+	 * 未完成.
+	 * 
+	 */
 	@Override
 	public int submitOrder(SubmitTaskReq req) {
 		// TODO Auto-generated method stub
