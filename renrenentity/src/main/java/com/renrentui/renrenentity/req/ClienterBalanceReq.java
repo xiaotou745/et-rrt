@@ -9,6 +9,9 @@ public class ClienterBalanceReq {
 
 	private long userId;//用户Id
 	private double amount;//提现金额	
+	private String accountInfo;
+	private String trueName;
+	
 	public long getUserId() {
 		return userId;
 	}
@@ -22,5 +25,18 @@ public class ClienterBalanceReq {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
+	public String getAccountInfo() {
+		return accountInfo;
+	}
+	public void setAccountInfo(String accountInfo) {
+		this.accountInfo = accountInfo;
+	}
+	public String getTrueName() {
+		return trueName;
+	}
+	public void setTrueName(String trueName) {
+		this.trueName = trueName;
+	}
+	
 
 }

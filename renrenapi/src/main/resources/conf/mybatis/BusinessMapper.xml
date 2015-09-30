@@ -54,7 +54,7 @@
     delete from Business
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.Business" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.Business" useGeneratedKeys="true" keyProperty="id" >
     insert into Business ( CompanyName, PhoneNo, 
       PassWord, LoginName, Logo, 
       Address, CityCode, CityName, 
