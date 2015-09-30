@@ -73,7 +73,7 @@ public class ClienterService implements IClienterService{
 	 * WangChao
 	 */
 	@Override
-	public int signup(SignUpReq req) {
+	public long signup(SignUpReq req) {
 		return clienterDao.signup(req); 
 	} 
 	/**

@@ -8,7 +8,6 @@ import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
-import com.renrentui.core.enums.SignUpCode;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
@@ -18,6 +17,7 @@ import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.enums.SignUpCode;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
@@ -136,18 +136,19 @@ public class UsercService implements IUsercService {
 			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(
 					SignUpCode.PhoneNull.desc());
 		}
-		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
+		if (clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
 			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
 					.setMsg(SignUpCode.PhoneFormatError.desc());
 		if (req.getVerifyCode().equals(""))// 验证码不能为空
 			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
 					SignUpCode.VerCodeNull.desc());
+		
 		String key=RedissCacheKey.RR_Clienter_sendcode_register+ req.getPhoneNo();//注册key
 		String redisValueString= redisService.get(key, String.class);
 		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
 			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
 					SignUpCode.VerCodeError.desc());
-		int id = clienterService.signup(req);
+		long id = clienterService.signup(req);
 		if (id > 0) {// 注册成功
 			SignUpResp sur = new SignUpResp();
 			sur.setUserId(id);
@@ -211,7 +212,7 @@ public class UsercService implements IUsercService {
 			if (key == "")
 				return null;
 //			String str = redisService.get(key, String.class);
-			redisService.set(key, code, 60 * 5);
+			redisService.set(key, code);//, 60 * 5
 			long resultValue = SmsUtils.sendSMS(req.getPhoneNo(), "您的验证码为:"
 					+ code);
 			if (resultValue <= 0) {

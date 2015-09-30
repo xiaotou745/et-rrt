@@ -16,6 +16,7 @@ public class Template {
     private Date lastOptTime;
 
     private Short status;
+    private String remark;
 
     public Long getId() {
         return id;
@@ -74,4 +75,12 @@ public class Template {
     public void setStatus(Short status) {
         this.status = status;
     }
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 }

@@ -13,105 +13,37 @@
   <sql id="Base_Column_List" >
     Id, ControlId, OrderNum, Name, Title, DefaultValue, ControlData
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from TemplateDetail
-    where Id = #{id,jdbcType=BIGINT}
-  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from TemplateDetail
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.TemplateDetail" >
-    insert into TemplateDetail (Id, ControlId, OrderNum, 
+    insert into TemplateDetail (templateId,ControlId, OrderNum, 
       Name, Title, DefaultValue, 
       ControlData)
-    values (#{id,jdbcType=BIGINT}, #{controlid,jdbcType=BIGINT}, #{ordernum,jdbcType=INTEGER}, 
-      #{name,jdbcType=NVARCHAR}, #{title,jdbcType=NVARCHAR}, #{defaultvalue,jdbcType=NVARCHAR}, 
-      #{controldata,jdbcType=NVARCHAR})
+    values (#{item.templateId,jdbcType=BIGINT},#{controlId,jdbcType=BIGINT}, #{orderNum,jdbcType=INTEGER}, 
+      #{name,jdbcType=NVARCHAR}, #{title,jdbcType=NVARCHAR}, #{defaultValue,jdbcType=NVARCHAR}, 
+      #{controlData,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.TemplateDetail" >
-    insert into TemplateDetail
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="controlid != null" >
-        ControlId,
-      </if>
-      <if test="ordernum != null" >
-        OrderNum,
-      </if>
-      <if test="name != null" >
-        Name,
-      </if>
-      <if test="title != null" >
-        Title,
-      </if>
-      <if test="defaultvalue != null" >
-        DefaultValue,
-      </if>
-      <if test="controldata != null" >
-        ControlData,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="controlid != null" >
-        #{controlid,jdbcType=BIGINT},
-      </if>
-      <if test="ordernum != null" >
-        #{ordernum,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=NVARCHAR},
-      </if>
-      <if test="title != null" >
-        #{title,jdbcType=NVARCHAR},
-      </if>
-      <if test="defaultvalue != null" >
-        #{defaultvalue,jdbcType=NVARCHAR},
-      </if>
-      <if test="controldata != null" >
-        #{controldata,jdbcType=NVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.TemplateDetail" >
-    update TemplateDetail
-    <set >
-      <if test="controlid != null" >
-        ControlId = #{controlid,jdbcType=BIGINT},
-      </if>
-      <if test="ordernum != null" >
-        OrderNum = #{ordernum,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        Name = #{name,jdbcType=NVARCHAR},
-      </if>
-      <if test="title != null" >
-        Title = #{title,jdbcType=NVARCHAR},
-      </if>
-      <if test="defaultvalue != null" >
-        DefaultValue = #{defaultvalue,jdbcType=NVARCHAR},
-      </if>
-      <if test="controldata != null" >
-        ControlData = #{controldata,jdbcType=NVARCHAR},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.TemplateDetail" >
-    update TemplateDetail
-    set ControlId = #{controlid,jdbcType=BIGINT},
-      OrderNum = #{ordernum,jdbcType=INTEGER},
-      Name = #{name,jdbcType=NVARCHAR},
-      Title = #{title,jdbcType=NVARCHAR},
-      DefaultValue = #{defaultvalue,jdbcType=NVARCHAR},
-      ControlData = #{controldata,jdbcType=NVARCHAR}
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
+  <update id="insertList" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" >
+	insert into TemplateDetail (templateId,ControlId, OrderNum,Name, Title, DefaultValue, ControlData)     
+	values (#{item.templateId,jdbcType=BIGINT},#{item.controlId,jdbcType=BIGINT}, #{item.orderNum,jdbcType=INTEGER}, 
+      #{item.name,jdbcType=NVARCHAR}, #{item.title,jdbcType=NVARCHAR}, #{item.defaultValue,jdbcType=NVARCHAR}, 
+      #{item.controlData,jdbcType=NVARCHAR});
+		</foreach>
+	</update>
+  <!-- 获取模板的控件详情13:49:49 -->
+  <select id="getTemplateList" resultType="com.renrentui.renrenentity.domain.ControlInfo" parameterType="java.util.HashMap" >
+    SELECT  TC.ControlType ,
+        Title ,
+        Name ,
+        DefaultValue ,
+        ControlData ,
+        OrderNum
+FROM    dbo.TemplateDetail AS td ( NOLOCK )
+        LEFT JOIN dbo.TemplateControl AS tc ( NOLOCK ) ON td.ControlId = tc.id
+WHERE   td.TemplateId = #{templateId,jdbcType=INTEGER}
+ORDER BY OrderNum ASC
+  </select>
 </mapper>
