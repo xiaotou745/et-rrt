@@ -31,6 +31,13 @@ public class TaskDetail {
 	private ArrayList<ControlInfo> controlInfo;
 	private int isHad;
 	private Long orderId;
+	private String logo;
+	public String getLogo() {
+		return logo;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
 	public Long getOrderId() {
 		return orderId;
 	}
