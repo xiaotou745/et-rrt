@@ -50,23 +50,16 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Autowired
 	private IClienterLogDao clienterLogDao;	
 	@Autowired
-<<<<<<< .mine
 	private IOrderLogDao orderLogDao;
 	
 	@Autowired
 	private IOrderChildDao orderChildDaoDao;
-	/**
-
-
-=======
-	private IOrderLogDao orderLogDao;	
 	@Autowired
 	private ITaskCityRelationDao taskCityRelationDao;	
 	@Autowired
 	private IPublicProvinceCityService publicProvinceCityService;
 
-/**
->>>>>>> .theirs
+	/**
 	 * 获取任务详情
 	 * 茹化肖
 	 * 2015年9月29日13:00:35
