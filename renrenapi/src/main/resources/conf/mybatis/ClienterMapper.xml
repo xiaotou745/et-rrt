@@ -281,7 +281,9 @@
 		      ,ISNULL(cb.Balance,0) Balance 
 		      ,ISNULL(cb.Withdraw,0) Withdraw
 		      ,ISNULL(cb.HadWithdraw,0) HadWithdraw
-		      ,0  checking
+		      ,ISNULL((SELECT SUM(o.Amount) FROM dbo.[Order] o WITH(NOLOCK) WHERE o.OrderStatus=1 AND o.AuditStatus=0 AND ClienterId=#{userId}),0)  checking
+		      ,ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) Withdrawing
+		      ,ISNULL(cb.Balance,0)+ISNULL(cb.Withdraw,0) +ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) TotalAmount
     FROM  dbo.Clienter c WITH(NOLOCK)
   	JOIN  dbo.ClienterBalance cb WITH(NOLOCK) ON c.Id=cb.ClienterId
 	WHERE c.Id=#{userId}
@@ -338,4 +340,8 @@
 #{totalPage,mode=OUT,jdbcType=VARCHAR}
 )} 
   </select>
+  <!-- 修改用户状态  WangXuDan 2015年10月8日11:18:19-->
+  <update  id="editClienterStatus" parameterType="com.renrentui.renrenentity.req.ModifyClienterStatusReq" >
+    UPDATE dbo.Clienter SET Status=${status},LastOptTime=GETDATE(),LastOptName='${lastOptName}' WHERE id =#{userId}
+  </update>
 </mapper>

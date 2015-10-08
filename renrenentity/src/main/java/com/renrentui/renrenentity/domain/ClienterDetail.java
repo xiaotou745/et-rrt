@@ -12,6 +12,10 @@ public class ClienterDetail extends Clienter {
     private Double hadWithdraw;
     
     private Double checking;
+    
+    private Double withdrawing;
+    
+    private Double totalAmount;
 
 	public Double getBalance() {
 		return balance;
@@ -51,6 +55,22 @@ public class ClienterDetail extends Clienter {
 
 	public void setClienterId(Long clienterId) {
 		this.clienterId = clienterId;
+	}
+
+	public Double getWithdrawing() {
+		return withdrawing;
+	}
+
+	public void setWithdrawing(Double withdrawing) {
+		this.withdrawing = withdrawing;
+	}
+
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 }

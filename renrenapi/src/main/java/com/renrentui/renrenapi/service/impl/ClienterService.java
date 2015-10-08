@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
@@ -26,6 +27,7 @@ import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
+import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
@@ -191,8 +193,27 @@ public class ClienterService implements IClienterService{
 	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
 		return clienterDao.queryClienterList(req);
 	}
-	
 	/**
+	* @Des 修改用户状态 
+	* @Author WangXuDan
+	* @Date 2015年10月8日11:43:44
+	* @Return
+	*/
+	@Override
+	public ResponseBase editClienterStatus(ModifyClienterStatusReq req) {
+		ResponseBase responseBase = new ResponseBase();
+		responseBase.setResponseCode(-1);
+		if(!clienterDao.editClienterStatus(req))
+		{
+			responseBase.setMessage("地推员审核状态更新失败！");
+			return responseBase;
+		}
+		responseBase.setResponseCode(1);
+		responseBase.setMessage("地推员审核状态更新成功！");
+		return responseBase;
+		
+	}
+/**
 	* @Des  C端修改个人基础信息
 	* @Author CaoHeYang
 	* @Date 20151008

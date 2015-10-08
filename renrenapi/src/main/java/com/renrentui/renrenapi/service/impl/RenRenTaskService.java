@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.renrentui.renrenapi.dao.inter.IAttachmentDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
@@ -27,6 +28,7 @@ import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
+import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.OrderChild;
@@ -63,6 +65,9 @@ public class RenRenTaskService implements IRenRenTaskService{
 	private ITaskCityRelationDao taskCityRelationDao;	
 	@Autowired
 	private IPublicProvinceCityService publicProvinceCityService;
+	
+	@Autowired
+	private IAttachmentDao attachmentDao;
 
 	/**
 	 * 获取任务详情
@@ -115,6 +120,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 		order.setOrderNo(orderNoString);
 		order.setClienterId(req.getUserId());
 		order.setTaskId(req.getTaskId());
+		order.setAmount(detail.getAmount());
 		Date dealLineDate=ParseHelper.plusDate(new Date(), 3, (int)detail.getTaskCycle());
 		System.out.println(dealLineDate);
 		order.setDeadlineTime(dealLineDate);
@@ -250,7 +256,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 	}
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int insert(RenRenTask record,List<Integer> regionCodes) {
+	public int insert(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments) {
 		int result =rereRenTaskDao.insert(record);
 		if (result>0) {
 			Map<Integer,String> regionMap=publicProvinceCityService.getOpenCityMap();
@@ -266,7 +272,17 @@ public class RenRenTaskService implements IRenRenTaskService{
 				}
 				recordList.add(taskCityRelation);
 			}
-			return taskCityRelationDao.insertList(recordList);
+			int relationResult= taskCityRelationDao.insertList(recordList);
+			if (relationResult>0){
+				if(attachments!=null&&attachments.size()>0) {
+					for (Attachment attachment : attachments) {
+						attachment.setTaskId(record.getId());
+						attachment.setBusinessId(record.getBusinessId());
+					}
+					return attachmentDao.insertList(attachments);
+				}
+			}
+			return relationResult;
 		}
 		return result;
 	}
@@ -286,6 +302,14 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Override
 	public int getNewTaskTotal(TaskReq req) {
 		return rereRenTaskDao.getNewTaskTotal(req);
+	}
+	@Override
+	public List<TaskModel> getMyReceivedTaskList(TaskReq req) {
+		return rereRenTaskDao.getMyReceivedTaskList(req);
+	}
+	@Override
+	public int getMyReceivedTaskListTotal(TaskReq req) {
+		return rereRenTaskDao.getMyReceivedTaskListTotal(req);
 	}
 
 }

@@ -273,6 +273,8 @@ public class UsercService implements IUsercService {
 		resp.setWithdraw(clienterModel.getWithdraw());
 		resp.setHadWithdraw(clienterModel.getHadWithdraw());
 		resp.setChecking(clienterModel.getChecking());
+		resp.setWithdrawing(clienterModel.getWithdrawing());
+		resp.setTotalAmount(clienterModel.getTotalAmount());
 		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(resp);
 		
 	}

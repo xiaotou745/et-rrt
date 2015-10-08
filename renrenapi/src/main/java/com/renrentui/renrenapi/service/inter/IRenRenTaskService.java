@@ -8,6 +8,7 @@ import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
+import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.RenRenTask;
 
 import java.util.List;
@@ -46,12 +47,14 @@ public interface IRenRenTaskService {
 	 * @return
 	 */
 	public SubmitTaskCode submitTask(SubmitTaskReq req);
-	public int insert(RenRenTask record,List<Integer> regionCodes);
+	public int insert(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
 	
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
 	public int setTaskStatus(long taskID,int status);
 	
-	public List<TaskModel> getNewTaskList(TaskReq req);
-	
-	public int getNewTaskTotal(TaskReq req);
+	public List<TaskModel> getNewTaskList(TaskReq req); 
+	public int getNewTaskTotal(TaskReq req); 
+
+	public List<TaskModel> getMyReceivedTaskList(TaskReq req); 
+	public int getMyReceivedTaskListTotal(TaskReq req);
 }

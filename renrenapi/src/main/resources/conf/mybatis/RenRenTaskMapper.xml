@@ -282,7 +282,7 @@
 SELECT  rrt.id ,
         TaskTitle ,
         TaskNotice ,
-        Amount ,
+        rrt.Amount ,
         rrt.EndTime ,
         AvailableCount ,
         PaymentMethod ,
@@ -307,7 +307,8 @@ SELECT TOP 1
 CASE WHEN rrt.AvailableCount>0 THEN 1 ELSE 0 END AS BlanceCan,--1 任务剩余量足够领取
 CASE WHEN rrt.EndTime>GETDATE() THEN 1 ELSE 0 END AS EndTimeCan,--1 任务尚未关闭
 CASE WHEN o.clienterid IS NULL THEN 1 ELSE 0 END AS OrderCan,--1 可以领取
-TaskCycle
+TaskCycle,
+rrt.Amount
 FROM dbo.RenRenTask AS rrt
 LEFT JOIN dbo.[Order] AS o ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
 WHERE rrt.id=${taskId}
@@ -387,14 +388,14 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
         rt.TaskTitle TaskName ,
         rt.Amount ,
         rt.AvailableCount ,
-        rt.[Status] ,
+        1 ,
         rt.BeginTime ,
         rt.EndTime ,
         rt.PaymentMethod,b.logo 
 from    dbo.RenRenTask rt ( nolock )
 left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  #{userId}
 join dbo.Business b (nolock) on rt.BusinessId = b.Id 
-where o.ClienterId is null and o.OrderStatus = 0  
+where o.ClienterId is null and o.OrderStatus = 0 and rt.Status = 1 
 	  <if test="nextId != 0" >
          and rt.Id > #{nextId}
      </if>
@@ -403,6 +404,38 @@ order by rt.Id desc;
    <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select count(1) from dbo.RenRenTask rt ( nolock )
 left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  #{userId}
-where o.ClienterId is null and o.OrderStatus = 0   
+where o.ClienterId is null and o.OrderStatus = 0  and rt.Status = 1 
+  </select> 
+  <select id="getMyReceivedTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select 
+   	<if test="itemsCount != 0" >
+   		top  #{itemsCount} 
+   	</if> 
+        rt.Id TaskId ,
+        rt.TaskGeneralInfo ,
+        rt.Pusher ,
+        rt.TaskTitle TaskName ,
+        rt.Amount ,
+        rt.AvailableCount ,
+        2 ,
+        rt.BeginTime ,
+        rt.EndTime ,
+        rt.PaymentMethod ,
+        rt.TaskCycle ,
+        o.CreateTime ReceivedTime,b.logo ,o.Id myReceivedTaskId,o.AuditTime 
+from    dbo.RenRenTask rt ( nolock )
+        left join dbo.[Order] o ( nolock ) on rt.Id = o.TaskId
+                                              and o.ClienterId =  #{userId}
+		join dbo.Business b (nolock) on rt.BusinessId = b.Id 
+where o.ClienterId is not null and o.OrderStatus = 0 and rt.Status = 1 
+	  <if test="nextId != 0" >
+         and rt.Id > #{nextId}
+     </if>
+order by rt.Id desc;
+  </select>   
+   <select id="getMyReceivedTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select count(1) from dbo.RenRenTask rt ( nolock )
+        left join dbo.[Order] o ( nolock ) on rt.Id = o.TaskId and o.ClienterId = #{userId} 
+where o.ClienterId is not null and o.OrderStatus = 0 and rt.Status = 1 
   </select> 
 </mapper>

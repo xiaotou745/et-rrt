@@ -7,7 +7,8 @@
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrenentity.resp.ClienterResp"%>
 <%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
-<%String basePath = PropertyUtils.getProperty("java.admin.url");%>
+<%@page import="com.renrentui.renrencore.enums.ClienterStatus"%>
+<%String basePath = PropertyUtils.getProperty("java.renrenadmin.url");%>
 <%PagedResponse<ClienterResp> data = (PagedResponse<ClienterResp>) request.getAttribute("listData");%>
 <% if(data.getResultList()==null||data.getResultList().size()==0) 
 {%>
@@ -38,14 +39,14 @@
                 <td><%=list.get(i).getBalance() %></td>
                 <td><%=list.get(i).getWithdraw() %></td>
                 <td><%=list.get(i).getHadWithdraw() %></td>
-                <td><%=list.get(i).getStatus() %></td>
+                <td><%=ClienterStatus.getEnum(list.get(i).getStatus()).desc() %></td>
                 <td><%=ParseHelper.ToDateString(list.get(i).getLastOptTime())%></td>
                 <td><%=list.get(i).getLastOptName() %></td>
                 <td>
                 	<%if(list.get(i).getStatus()==1){%>
-					<a href="javascript:modifyMarkStatus(<%=list.get(i).getId()%>,0)">审核拒绝</a>
+					<a href="javascript:editClienterStatus(<%=list.get(i).getId()%>,2,<%=list.get(i).getStatus()%>)">审核拒绝</a>
 					<%}else{%> 
-					<a href="javascript:modifyMarkStatus(<%=list.get(i).getId()%>,1)">审核通过</a>
+					<a href="javascript:editClienterStatus(<%=list.get(i).getId()%>,1,<%=list.get(i).getStatus()%>)">审核通过</a>
 					<%}%>
 				</td>				
 			</tr>
@@ -58,40 +59,37 @@
 					data.getCurrentPage(), data.getTotalRecord(),
 					data.getTotalPage())%>
 <script>
-//标签编辑弹窗
-	
-	//修改标签状态
-	   function modifyMarkStatus(id,isEnable){
-		   var confirmMsg="";
-		   if(isEnable==0)
-			   {
-			   	confirmMsg="确认禁止此标签?";
-			   }
-		   else
-			   {
-			   	confirmMsg="确认启动此标签?";
-			   }
-		   if (!confirm(confirmMsg)) {
-	            return;
-	        }
-		   var paramaters = {
-		    	   "id":id,
-		    	   "isenable":isEnable,
-	           };
-	      var url = "<%=basePath%>/mark/modifyMarkStatus";
-		   $.ajax({
-	           type: 'POST',
-	           url: url,
-	           data: paramaters,
-	           success: function (result) {   			            
-	        	   alert(result.message);
-	               if (result.responseCode > 0) {
-	                   window.location.href = "<%=basePath%>/mark/list";
-	               }               
-	           }
-	       });
-	   }
-
-
+//修改标签状态
+function editClienterStatus(id,status,oldStatus){
+	   var confirmMsg="";
+	   if(status==1)
+		   {
+		   	confirmMsg="确认审核通过此地推员?";
+		   }
+	   else
+		   {
+		   	confirmMsg="确认审核拒绝此地推员?";
+		   }
+	   if (!confirm(confirmMsg)) {
+         return;
+     }
+	   var paramaters = {
+	    	   "userId":id,
+	    	   "status":status,
+	    	   "oldStatus":oldStatus
+        };
+   var url = "<%=basePath%>/clienter/editclienterstatus";
+	   $.ajax({
+        type: 'POST',
+        url: url,
+        data: paramaters,
+        success: function (result) {   			            
+     	   alert(result.message);
+            if (result.responseCode > 0) {
+                window.location.href = "<%=basePath%>/clienter/list";
+            }               
+        }
+    });
+}
 </script>
 

@@ -5,7 +5,8 @@ import java.util.Date;
 
 public class TaskModel implements Serializable {
 	private long taskId;
-	 
+	
+	private long myReceivedTaskId;
 	private String taskGeneralInfo;
 	
 	private String pusher;
@@ -26,12 +27,36 @@ public class TaskModel implements Serializable {
 	
 	private String logo;
 	
+	private Double taskCycle;
+	/*
+	 * 领取任务的时间
+	 */
+	private Date receivedTime;
+	
+	private Date auditTime;
+	
+	public Date getAuditTime() {
+		return auditTime;
+	}
+
+	public void setAuditTime(Date auditTime) {
+		this.auditTime = auditTime;
+	}
+
 	public long getTaskId() {
 		return taskId;
 	}
 
 	public void setTaskId(long taskId) {
 		this.taskId = taskId;
+	}
+	
+	public long getMyReceivedTaskId() {
+		return myReceivedTaskId;
+	}
+
+	public void setMyReceivedTaskId(long myReceivedTaskId) {
+		this.myReceivedTaskId = myReceivedTaskId;
 	}
 
 	public String getTaskGeneralInfo() {
@@ -88,8 +113,7 @@ public class TaskModel implements Serializable {
 
 	public void setBeginTime(Date beginTime) {
 		this.beginTime = beginTime;
-	}
-
+	} 
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -113,5 +137,21 @@ public class TaskModel implements Serializable {
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
+	public Double getTaskCycle() {
+		return taskCycle;
+	}
+
+	public void setTaskCycle(Double taskCycle) {
+		this.taskCycle = taskCycle;
+	}
+
+	public Date getReceivedTime() {
+		return receivedTime;
+	}
+
+	public void setReceivedTime(Date receivedTime) {
+		this.receivedTime = receivedTime;
+	}
+	
 	
 }
