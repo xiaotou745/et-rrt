@@ -55,12 +55,12 @@
 	<category name="renrenAdminLogger" additivity="false">
 		<level value="INFO" />
 		<appender-ref ref="renrenAdminAppender" />
-		<appender-ref ref="dbAppender" />
+<!-- 		<appender-ref ref="dbAppender" /> -->
 	</category>
 	<category name="renrenApiHttpLogger" additivity="false">
 		<level value="INFO" />
 		<appender-ref ref="renrenApiHttpAppender" />
-		<appender-ref ref="dbAppender" />
+<!-- 		<appender-ref ref="dbAppender" /> -->
 	</category>
 	<!-- 下面是打印mybatis语句的配置 -->
 	<logger name="com.ibatis" additivity="true">
