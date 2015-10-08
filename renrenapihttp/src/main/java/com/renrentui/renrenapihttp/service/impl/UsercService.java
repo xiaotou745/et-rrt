@@ -16,6 +16,7 @@ import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
+import com.renrentui.renrencore.enums.ModifyUserCReturnCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.enums.SignUpCode;
@@ -288,8 +289,23 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> modifyuserc(ModifyUserCReq req) {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
-		
-		return null;
+		if(req.getAge()==null||req.getAge()<=0)
+		{
+			return resultModel.setCode(ModifyUserCReturnCode.AgeError.value()).setMsg(ModifyUserCReturnCode.AgeError.desc());
+		}
+		if(req.getSex()==null||(req.getSex()!=1&&req.getSex()!=2))
+		{
+			return resultModel.setCode(ModifyUserCReturnCode.SexError.value()).setMsg(ModifyUserCReturnCode.SexError.desc());
+		}
+		if(req.getUserName()==null||req.getUserName().isEmpty())
+		{
+			return resultModel.setCode(ModifyUserCReturnCode.UserNameError.value()).setMsg(ModifyUserCReturnCode.UserNameError.desc());
+		}
+		if(req.getUserId()==0||clienterService.modifyuserc(req)<=0)
+		{
+			return resultModel.setCode(ModifyUserCReturnCode.UserError.value()).setMsg(ModifyUserCReturnCode.UserError.desc());
+		}
+		return resultModel.setCode(ModifyUserCReturnCode.Success.value()).setMsg(ModifyUserCReturnCode.Success.desc());
 	}
 
 
