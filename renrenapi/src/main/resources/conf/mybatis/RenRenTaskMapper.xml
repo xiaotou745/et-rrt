@@ -422,7 +422,7 @@ where o.ClienterId is null and o.OrderStatus = 0  and rt.Status = 1
         rt.EndTime ,
         rt.PaymentMethod ,
         rt.TaskCycle ,
-        o.CreateTime ReceivedTime,b.logo 
+        o.CreateTime ReceivedTime,b.logo ,o.Id myReceivedTaskId 
 from    dbo.RenRenTask rt ( nolock )
         left join dbo.[Order] o ( nolock ) on rt.Id = o.TaskId
                                               and o.ClienterId =  #{userId}
