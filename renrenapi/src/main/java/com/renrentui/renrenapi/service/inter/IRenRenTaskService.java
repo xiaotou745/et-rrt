@@ -1,11 +1,15 @@
 package com.renrentui.renrenapi.service.inter;
 
-import com.renrentui.renrencore.enums.GetTaskCode;
-import com.renrentui.renrencore.enums.CancelTaskCode;import com.renrentui.renrenentity.domain.TaskDetail;
+
+import com.renrentui.renrencore.enums.CancelTaskCode;
+import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
-import com.renrentui.renrenentity.Order;
-import com.renrentui.renrenentity.domain.OrderRetrunModel;import com.renrentui.renrenentity.RenRenTask;
-import com.renrentui.renrenentity.TaskCityRelation;import java.util.List;import com.renrentui.renrenentity.req.CancelTaskReq;
+
+import com.renrentui.renrenentity.domain.OrderRetrunModel;
+import com.renrentui.renrenentity.RenRenTask;
+
+import java.util.List;
+import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 

@@ -6,21 +6,19 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.renrentui.renrenapi.service.inter.IAdminTools;
+import com.renrentui.renrenapi.service.inter.IAdminToolsService;
 import com.renrentui.renrencore.cache.redis.RedisService;
-import com.renrentui.renrenentity.AccountInfo;
 
 @Controller
 @RequestMapping("admintools")
 public class AdminToolsController {
 
 	@Autowired
-	IAdminTools adminTools;
+	IAdminToolsService adminToolsService;
 	@Autowired
 	RedisService redisService;
 	/**
@@ -47,7 +45,7 @@ public class AdminToolsController {
 	@RequestMapping("redistools_do")
 	@ResponseBody
 	public String redisToolsDo(HttpServletRequest request,com.renrentui.renrenentity.RedisTools redisTools) {
-		Set<String> set=adminTools.getReidsTools(redisTools.getKey(), redisTools.getsType());
+		Set<String> set=adminToolsService.getReidsTools(redisTools.getKey(), redisTools.getsType());
 		return set.toString().replace("[", "").replace("]","");
 	}
 }

@@ -1,30 +1,19 @@
 package com.renrentui.renrenapi.service.impl;
 
 import java.util.ArrayList;
-<<<<<<< .mine
 import java.util.List;
 import java.util.Map;
-=======
 import java.util.Date;
-
->>>>>>> .theirs
 
 import javax.management.RuntimeErrorException;
 
-import org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< .mine
-import com.renrentui.renrenapi.dao.inter.IPublicProvinceCityDao;
-
-
-=======
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
->>>>>>> .theirs
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
@@ -32,12 +21,18 @@ import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
+import com.renrentui.renrencore.enums.SubmitTaskCode;
+import com.renrentui.renrencore.util.OrderNoHelper;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.OrderLog;
+import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.TaskCityRelation;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
-import com.renrentui.renrenentity.domain.CheckSubmitTask;import com.renrentui.renrenentity.domain.OrderRetrunModel;
+import com.renrentui.renrenentity.domain.CheckSubmitTask;
+import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
@@ -53,7 +48,8 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Autowired
 	private IClienterLogDao clienterLogDao;	
 	@Autowired
-	private IOrderLogDao orderLogDao;	@Autowired
+	private IOrderLogDao orderLogDao;	
+	@Autowired
 	private ITaskCityRelationDao taskCityRelationDao;	
 	@Autowired
 	private IPublicProvinceCityService publicProvinceCityService;
