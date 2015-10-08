@@ -25,11 +25,25 @@ public class TaskDetail {
 	private String taskGeneralInfo;
 	private String taskNote;
 	private Long businessId;
-	private Long tempateId;
+	private Long templateId;
 	private String pusher;
 	private String templateName;
 	private ArrayList<ControlInfo> controlInfo;
 	private int isHad;
+	private Long orderId;
+	private String logo;
+	public String getLogo() {
+		return logo;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 	public int getIsHad() {
 		return isHad;
 	}
@@ -109,11 +123,11 @@ public class TaskDetail {
 	public void setBusinessId(Long businessId) {
 		this.businessId = businessId;
 	}
-	public Long getTempateId() {
-		return tempateId;
+	public Long getTemplateId() {
+		return templateId;
 	}
-	public void setTempateId(Long tempateId) {
-		this.tempateId = tempateId;
+	public void setTemplateId(Long templateId) {
+		this.templateId = templateId;
 	}
 	public ArrayList<ControlInfo> getControlInfo() {
 		return controlInfo;

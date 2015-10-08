@@ -22,5 +22,5 @@ public class RedissCacheKey {
     public static final String RR_Clienter_sendcode_register ="RR_sendcode_register_";//C端注册
     public static final String RR_Celitner_sendcode_UpdatePasswrd="RR_Celitner_sendcode_UpdatePasswrd_";//C端修改密码
     public static final String RR_Clienter_sendcode_forgetPassword="RR_Clienter_sendcode_forgetPassword_";//C端忘记密码
-    
+    public static final String RR_PublicProvinceCity="RR_PublicProvinceCity";//省份和城市
 }

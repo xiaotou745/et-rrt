@@ -5,4 +5,6 @@ import com.renrentui.renrenentity.OrderChild;
 
 public interface IOrderChildDao {
     int insert(OrderChild record);
+    
+    int deleteOrderChild(Long orderId);
 }

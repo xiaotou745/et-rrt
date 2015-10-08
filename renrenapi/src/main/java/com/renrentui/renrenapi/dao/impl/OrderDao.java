@@ -1,6 +1,5 @@
 package com.renrentui.renrenapi.dao.impl;
 
-import javax.swing.text.MaskFormatter;
 
 import org.springframework.stereotype.Repository;
 
@@ -85,11 +84,16 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	public CheckSubmitTask checkOrderSubmit(SubmitTaskReq req) {
 		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IOrderDao.checkOrderSubmit", req);
 	}
-
+	/**
+	 * 提交合同信息
+	 * 更新订单状态
+	 * 茹化肖
+	 * 
+	 */
 	@Override
 	public int submitOrder(SubmitTaskReq req) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.submitOrder", req);
 	}
+
 
 }

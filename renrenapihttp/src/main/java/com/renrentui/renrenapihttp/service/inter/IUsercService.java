@@ -11,6 +11,7 @@ import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
+import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -90,7 +91,16 @@ public interface IUsercService {
 	@Path("/getuserc")
 	public HttpResultModel<Object> getuserc(GetUserCReq req);
 	
-
+	/**
+	* @Des  C端修改个人基础信息
+	* @Author CaoHeYang
+	* @Date 20151008
+	* @param req
+	* @Return
+	*/
+	@POST
+	@Path("/modifyuserc")
+	public HttpResultModel<Object> modifyuserc (ModifyUserCReq req);
 	
 	
 }

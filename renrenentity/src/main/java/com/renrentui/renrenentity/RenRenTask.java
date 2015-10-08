@@ -34,11 +34,11 @@ public class RenRenTask {
 
     private Double amount;
 
-    private Integer state;
+    private Integer status;
 
-    private Integer taskToatlCount;
+    private Integer taskTotalCount;
 
-    private Long tempateId;
+    private Long templateId;
 
     private String link;
 
@@ -46,7 +46,8 @@ public class RenRenTask {
     private int auditCycle;
 
     private String taskNote;
-
+    private Long targetPeople;
+    private String companySummary;
     public int getAuditCycle() {
 		return auditCycle;
 	}
@@ -91,12 +92,12 @@ public class RenRenTask {
         this.amount = amount;
     }
 
-    public Integer getState() {
-        return state;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     
@@ -205,20 +206,13 @@ public class RenRenTask {
 		this.availableCount = availableCount;
 	}
 
-	public Integer getTaskToatlCount() {
-		return taskToatlCount;
+
+	public Long getTemplateId() {
+		return templateId;
 	}
 
-	public void setTaskToatlCount(Integer taskToatlCount) {
-		this.taskToatlCount = taskToatlCount;
-	}
-
-	public Long getTempateId() {
-		return tempateId;
-	}
-
-	public void setTempateId(Long tempateId) {
-		this.tempateId = tempateId;
+	public void setTemplateId(Long templateId) {
+		this.templateId = templateId;
 	}
 
 	public Short getPaymentMethod() {
@@ -227,6 +221,30 @@ public class RenRenTask {
 
 	public void setPaymentMethod(Short paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	public Long getTargetPeople() {
+		return targetPeople;
+	}
+
+	public void setTargetPeople(Long targetPeople) {
+		this.targetPeople = targetPeople;
+	}
+
+	public String getCompanySummary() {
+		return companySummary;
+	}
+
+	public void setCompanySummary(String companySummary) {
+		this.companySummary = companySummary;
+	}
+
+	public Integer getTaskTotalCount() {
+		return taskTotalCount;
+	}
+
+	public void setTaskTotalCount(Integer taskTotalCount) {
+		this.taskTotalCount = taskTotalCount;
 	}
 
     

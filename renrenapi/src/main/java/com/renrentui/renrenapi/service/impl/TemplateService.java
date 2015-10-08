@@ -2,6 +2,8 @@ package com.renrentui.renrenapi.service.impl;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,11 @@ public class TemplateService implements ITemplateService {
 	@Override
 	public PagedResponse<Template> queryTemplate(PagedTemplateReq req) {
 		return templateDao.queryTemplate(req);
+	}
+
+	@Override
+	public List<Template> getAllList() {
+		return templateDao.getAllList();
 	}
 
 }

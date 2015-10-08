@@ -148,26 +148,26 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Clienter" >
     update Clienter
     <set >
-      <if test="clientername != null" >
-        ClienterName = #{clientername,jdbcType=NVARCHAR},
+      <if test="clienterName != null" >
+        ClienterName = #{clienterName,jdbcType=NVARCHAR},
       </if>
-      <if test="phoneno != null" >
-        PhoneNo = #{phoneno,jdbcType=VARCHAR},
+      <if test="phoneNo != null" >
+        PhoneNo = #{phoneNo,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        Password = #{password,jdbcType=VARCHAR},
+      <if test="passWord != null" >
+        Password = #{passWord,jdbcType=VARCHAR},
       </if>
-      <if test="loginname != null" >
-        LoginName = #{loginname,jdbcType=VARCHAR},
+      <if test="loginName != null" >
+        LoginName = #{loginName,jdbcType=VARCHAR},
       </if>
-      <if test="headimage != null" >
-        HeadImage = #{headimage,jdbcType=VARCHAR},
+      <if test="headImage != null" >
+        HeadImage = #{headImage,jdbcType=VARCHAR},
       </if>
-      <if test="cityname != null" >
-        CityName = #{cityname,jdbcType=NVARCHAR},
+      <if test="cityName != null" >
+        CityName = #{cityName,jdbcType=NVARCHAR},
       </if>
-      <if test="citycode != null" >
-        CityCode = #{citycode,jdbcType=INTEGER},
+      <if test="cityCode != null" >
+        CityCode = #{cityCode,jdbcType=INTEGER},
       </if>
       <if test="sex != null" >
         Sex = #{sex,jdbcType=SMALLINT},
@@ -178,20 +178,20 @@
       <if test="education != null" >
         Education = #{education,jdbcType=NVARCHAR},
       </if>
-      <if test="lastlogintime != null" >
-        LastLoginTime = #{lastlogintime,jdbcType=TIMESTAMP},
+      <if test="lastLoginTime != null" >
+        LastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null" >
         Status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="lastoptname != null" >
-        LastOptName = #{lastoptname,jdbcType=NVARCHAR},
+      <if test="lastOptName != null" >
+        LastOptName = #{lastOptName,jdbcType=NVARCHAR},
       </if>
-      <if test="lastopttime != null" >
-        LastOptTime = #{lastopttime,jdbcType=TIMESTAMP},
+      <if test="lastOptTime != null" >
+        LastOptTime = getdate(),
       </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}
@@ -281,7 +281,9 @@
 		      ,ISNULL(cb.Balance,0) Balance 
 		      ,ISNULL(cb.Withdraw,0) Withdraw
 		      ,ISNULL(cb.HadWithdraw,0) HadWithdraw
-		      ,0  checking
+		      ,ISNULL((SELECT SUM(o.Amount) FROM dbo.[Order] o WITH(NOLOCK) WHERE o.OrderStatus=1 AND o.AuditStatus=0 AND ClienterId=#{userId}),0)  checking
+		      ,ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) Withdrawing
+		      ,ISNULL(cb.Balance,0)+ISNULL(cb.Withdraw,0) +ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) TotalAmount
     FROM  dbo.Clienter c WITH(NOLOCK)
   	JOIN  dbo.ClienterBalance cb WITH(NOLOCK) ON c.Id=cb.ClienterId
 	WHERE c.Id=#{userId}
@@ -338,4 +340,8 @@
 #{totalPage,mode=OUT,jdbcType=VARCHAR}
 )} 
   </select>
+  <!-- 修改用户状态  WangXuDan 2015年10月8日11:18:19-->
+  <update  id="editClienterStatus" parameterType="com.renrentui.renrenentity.req.ModifyClienterStatusReq" >
+    UPDATE dbo.Clienter SET Status=${status},LastOptTime=GETDATE(),LastOptName='${lastOptName}' WHERE id =#{userId}
+  </update>
 </mapper>

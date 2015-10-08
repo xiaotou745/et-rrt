@@ -16,7 +16,6 @@ import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.Business;
-import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateDetail;
 import com.renrentui.renrenentity.domain.TemplateModel;
 

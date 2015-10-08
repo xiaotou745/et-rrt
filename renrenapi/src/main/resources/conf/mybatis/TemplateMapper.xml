@@ -60,4 +60,9 @@ parameterType="com.renrentui.renrenentity.req.PagedTemplateReq" statementType="C
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)} 
   </select>
+      <select id="getAllList" resultType="com.renrentui.renrenentity.Template" >
+    select 
+    <include refid="Base_Column_List" />
+    from Template with(nolock)
+  </select>
 </mapper>

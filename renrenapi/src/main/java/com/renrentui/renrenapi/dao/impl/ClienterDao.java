@@ -17,6 +17,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
@@ -45,10 +46,17 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return null;
 	}
 
+    /**
+     *C端 修改骑士信息
+     * @author CaoHeYang
+     * @param record
+     * @date  20151008
+     * @return
+     */
 	@Override
 	public int updateByPrimaryKeySelective(Clienter record) {
-		// TODO Auto-generated method stub
-		return 0;
+		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.updateByPrimaryKeySelective";
+		return getMasterSqlSessionUtil().update(statement, record);
 	}
 
 	@Override
@@ -174,6 +182,18 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		resp = getReadOnlySqlSessionUtil().selectPageList(
 				"com.renrentui.renrenapi.dao.inter.IClienterDao.queryClienterList", req);
 		return resp;
+	}
+	/**
+	* @Des 修改用户状态 
+	* @Author WangXuDan
+	* @Date 2015年10月8日11:43:44
+	* @Return
+	*/
+	@Override
+	public boolean editClienterStatus(ModifyClienterStatusReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.editClienterStatus";
+		int res = getMasterSqlSessionUtil().update(statement, req);
+		return res > 0;
 	}
 
 }

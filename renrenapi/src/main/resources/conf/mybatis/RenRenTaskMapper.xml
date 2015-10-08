@@ -13,20 +13,20 @@
     <result column="ModifyName" property="modifyname" jdbcType="NVARCHAR" />
     <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
     <result column="BeginTime" property="begintime" jdbcType="TIMESTAMP" />
-    <result column="EndTiime" property="endtiime" jdbcType="TIMESTAMP" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
     <result column="TaskCycle" property="taskcycle" jdbcType="DOUBLE" />
     <result column="AvailableCount" property="availablecount" jdbcType="INTEGER" />
     <result column="Amount" property="amount" jdbcType="DECIMAL" />
-    <result column="State" property="state" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="TaskToatlCount" property="tasktoatlcount" jdbcType="INTEGER" />
-    <result column="TempateId" property="tempateid" jdbcType="BIGINT" />
+    <result column="templateId" property="templateId" jdbcType="BIGINT" />
     <result column="Link" property="link" jdbcType="NVARCHAR" />
     <result column="PaymentMethod" property="paymentmethod" jdbcType="SMALLINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     Id, TaskTitle, TaskNotice, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
-    ModifyName, ModifyTime, BeginTime, EndTiime, TaskCycle, AvailableCount, Amount, State, 
-    TaskToatlCount, TempateId, Link, PaymentMethod
+    ModifyName, ModifyTime, BeginTime, EndTime, TaskCycle, AvailableCount, Amount, status, 
+    TaskToatlCount, templateId, Link, PaymentMethod
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -39,20 +39,30 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.RenRenTask" >
-    insert into RenRenTask (Id, TaskTitle, TaskNotice, 
+    	  <selectKey resultType="java.lang.Long" keyProperty="id"
+				order="AFTER">
+				select @@IDENTITY as id
+	  </selectKey>
+    insert into RenRenTask (TaskTitle, TaskNotice, 
       TaskGeneralInfo, BusinessId, Pusher, 
       CreateName, CreateTime, ModifyName, 
-      ModifyTime, BeginTime, EndTiime, 
+      ModifyTime, BeginTime, EndTime, 
       TaskCycle, AvailableCount, Amount, 
-      State, TaskToatlCount, TempateId, 
-      Link, PaymentMethod)
-    values (#{id,jdbcType=BIGINT}, #{tasktitle,jdbcType=NVARCHAR}, #{tasknotice,jdbcType=NVARCHAR}, 
-      #{taskgeneralinfo,jdbcType=NVARCHAR}, #{businessid,jdbcType=BIGINT}, #{pusher,jdbcType=NVARCHAR}, 
-      #{createname,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{modifyname,jdbcType=NVARCHAR}, 
-      #{modifytime,jdbcType=TIMESTAMP}, #{begintime,jdbcType=TIMESTAMP}, #{endtiime,jdbcType=TIMESTAMP}, 
-      #{taskcycle,jdbcType=DOUBLE}, #{availablecount,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
-      #{state,jdbcType=INTEGER}, #{tasktoatlcount,jdbcType=INTEGER}, #{tempateid,jdbcType=BIGINT}, 
-      #{link,jdbcType=NVARCHAR}, #{paymentmethod,jdbcType=SMALLINT})
+      status, TaskTotalCount, templateId, 
+      Link, PaymentMethod,TargetPeople,CompanySummary)
+    values (#{taskTitle,jdbcType=NVARCHAR}, #{taskNotice,jdbcType=NVARCHAR}, 
+      #{taskGeneralInfo,jdbcType=NVARCHAR}, #{businessId,jdbcType=BIGINT}, 
+      #{pusher,jdbcType=NVARCHAR}, 
+      #{createName,jdbcType=NVARCHAR}, getdate(),
+       #{modifyName,jdbcType=NVARCHAR}, getdate(),
+      #{beginTime,jdbcType=TIMESTAMP},
+       #{endTime,jdbcType=TIMESTAMP}, 
+      #{taskCycle,jdbcType=DOUBLE}, #{availableCount,jdbcType=INTEGER}, 
+      #{amount,jdbcType=DECIMAL}, 
+      #{status,jdbcType=INTEGER}, #{taskTotalCount,jdbcType=INTEGER},
+       #{templateId,jdbcType=BIGINT}, 
+      #{link,jdbcType=NVARCHAR}, #{paymentMethod,jdbcType=SMALLINT},
+      #{targetPeople,jdbcType=BIGINT}, #{companySummary,jdbcType=NVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.RenRenTask" >
     insert into RenRenTask
@@ -90,8 +100,8 @@
       <if test="begintime != null" >
         BeginTime,
       </if>
-      <if test="endtiime != null" >
-        EndTiime,
+      <if test="endtime != null" >
+        endtime,
       </if>
       <if test="taskcycle != null" >
         TaskCycle,
@@ -102,14 +112,14 @@
       <if test="amount != null" >
         Amount,
       </if>
-      <if test="state != null" >
-        State,
+      <if test="status != null" >
+        status,
       </if>
       <if test="tasktoatlcount != null" >
         TaskToatlCount,
       </if>
-      <if test="tempateid != null" >
-        TempateId,
+      <if test="templateId != null" >
+        templateId,
       </if>
       <if test="link != null" >
         Link,
@@ -152,8 +162,8 @@
       <if test="begintime != null" >
         #{begintime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endtiime != null" >
-        #{endtiime,jdbcType=TIMESTAMP},
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
       </if>
       <if test="taskcycle != null" >
         #{taskcycle,jdbcType=DOUBLE},
@@ -164,14 +174,14 @@
       <if test="amount != null" >
         #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="state != null" >
-        #{state,jdbcType=INTEGER},
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="tasktoatlcount != null" >
         #{tasktoatlcount,jdbcType=INTEGER},
       </if>
-      <if test="tempateid != null" >
-        #{tempateid,jdbcType=BIGINT},
+      <if test="templateId != null" >
+        #{templateId,jdbcType=BIGINT},
       </if>
       <if test="link != null" >
         #{link,jdbcType=NVARCHAR},
@@ -214,8 +224,8 @@
       <if test="begintime != null" >
         BeginTime = #{begintime,jdbcType=TIMESTAMP},
       </if>
-      <if test="endtiime != null" >
-        EndTiime = #{endtiime,jdbcType=TIMESTAMP},
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=TIMESTAMP},
       </if>
       <if test="taskcycle != null" >
         TaskCycle = #{taskcycle,jdbcType=DOUBLE},
@@ -226,14 +236,14 @@
       <if test="amount != null" >
         Amount = #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="state != null" >
-        State = #{state,jdbcType=INTEGER},
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="tasktoatlcount != null" >
         TaskToatlCount = #{tasktoatlcount,jdbcType=INTEGER},
       </if>
-      <if test="tempateid != null" >
-        TempateId = #{tempateid,jdbcType=BIGINT},
+      <if test="templateId != null" >
+        templateId = #{templateId,jdbcType=BIGINT},
       </if>
       <if test="link != null" >
         Link = #{link,jdbcType=NVARCHAR},
@@ -256,13 +266,13 @@
       ModifyName = #{modifyname,jdbcType=NVARCHAR},
       ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
       BeginTime = #{begintime,jdbcType=TIMESTAMP},
-      EndTiime = #{endtiime,jdbcType=TIMESTAMP},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
       TaskCycle = #{taskcycle,jdbcType=DOUBLE},
       AvailableCount = #{availablecount,jdbcType=INTEGER},
       Amount = #{amount,jdbcType=DECIMAL},
-      State = #{state,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
       TaskToatlCount = #{tasktoatlcount,jdbcType=INTEGER},
-      TempateId = #{tempateid,jdbcType=BIGINT},
+      templateId = #{templateId,jdbcType=BIGINT},
       Link = #{link,jdbcType=NVARCHAR},
       PaymentMethod = #{paymentmethod,jdbcType=SMALLINT}
     where Id = #{id,jdbcType=BIGINT}
@@ -272,29 +282,33 @@
 SELECT  rrt.id ,
         TaskTitle ,
         TaskNotice ,
-        Amount ,
+        rrt.Amount ,
         rrt.EndTime ,
         AvailableCount ,
         PaymentMethod ,
         TaskGeneralInfo ,
         rrt.TaskNote ,
         rrt.BusinessId ,
-        TempateId,
+        templateId,
         Pusher,
         ISNULL(t.TemplateName ,'') AS TemplateName,
-        CASE WHEN o.ClienterId >0 THEN 1 ELSE 0 END AS IsHad--1已经领取 0  没有领取
+        CASE WHEN o.ClienterId >0 THEN 1 ELSE 0 END AS IsHad,--1已经领取 0  没有领取
+        ISNULL(o.id,0) AS orderId,
+        b.Logo
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
-LEFT JOIN dbo.Template AS t (NOLOCK) ON t.id=rrt.TempateId AND t.BusinessId = rrt.BusinessId
+LEFT JOIN dbo.Business AS b (NOLOCK) ON b.Id = rrt.BusinessId
+LEFT JOIN dbo.Template AS t (NOLOCK) ON t.id=rrt.templateId AND t.BusinessId = rrt.BusinessId
 LEFT JOIN dbo.[Order] AS o (NOLOCK) ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
 WHERE rrt.id=${taskId}
   </select>
   <!-- 验证任务是否可以领取 2015年9月29日17:13:19 茹化肖 -->
  <select id="checkTask" resultType="com.renrentui.renrenentity.domain.CheckTask" parameterType="com.renrentui.renrenentity.req.TaskDetailReq" >
-SELECT 
+SELECT TOP 1
 CASE WHEN rrt.AvailableCount>0 THEN 1 ELSE 0 END AS BlanceCan,--1 任务剩余量足够领取
 CASE WHEN rrt.EndTime>GETDATE() THEN 1 ELSE 0 END AS EndTimeCan,--1 任务尚未关闭
 CASE WHEN o.clienterid IS NULL THEN 1 ELSE 0 END AS OrderCan,--1 可以领取
-TaskCycle
+TaskCycle,
+rrt.Amount
 FROM dbo.RenRenTask AS rrt
 LEFT JOIN dbo.[Order] AS o ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
 WHERE rrt.id=${taskId}
@@ -309,4 +323,155 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 	UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount+1
     where Id = #{taskid,jdbcType=BIGINT}
   </update>
+  <sql id="getPagedRenRenTaskListWhere">
+
+		1=1		
+		<if test="taskTitle != null and taskTitle!=''">
+			and a.taskTitle like ''%${taskTitle}%''
+		</if>		
+		<if test="businessId != null and businessId>0">
+			and a.businessId=''${businessId}''
+		</if>
+		<if test="createName != null and createName!=''">
+			and a.createName like ''%${createName}%''
+		</if>
+		<if test="createTime != null and createTime!=''">
+			and a.createTime >= ''${createTime}'' and ''${createTime} 23:59:59'' > a.createTime
+		</if>
+	    <if test="beginTime != null and beginTime!=''">
+			and a.endTime>=''${beginTime}''
+		</if>
+		<if test="endTime != null and endTime!=''">
+			and ''${endTime} 23:59:59''>=a.beginTime
+		</if>
+	    <if test="status != null and status>-1">
+			and a.status=''${status}''
+		</if>
+	    <if test="templateId != null and templateId>0">
+			and a.templateId=''${templateId}''
+		</if>
+	    <if test="paymentMethod != null and paymentMethod>0">
+			and a.paymentMethod=''${paymentMethod}''
+		</if>
+	</sql>
+  
+  	<select id="getPagedRenRenTaskList" resultType="com.renrentui.renrenentity.domain.RenRenTaskModel"
+		parameterType="com.renrentui.renrenentity.req.PagedRenRenTaskReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' a.Id DESC ',
+		'a.*,b.templateName,c.CompanyName as businessName',
+		'RenRenTask a  WITH (NOLOCK) join Template b  WITH (NOLOCK) on a.templateId=b.id 
+		join Business c  WITH (NOLOCK) on a.businessId=c.id',
+		'
+		<include refid="getPagedRenRenTaskListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	  <update id="setTaskStatus" parameterType="java.util.HashMap" >
+	UPDATE dbo.RenRenTask SET status=#{status,jdbcType=BIGINT}
+    where Id = #{taskID,jdbcType=BIGINT}
+  </update>
+<select id="getNewTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select 
+   	<if test="itemsCount != 0" >
+   		top  #{itemsCount} 
+   	</if> 
+        rt.Id TaskId ,
+        rt.TaskGeneralInfo ,
+        rt.Pusher ,
+        rt.TaskTitle TaskName ,
+        rt.Amount ,
+        rt.AvailableCount ,
+        case  when o.OrderStatus is null then -1 else o.OrderStatus end [Status],
+        rt.BeginTime ,
+        rt.EndTime ,
+        rt.PaymentMethod,b.logo 
+from    dbo.RenRenTask rt ( nolock )
+left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  #{userId}
+join dbo.Business b (nolock) on rt.BusinessId = b.Id 
+where o.ClienterId is null and o.OrderStatus = 0 and rt.Status = 1 
+	  <if test="nextId != 0" >
+         and rt.Id > #{nextId}
+     </if>
+order by rt.Id desc;
+  </select>   
+   <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select count(1) from dbo.RenRenTask rt ( nolock )
+left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  #{userId}
+where o.ClienterId is null and o.OrderStatus = 0  and rt.Status = 1 
+  </select> 
+  <select id="getMyReceivedTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select 
+   	<if test="itemsCount != 0" >
+   		top  #{itemsCount} 
+   	</if> 
+        rt.Id TaskId ,
+        rt.TaskGeneralInfo ,
+        rt.Pusher ,
+        rt.TaskTitle TaskName ,
+        rt.Amount ,
+        rt.AvailableCount ,
+        case  when o.OrderStatus is null then -1 else o.OrderStatus end [Status],
+        rt.BeginTime ,
+        rt.EndTime ,
+        rt.PaymentMethod ,
+        rt.TaskCycle ,
+        o.CreateTime ReceivedTime,b.logo ,o.Id myReceivedTaskId,o.AuditTime 
+from    dbo.RenRenTask rt ( nolock )
+        left join dbo.[Order] o ( nolock ) on rt.Id = o.TaskId
+                                              and o.ClienterId =  #{userId}
+		join dbo.Business b (nolock) on rt.BusinessId = b.Id 
+where o.ClienterId is not null and o.OrderStatus = 0 and rt.Status = 1 
+	  <if test="nextId != 0" >
+         and rt.Id > #{nextId}
+     </if>
+order by rt.Id desc;
+  </select>   
+   <select id="getMyReceivedTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select count(1) from dbo.RenRenTask rt ( nolock )
+        left join dbo.[Order] o ( nolock ) on rt.Id = o.TaskId and o.ClienterId = #{userId} 
+where o.ClienterId is not null and o.OrderStatus = 0 and rt.Status = 1 
+  </select> 
+  
+   <select id="getSubmittedTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select 
+   	<if test="itemsCount != 0" >
+   		top  #{itemsCount} 
+   	</if> 
+       rt.Id TaskId ,
+                rt.TaskGeneralInfo ,
+                rt.Pusher ,
+                rt.TaskTitle TaskName ,
+                rt.Amount ,
+                rt.AvailableCount ,
+                case  when o.OrderStatus is null then -1 else o.OrderStatus end [Status], 
+                rt.BeginTime ,
+                rt.EndTime ,
+                rt.PaymentMethod ,
+                rt.TaskCycle ,
+                o.CreateTime ReceivedTime ,
+                o.FinishTime ,
+                o.Id myReceivedTaskId,
+                (SELECT count(1) FROM dbo.[Order] oo where oo.TaskId = rt.id
+and oo.AuditStatus = 0) WaitAuditCount 
+from    dbo.[Order] o
+                join dbo.RenRenTask rt on rt.Id = o.TaskId
+                                              and o.ClienterId =  #{userId}
+		join dbo.Business b (nolock) on rt.BusinessId = b.Id 
+where  o.OrderStatus = 1 
+	  <if test="nextId != 0" >
+         and rt.Id > #{nextId}
+     </if>
+order by rt.Id desc;
+  </select>   
+   <select id="getSubmittedTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select count(1) from  dbo.[Order] o
+                join dbo.RenRenTask rt on rt.Id = o.TaskId and o.ClienterId =  #{userId} where  o.OrderStatus = 1 
+  </select> 
 </mapper>

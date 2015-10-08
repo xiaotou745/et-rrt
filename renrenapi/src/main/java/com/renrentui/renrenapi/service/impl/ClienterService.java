@@ -1,9 +1,13 @@
 package com.renrentui.renrenapi.service.impl;
 
+import java.util.Date;
+
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
@@ -12,6 +16,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.WithdrawState;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
@@ -21,6 +26,8 @@ import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ModifyUserCReq;
+import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
@@ -186,6 +193,49 @@ public class ClienterService implements IClienterService{
 	@Override
 	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
 		return clienterDao.queryClienterList(req);
+	}
+	/**
+	* @Des 修改用户状态 
+	* @Author WangXuDan
+	* @Date 2015年10月8日11:43:44
+	* @Return
+	*/
+	@Override
+	public ResponseBase editClienterStatus(ModifyClienterStatusReq req) {
+		ResponseBase responseBase = new ResponseBase();
+		responseBase.setResponseCode(-1);
+		if(!clienterDao.editClienterStatus(req))
+		{
+			responseBase.setMessage("地推员审核状态更新失败！");
+			return responseBase;
+		}
+		responseBase.setResponseCode(1);
+		responseBase.setMessage("地推员审核状态更新成功！");
+		return responseBase;
+		
+	}
+/**
+	* @Des  C端修改个人基础信息
+	* @Author CaoHeYang
+	* @Date 20151008
+	* @param req
+	* @Return
+	*/
+	@Override
+	public int modifyuserc(ModifyUserCReq req) {
+		ClienterLog log=new ClienterLog();
+		log.setClienterId(Long.valueOf(req.getUserId()));
+		log.setOptName("地推员UserID");
+		log.setRemark("地推员修改密码");
+		int reslog=clienterLogDao.addClienterLog(log);//记录C端日志
+		Clienter clienter =new Clienter();
+		clienter.setId(req.getUserId());
+		clienter.setAge(req.getAge());
+		clienter.setSex(req.getSex());
+		clienter.setClienterName(req.getUserName());
+		clienter.setLastOptName(req.getUserId()+"");
+		clienter.setLastOptTime(new Date());
+		return clienterDao.updateByPrimaryKeySelective(clienter);
 	}
 
 	

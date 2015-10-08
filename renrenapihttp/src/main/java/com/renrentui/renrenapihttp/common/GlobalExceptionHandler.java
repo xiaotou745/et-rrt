@@ -5,15 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-
-
-
-
-
-
-
-
-
 import com.renrentui.renrenapi.common.LogServiceBLL;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.StringUtils;
@@ -61,7 +52,7 @@ public class GlobalExceptionHandler implements ExceptionMapper {
 			appServerIP = ipinfoList.get(0);
 		}
 		ActionLog logEngity = new ActionLog();
-		logEngity.setSourceSys("apihttp");
+		logEngity.setSourceSys("renrenapihttp");
 		logEngity.setClientFrom(0);//暂时没用
 		logEngity.setRequestType(0);
 		logEngity.setAppServer(appServerIP);

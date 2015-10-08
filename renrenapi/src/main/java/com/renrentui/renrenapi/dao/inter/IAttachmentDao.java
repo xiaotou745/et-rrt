@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.dao.inter;
 
+import java.util.List;
+
 import com.renrentui.renrenentity.Attachment;
 
 public interface IAttachmentDao {
@@ -14,4 +16,5 @@ public interface IAttachmentDao {
     int updateByPrimaryKeySelective(Attachment record);
 
     int updateByPrimaryKey(Attachment record);
+    int insertList(List<Attachment> recordList);
 }

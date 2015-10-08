@@ -9,7 +9,7 @@
 	<div class="col-lg-2">
 		<div class="form-group">
 			<div class="col-sm-8">
-				<input id="txtClienterName" type="tel" name="txtClienterName" placeholder="地推员姓名:"/>
+				<input id="txtClienterName" type="tel" name="txtClienterName" placeholder="地推员姓名"/>
 			</div>
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 	<div class="col-lg-2">
 		<div class="form-group">
 			<div class="col-sm-8">
-				<input id="txtPhoneNo" type="tel" name="txtPhoneNo" placeholder="手机号:"/>
+				<input id="txtPhoneNo" type="tel" name="txtPhoneNo" placeholder="手机号"/>
 			</div>
 		</div>
 	</div>
