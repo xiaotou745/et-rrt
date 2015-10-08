@@ -9,6 +9,13 @@ private int blanceCan;
 private int endTimeCan;
 private int orderCan;
 private double taskCycle;
+private double amount;
+public double getAmount() {
+	return amount;
+}
+public void setAmount(double amount) {
+	this.amount = amount;
+}
 public double getTaskCycle() {
 	return taskCycle;
 }

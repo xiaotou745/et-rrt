@@ -282,7 +282,7 @@
 SELECT  rrt.id ,
         TaskTitle ,
         TaskNotice ,
-        Amount ,
+        rrt.Amount ,
         rrt.EndTime ,
         AvailableCount ,
         PaymentMethod ,
@@ -307,7 +307,8 @@ SELECT TOP 1
 CASE WHEN rrt.AvailableCount>0 THEN 1 ELSE 0 END AS BlanceCan,--1 任务剩余量足够领取
 CASE WHEN rrt.EndTime>GETDATE() THEN 1 ELSE 0 END AS EndTimeCan,--1 任务尚未关闭
 CASE WHEN o.clienterid IS NULL THEN 1 ELSE 0 END AS OrderCan,--1 可以领取
-TaskCycle
+TaskCycle,
+rrt.Amount
 FROM dbo.RenRenTask AS rrt
 LEFT JOIN dbo.[Order] AS o ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
 WHERE rrt.id=${taskId}
