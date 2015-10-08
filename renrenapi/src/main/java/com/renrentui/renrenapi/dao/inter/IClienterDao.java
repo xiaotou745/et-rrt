@@ -7,6 +7,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
@@ -83,4 +84,11 @@ public interface IClienterDao {
 	* @Return
 	*/
 	PagedResponse<ClienterResp> queryClienterList(ClienterReq req);
+	/**
+	* @Des 修改用户状态 
+	* @Author WangXuDan
+	* @Date 2015年10月8日11:43:44
+	* @Return
+	*/
+	boolean editClienterStatus(ModifyClienterStatusReq req);
 }
