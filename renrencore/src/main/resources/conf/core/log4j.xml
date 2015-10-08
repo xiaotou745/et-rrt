@@ -18,9 +18,9 @@
 		</filter>
 	</appender>
 	<!-- 系统启动日志输出文件 -->
-	<appender name="adminAppender" class="org.apache.log4j.DailyRollingFileAppender">
+	<appender name="renrenAdminAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="Encoding" value="UTF-8" />
-		<param name="File" value="c:/log/admin/admin.log" />
+		<param name="File" value="c:/log/renrenadmin/renrenadmin.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n" />
@@ -29,20 +29,9 @@
 			<param name="LevelMin" value="INFO" />
 		</filter>
 	</appender>
-	<appender name="businessAppender" class="org.apache.log4j.DailyRollingFileAppender">
+	<appender name="renrenApiHttpAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="Encoding" value="UTF-8" />
-		<param name="File" value="c:/log/business/business.log" />
-		<param name="DatePattern" value="'.'yyyy-MM-dd" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n" />
-		</layout>
-		<filter class="org.apache.log4j.varia.LevelRangeFilter">
-			<param name="LevelMin" value="INFO" />
-		</filter>
-	</appender>
-	<appender name="apiHttpAppender" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="Encoding" value="UTF-8" />
-		<param name="File" value="c:/log/apiHttp/apiHttp.log" />
+		<param name="File" value="c:/log/renrenapihttp/renrenapihttp.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss} [%p][%c:%L]- %m%n" />
@@ -63,19 +52,14 @@
         , '%X{methodName}', '%X{executeTime}', '%X{param}', '%X{stackTrace}'
         , '%X{exception}', '%X{requestTime}', '%X{requestEndTime}', '%X{requestType}')"/>
     </appender>
-	<category name="businessLogger" additivity="false">
+	<category name="renrenAdminLogger" additivity="false">
 		<level value="INFO" />
-		<appender-ref ref="businessAppender" />
+		<appender-ref ref="renrenAdminAppender" />
 		<appender-ref ref="dbAppender" />
 	</category>
-	<category name="adminLogger" additivity="false">
+	<category name="renrenApiHttpLogger" additivity="false">
 		<level value="INFO" />
-		<appender-ref ref="adminAppender" />
-		<appender-ref ref="dbAppender" />
-	</category>
-	<category name="apiHttpLogger" additivity="false">
-		<level value="INFO" />
-		<appender-ref ref="apiHttpAppender" />
+		<appender-ref ref="renrenApiHttpAppender" />
 		<appender-ref ref="dbAppender" />
 	</category>
 	<!-- 下面是打印mybatis语句的配置 -->

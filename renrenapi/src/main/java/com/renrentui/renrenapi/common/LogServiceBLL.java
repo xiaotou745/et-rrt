@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.renrentui.renrencore.util.JsonUtil;
@@ -13,9 +12,8 @@ import com.renrentui.renrenentity.domain.ActionLog;
 @Component
 public class LogServiceBLL {
 
-	private static Logger businessLogger = Logger.getLogger("businessLogger");
-	private static Logger adminLogger = Logger.getLogger("adminLogger");
-	private static Logger apiHttpLogger = Logger.getLogger("apiHttpLogger");
+	private static Logger renrenAdminLogger = Logger.getLogger("renrenAdminLogger");
+	private static Logger renrenApiHttpLogger = Logger.getLogger("renrenApiHttpLogger");
 	private static Field[] fields = ActionLog.class.getDeclaredFields();
 	/**
 	 * 系统级，记录方法的ActionLog（异步写入db和log文件）
@@ -23,27 +21,22 @@ public class LogServiceBLL {
 	 * @param
 	 */
 	public void SystemActionLog(ActionLog logEngity) {
-		return ;
-/*
 		try {
 			initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
 			switch (logEngity.getSourceSys()) {
-			case "admin":
-				adminLogger.info(jsonMsg);
+			case "renrenadmin":
+				renrenAdminLogger.info(jsonMsg);
 				break;
-			case "business":
-				businessLogger.info(jsonMsg);
-				break;
-			case "apihttp":
-				apiHttpLogger.info(jsonMsg);
+			case "renrenapihttp":
+				renrenApiHttpLogger.info(jsonMsg);
 				break;
 			default:
 				break;
 			}
 		} catch (Exception e) {
 		}
-*/
+
 	}
 
 	public void LogInfo(ActionLog logEngity) {

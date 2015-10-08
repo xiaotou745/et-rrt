@@ -1,11 +1,12 @@
 package com.renrentui.renrenapi.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Date;
 
 import javax.management.RuntimeErrorException;
 
-import org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,27 +16,31 @@ import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
+import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
-import com.renrentui.renrenapi.service.inter.IRenRenTaskServcie;
+import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
+import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
+import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.OrderChild;
 import com.renrentui.renrenentity.OrderLog;
+import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.TaskCityRelation;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
-import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 @Service
-public class RenRenTaskServcie implements IRenRenTaskServcie{
+public class RenRenTaskService implements IRenRenTaskService{
 	@Autowired
 	private IRenRenTaskDao rereRenTaskDao;	
 	@Autowired
@@ -45,11 +50,23 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 	@Autowired
 	private IClienterLogDao clienterLogDao;	
 	@Autowired
+<<<<<<< .mine
 	private IOrderLogDao orderLogDao;
 	
 	@Autowired
 	private IOrderChildDao orderChildDaoDao;
 	/**
+
+
+=======
+	private IOrderLogDao orderLogDao;	
+	@Autowired
+	private ITaskCityRelationDao taskCityRelationDao;	
+	@Autowired
+	private IPublicProvinceCityService publicProvinceCityService;
+
+/**
+>>>>>>> .theirs
 	 * 获取任务详情
 	 * 茹化肖
 	 * 2015年9月29日13:00:35
@@ -232,6 +249,27 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 			Error error=new Error("提交合同信息失败");
 			throw new RuntimeErrorException(error);
 		}
+	}
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public int insert(RenRenTask record,List<Integer> regionCodes) {
+		int result =rereRenTaskDao.insert(record);
+		if (result>0) {
+			Map<Integer,String> regionMap=publicProvinceCityService.getOpenCityMap();
+			List<TaskCityRelation> recordList=new ArrayList<TaskCityRelation>();
+			for (Integer regionCode : regionCodes) {
+				TaskCityRelation taskCityRelation=new TaskCityRelation();
+				taskCityRelation.setTaskId(record.getId());
+				taskCityRelation.setBusinessId(record.getBusinessId());
+				taskCityRelation.setCityCode(regionCode);
+				taskCityRelation.setCityName("");
+				if (regionMap.containsKey(regionCode)) {
+					taskCityRelation.setCityName(regionMap.get(regionCode));
+				}
+			}
+			return taskCityRelationDao.insertList(recordList);
+		}
+		return result;
 	}
 
 }

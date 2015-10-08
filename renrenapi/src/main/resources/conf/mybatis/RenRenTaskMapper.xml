@@ -39,20 +39,30 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.RenRenTask" >
-    insert into RenRenTask (Id, TaskTitle, TaskNotice, 
+    	  <selectKey resultType="java.lang.Long" keyProperty="id"
+				order="AFTER">
+				select @@IDENTITY as id
+	  </selectKey>
+    insert into RenRenTask (TaskTitle, TaskNotice, 
       TaskGeneralInfo, BusinessId, Pusher, 
       CreateName, CreateTime, ModifyName, 
-      ModifyTime, BeginTime, EndTiime, 
+      ModifyTime, BeginTime, EndTime, 
       TaskCycle, AvailableCount, Amount, 
-      State, TaskToatlCount, TempateId, 
-      Link, PaymentMethod)
-    values (#{id,jdbcType=BIGINT}, #{tasktitle,jdbcType=NVARCHAR}, #{tasknotice,jdbcType=NVARCHAR}, 
-      #{taskgeneralinfo,jdbcType=NVARCHAR}, #{businessid,jdbcType=BIGINT}, #{pusher,jdbcType=NVARCHAR}, 
-      #{createname,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{modifyname,jdbcType=NVARCHAR}, 
-      #{modifytime,jdbcType=TIMESTAMP}, #{begintime,jdbcType=TIMESTAMP}, #{endtiime,jdbcType=TIMESTAMP}, 
-      #{taskcycle,jdbcType=DOUBLE}, #{availablecount,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
-      #{state,jdbcType=INTEGER}, #{tasktoatlcount,jdbcType=INTEGER}, #{tempateid,jdbcType=BIGINT}, 
-      #{link,jdbcType=NVARCHAR}, #{paymentmethod,jdbcType=SMALLINT})
+      State, TaskTotalCount, TempateId, 
+      Link, PaymentMethod,TargetPeople,CompanySummary)
+    values (#{taskTitle,jdbcType=NVARCHAR}, #{taskNotice,jdbcType=NVARCHAR}, 
+      #{taskGeneralInfo,jdbcType=NVARCHAR}, #{businessId,jdbcType=BIGINT}, 
+      #{pusher,jdbcType=NVARCHAR}, 
+      #{createName,jdbcType=NVARCHAR}, getdate(),
+       #{modifyName,jdbcType=NVARCHAR}, getdate(),
+      #{beginTime,jdbcType=TIMESTAMP},
+       #{endTime,jdbcType=TIMESTAMP}, 
+      #{taskCycle,jdbcType=DOUBLE}, #{availableCount,jdbcType=INTEGER}, 
+      #{amount,jdbcType=DECIMAL}, 
+      #{state,jdbcType=INTEGER}, #{taskTotalCount,jdbcType=INTEGER},
+       #{tempateId,jdbcType=BIGINT}, 
+      #{link,jdbcType=NVARCHAR}, #{paymentMethod,jdbcType=SMALLINT},
+      #{targetPeople,jdbcType=BIGINT}, #{companySummary,jdbcType=NVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.RenRenTask" >
     insert into RenRenTask

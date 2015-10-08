@@ -22,8 +22,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao{
 
 	@Override
 	public int insert(RenRenTask record) {
-		// TODO Auto-generated method stub
-		return 0;
+return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insert", record);
 	}
 
 	@Override
