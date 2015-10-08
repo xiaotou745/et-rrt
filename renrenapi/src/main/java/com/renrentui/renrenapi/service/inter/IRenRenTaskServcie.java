@@ -1,8 +1,12 @@
 package com.renrentui.renrenapi.service.inter;
 
+import java.util.List;
+
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskReq;
 
 public interface IRenRenTaskServcie {
 
@@ -17,4 +21,10 @@ public interface IRenRenTaskServcie {
 	
 	
 	public GetTaskCode getTask(TaskDetailReq req);
+
+
+	public List<TaskModel> getNewTaskList(TaskReq req);
+
+
+	public int getNewTaskTotal(TaskReq req);
 }

@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -7,7 +9,9 @@ import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskReq;
 @Repository
 public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao{
 
@@ -67,6 +71,20 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao{
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.checkTask";
 		CheckTask res = getMasterSqlSessionUtil().selectOne(statement, req);
 		return res;
+	}
+
+	@Override
+	public List<TaskModel> getNewTaskList(TaskReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getNewTaskList";
+		List<TaskModel> taskModels = getMasterSqlSessionUtil().selectList(statement, req);
+		return taskModels;
+	}
+
+	@Override
+	public int getNewTaskTotal(TaskReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getNewTaskListTotal";
+		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
+		return taskTotal;
 	}
 	
 }

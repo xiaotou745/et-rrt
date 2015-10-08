@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,9 @@ import com.renrentui.renrenapi.service.inter.IRenRenTaskServcie;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskReq;
 @Service
 public class RenRenTaskServcie implements IRenRenTaskServcie{
 	@Autowired
@@ -53,6 +56,14 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 			return GetTaskCode.TaskHad;
 		//领取任务 插入订单
 		return null;
+	}
+	@Override
+	public List<TaskModel> getNewTaskList(TaskReq req) { 
+		return rereRenTaskDao.getNewTaskList(req);
+	}
+	@Override
+	public int getNewTaskTotal(TaskReq req) {
+		return rereRenTaskDao.getNewTaskTotal(req);
 	}
 
 }

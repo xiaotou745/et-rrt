@@ -1,8 +1,8 @@
 package com.renrentui.renrenapihttp.service.impl;
-
+  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskServcie;
@@ -12,7 +12,10 @@ import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.domain.TaskDomain;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskReq;
 
 /**
  * 任务相关
@@ -59,5 +62,18 @@ public class TaskService implements ITaskService{
 		if(1==1)
 			return new HttpResultModel<Object>().setCode(GetTaskCode.Success.value()).setMsg(GetTaskCode.Success.desc());
 		return null;
+	}
+	@Override
+	public HttpResultModel<TaskDomain> getNewTaskList(TaskReq req) {
+		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
+		TaskDomain td = new TaskDomain();
+		List<TaskModel> taskModelList= rrTaskServcie.getNewTaskList(req);
+		int taskTotal = rrTaskServcie.getNewTaskTotal(req);
+		td.setContent(taskModelList);
+		td.setCount(taskModelList.size());
+		td.setNextId(taskModelList.get(0).getTaskId());
+		td.setTotal(taskTotal);
+		hrm.setData(td);
+		return hrm;
 	}
 }
