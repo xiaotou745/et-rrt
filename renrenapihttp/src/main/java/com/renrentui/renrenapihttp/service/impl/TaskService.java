@@ -96,7 +96,9 @@ public class TaskService implements ITaskService{
 		int taskTotal = rrTaskServcie.getNewTaskTotal(req);
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
-		td.setNextId(taskModelList.get(0).getTaskId());
+		if(taskModelList!=null && taskModelList.size()>0){
+			td.setNextId(taskModelList.get(0).getTaskId());
+		}
 		td.setTotal(taskTotal);
 		hrm.setData(td);
 		return hrm;

@@ -390,9 +390,10 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
         rt.[Status] ,
         rt.BeginTime ,
         rt.EndTime ,
-        rt.PaymentMethod
+        rt.PaymentMethod,b.logo 
 from    dbo.RenRenTask rt ( nolock )
 left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  #{userId}
+join dbo.Business b (nolock) on rt.BusinessId = b.Id 
 where o.ClienterId is null and o.OrderStatus = 0  
 	  <if test="nextId != 0" >
          and rt.Id > #{nextId}

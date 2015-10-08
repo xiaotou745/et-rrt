@@ -38,10 +38,12 @@ import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskReq;
 @Service
 public class RenRenTaskService implements IRenRenTaskService{
 	@Autowired
@@ -276,6 +278,14 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Override
 	public int setTaskStatus(long taskID, int status) {
 		return rereRenTaskDao.setTaskStatus(taskID, status);
+	}
+	@Override
+	public List<TaskModel> getNewTaskList(TaskReq req) { 
+		return rereRenTaskDao.getNewTaskList(req);
+	}
+	@Override
+	public int getNewTaskTotal(TaskReq req) {
+		return rereRenTaskDao.getNewTaskTotal(req);
 	}
 
 }
