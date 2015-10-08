@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IOrderChildDao" >
+    <!-- 删除合同信息 茹化肖 2015年9月30日10:56:18 -->
+  <update id="deleteOrderChild" parameterType="java.util.HashMap" >
+	UPDATE dbo.OrderChild SET IsEnable=0 WHERE OrderId = #{orderid,jdbcType=BIGINT}
+  </update>
+  
+    <!-- 添加合同信息 茹化肖 2015年10月8日13:14:01-->
+  <insert id="insert" parameterType="com.renrentui.renrenentity.OrderChild" >
+INSERT INTO dbo.OrderChild
+        ( OrderId ,
+          ControlName ,
+          ControlValue 
+        )
+VALUES  ( ${orderId} , 
+          '${controlName}' , 
+          '${controlValue}' 
+        )
+  </insert>
+</mapper>

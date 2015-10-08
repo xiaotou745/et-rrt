@@ -1,8 +1,8 @@
 package com.renrentui.renrenapihttp.service.impl;
-
+  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
@@ -11,13 +11,17 @@ import com.renrentui.renrenapihttp.service.inter.ITaskService;
 import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
+import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.domain.TaskDomain;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskReq;
 
 /**
  * 任务相关
@@ -77,7 +81,26 @@ public class TaskService implements ITaskService{
 	 */
 	@Override
 	public HttpResultModel<Object> submitTask(SubmitTaskReq req) {
-		// TODO Auto-generated method stub
-		return null;
+		if(req.getUserId()==null||req.getUserId()==0)
+			return new HttpResultModel<Object>().setCode(SubmitTaskCode.UserIdError.value()).setMsg(SubmitTaskCode.UserIdError.desc());
+		if(req.getOrderId()==null||req.getOrderId()==0)
+			return new HttpResultModel<Object>().setCode(SubmitTaskCode.OrderIdError.value()).setMsg(SubmitTaskCode.OrderIdError.desc());
+		SubmitTaskCode code=rrTaskServcie.submitTask(req);
+		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
+	}
+	@Override
+	public HttpResultModel<TaskDomain> getNewTaskList(TaskReq req) {
+		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
+		TaskDomain td = new TaskDomain();
+		List<TaskModel> taskModelList= rrTaskServcie.getNewTaskList(req);
+		int taskTotal = rrTaskServcie.getNewTaskTotal(req);
+		td.setContent(taskModelList);
+		td.setCount(taskModelList.size());
+		if(taskModelList!=null && taskModelList.size()>0){
+			td.setNextId(taskModelList.get(0).getTaskId());
+		}
+		td.setTotal(taskTotal);
+		hrm.setData(td);
+		return hrm;
 	}
 }
