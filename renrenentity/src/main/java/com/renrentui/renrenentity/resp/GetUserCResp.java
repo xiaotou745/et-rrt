@@ -33,6 +33,10 @@ public class GetUserCResp {
     private Double hadWithdraw;
     
     private Double checking;
+    
+    private Double withdrawing;
+    
+    private Double totalAmount;
 
 	public Long getUserId() {
 		return userId;
@@ -144,6 +148,22 @@ public class GetUserCResp {
 
 	public void setChecking(Double checking) {
 		this.checking = checking;
+	}
+
+	public Double getWithdrawing() {
+		return withdrawing;
+	}
+
+	public void setWithdrawing(Double withdrawing) {
+		this.withdrawing = withdrawing;
+	}
+
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 }

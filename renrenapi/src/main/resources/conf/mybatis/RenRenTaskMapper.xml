@@ -377,4 +377,33 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 	UPDATE dbo.RenRenTask SET status=#{status,jdbcType=BIGINT}
     where Id = #{taskID,jdbcType=BIGINT}
   </update>
+<select id="getNewTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select 
+   	<if test="itemsCount != 0" >
+   		top  #{itemsCount} 
+   	</if> 
+        rt.Id TaskId ,
+        rt.TaskGeneralInfo ,
+        rt.Pusher ,
+        rt.TaskTitle TaskName ,
+        rt.Amount ,
+        rt.AvailableCount ,
+        rt.[Status] ,
+        rt.BeginTime ,
+        rt.EndTime ,
+        rt.PaymentMethod,b.logo 
+from    dbo.RenRenTask rt ( nolock )
+left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  #{userId}
+join dbo.Business b (nolock) on rt.BusinessId = b.Id 
+where o.ClienterId is null and o.OrderStatus = 0  
+	  <if test="nextId != 0" >
+         and rt.Id > #{nextId}
+     </if>
+order by rt.Id desc;
+  </select>   
+   <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select count(1) from dbo.RenRenTask rt ( nolock )
+left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  #{userId}
+where o.ClienterId is null and o.OrderStatus = 0   
+  </select> 
 </mapper>

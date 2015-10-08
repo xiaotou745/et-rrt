@@ -5,6 +5,7 @@ import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.RenRenTask;
@@ -15,6 +16,7 @@ import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskReq;
 
 public interface IRenRenTaskService {
 
@@ -48,4 +50,8 @@ public interface IRenRenTaskService {
 	
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
 	public int setTaskStatus(long taskID,int status);
+	
+	public List<TaskModel> getNewTaskList(TaskReq req);
+	
+	public int getNewTaskTotal(TaskReq req);
 }

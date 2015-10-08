@@ -7,10 +7,12 @@ import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.domain.TaskDomain;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskReq;
 
 /**
  * 任务相关模块
@@ -61,4 +63,11 @@ public interface ITaskService {
 	@Path("/submittask")
 	 public HttpResultModel<Object> submitTask(SubmitTaskReq req);
 
+	/*
+	 * 获取所有未领取的
+	 */
+	@POST
+	@Path("/getnewtasklist")
+	public HttpResultModel<TaskDomain> getNewTaskList(TaskReq req);
+	
 }
