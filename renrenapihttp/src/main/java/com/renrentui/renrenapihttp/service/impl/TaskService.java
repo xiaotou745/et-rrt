@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
-import com.renrentui.renrenapi.service.inter.IRenRenTaskServcie;
+import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
 import com.renrentui.renrencore.cache.redis.RedisService;
@@ -29,7 +29,7 @@ public class TaskService implements ITaskService{
 //	private IClienterBalanceService clienterBalanceService;	
 //
 	@Autowired
-	IRenRenTaskServcie rrTaskServcie;
+	IRenRenTaskService rrTaskServcie;
 	/**
 	 * C端任务详情接口
 	 */

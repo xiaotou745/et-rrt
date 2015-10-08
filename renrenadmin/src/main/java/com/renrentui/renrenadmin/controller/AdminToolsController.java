@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.renrentui.renrenapi.service.inter.IAdminTools;
+import com.renrentui.renrenapi.service.inter.IAdminToolsService;
 import com.renrentui.renrenentity.AccountInfo;
 
 @Controller
@@ -16,7 +16,7 @@ import com.renrentui.renrenentity.AccountInfo;
 public class AdminToolsController {
 
 	@Autowired
-	IAdminTools adminTools;
+	IAdminToolsService adminTools;
 
 	/**
 	 * redis工具

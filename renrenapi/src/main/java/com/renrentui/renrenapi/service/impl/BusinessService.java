@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,11 @@ public class BusinessService implements IBusinessService{
 		record.setLogo("");
 		record.setCityCode(0);			
 		return businessDao.insert(record);
+	}
+
+	@Override
+	public List<Business> getAllList() {
+		return businessDao.getAllList();
 	}
 		
 	

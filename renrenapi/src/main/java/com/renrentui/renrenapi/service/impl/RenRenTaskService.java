@@ -1,24 +1,36 @@
 package com.renrentui.renrenapi.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.renrentui.renrenapi.dao.inter.IPublicProvinceCityDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
+import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
-import com.renrentui.renrenapi.service.inter.IRenRenTaskServcie;
+import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
+import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrencore.enums.GetTaskCode;
+import com.renrentui.renrenentity.PublicProvinceCity;
+import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.TaskCityRelation;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 @Service
-public class RenRenTaskServcie implements IRenRenTaskServcie{
+public class RenRenTaskService implements IRenRenTaskService{
 	@Autowired
 	private IRenRenTaskDao rereRenTaskDao;	
 	@Autowired
 	private ITemplateDetailDao templateDetailDao;	
+	@Autowired
+	private ITaskCityRelationDao taskCityRelationDao;	
+	@Autowired
+	private IPublicProvinceCityService publicProvinceCityService;
 	/**
 	 * 获取任务详情
 	 * 茹化肖
@@ -53,6 +65,27 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 			return GetTaskCode.TaskHad;
 		//领取任务 插入订单
 		return null;
+	}
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public int insert(RenRenTask record,List<Integer> regionCodes) {
+		int result =rereRenTaskDao.insert(record);
+		if (result>0) {
+			Map<Integer,String> regionMap=publicProvinceCityService.getOpenCityMap();
+			List<TaskCityRelation> recordList=new ArrayList<TaskCityRelation>();
+			for (Integer regionCode : regionCodes) {
+				TaskCityRelation taskCityRelation=new TaskCityRelation();
+				taskCityRelation.setTaskId(record.getId());
+				taskCityRelation.setBusinessId(record.getBusinessId());
+				taskCityRelation.setCityCode(regionCode);
+				taskCityRelation.setCityName("");
+				if (regionMap.containsKey(regionCode)) {
+					taskCityRelation.setCityName(regionMap.get(regionCode));
+				}
+			}
+			return taskCityRelationDao.insertList(recordList);
+		}
+		return result;
 	}
 
 }

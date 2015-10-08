@@ -19,59 +19,25 @@
       #{parentcode,jdbcType=INTEGER}, #{jibie,jdbcType=INTEGER}, #{loweracronym,jdbcType=NVARCHAR}, 
       #{upperacronym,jdbcType=NVARCHAR}, #{lowerfullpinyin,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.PublicProvinceCity" >
-    insert into PublicProvinceCity
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        ID,
-      </if>
-      <if test="name != null" >
-        Name,
-      </if>
-      <if test="code != null" >
-        Code,
-      </if>
-      <if test="parentcode != null" >
-        ParentCode,
-      </if>
-      <if test="jibie != null" >
-        Jibie,
-      </if>
-      <if test="loweracronym != null" >
-        LowerAcronym,
-      </if>
-      <if test="upperacronym != null" >
-        UpperAcronym,
-      </if>
-      <if test="lowerfullpinyin != null" >
-        LowerFullPinyin,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=NVARCHAR},
-      </if>
-      <if test="code != null" >
-        #{code,jdbcType=INTEGER},
-      </if>
-      <if test="parentcode != null" >
-        #{parentcode,jdbcType=INTEGER},
-      </if>
-      <if test="jibie != null" >
-        #{jibie,jdbcType=INTEGER},
-      </if>
-      <if test="loweracronym != null" >
-        #{loweracronym,jdbcType=NVARCHAR},
-      </if>
-      <if test="upperacronym != null" >
-        #{upperacronym,jdbcType=NVARCHAR},
-      </if>
-      <if test="lowerfullpinyin != null" >
-        #{lowerfullpinyin,jdbcType=NVARCHAR},
-      </if>
-    </trim>
-  </insert>
+  <select id="getOpenCityList"  resultType="com.renrentui.renrenentity.PublicProvinceCity" 
+    parameterType="java.lang.String" >
+	select  p.code ProvinceCode,
+	        p.name ProvinceName,
+	        c.code CityCode,
+	        c.name CityName,
+	        d.code DistrictCode,
+	        d.name DistrictName,
+	        d.IsPublic
+	from    PublicProvinceCity d with ( nolock )
+	        join PublicProvinceCity c with ( nolock ) on d.parentid = c.code
+	        join PublicProvinceCity p with ( nolock ) on c.parentid = p.code
+	 where   1 = 1  
+	 <if test="cityName != null" >
+	     and c.name like '%${cityName}%'
+     </if>
+  </select>
+    <select id="getAllOpenCity"  resultType="com.renrentui.renrenentity.PublicProvinceCity" >
+	select  * 
+	from    dbo.PublicProvinceCity a ( nolock )
+  </select>
 </mapper>

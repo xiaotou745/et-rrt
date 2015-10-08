@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -27,6 +29,12 @@ public class TemplateDao extends DaoBase implements ITemplateDao {
 	public PagedResponse<Template> queryTemplate(PagedTemplateReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList(
 				"com.renrentui.renrenapi.dao.inter.ITemplateDao.queryTemplate", req);
+	}
+
+	@Override
+	public List<Template> getAllList() {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.renrentui.renrenapi.dao.inter.ITemplateDao.getAllList");
 	}
 
 }
