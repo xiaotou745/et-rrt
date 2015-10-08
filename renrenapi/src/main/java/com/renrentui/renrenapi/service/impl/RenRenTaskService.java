@@ -115,6 +115,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 		order.setOrderNo(orderNoString);
 		order.setClienterId(req.getUserId());
 		order.setTaskId(req.getTaskId());
+		order.setAmount(detail.getAmount());
 		Date dealLineDate=ParseHelper.plusDate(new Date(), 3, (int)detail.getTaskCycle());
 		System.out.println(dealLineDate);
 		order.setDeadlineTime(dealLineDate);
