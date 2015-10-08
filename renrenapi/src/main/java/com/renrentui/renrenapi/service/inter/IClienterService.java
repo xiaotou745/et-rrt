@@ -8,6 +8,7 @@ import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
@@ -88,5 +89,14 @@ public interface IClienterService {
 	* @Return
 	*/
 	PagedResponse<ClienterResp> queryClienterList(ClienterReq req);
+	
+	/**
+	* @Des  C端修改个人基础信息
+	* @Author CaoHeYang
+	* @Date 20151008
+	* @param req
+	* @Return
+	*/
+	 int  modifyuserc (ModifyUserCReq req);
 	
 }

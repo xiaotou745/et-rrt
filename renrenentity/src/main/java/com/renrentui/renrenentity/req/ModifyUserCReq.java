@@ -6,22 +6,22 @@ package com.renrentui.renrenentity.req;
  * @date 20151008
  */
 public class ModifyUserCReq {
-	private int userId;
+	private long userId;
 	private String userName;
-	private  Integer sex;
+	private  Short sex;
 	private  Integer age;
 	/**
 	 * 用户ID
 	 * @return
 	 */
-	public int getUserId() {
+	public long getUserId() {
 		return userId;
 	}
 	/**
 	 * 用户ID
 	 * @param userId
 	 */
-	public void setUserId(int userId) {
+	public void setUserId(long userId) {
 		this.userId = userId;
 	}
 	/**
@@ -42,14 +42,14 @@ public class ModifyUserCReq {
 	 * 性别 2女默认1男
 	 * @return
 	 */
-	public Integer getSex() {
+	public Short getSex() {
 		return sex;
 	}
 	/**
 	 * 性别 2女默认1男
 	 * @param sex
 	 */
-	public void setSex(Integer sex) {
+	public void setSex(Short sex) {
 		this.sex = sex;
 	}
 	/**

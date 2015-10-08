@@ -21,6 +21,13 @@ public interface IClienterDao {
 
     Clienter selectByPrimaryKey(Long id);
 
+    /**
+     * 修改骑士信息
+     * @author CaoHeYang
+     * @param record
+     * @date  20151008
+     * @return
+     */
     int updateByPrimaryKeySelective(Clienter record);
 
     int updateByPrimaryKey(Clienter record);

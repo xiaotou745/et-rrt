@@ -45,10 +45,17 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return null;
 	}
 
+    /**
+     *C端 修改骑士信息
+     * @author CaoHeYang
+     * @param record
+     * @date  20151008
+     * @return
+     */
 	@Override
 	public int updateByPrimaryKeySelective(Clienter record) {
-		// TODO Auto-generated method stub
-		return 0;
+		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.updateByPrimaryKeySelective";
+		return getMasterSqlSessionUtil().update(statement, record);
 	}
 
 	@Override
