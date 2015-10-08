@@ -1,13 +1,20 @@
 package com.renrentui.renrenadmin.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.req.ClienterReq;
+import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.resp.ClienterResp;
 
 @Controller
@@ -41,6 +48,20 @@ public class ClienterController {
 		ModelAndView model = new ModelAndView("clienter/listdo");
 		model.addObject("listData", resp);
 		return model;
+	}
+	/**
+	* @Des 修改用户状态 
+	* @Author WangXuDan
+	* @Date 2015年10月8日11:43:44
+	* @Return
+	*/
+	@RequestMapping(value="editclienterstatus",method= {RequestMethod.POST})
+	@ResponseBody
+	public ResponseBase editclienterstatus(ModifyClienterStatusReq req,HttpServletRequest request){
+		ResponseBase response = new ResponseBase();
+		req.setLastOptName(UserContext.getCurrentContext(request).getLoginName());
+		response =clienterService.editClienterStatus(req);
+		return response;
 	}
 
 }
