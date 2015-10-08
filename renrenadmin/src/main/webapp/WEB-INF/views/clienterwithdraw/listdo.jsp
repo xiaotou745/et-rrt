@@ -48,8 +48,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>
 			<td><%=ClienterWithdrawFormStatus.getEnum(data.get(i).getStatus()).desc()%></td>			
 			<td>
-			<a href="javascript:void(0)"  onclick="BusinessDelta('<%=data.get(i).getId() %>')" >审核通过 </a>
-			<a href="javascript:void(0)"  onclick="BusinessDelta('<%=data.get(i).getId() %>')" >审核拒绝</a>
+			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>')" >审核通过 </a>
+			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>')" >审核拒绝</a>
 			</td>				
 			
 		</tr>
@@ -63,17 +63,51 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
 		responsePageList.getTotalPage())%>
 <script type="text/javascript">
-   //商户冲值 
-   function BusinessDelta(id, name, phone) {
-	   $('#txtBusinessIdD').val(0);
-	   $('#txtCompanyNameD').val('');
-	   $('#txtPhoneNoD').val('');
-	   $('#txtRemarkD').val('');
-	   $('#txtBusinessIdD').val(id);
-	   $('#txtCompanyNameD').val(name);
-	   $('#txtPhoneNoD').val(phone);
-	   $('#businessDeltaShow').modal('show'); 
+ 
+   //审核通过
+   function WithdrawAuditPass(withwardId) {
+       if (!window.confirm("确认要提交审核？")) {
+           return;
+       }
+       var paramaters = {
+           "withwardId": withwardId           
+       };
+       var url = "<%=basePath%>/clienterwithdraw/auditpass";
+       $.ajax({
+           type: 'POST',
+           url: url,
+           data: paramaters,
+           success: function (result) {
+        	   window.location.href = "<%=basePath%>/clienterwithdraw/list";
+              /*  if (result.IsSuccess) {
+                   alert(result.Message);
+                   window.location.href = "/clienterwithdraw/ClienterWithdraw";
+               } else {
+                   alert(result.Message);
+               } */
+           }
+       });
    }
+    
+ //审核拒绝
+    function WithdrawAuditRefuse(withwardId)
+    {
+    	  if (!window.confirm("确认要审核拒绝？")) {
+              return;
+          }
+          var paramaters = {
+              "withwardId": withwardId           
+          };
+          var url = "<%=basePath%>/clienterwithdraw/auditrefuse";
+          $.ajax({
+              type: 'POST',
+              url: url,
+              data: paramaters,
+              success: function (result) {
+           	   window.location.href = "<%=basePath%>/clienterwithdraw/list";   
+              }
+          });
+    }
   </script>
 	
 

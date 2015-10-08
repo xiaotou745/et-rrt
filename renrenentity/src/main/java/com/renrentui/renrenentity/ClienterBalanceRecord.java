@@ -23,8 +23,18 @@ public class ClienterBalanceRecord {
     private String relationNo;
 
     private String remark;
+    
+    private Short status;    
 
-    public Long getId() {
+    public Short getStatus() {
+		return status;
+	}
+
+	public void setStatus(Short status) {
+		this.status = status;
+	}
+
+	public Long getId() {
         return id;
     }
 
