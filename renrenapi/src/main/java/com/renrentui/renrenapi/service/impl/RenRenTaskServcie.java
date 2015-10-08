@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
+import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
@@ -23,6 +24,7 @@ import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
+import com.renrentui.renrenentity.OrderChild;
 import com.renrentui.renrenentity.OrderLog;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
@@ -44,6 +46,9 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 	private IClienterLogDao clienterLogDao;	
 	@Autowired
 	private IOrderLogDao orderLogDao;
+	
+	@Autowired
+	private IOrderChildDao orderChildDaoDao;
 	/**
 	 * 获取任务详情
 	 * 茹化肖
@@ -166,10 +171,13 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 	}
 	/**
 	 * 提交任务
+	 * 茹化肖
+	 * 2015年10月8日13:37:08
 	 */
 	@Override
 	public SubmitTaskCode submitTask(SubmitTaskReq req) {
 		CheckSubmitTask check=orderDao.checkOrderSubmit(req);
+		int deleInt=0;
 		if(check==null)
 			return SubmitTaskCode.CantSubmit;
 		if(check.getSubmitCan()==0)//订单不可提交
@@ -182,9 +190,48 @@ public class RenRenTaskServcie implements IRenRenTaskServcie{
 				return SubmitTaskCode.ReSubmit;
 			return SubmitTaskCode.CantSubmit;
 		}
-		//更新订单状态
+		OrderLog orderLog=new OrderLog();
+		orderLog.setOrderNo("");
+		orderLog.setOrderId(req.getOrderId());
+		orderLog.setOptType(Short.valueOf("2"));
+		orderLog.setOptName("地推员:"+req.getUserId());
+		orderLog.setRemark("地推员:"+req.getUserId()+"提交订单ID:"+req.getOrderId());
+		if(check.getSubmitCan()==1&&check.getIsAgainSubmit()==1)
+		{
+			//再次提交合同信息..删除之前提交的合同
+			deleInt=orderChildDaoDao.deleteOrderChild(req.getOrderId());
+			if(deleInt<=0)
+			{
+				//清除旧数据失败
+				Error error=new Error("清除旧合同信息错误");
+				throw new RuntimeErrorException(error);
+			}
+			orderLog.setOptType(Short.valueOf("3"));
+			orderLog.setRemark("地推员:"+req.getUserId()+"审核拒绝后再次提交订单ID:"+req.getOrderId());
+		}
+		//更新订单状态00
+		int resSubmit=orderDao.submitOrder(req);
 		//插入订单操作记录
-		return null;
+		int orderlogres=orderLogDao.addOrderLog(orderLog);//记录订单操作日志
+		//插入子订单信息
+		int childres=0;
+		for (int i = 0; i < req.getValueInfo().size(); i++) {
+			OrderChild child=new OrderChild();
+			child.setOrderId(req.getOrderId());
+			child.setControlName(req.getValueInfo().get(i).getControlName());
+			child.setControlValue(req.getValueInfo().get(i).getControlValue());
+			childres+=orderChildDaoDao.insert(child);
+		}
+		if(resSubmit>0&&orderlogres>0&&(childres==req.getValueInfo().size()))
+		{
+			//返回订单提交成功
+			return SubmitTaskCode.Success;
+		}
+		else {
+			//提交合同失败
+			Error error=new Error("提交合同信息失败");
+			throw new RuntimeErrorException(error);
+		}
 	}
 
 }

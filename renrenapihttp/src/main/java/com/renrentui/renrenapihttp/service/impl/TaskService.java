@@ -11,6 +11,7 @@ import com.renrentui.renrenapihttp.service.inter.ITaskService;
 import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
+import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
@@ -77,7 +78,11 @@ public class TaskService implements ITaskService{
 	 */
 	@Override
 	public HttpResultModel<Object> submitTask(SubmitTaskReq req) {
-		// TODO Auto-generated method stub
-		return null;
+		if(req.getUserId()==null||req.getUserId()==0)
+			return new HttpResultModel<Object>().setCode(SubmitTaskCode.UserIdError.value()).setMsg(SubmitTaskCode.UserIdError.desc());
+		if(req.getOrderId()==null||req.getOrderId()==0)
+			return new HttpResultModel<Object>().setCode(SubmitTaskCode.OrderIdError.value()).setMsg(SubmitTaskCode.OrderIdError.desc());
+		SubmitTaskCode code=rrTaskServcie.submitTask(req);
+		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
 	}
 }
