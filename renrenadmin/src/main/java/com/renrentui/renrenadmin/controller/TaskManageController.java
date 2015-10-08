@@ -2,6 +2,7 @@ package com.renrentui.renrenadmin.controller;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
@@ -22,6 +25,8 @@ import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.util.ParseHelper;
+import com.renrentui.renrencore.util.PropertyUtils;
+import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
@@ -89,6 +94,12 @@ public class TaskManageController {
 		}
 		return listnew;
 	}
+	@RequestMapping("uploadfile")
+	@ResponseBody
+	public String upLoadFile(HttpServletRequest request,@RequestParam MultipartFile file1){
+		String saveName=ParseHelper.ToDateString(new Date());
+		return file1.getOriginalFilename()+"#"+saveName;
+	}
 	@RequestMapping("savetask")
 	@ResponseBody
 	public int saveTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
@@ -101,7 +112,12 @@ public class TaskManageController {
 		UserContext context=UserContext.getCurrentContext(request);
 		taskItem.setCreateName(context.getUserName());
 		taskItem.setModifyName(context.getUserName());
+		List<Integer> regionCodes=getRegionCodeList(request);
+		List<Attachment> attachments=getAttachList(request);
 		
+		return renRenTaskService.insert(taskItem, regionCodes,attachments);
+	}
+	private List<Integer> getRegionCodeList(HttpServletRequest request){
 		List<Integer> regionCodes=new ArrayList<>();
 		Integer provinceCode=ParseHelper.ToInt(request.getParameter("provinceCode"),0);
 		if (provinceCode>-1) {
@@ -121,8 +137,23 @@ public class TaskManageController {
 		}else {
 			regionCodes.add(-1);
 		}
-		
-		return renRenTaskService.insert(taskItem, regionCodes);
+		return regionCodes;
+	}
+	private List<Attachment> getAttachList(HttpServletRequest request){
+		List<Attachment> attachments=new ArrayList<>();
+		String attachs=request.getParameter("attachmentfiles");
+		if (attachs!=null&&!attachs.isEmpty()) {
+			String relativePath = PropertyUtils.getProperty("Task_Attach_Path");
+			String [] attachList=attachs.split(";");
+			for (String fileinfo : attachList) {
+				String [] fileNames=fileinfo.split("#");
+				Attachment attach=new Attachment();
+				attach.setAttachmentName(fileNames[0]);
+				attach.setAttachUrl(relativePath+fileNames[1]);
+				attachments.add(attach);
+			}
+		}
+		return attachments;
 	}
 	@RequestMapping("audittask")
 	public ModelAndView audiTask() {

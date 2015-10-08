@@ -16,10 +16,9 @@ List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAt
 String pro_city = (String) request.getAttribute("pro_city");
 String city_region = (String) request.getAttribute("city_region");
 %>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script
-	src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
+<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<script src="<%=basePath%>/js/ajaxfileupload.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
 		<fieldset>
@@ -153,7 +152,8 @@ String city_region = (String) request.getAttribute("city_region");
 			<legend>相关附件</legend>
 
 			<div class="row">
-				<table id="templatetable"
+			<input type="hidden" name="attachmentfiles" id="attachmentfiles" value="" />
+				<table id="uploadfiletable"
 					class="table table-striped table-bordered table-hover dataTables-example">
 					<thead>
 						<tr>
@@ -163,11 +163,6 @@ String city_region = (String) request.getAttribute("city_region");
 						</tr>
 					</thead>
 					<tbody>
-						<tr id="tr1">
-							<td>1</td>
-							<td>ddddd.txt</td>
-							<td>删除</td>
-						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -178,7 +173,8 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label"></label>
 								<div class="col-sm-8">
-									<button type="button" class="btn btn-w-m btn-primary" id="save"
+								<input id="file1" type="file" name="file1">
+									<button type="button" class="btn btn-w-m btn-primary" id="uploadfile"
 										style="margin-left: 3px; height: 30px;">上传</button>
 								</div>
 							</div>
@@ -283,8 +279,8 @@ String city_region = (String) request.getAttribute("city_region");
 		</div>
 	</form>
 
-	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> <input
-		type="hidden" id="city_region" value="<%=city_region %>" />
+	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> 
+	<input type="hidden" id="city_region" value="<%=city_region %>" />
 </div>
 
 <script>
@@ -297,6 +293,59 @@ $(function(){
         autoclose: true
     });
 });
+$("#uploadfile").click(function(){
+	if ($("#file1").val().length <= 0) {
+        alert("请选择文件！");
+        return;
+    }
+    var url = "<%=basePath%>/taskmanage/uploadfile";
+    
+    $.ajaxFileUpload({
+        type: 'POST',
+        secureuri: false, //一般设置为false
+        fileElementId: 'file1', //文件上传空间的id属性  <input type="file" id="file" name="file" />
+        url: url,
+        data: "", //此参数非常严谨，写错一个引号都不行
+        dataType: "HTML", //此参数非常严谨，写错一个引号都不行
+        success: function (data, status) {
+        	appendAttachRow(data);
+        },
+        error:function(errordata){
+        	alert(errordata);
+        }
+    });
+	
+});
+function appendAttachRow(fileinfo){
+	var rowNum=$("#uploadfiletable tr").length-1;
+	var newRowNum=rowNum+1;
+	var row = $("<tr></tr>");
+	row.append("<td>"+newRowNum+"</td>");
+	row.append("<td>"+fileinfo.split("#")[0]+"</td>");
+	row.append("<td><a href='javascript:void(0)' onclick='deleterow(this)'>删除</a></td>");
+	$("#uploadfiletable").append(row);
+	var oldAttach=$("#attachmentfiles").val();
+	if(oldAttach==""){
+		$("#attachmentfiles").val(fileinfo);
+	}else{
+		$("#attachmentfiles").val(oldAttach+";"+fileinfo);
+	}
+}
+function deleterow(delobj){
+	var trs=$("#uploadfiletable tr");
+	var oldRowNum=trs.length-1;
+	var deltr=$(delobj).parent().parent();
+	var rownum=parseInt(deltr.children('td').eq(0).html());
+	deltr.remove();
+	//将要删除的行的下面的所有行的行号重置
+	if(rownum<oldRowNum){
+		 for(var i=rownum+1;i<oldRowNum+1;i++){ 
+		     var tr=$(trs[i]);
+		     var td=tr.children('td').eq(0);
+		     $(td).html(i-1);
+		 }
+	}
+}
 $("#provinceCode").change(function(){  
     try{  
         var pro=$(this).val();  
