@@ -2,7 +2,6 @@ package com.renrentui.renrenadmin.controller;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +20,15 @@ import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
+import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.Template;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.RenRenTaskModel;
+import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 
 
 @Controller
@@ -90,7 +93,7 @@ public class TaskManageController {
 	@ResponseBody
 	public int saveTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
 		taskItem.setPusher("");
-		taskItem.setState(0);
+		taskItem.setStatus(TaskStatus.WaitAudit.value());
 		taskItem.setTaskCycle(0d);
 		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
 		taskItem.setEndTime(ParseHelper.ToDate(endDate));
@@ -121,23 +124,29 @@ public class TaskManageController {
 		
 		return renRenTaskService.insert(taskItem, regionCodes);
 	}
-	@RequestMapping("auditask")
+	@RequestMapping("audittask")
 	public ModelAndView audiTask() {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "任务管理");
 		model.addObject("currenttitle", "审核任务");
 		model.addObject("viewPath", "taskmanage/audittask");
+		List<Business> datalist=businessService.getAllList();
+		model.addObject("businessData", datalist);
+		List<Template> templatelist=templateService.getAllList();
+		model.addObject("templatelist", templatelist);
 		return model;
 	}
-	@RequestMapping("auditaskdo")
-	public ModelAndView audiTaskDo() {
-		ModelAndView model = new ModelAndView("taskmanage/audittask");
-		model.addObject("listData", null);
+	@RequestMapping("audittaskdo")
+	public ModelAndView audiTaskDo(PagedRenRenTaskReq req) {
+		ModelAndView model = new ModelAndView("taskmanage/audittaskdo");
+		PagedResponse<RenRenTaskModel> resp=renRenTaskService.getPagedRenRenTaskList(req);
+		model.addObject("listData", resp);
 		return model;
 	}
-	@RequestMapping("doaudit")
+
+	@RequestMapping("settaskstatus")
 	@ResponseBody
-	public int doAudit() {
-		return 1;
+	public int setTaskStatus(long taskID,int status) {
+		return renRenTaskService.setTaskStatus(taskID, status);
 	}
 }
