@@ -14,4 +14,6 @@ public interface IOrderLogDao {
     int updateByPrimaryKeySelective(OrderLog record);
 
     int updateByPrimaryKey(OrderLog record);
+    
+    int addOrderLog(OrderLog log);
 }

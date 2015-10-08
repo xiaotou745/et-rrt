@@ -14,6 +14,7 @@ import com.renrentui.renrenapihttp.service.inter.IUsercService;
 import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
+import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.SendSmsType;
@@ -24,12 +25,16 @@ import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.resp.GetUserCResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
+import com.renrentui.renrenentity.resp.SignInResp;
 import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;
 
@@ -112,17 +117,11 @@ public class UsercService implements IUsercService {
 			resultModel.setCode(WithdrawState.Failure.value());
 			resultModel.setMsg(WithdrawState.Failure.desc());
 			return resultModel;
-		}
-		ClienterBalance clienterBalanceModel=clienterBalanceService.selectByPrimaryKey(req.getUserId());
-		double amount=clienterBalanceModel.getWithdraw();
-		if(req.getAmount()>amount)
-		{
-			resultModel.setCode(WithdrawState.MoneyError.value());
-			resultModel.setMsg(WithdrawState.MoneyError.desc());
-			return resultModel;
-		}
+		}		
 		
-		clienterService.WithdrawC(req);
+		WithdrawState code=clienterService.WithdrawC(req);		
+		resultModel.setCode(code.value());
+		resultModel.setMsg(code.desc());
 		return resultModel;
 	}
 
@@ -170,6 +169,7 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> signin(SignInReq req) {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		SignInResp signInResp=new SignInResp();
 		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
 			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
 		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
@@ -177,7 +177,9 @@ public class UsercService implements IUsercService {
 		Clienter clienterModel=clienterService.queryClienter(req);
 		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
 			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
-		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(clienterModel);
+		signInResp.setUserId(clienterModel.getId());
+		signInResp.setUserName(clienterModel.getClienterName());
+		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(signInResp);
 	}
 
 	/**
@@ -191,29 +193,39 @@ public class UsercService implements IUsercService {
 	public HttpResultModel<Object> sendcode(CSendCodeReq req) {
 		try {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-			String code = RandomCodeStrGenerator.generateCodeNum(6);
 			String key = "";
+			String phoneNo=req.getPhoneNo();
 			// 类型 1注册 2修改密码 3忘记密码
-
+			boolean checkPhoneNo=clienterService.isExistPhoneC(phoneNo);
 			if (req.getsType() == 1) {
 				// 注册
+				//手机号存在
+				if(checkPhoneNo){
+					return resultModel.setCode(SendSmsType.PhoneExists.value()).setMsg(
+							SendSmsType.PhoneExists.desc());//该手机号已经存在，不能注册
+				}
 				key = RedissCacheKey.RR_Clienter_sendcode_register
-						+ req.getPhoneNo();
-			} else if (req.getsType() == 2) {
+						+ phoneNo;
+			} 
+			if(!checkPhoneNo){
+				return resultModel.setCode(SendSmsType.PhoneNotExists.value()).setMsg(
+						SendSmsType.PhoneNotExists.desc());//该手机号不存在，不能修改或忘记密码
+			}
+			if (req.getsType() == 2) {
 				// 修改密码
 				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
-						+ req.getPhoneNo();
+						+ phoneNo;
 			} else if (req.getsType() == 3) {
 				// 忘记密码
 				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
-						+ req.getPhoneNo();
+						+ phoneNo;
 			}
-
 			if (key == "")
-				return null;
-//			String str = redisService.get(key, String.class);
-			redisService.set(key, code);//, 60 * 5
-			long resultValue = SmsUtils.sendSMS(req.getPhoneNo(), "您的验证码为:"
+				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
+						SendSmsType.Fail.desc());// 发送失败
+			String code = RandomCodeStrGenerator.generateCodeNum(6);//获取随机数
+			redisService.set(key, code, 60 * 5);
+			long resultValue = SmsUtils.sendSMS(phoneNo, "您的验证码为:"
 					+ code);
 			if (resultValue <= 0) {
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
@@ -237,14 +249,29 @@ public class UsercService implements IUsercService {
 	* @Return
 	*/
 	@Override
-	public HttpResultModel<Object> myincome(MyIncomeReq req) {
+	public HttpResultModel<Object> getuserc(GetUserCReq req) {
 		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		GetUserCResp resp=new GetUserCResp();
 		if(!clienterService.isExistUserC(req.getUserId()))//用户不存在
 			return  resultModel.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(MyIncomeCode.UserIdUnexist.desc());
-		MyIncomeResp clienterBalanceModel=clienterService.queryClienterBalance(req);
-		if(clienterBalanceModel==null||clienterBalanceModel.getId()<=0)//手机号或密码错误
+		ClienterDetail clienterModel=clienterService.getUserC(req.getUserId());
+		if(clienterModel==null||clienterModel.getId()<=0)//获取信息失败
 			return resultModel.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(MyIncomeCode.QueryIncomeError.desc());
-		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(clienterBalanceModel);
+		resp.setUserId(clienterModel.getId());
+		resp.setUserName(clienterModel.getClienterName());
+		resp.setPhoneNo(clienterModel.getPhoneNo());
+		resp.setHeadImage(clienterModel.getHeadImage());
+		resp.setCityCode(clienterModel.getCityCode());
+		resp.setCityName(clienterModel.getCityName());
+		resp.setSex(clienterModel.getSex());
+		resp.setAge(clienterModel.getAge());
+		resp.setEducation(clienterModel.getEducation());
+		resp.setStatus(clienterModel.getStatus());
+		resp.setBalance(clienterModel.getBalance());
+		resp.setWithdraw(clienterModel.getWithdraw());
+		resp.setHadWithdraw(clienterModel.getHadWithdraw());
+		resp.setChecking(clienterModel.getChecking());
+		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(resp);
 		
 	}
 

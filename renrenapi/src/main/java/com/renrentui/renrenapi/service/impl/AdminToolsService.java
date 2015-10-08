@@ -32,7 +32,8 @@ public class AdminToolsService implements IAdminToolsService {
 		Set<String> set = new HashSet<String>();
 		if (sType == 2) {
 			// 查询指定值
-			set.add(redisService.get(key, String.class));
+			String val=redisService.get(key, String.class,false);
+			set.add(val);
 			return set;
 		}
 		set.add("");

@@ -1,11 +1,12 @@
 package com.renrentui.renrenapi.service.inter;
 
-import java.util.List;
-
 import com.renrentui.renrencore.enums.GetTaskCode;
-import com.renrentui.renrenentity.RenRenTask;
-import com.renrentui.renrenentity.TaskCityRelation;
-import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrencore.enums.CancelTaskCode;import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrencore.enums.SubmitTaskCode;
+import com.renrentui.renrenentity.Order;
+import com.renrentui.renrenentity.domain.OrderRetrunModel;import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.TaskCityRelation;import java.util.List;import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 
 public interface IRenRenTaskService {
@@ -20,6 +21,15 @@ public interface IRenRenTaskService {
 	public TaskDetail getTaskDetail(TaskDetailReq req);
 	
 	
-	public GetTaskCode getTask(TaskDetailReq req);
+	public OrderRetrunModel getTask(TaskDetailReq req);
+	
+	/**
+	 * 取消任务
+	 * @param req
+	 * @return
+	 */
+	public CancelTaskCode cancelTask(CancelTaskReq req);
+	
+	public SubmitTaskCode submitTask(SubmitTaskReq req);
 	public int insert(RenRenTask record,List<Integer> regionCodes);
 }

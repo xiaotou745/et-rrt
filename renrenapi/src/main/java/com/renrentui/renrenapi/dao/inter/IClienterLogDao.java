@@ -14,4 +14,6 @@ public interface IClienterLogDao {
     int updateByPrimaryKeySelective(ClienterLog record);
 
     int updateByPrimaryKey(ClienterLog record);
+    
+    int addClienterLog(ClienterLog log);
 }

@@ -1,14 +1,18 @@
 package com.renrentui.renrenadmin.controller;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.renrentui.renrenapi.service.inter.IAdminToolsService;
+import com.renrentui.renrenapi.service.inter.IAdminTools;
+import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrenentity.AccountInfo;
 
 @Controller
@@ -16,8 +20,9 @@ import com.renrentui.renrenentity.AccountInfo;
 public class AdminToolsController {
 
 	@Autowired
-	IAdminToolsService adminTools;
-
+	IAdminTools adminTools;
+	@Autowired
+	RedisService redisService;
 	/**
 	 * redis工具
 	 * 
@@ -27,9 +32,9 @@ public class AdminToolsController {
 	@RequestMapping("redistools")
 	public ModelAndView redisTools() {
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "welcome");
-		model.addObject("currenttitle", "welcome");
-		model.addObject("viewPath", "admintools/redistools_do");
+		model.addObject("subtitle", "缓存管理");
+		model.addObject("currenttitle", "缓存管理");
+		model.addObject("viewPath", "admintools/redistools");
 		return model;
 	}
 
@@ -39,8 +44,11 @@ public class AdminToolsController {
 	 * @author haichao
 	 * @date 2015年9月29日 11:54:26
 	 * */
-	@RequestMapping("redistoolsdo")
+	@RequestMapping("redistools_do")
+	@ResponseBody
 	public String redisToolsDo(HttpServletRequest request,com.renrentui.renrenentity.RedisTools redisTools) {
-		return adminTools.getReidsTools(redisTools.getKey(), redisTools.getsType()).toString();
+		Set<String> set=adminTools.getReidsTools(redisTools.getKey(), redisTools.getsType());
+		return set.toString().replace("[", "").replace("]","");
 	}
 }
+

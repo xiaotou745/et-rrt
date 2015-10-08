@@ -2,21 +2,30 @@ package com.renrentui.renrenapi.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
+import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrencore.enums.GetTaskCode;
+import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.ClienterLog;
+import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 @Service
 public class ClienterService implements IClienterService{
@@ -31,6 +40,8 @@ public class ClienterService implements IClienterService{
 	
 	@Autowired
 	private IClienterWithdrawFormDao clienterWithdrawFormDao;	
+	@Autowired
+	private IClienterLogDao clienterLogDao;
 	
 	
 	/**
@@ -38,6 +49,11 @@ public class ClienterService implements IClienterService{
 	 */
 	@Override
 	public boolean forgotPwdUserc(ForgotPwdReq req) {
+		ClienterLog log=new ClienterLog();
+		log.setClienterId(Long.valueOf("0"));
+		log.setOptName("地推员电话:"+req.getPhoneNo());
+		log.setRemark("地推员:"+req.getPhoneNo()+"忘记密码修改密码");
+		int reslog=clienterLogDao.addClienterLog(log);//记录C端日志
 		return clienterDao.forgotPassword(req);
 	}
 	/**
@@ -63,6 +79,11 @@ public class ClienterService implements IClienterService{
 	 */
 	@Override
 	public boolean modifyPwdUserc(ModifyPwdReq req) {
+		ClienterLog log=new ClienterLog();
+		log.setClienterId(Long.valueOf(req.getUserId()));
+		log.setOptName("地推员UserID");
+		log.setRemark("地推员修改密码");
+		int reslog=clienterLogDao.addClienterLog(log);//记录C端日志
 		return clienterDao.modifyPwdUserc(req);
 	}
 		/*
@@ -100,35 +121,44 @@ public class ClienterService implements IClienterService{
 	* @Return
 	*/
 	@Override
-	public MyIncomeResp queryClienterBalance(MyIncomeReq req) {
-		return clienterDao.queryClienterBalance(req);
+	public ClienterDetail getUserC(long userId) {
+		return clienterDao.getUserC(userId);
 	}
 	
 	/**
-	 * 用户提现
-	 * 胡灵波
-	 * 2015年9月28日 16:58:06
+	 * @Des 用户提现 
+	 * @Author 胡灵波
+	 * @Date 2015年9月28日 16:58:06
 	 * @param req
 	 * @return
 	 */
 	@Override
-	public void WithdrawC(ClienterBalanceReq req)
-	{
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public WithdrawState WithdrawC(ClienterBalanceReq req)
+	{		
+		ClienterBalance clienterBalanceModel= clienterBalanceDao.selectByPrimaryKey(req.getUserId());
+
+		double amount=clienterBalanceModel.getWithdraw();
+		if(req.getAmount()>amount)
+		{	
+			return WithdrawState.MoneyError;
+		}		
+		
 	     //创建提现表
 		ClienterWithdrawForm clienterWithdrawFormModel=new ClienterWithdrawForm();
 		clienterWithdrawFormModel.setClienterId(req.getUserId());
 		clienterWithdrawFormModel.setAmount(req.getAmount());
 		clienterWithdrawFormModel.setWithdrawNo("No001");
 		clienterWithdrawFormModel.setWithType((short)1);
-		clienterWithdrawFormModel.setAccountInfo("010101");
-		clienterWithdrawFormModel.setTrueName("张三");
+		clienterWithdrawFormModel.setAccountInfo(req.getAccountInfo());
+		clienterWithdrawFormModel.setTrueName(req.getTrueName());
 		clienterWithdrawFormModel.setStatus((short)0);				
-		clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
+		int cwfId= clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
 		
 		ClienterBalanceReq cBReq=new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
 		cBReq.setAmount(-req.getAmount());
-		clienterBalanceDao.updateMoneyByKey(cBReq);
+		int cbId= clienterBalanceDao.updateMoneyByKey(cBReq);
 		
 	    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(req.getUserId());
@@ -138,7 +168,23 @@ public class ClienterService implements IClienterService{
 		clienterBalanceRecordModel.setOrderId((long)101);
 		clienterBalanceRecordModel.setRelationNo("001");
 		clienterBalanceRecordModel.setRemark("提现申请");		
-		clienterBalanceRecordDao.insert(clienterBalanceRecordModel);		
+		int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);				
+		
+		if(cwfId>0&&cbId>0&&cbrId>0)
+		{
+			return WithdrawState.Success;
+		}
+		return WithdrawState.Failure;
+	}
+	/**
+	* @Des 获取地推员信息列表  
+	* @Author WangXuDan
+	* @Date 2015年9月29日16:15:39
+	* @Return
+	*/
+	@Override
+	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
+		return clienterDao.queryClienterList(req);
 	}
 
 	

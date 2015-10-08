@@ -18,12 +18,51 @@
     Id, ClienterId, Amount, WithdrawNo, WithType, AccountInfo, TrueName, Status, CreateTime, 
     AuditTime, AuditName
   </sql>
+  <sql id="Sp_Column_List" >
+    cwf.Id, cwf.ClienterId, cwf.Amount, cwf.WithdrawNo, cwf.WithType, cwf.AccountInfo, cwf.TrueName, cwf.Status, cwf.CreateTime, 
+    cwf.AuditTime, cwf.AuditName,c.clienterName,c.phoneNo
+  </sql>
+    <sql id="getListWhere">
+
+		1=1		
+		<if test="withdrawNo != null and withdrawNo!=''">
+			and cwf.withdrawNo=''${withdrawNo}''
+		</if>		
+		<if test="clienterName != null and clienterName!=''">
+			and c.clienterName=''${clienterName}''
+		</if>
+		<if test="phoneNo != null and phoneNo!=''">
+			and c.phoneNo=''${phoneNo}''
+		</if>	 
+	
+	</sql>
+	
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from ClienterWithdrawForm
     where Id = #{id,jdbcType=BIGINT}
   </select>
+    	<select id="getList" resultType="com.renrentui.renrenentity.domain.ClienterWithdrawFormDM"
+		parameterType="com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' cwf.Id  ',
+		'
+		<include refid="Sp_Column_List" />
+		',
+		'ClienterWithdrawForm cwf WITH (NOLOCK) left join Clienter c with (nolock) on cwf.ClienterId=c.Id',
+		'
+		<include refid="getListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+	
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from ClienterWithdrawForm
     where Id = #{id,jdbcType=BIGINT}

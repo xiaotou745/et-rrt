@@ -9,9 +9,14 @@ import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
 import com.renrentui.renrencore.cache.redis.RedisService;
+import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
+import com.renrentui.renrenentity.Order;
+import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 
 /**
@@ -22,12 +27,6 @@ import com.renrentui.renrenentity.req.TaskDetailReq;
  */
 @Service
 public class TaskService implements ITaskService{
-//	@Autowired
-//	IClienterService clienterService;
-//	
-//	@Autowired
-//	private IClienterBalanceService clienterBalanceService;	
-//
 	@Autowired
 	IRenRenTaskService rrTaskServcie;
 	/**
@@ -52,12 +51,33 @@ public class TaskService implements ITaskService{
 	 */
 	@Override
 	public HttpResultModel<Object> getTask(TaskDetailReq req) {
-		if(req.getTaskId()<=0)//任务ID
+		if(req.getTaskId()==null||req.getTaskId()<=0)//任务ID
 			return new HttpResultModel<Object>().setCode(GetTaskCode.TaskIdErr.value()).setMsg(GetTaskCode.TaskIdErr.desc());
-		if(req.getUserId()<=0)//用户ID
+		if(req.getUserId()==null||req.getUserId()<=0)//用户ID
 			return new HttpResultModel<Object>().setCode(GetTaskCode.UserIdErr.value()).setMsg(GetTaskCode.UserIdErr.desc());
-		if(1==1)
-			return new HttpResultModel<Object>().setCode(GetTaskCode.Success.value()).setMsg(GetTaskCode.Success.desc());
+		OrderRetrunModel code=rrTaskServcie.getTask(req);//领取任务
+		return new HttpResultModel<Object>().setCode(code.getCode().value()).setMsg(code.getCode().desc()).setData(code.getOrderId());
+	}
+	/**
+	 * 取消任务接口
+	 */
+	@Override
+	public HttpResultModel<Object> cancelTask(CancelTaskReq req) {
+		if(req.getOrderId()==null||req.getOrderId()<=0)
+			return new HttpResultModel<Object>().setCode(CancelTaskCode.OrderIdErr.value()).setMsg(CancelTaskCode.OrderIdErr.desc());
+		if(req.getUserId()==null||req.getUserId()<=0)
+			return new HttpResultModel<Object>().setCode(CancelTaskCode.UserIdErr.value()).setMsg(CancelTaskCode.UserIdErr.desc());
+		CancelTaskCode code=rrTaskServcie.cancelTask(req);
+		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
+	}
+	/**
+	 * 提交任务
+	 * 茹化肖
+	 * 2015年9月30日14:53:05
+	 */
+	@Override
+	public HttpResultModel<Object> submitTask(SubmitTaskReq req) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
