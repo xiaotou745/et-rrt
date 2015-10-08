@@ -51,7 +51,9 @@ public interface IRenRenTaskService {
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
 	public int setTaskStatus(long taskID,int status);
 	
-	public List<TaskModel> getNewTaskList(TaskReq req);
-	
-	public int getNewTaskTotal(TaskReq req);
+	public List<TaskModel> getNewTaskList(TaskReq req); 
+	public int getNewTaskTotal(TaskReq req); 
+
+	public List<TaskModel> getMyReceivedTaskList(TaskReq req); 
+	public int getMyReceivedTaskListTotal(TaskReq req);
 }

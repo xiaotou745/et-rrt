@@ -36,4 +36,8 @@ public interface IRenRenTaskDao {
 	List<TaskModel> getNewTaskList(TaskReq req);
 
 	int getNewTaskTotal(TaskReq req);
+
+	List<TaskModel> getMyReceivedTaskList(TaskReq req);
+
+	int getMyReceivedTaskListTotal(TaskReq req);
 }

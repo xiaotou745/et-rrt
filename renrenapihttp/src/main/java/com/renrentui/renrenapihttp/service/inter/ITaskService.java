@@ -64,10 +64,19 @@ public interface ITaskService {
 	 public HttpResultModel<Object> submitTask(SubmitTaskReq req);
 
 	/*
-	 * 获取所有未领取的
+	 * 获取所有未领取的任务
+	 * wangchao
 	 */
 	@POST
 	@Path("/getnewtasklist")
 	public HttpResultModel<TaskDomain> getNewTaskList(TaskReq req);
+	
+	/*
+	 * 获取所有已领取的任务
+	 * wangchao
+	 */
+	@POST
+	@Path("/getmyreceivedtasklist")
+	public HttpResultModel<TaskDomain> getMyReceivedTaskList(TaskReq req);
 	
 }
