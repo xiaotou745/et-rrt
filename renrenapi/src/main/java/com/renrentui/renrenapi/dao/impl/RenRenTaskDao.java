@@ -1,11 +1,11 @@
 package com.renrentui.renrenapi.dao.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
+import java.util.HashMap;
+import java.util.List;import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
+import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -23,8 +23,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao{
 
 	@Override
 	public int insert(RenRenTask record) {
-		// TODO Auto-generated method stub
-		return 0;
+return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insert", record);
 	}
 
 	@Override
@@ -72,8 +71,29 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao{
 		CheckTask res = getMasterSqlSessionUtil().selectOne(statement, req);
 		return res;
 	}
-
+	/**
+	 * 领取任务 减去任务剩余量
+	 */
 	@Override
+	public int cutTaskAvailableCount(Long taskID) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.cutTaskAvailableCount";
+		HashMap<String, Object> map=new HashMap<String, Object> ();
+		map.put("taskid", taskID);
+		int res = getMasterSqlSessionUtil().update(statement, map);
+		return res;
+	}
+	/**
+	 * 取消任务 增加任务剩余量
+	 */
+	@Override
+	public int addTaskAvailableCount(Long taskID) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.addTaskAvailableCount";
+		HashMap<String, Object> map=new HashMap<String, Object> ();
+		map.put("taskid", taskID);
+		int res = getMasterSqlSessionUtil().update(statement, map);
+		return res;
+	}
+		@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getNewTaskList";
 		List<TaskModel> taskModels = getMasterSqlSessionUtil().selectList(statement, req);

@@ -22,11 +22,19 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
-    insert into TaskCityRelation (Id, TaskId, CityCode, 
+    insert into TaskCityRelation (TaskId, CityCode, 
       BusinessId, CityName)
-    values (#{id,jdbcType=BIGINT}, #{taskid,jdbcType=BIGINT}, #{citycode,jdbcType=INTEGER}, 
-      #{businessid,jdbcType=BIGINT}, #{cityname,jdbcType=NVARCHAR})
+    values (#{taskId,jdbcType=BIGINT}, #{cityCode,jdbcType=INTEGER}, 
+      #{businessId,jdbcType=BIGINT}, #{cityName,jdbcType=NVARCHAR})
   </insert>
+    <update id="insertList" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" >
+	insert into TaskCityRelation (TaskId, CityCode, 
+      BusinessId, CityName)     
+	values (#{item.taskId,jdbcType=BIGINT}, #{item.cityCode,jdbcType=INTEGER}, 
+      #{item.businessId,jdbcType=BIGINT}, #{item.cityName,jdbcType=NVARCHAR});
+		</foreach>
+	</update>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
     insert into TaskCityRelation
     <trim prefix="(" suffix=")" suffixOverrides="," >

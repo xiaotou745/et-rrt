@@ -13,11 +13,15 @@ import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 @Repository
@@ -146,17 +150,30 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return res>0;
 	}
 	/**
-	* @Des 获取用户收入 
+	* @Des 获取用户信息
 	* @Author WangXuDan
 	* @Date 2015年9月28日17:31:59
 	* @Return
 	*/
 	@Override
-	public MyIncomeResp queryClienterBalance(MyIncomeReq req) {
-		MyIncomeResp result = getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.queryClienterBalance",
-				req);
-		return result;
+	public ClienterDetail getUserC(long userId) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.getUserC";
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userId", userId);
+		return getReadOnlySqlSessionUtil().selectOne(statement,paramMap);
+	}
+	/**
+	* @Des 获取地推员信息列表  
+	* @Author WangXuDan
+	* @Date 2015年9月29日16:15:39
+	* @Return
+	*/
+	@Override
+	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
+		PagedResponse<ClienterResp> resp=new PagedResponse<ClienterResp>();
+		resp = getReadOnlySqlSessionUtil().selectPageList(
+				"com.renrentui.renrenapi.dao.inter.IClienterDao.queryClienterList", req);
+		return resp;
 	}
 
 }

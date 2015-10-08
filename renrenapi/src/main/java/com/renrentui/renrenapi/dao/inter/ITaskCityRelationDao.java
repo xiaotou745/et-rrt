@@ -1,11 +1,13 @@
 package com.renrentui.renrenapi.dao.inter;
 
+import java.util.List;
+
 import com.renrentui.renrenentity.TaskCityRelation;
 
 public interface ITaskCityRelationDao {
     int deleteByPrimaryKey(Long id);
 
-    int insert(TaskCityRelation record);
+    int insertList(List<TaskCityRelation> recordList);
 
     int insertSelective(TaskCityRelation record);
 

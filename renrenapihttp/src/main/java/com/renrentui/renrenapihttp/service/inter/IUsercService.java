@@ -10,7 +10,7 @@ import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
-import com.renrentui.renrenentity.req.MyIncomeReq;
+import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -87,8 +87,8 @@ public interface IUsercService {
 	* @Return
 	*/
 	@POST
-	@Path("/myincome")
-	public HttpResultModel<Object> myincome(MyIncomeReq req);
+	@Path("/getuserc")
+	public HttpResultModel<Object> getuserc(GetUserCReq req);
 	
 
 	

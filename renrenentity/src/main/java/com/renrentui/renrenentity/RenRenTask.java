@@ -36,7 +36,7 @@ public class RenRenTask {
 
     private Integer state;
 
-    private Integer taskToatlCount;
+    private Integer taskTotalCount;
 
     private Long tempateId;
 
@@ -46,7 +46,8 @@ public class RenRenTask {
     private int auditCycle;
 
     private String taskNote;
-
+    private Long targetPeople;
+    private String companySummary;
     public int getAuditCycle() {
 		return auditCycle;
 	}
@@ -205,13 +206,6 @@ public class RenRenTask {
 		this.availableCount = availableCount;
 	}
 
-	public Integer getTaskToatlCount() {
-		return taskToatlCount;
-	}
-
-	public void setTaskToatlCount(Integer taskToatlCount) {
-		this.taskToatlCount = taskToatlCount;
-	}
 
 	public Long getTempateId() {
 		return tempateId;
@@ -227,6 +221,30 @@ public class RenRenTask {
 
 	public void setPaymentMethod(Short paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	public Long getTargetPeople() {
+		return targetPeople;
+	}
+
+	public void setTargetPeople(Long targetPeople) {
+		this.targetPeople = targetPeople;
+	}
+
+	public String getCompanySummary() {
+		return companySummary;
+	}
+
+	public void setCompanySummary(String companySummary) {
+		this.companySummary = companySummary;
+	}
+
+	public Integer getTaskTotalCount() {
+		return taskTotalCount;
+	}
+
+	public void setTaskTotalCount(Integer taskTotalCount) {
+		this.taskTotalCount = taskTotalCount;
 	}
 
     

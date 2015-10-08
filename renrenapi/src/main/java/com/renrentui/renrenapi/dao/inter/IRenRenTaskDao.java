@@ -25,7 +25,9 @@ public interface IRenRenTaskDao {
     TaskDetail getTaskDetail(TaskDetailReq req);
     
     CheckTask checkTask(TaskDetailReq req);
-
+    
+    int cutTaskAvailableCount(Long taskID);
+    int addTaskAvailableCount(Long taskID);
 	List<TaskModel> getNewTaskList(TaskReq req);
 
 	int getNewTaskTotal(TaskReq req);

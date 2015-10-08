@@ -1,13 +1,18 @@
 package com.renrentui.renrenapi.service.inter;
 
+import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
+import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 
@@ -67,7 +72,7 @@ public interface IClienterService {
 	* @Date 2015年9月28日17:31:59
 	* @Return
 	*/
-	MyIncomeResp queryClienterBalance(MyIncomeReq req);
+	ClienterDetail getUserC(long userId);
 	/**
 	 * 用户提现
 	 * 胡灵波
@@ -75,6 +80,13 @@ public interface IClienterService {
 	 * @param req
 	 * @return
 	 */
-	void WithdrawC(ClienterBalanceReq req);
+	WithdrawState WithdrawC(ClienterBalanceReq req);
+	/**
+	* @Des 获取地推员信息列表  
+	* @Author WangXuDan
+	* @Date 2015年9月29日16:15:39
+	* @Return
+	*/
+	PagedResponse<ClienterResp> queryClienterList(ClienterReq req);
 	
 }

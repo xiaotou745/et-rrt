@@ -14,8 +14,16 @@ public class OrderLog {
     private String optName;
 
     private String remark;
+    private String orderNo;
+    public String getOrderNo() {
+		return orderNo;
+	}
 
-    public Long getId() {
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public Long getId() {
         return id;
     }
 

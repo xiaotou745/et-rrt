@@ -1,6 +1,8 @@
 package com.renrentui.renrenentity;
 
-public class PublicProvinceCity {
+import java.io.Serializable;
+
+public class PublicProvinceCity implements Serializable {
     private Integer id;
 
     private String name;

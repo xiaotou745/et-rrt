@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
-import com.renrentui.renrenapi.service.inter.IBusinessServce;
+import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.Business;
-import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateDetail;
 import com.renrentui.renrenentity.domain.TemplateModel;
 
@@ -27,7 +26,7 @@ public class TemplateController {
 	@Autowired
 	private ITemplateService templateService;
 	@Autowired
-	private IBusinessServce businessService;
+	private IBusinessService businessService;
 	@RequestMapping("newtemplate")
 	public ModelAndView newTemplate() {
 		ModelAndView model = new ModelAndView("adminView");

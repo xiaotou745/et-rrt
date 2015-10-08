@@ -2,7 +2,7 @@ package com.renrentui.renrenapi.service.inter;
 
 import java.util.Set;
 
-public interface IAdminTools {
+public interface IAdminToolsService {
 
 	/**
 	 * 获取redis工具

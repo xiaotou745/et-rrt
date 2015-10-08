@@ -30,6 +30,13 @@ public class TaskDetail {
 	private String templateName;
 	private ArrayList<ControlInfo> controlInfo;
 	private int isHad;
+	private Long orderId;
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 	public int getIsHad() {
 		return isHad;
 	}

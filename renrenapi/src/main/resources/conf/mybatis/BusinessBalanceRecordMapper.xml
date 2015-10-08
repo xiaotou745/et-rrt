@@ -26,17 +26,18 @@
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from BusinessBalanceRecord
     where Id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.BusinessBalanceRecord" >
-    insert into BusinessBalanceRecord (Id, BusinessId, Amount, 
-      AfterAmount, RecordType, OptName, 
-      OperateTime, OrderId, RelationNo, 
-      Remark)
-    values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
-      #{afteramount,jdbcType=DECIMAL}, #{recordtype,jdbcType=SMALLINT}, #{optname,jdbcType=NVARCHAR}, 
-      #{operatetime,jdbcType=TIMESTAMP}, #{orderid,jdbcType=BIGINT}, #{relationno,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=NVARCHAR})
+  </delete>  
+    <insert id="insert" parameterType="com.renrentui.renrenentity.BusinessBalanceRecord" >
+       insert into
+		BusinessBalanceRecord
+		(BusinessId,Amount,AfterAmount,RecordType,OptName,OrderId,RelationNo,Remark)
+		select #{businessId,jdbcType=INTEGER},
+		#{amount,jdbcType=DECIMAL},bb.Balance,#{recordType,jdbcType=SMALLINT},#{optName,jdbcType=NVARCHAR}
+		,#{orderId,jdbcType=BIGINT},#{relationNo,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR}
+		from dbo.BusinessBalance  as bb where bb.BusinessId=#{businessId,jdbcType=BIGINT} ;
+		select @@IDENTITY
   </insert>
+  
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.BusinessBalanceRecord" >
     insert into BusinessBalanceRecord
     <trim prefix="(" suffix=")" suffixOverrides="," >
