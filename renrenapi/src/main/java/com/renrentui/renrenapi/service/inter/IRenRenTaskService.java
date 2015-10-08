@@ -36,7 +36,13 @@ public interface IRenRenTaskService {
 	 * @return
 	 */
 	public CancelTaskCode cancelTask(CancelTaskReq req);
-	
+	/**
+	 * 提交任务
+	 * 茹化肖
+	 * 2015年10月8日10:52:52
+	 * @param req
+	 * @return
+	 */
 	public SubmitTaskCode submitTask(SubmitTaskReq req);
 	public int insert(RenRenTask record,List<Integer> regionCodes);
 	
