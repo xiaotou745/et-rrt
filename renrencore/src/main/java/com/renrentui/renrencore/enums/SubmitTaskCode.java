@@ -17,6 +17,8 @@ public enum SubmitTaskCode {
 	TaskClosed(1163, "该任务已经关闭"),
 	
 	ReSubmit(1165, "任务待审核不可重复提交"),
+	UserIdError(1166, "用户ID错误"),
+	OrderIdError(1167, "OrderID错误"),
 	
 	Fail(1164, "提交失败");
 
