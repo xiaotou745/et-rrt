@@ -79,4 +79,13 @@ public interface ITaskService {
 	@Path("/getmyreceivedtasklist")
 	public HttpResultModel<TaskDomain> getMyReceivedTaskList(TaskReq req);
 	
+	
+	/*
+	 * 获取所有已提交的任务
+	 * wangchao
+	 */
+	@POST
+	@Path("/getsubmittedtasklist")
+	public HttpResultModel<TaskDomain> getSubmittedTaskList(TaskReq req);
+	
 }

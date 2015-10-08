@@ -139,4 +139,24 @@ public class TaskService implements ITaskService{
 		hrm.setData(td); 
 		return hrm;
 	}
+	@Override
+	public HttpResultModel<TaskDomain> getSubmittedTaskList(TaskReq req) {
+		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
+		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+		if(req.getUserId()==0){
+			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
+			return hrm;
+		} 
+		TaskDomain td = new TaskDomain();
+		List<TaskModel> taskModelList= rrTaskServcie.getSubmittedTaskList(req);
+		int taskTotal = rrTaskServcie.getSubmittedTaskListTotal(req);
+		td.setContent(taskModelList);
+		td.setCount(taskModelList.size());
+		if(taskModelList!=null && taskModelList.size()>0){
+			td.setNextId(taskModelList.get(0).getTaskId());
+		}
+		td.setTotal(taskTotal);
+		hrm.setData(td); 
+		return hrm;
+	}
 }

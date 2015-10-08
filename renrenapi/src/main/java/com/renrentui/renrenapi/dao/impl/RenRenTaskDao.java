@@ -145,4 +145,18 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
 	}
+
+	@Override
+	public List<TaskModel> getSubmittedTaskList(TaskReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getSubmittedTaskList";
+		List<TaskModel> taskModels = getMasterSqlSessionUtil().selectList(statement, req);
+		return taskModels;
+	}
+
+	@Override
+	public int getSubmittedTaskListTotal(TaskReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getSubmittedTaskListTotal";
+		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
+		return taskTotal;
+	}
 }

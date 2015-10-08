@@ -56,4 +56,8 @@ public interface IRenRenTaskService {
 
 	public List<TaskModel> getMyReceivedTaskList(TaskReq req); 
 	public int getMyReceivedTaskListTotal(TaskReq req);
+
+
+	public List<TaskModel> getSubmittedTaskList(TaskReq req); 
+	public int getSubmittedTaskListTotal(TaskReq req);
 }

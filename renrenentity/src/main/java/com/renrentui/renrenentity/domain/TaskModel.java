@@ -35,6 +35,9 @@ public class TaskModel implements Serializable {
 	
 	private Date auditTime;
 	
+	private Date finishTime;
+	
+	private Integer waitAuditCount;
 	public Date getAuditTime() {
 		return auditTime;
 	}
@@ -152,6 +155,20 @@ public class TaskModel implements Serializable {
 	public void setReceivedTime(Date receivedTime) {
 		this.receivedTime = receivedTime;
 	}
-	
-	
+
+	public Date getFinishTime() {
+		return finishTime;
+	}
+
+	public void setFinishTime(Date finishTime) {
+		this.finishTime = finishTime;
+	}
+
+	public Integer getWaitAuditCount() {
+		return waitAuditCount;
+	}
+
+	public void setWaitAuditCount(Integer waitAuditCount) {
+		this.waitAuditCount = waitAuditCount;
+	} 
 }
