@@ -216,7 +216,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">合同模板: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("tempateId", templatelist, "templateName", "id", null,null, "全部", "width:143px")%>
+									<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", null,null, "全部", "width:143px")%>
 								</div>
 							</div>
 						</div>
@@ -288,6 +288,15 @@ String city_region = (String) request.getAttribute("city_region");
 </div>
 
 <script>
+$(function(){
+	  $(' .input-group.date').datepicker({
+        todayBtn: "linked",
+        keyboardNavigation: false,
+        forceParse: false,
+        calendarWeeks: true,
+        autoclose: true
+    });
+});
 $("#provinceCode").change(function(){  
     try{  
         var pro=$(this).val();  
@@ -306,13 +315,16 @@ $("#provinceCode").change(function(){
                 }  
             }  
         }
-        $("#divregion").html("");  
+        $("#divregion").html(""); 
+        $("#selectAll").prop("checked",false);
     }catch(e){  
         alert(e);     
     }  
 }); 
 $("#cityCode").change(function(){  
     try{  
+        $("#divregion").html("");  
+        $("#selectAll").prop("checked",false);
     	var pro=$(this).val();  
         var pro_city=$("#city_region").val().split("#");
         
@@ -328,7 +340,7 @@ $("#cityCode").change(function(){
                     $("#divregion").append("<input type='checkbox' name='regionCode"+tmpkeyvalue[0]+"' onclick='chanageSelectAll()' value='"+tmpkeyvalue[0]+"' /> <label>"+tmpkeyvalue[1]+"</label>");     
                 }  
             }  
-        }  
+        } 
     }catch(e){  
         alert(e);     
     }  
@@ -367,7 +379,7 @@ function savetask(){
 		return;
 	}
 	var checkedNum=$("#divregion input[type='checkbox']:checked").length;
-	if($("#cityId").val()!="-1"&&checkedNum==0){
+	if($("#cityCode").val()!="-1"&&checkedNum==0){
 		alert("城市不是全部城市时,请至少选择一个区域");
 		return;
 	}

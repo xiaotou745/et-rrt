@@ -24,6 +24,7 @@ import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
+import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
@@ -33,8 +34,10 @@ import com.renrentui.renrenentity.TaskCityRelation;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
+import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 @Service
@@ -66,7 +69,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 		if(detail==null)//没有找到任务信息
 			return null;
 		//控件列表
-	    detail.setControlInfo(templateDetailDao.getTemplateList(detail.getTempateId()));
+	    detail.setControlInfo(templateDetailDao.getTemplateList(detail.getTemplateId()));
 		return detail;
 	}
 	/**
@@ -212,10 +215,20 @@ public class RenRenTaskService implements IRenRenTaskService{
 				if (regionMap.containsKey(regionCode)) {
 					taskCityRelation.setCityName(regionMap.get(regionCode));
 				}
+				recordList.add(taskCityRelation);
 			}
 			return taskCityRelationDao.insertList(recordList);
 		}
 		return result;
+	}
+	@Override
+	public PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(
+			PagedRenRenTaskReq req) {
+		return rereRenTaskDao.getPagedRenRenTaskList(req);
+	}
+	@Override
+	public int setTaskStatus(long taskID, int status) {
+		return rereRenTaskDao.setTaskStatus(taskID, status);
 	}
 
 }
