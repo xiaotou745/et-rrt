@@ -33,6 +33,16 @@ public class TaskModel implements Serializable {
 	 */
 	private Date receivedTime;
 	
+	private Date auditTime;
+	
+	public Date getAuditTime() {
+		return auditTime;
+	}
+
+	public void setAuditTime(Date auditTime) {
+		this.auditTime = auditTime;
+	}
+
 	public long getTaskId() {
 		return taskId;
 	}
@@ -103,8 +113,7 @@ public class TaskModel implements Serializable {
 
 	public void setBeginTime(Date beginTime) {
 		this.beginTime = beginTime;
-	}
-
+	} 
 	public Date getEndTime() {
 		return endTime;
 	}
