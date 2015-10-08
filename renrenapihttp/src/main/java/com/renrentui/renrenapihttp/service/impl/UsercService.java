@@ -29,6 +29,7 @@ import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
+import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
@@ -273,6 +274,20 @@ public class UsercService implements IUsercService {
 		resp.setChecking(clienterModel.getChecking());
 		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(resp);
 		
+	}
+	
+	/**
+	* @Des  C端修改个人基础信息
+	* @Author CaoHeYang
+	* @Date 20151008
+	* @param req
+	* @Return
+	*/
+	@Override
+	public HttpResultModel<Object> modifyuserc(ModifyUserCReq req) {
+		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
+		
+		return null;
 	}
 
 
