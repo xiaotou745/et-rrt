@@ -14,10 +14,17 @@ import org.springframework.web.servlet.ModelAndView;
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
+import com.renrentui.renrencore.enums.TemplateStatus;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.Business;
+import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateDetail;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.PageTemplateModel;
+import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TemplateModel;
+import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
+import com.renrentui.renrenentity.req.PagedTemplateReq;
 
 
 @Controller
@@ -52,8 +59,9 @@ public class TemplateController {
 		TemplateModel record=new TemplateModel();
 		record.setBusinessId(businessId);
 		record.setLastOptName(context.getUserName());
+		record.setCreateName(context.getUserName());
 		record.setRemark(tempRemark);
-		record.setStatus((short)0);
+		record.setStatus((short)TemplateStatus.Valid.value());
 		record.setTemplateName(tempName);
 		List<TemplateDetail> detailList=new ArrayList<TemplateDetail> ();
 		String[] childs=child.split("#");
@@ -102,12 +110,23 @@ public class TemplateController {
 		model.addObject("subtitle", "模板管理");
 		model.addObject("currenttitle", "审核模板");
 		model.addObject("viewPath", "templatemanage/audittemplate");
+		List<Business> datalist=businessService.getAllList();
+		model.addObject("businessData", datalist);
 		return model;
 	}
 
-	@RequestMapping("doaudit")
+	@RequestMapping("audittemplatedo")
+	public ModelAndView auditTemplateDo(PagedTemplateReq req) {
+		ModelAndView model = new ModelAndView("templatemanage/audittemplatedo");
+		PagedResponse<PageTemplateModel> resp=templateService.queryTemplate(req);
+		model.addObject("listData", resp);
+		return model;
+	}
+
+	@RequestMapping("settemplatestatus")
 	@ResponseBody
-	public int doAudit() {
-		return 1;
+	public int setTemplateStatus(HttpServletRequest request,long templateID,int status) {
+		UserContext context=UserContext.getCurrentContext(request);
+		return templateService.setTemplateStatus(templateID, status, context.getUserName());
 	}
 }

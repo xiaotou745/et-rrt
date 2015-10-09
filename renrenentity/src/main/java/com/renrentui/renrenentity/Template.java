@@ -8,6 +8,7 @@ public class Template {
     private Long businessId;
 
     private String templateName;
+    private String createName;
 
     private Date createTime;
 
@@ -82,5 +83,13 @@ public class Template {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getCreateName() {
+		return createName;
+	}
+
+	public void setCreateName(String createName) {
+		this.createName = createName;
 	}
 }

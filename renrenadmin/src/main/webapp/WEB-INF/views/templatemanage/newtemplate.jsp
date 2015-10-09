@@ -127,6 +127,10 @@ function deleterow(delobj){
 	}
 }
 $("#save").click(function(){
+	if($("#businessId").val()==""||$("#businessId").val()==null){
+		alert("所属商家不能为空");
+		return;
+	}
 	if($("#tempName").val()==""){
 		alert("模板名称不能为空");
 		return;
