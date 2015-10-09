@@ -247,4 +247,58 @@ SET     OrderStatus = 1 ,
         FinishTime = CASE WHEN FinishTime IS NULL THEN  GETDATE() ELSE FinishTime END
 WHERE   id = ${orderId}
   </update>
+  <!-- 获取订单审核列表 茹化肖-->
+  
+   <sql id="getOrderAuditListWhere">
+		1=1		
+		<if test="businessId != null and businessId!=0">
+			b.id=${businessId}
+		</if>		
+		<if test="orderId != null and orderId!=0">
+			 AND o.id=${orderId}
+		</if>
+	    <if test="auditStatus != -1">
+			AND o.AuditStatus=${auditStatus}
+		</if>
+		<if test="companyName != null and companyName!=''">
+			AND b.CompanyName LIKE ''%${companyName}%''
+		</if>
+	
+	</sql>
+	<select id="getOrderAuditList" resultType="com.renrentui.renrenentity.domain.OrderAudit"
+		parameterType="com.renrentui.renrenentity.req.PagedAuditorderReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' o.id DESC ',
+		'
+		o.OrderNo ,
+        o.id AS orderId ,
+        c.ClienterName ,
+        b.CompanyName ,
+        rrt.TaskTitle ,
+        rrt.Status AS taskStatus ,
+        rrt.AvailableCount ,
+        o.Amount ,
+        o.FinishTime ,
+        o.AuditTime,
+        (SELECT COUNT(1) FROM dbo.[Order] (NOLOCK) o2 WHERE o2.TaskId=rrt.id AND o.ClienterId=c.id AND o2.OrderStatus=1) AS compCount ,
+        o.AuditStatus,
+        datediff(mi,o.FinishTime,GETDATE()) AS TimeAfter,
+        o.OrderStatus
+		',
+		' dbo.[Order] AS o ( NOLOCK )
+        LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON rrt.Id = o.TaskId
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON o.ClienterId = c.Id
+        LEFT JOIN dbo.Business AS b ( NOLOCK ) ON b.Id = rrt.BusinessId
+        LEFT JOIN dbo.Template AS t ( NOLOCK ) ON rrt.TemplateId = t.id ',
+		'
+		<include refid="getOrderAuditListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>
