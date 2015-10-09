@@ -20,41 +20,16 @@ import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdrawFormDao {
 
 	@Override
-	public int deleteByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int insert(ClienterWithdrawForm record) {
 		// TODO Auto-generated method stub		
 		return getMasterSqlSessionUtil().insert(
 				"com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao.insert", record);
 	}
-
-	@Override
-	public int insertSelective(ClienterWithdrawForm record) {
-		// TODO Auto-generated method stub
-		return 0;
-	} 
-
 	@Override
 	public ClienterWithdrawForm selectByPrimaryKey(Long id) {
 		// TODO Auto-generated method stub
 		return getMasterSqlSessionUtil().selectOne(
 				"com.renrentui.api.dao.inter.IClienterWithdrawFormDao.selectByPrimaryKey", id);		
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(ClienterWithdrawForm record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(ClienterWithdrawForm record) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 	@Override
@@ -64,6 +39,32 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 						"com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao.getList",						 
 						req);
 		return model;
+	}
+	
+	@Override
+	public int updateByPrimaryKeySelective(ClienterWithdrawForm record) {	
+		return getMasterSqlSessionUtil().update(
+				"com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao.updateByPrimaryKeySelective", record);
+	}
+	
+	@Override
+	public int deleteByPrimaryKey(Long id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public int insertSelective(ClienterWithdrawForm record) {
+		// TODO Auto-generated method stub
+		return 0;
+	} 
+
+
+	@Override
+	public int updateByPrimaryKey(ClienterWithdrawForm record) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	

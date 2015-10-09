@@ -328,7 +328,10 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		1=1		
 		<if test="taskTitle != null and taskTitle!=''">
 			and a.taskTitle like ''%${taskTitle}%''
-		</if>		
+		</if>	
+		<if test="pusher != null and pusher!=''">
+			and a.pusher like ''%${pusher}%''
+		</if>	
 		<if test="businessId != null and businessId>0">
 			and a.businessId=''${businessId}''
 		</if>
@@ -374,7 +377,18 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		)}
 	</select>
 	  <update id="setTaskStatus" parameterType="java.util.HashMap" >
-	UPDATE dbo.RenRenTask SET status=#{status,jdbcType=BIGINT}
+	UPDATE dbo.RenRenTask 
+	<set >
+      <if test="status != null" >
+       status=#{status,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null and userName!=''" >
+       modifyName=#{userName,jdbcType=NVARCHAR},modifyTime=getdate(),
+      </if>
+      <if test="status != null and status==1" >
+        pusher=#{userName,jdbcType=NVARCHAR},
+      </if>
+    </set>
     where Id = #{taskID,jdbcType=BIGINT}
   </update>
 <select id="getNewTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >

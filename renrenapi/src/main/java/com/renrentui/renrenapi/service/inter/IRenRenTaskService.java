@@ -50,7 +50,7 @@ public interface IRenRenTaskService {
 	public int insert(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
 	
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
-	public int setTaskStatus(long taskID,int status);
+	public int setTaskStatus(long taskID,int status,String userName);
 	
 	public List<TaskModel> getNewTaskList(TaskReq req); 
 	public int getNewTaskTotal(TaskReq req); 

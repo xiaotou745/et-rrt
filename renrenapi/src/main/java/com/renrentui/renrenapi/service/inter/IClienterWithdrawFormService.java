@@ -13,5 +13,9 @@ public interface IClienterWithdrawFormService {
 	
 	int Add(ClienterWithdrawForm record) ;
 	
+	int AuditPass(ClienterWithdrawForm record) ;
+	
+	int AuditRefuse(ClienterWithdrawForm record) ;
+	
 	PagedResponse<ClienterWithdrawFormDM> getList(PagedClienterWithdrawFormReq req);
 }

@@ -133,7 +133,7 @@ public class ClienterService implements IClienterService{
 	}
 	
 	/**
-	 * @Des 用户提现 
+	 * @Des 用户提现 申请
 	 * @Author 胡灵波
 	 * @Date 2015年9月28日 16:58:06
 	 * @param req
@@ -172,9 +172,10 @@ public class ClienterService implements IClienterService{
 		clienterBalanceRecordModel.setAmount(-req.getAmount());		
 		clienterBalanceRecordModel.setRecordType((short)2);		
 		clienterBalanceRecordModel.setOptName("admin");
-		clienterBalanceRecordModel.setOrderId((long)101);
+		clienterBalanceRecordModel.setOrderId((long)clienterWithdrawFormModel.getId());
 		clienterBalanceRecordModel.setRelationNo("001");
-		clienterBalanceRecordModel.setRemark("提现申请");		
+		clienterBalanceRecordModel.setRemark("提现申请");
+		clienterBalanceRecordModel.setStatus((short)2);
 		int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);				
 		
 		if(cwfId>0&&cbId>0&&cbrId>0)

@@ -39,6 +39,7 @@ import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.BusinessBalanceRecord;
+import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.MenuInfo;
 import com.renrentui.renrenentity.RoleInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
@@ -89,5 +90,35 @@ public class ClienterWithdrawFormController {
 		return model;		
 	}		
 
+	/**
+	 * 审核通过
+	 * @author hulingbo	
+	 * @Date 2015年9月30日 17:35:51
+	 * @param search 查询条件实体
+	 * @return	
+	 */	
+	@RequestMapping("auditpass")
+	@ResponseBody
+	public int auditpass(int  withwardId) {
 	
+		ClienterWithdrawForm record=new ClienterWithdrawForm();
+		record.setId((long)withwardId);
+		return clienterWithdrawFormService.AuditPass(record);			
+	}	
+	
+	/**
+	 * 审核拒绝
+	 * @author hulingbo	
+	 * @Date 2015年10月8日 14:40:33
+	 * @param search 查询条件实体
+	 * @return	
+	 */	
+	@RequestMapping("auditrefuse")
+	@ResponseBody
+	public int auditrefuse(int  withwardId) {
+	
+		ClienterWithdrawForm record=new ClienterWithdrawForm();
+		record.setId((long)withwardId);
+		return clienterWithdrawFormService.AuditRefuse(record);	
+	}	
 }

@@ -54,14 +54,10 @@
 			<td>
 			<% if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()){%>
 				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',1)">审核通过</a>
+				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',2)">驳回</a>
 			<%} 
-			if(data.get(i).getStatus()==TaskStatus.Valid.value()){%>
-			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',3)">无效</a>
-			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',4)">暂停</a>
-			<%}
-			if(data.get(i).getStatus()==TaskStatus.InValid.value()||
-			   data.get(i).getStatus()==TaskStatus.Pause.value()){%>
-			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',2)">有效</a>
+			if(data.get(i).getStatus()==TaskStatus.Audited.value()){%>
+			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',4)">终止</a>
 			<%}%>
 			</td>
 		</tr>

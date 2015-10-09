@@ -67,7 +67,7 @@
     delete from ClienterWithdrawForm
     where Id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
+  <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" useGeneratedKeys="true" keyProperty="id" >
     insert into ClienterWithdrawForm (ClienterId, Amount, 
       WithdrawNo, WithType, AccountInfo, 
       TrueName, Status )
@@ -152,35 +152,35 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
     update ClienterWithdrawForm
     <set >
-      <if test="clienterid != null" >
-        ClienterId = #{clienterid,jdbcType=BIGINT},
+      <if test="clienterId != null" >
+        ClienterId = #{clienterId,jdbcType=BIGINT},
       </if>
       <if test="amount != null" >
         Amount = #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="withdrawno != null" >
-        WithdrawNo = #{withdrawno,jdbcType=VARCHAR},
+      <if test="withdrawNo != null" >
+        WithdrawNo = #{withdrawNo,jdbcType=VARCHAR},
       </if>
-      <if test="withtype != null" >
-        WithType = #{withtype,jdbcType=SMALLINT},
+      <if test="withType != null" >
+        WithType = #{withType,jdbcType=SMALLINT},
       </if>
-      <if test="accountinfo != null" >
-        AccountInfo = #{accountinfo,jdbcType=VARCHAR},
+      <if test="accountInfo != null" >
+        AccountInfo = #{accountInfo,jdbcType=VARCHAR},
       </if>
-      <if test="truename != null" >
-        TrueName = #{truename,jdbcType=NVARCHAR},
+      <if test="trueName != null" >
+        TrueName = #{trueName,jdbcType=NVARCHAR},
       </if>
       <if test="status != null" >
         Status = #{status,jdbcType=SMALLINT},
       </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="audittime != null" >
-        AuditTime = #{audittime,jdbcType=TIMESTAMP},
+      <if test="auditTime != null" >
+        AuditTime = #{auditTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="auditname != null" >
-        AuditName = #{auditname,jdbcType=NVARCHAR},
+      <if test="auditName != null" >
+        AuditName = #{auditName,jdbcType=NVARCHAR},
       </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}

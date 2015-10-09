@@ -63,6 +63,6 @@ parameterType="com.renrentui.renrenentity.req.PagedTemplateReq" statementType="C
       <select id="getAllList" resultType="com.renrentui.renrenentity.Template" >
     select 
     <include refid="Base_Column_List" />
-    from Template with(nolock)
+    from Template with(nolock) where Status=0
   </select>
 </mapper>

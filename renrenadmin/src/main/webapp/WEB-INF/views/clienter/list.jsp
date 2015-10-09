@@ -16,7 +16,7 @@
 	<div class="col-lg-2">
 		<div class="form-group">
 			<div class="col-sm-11">
-				审核状态:<%=HtmlHelper.getSelect("clienterStatus", EnumHelper.GetEnumItems(ClienterStatus.class),"desc", "value", null, "-1", "全部", "", "")%>
+				审核状态:<%=HtmlHelper.getSelect("clienterStatus", EnumHelper.GetEnumItems(ClienterStatus.class),"desc", "value", null, "-1", "全部")%>
 			</div>
 		</div>
 	</div>
