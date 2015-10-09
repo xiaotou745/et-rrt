@@ -8,6 +8,20 @@
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
 
+<style type="text/css">
+#map_contain {
+    height: 90%;
+    width: 100%;
+    max-width: none;
+}
+label {
+    max-width: none;
+}
+
+#control {
+width: 100%;
+}
+</style>
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
@@ -16,34 +30,39 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">公司名称:</label>
+							<label class="col-sm-4 control-label">商户ID:</label>
 							<div class="col-sm-8">						
-								<input type="text" class="form-control" name="txtCompanyName"  id="txtCompanyName" />
+								<input type="text" class="form-control" name="businessId"  id="businessId" />
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">电话号码:</label>
+							<label class="col-sm-4 control-label">订单ID:</label>
 							<div class="col-sm-8">								
-								<input type="text" class="form-control" name="txtPhoneNo"  id="txtPhoneNo" />
+								<input type="text" class="form-control" name="orderId"  id="orderId" />
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">登陆名称:</label>
+							<label class="col-sm-4 control-label">公司名称:</label>
 							<div class="col-sm-8">
 								
-								<input type="text" class="form-control" name="txtLoginName"  id="txtLoginName" />
+								<input type="text" class="form-control" name="companyName"  id="companyName" />
 							</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">所在城市</label>
+							<label class="col-sm-4 control-label">审核状态</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" name="txtCityName"  id="txtCityName" />
+								<select id="auditStatus">
+								<option value=-1>全部</option>
+								<option value=0>待审核</option>
+								<option value=2>审核通过</option>
+								<option value=3>审核拒绝</option>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -53,9 +72,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			    <div class="row">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>		
-							<button type="button" class="btn btn-w-m btn-primary" 
-							style="margin-left:3px;" data-toggle="modal" data-target="#myModal" onclick="AddShow()" id="btnAdd">添加商户</button>			 
+							style="margin-left: 3px;height:30px;">查询</button>			 
 					</div>
 			</div>
 			</form>
@@ -67,3 +84,37 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		</div>
 	</div>
 </div> 
+<script>
+
+var jss={
+		search:function(currentPage){	
+			 var businessId = $("#businessId").val();				   
+			 var orderId = $("#orderId").val();
+			 var companyName = $("#companyName").val();
+			 var auditStatus = $("#auditStatus").val();
+			 var paramaters = { 
+					 "currentPage":currentPage,					 
+					 "businessId":businessId,
+					 "orderId":orderId,
+					 "companyName":companyName,
+					 "auditStatus":auditStatus,
+					 m:Math.round()
+					 };
+		        var url = "<%=basePath%>/ordermanage/auditorderdo";
+		        $.ajax({
+ 		            type: 'POST',
+ 		            url: url,
+ 		            data: paramaters,
+ 		            success: function (result) {   	
+ 		            	$("#content").html(result);               
+ 		            }
+ 		        });  
+		}
+	}	
+	
+jss.search(1);
+$("#btnSearch").click(function(){
+	jss.search(1);
+});
+
+</script>
