@@ -1,4 +1,13 @@
 package com.renrentui.renrenentity.domain;
+
+
+import com.renrentui.renrencore.enums.AuditStatus;
+import com.renrentui.renrencore.enums.OrderStatus;
+import com.renrentui.renrencore.enums.TaskStatus;
+import com.renrentui.renrencore.util.ParseHelper;
+
+
+
 /**
  * 合同审核实体
  * @author ofmyi_000
@@ -20,8 +29,8 @@ public class OrderAudit {
 	private int auditStatus;
 	private int timeAfter;
 	private int orderStatus;
-	public int getOrderStatus() {
-		return orderStatus;
+	public String getOrderStatus() {
+		return OrderStatus.getEnum(this.orderStatus).desc()  ;
 	}
 	public void setOrderStatus(int orderStatus) {
 		this.orderStatus = orderStatus;
@@ -56,8 +65,8 @@ public class OrderAudit {
 	public void setTaskTitle(String taskTitle) {
 		this.taskTitle = taskTitle;
 	}
-	public int getTaskStatus() {
-		return taskStatus;
+	public String getTaskStatus() {
+		return TaskStatus.getEnum(this.taskStatus).desc();
 	}
 	public void setTaskStatus(int taskStatus) {
 		this.taskStatus = taskStatus;
@@ -75,13 +84,17 @@ public class OrderAudit {
 		this.amount = amount;
 	}
 	public String getFinishTime() {
-		return finishTime;
+		if(this.finishTime==null)
+			return "";
+		return ParseHelper.ToDateString(this.finishTime);
 	}
 	public void setFinishTime(String finishTime) {
 		this.finishTime = finishTime;
 	}
 	public String getAuditTime() {
-		return auditTime;
+		if(this.auditTime==null)
+			return "";
+		return ParseHelper.ToDateString(this.auditTime);
 	}
 	public void setAuditTime(String auditTime) {
 		this.auditTime = auditTime;
@@ -92,8 +105,8 @@ public class OrderAudit {
 	public void setCompCount(int compCount) {
 		this.compCount = compCount;
 	}
-	public int getAuditStatus() {
-		return auditStatus;
+	public String getAuditStatus() {
+		return AuditStatus.getEnum(this.auditStatus).desc();
 	}
 	public void setAuditStatus(int auditStatus) {
 		this.auditStatus = auditStatus;

@@ -5,8 +5,9 @@
 <%@page import="com.renrentui.renrencore.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.renrentui.renrenentity.domain.OrderAudit"%>
-<%@page import="java.util.List"%><%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
-
+<%@page import="java.util.List"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
@@ -27,6 +28,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<th >终审时间</th>
 			<th >分钟前</th>
 			<th >合同状态</th>
+			<th >审核状态</th>
 			<th >操作</th>							
 		</tr>
 	</thead>
@@ -51,6 +53,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getAuditTime()%></td>	
 			<td><%=data.get(i).getTimeAfter()%></td>
 			<td><%=data.get(i).getOrderStatus()%></td>	
+			<td><%=data.get(i).getAuditStatus()%></td>
 			<td>操作</td>						
 		</tr>
 		<%

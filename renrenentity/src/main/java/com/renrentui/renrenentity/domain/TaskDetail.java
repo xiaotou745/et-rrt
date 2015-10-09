@@ -32,6 +32,20 @@ public class TaskDetail {
 	private int isHad;
 	private Long orderId;
 	private String logo;
+	private String companySummary;
+	private int auditCycle;
+	public int getAuditCycle() {
+		return auditCycle;
+	}
+	public void setAuditCycle(int auditCycle) {
+		this.auditCycle = auditCycle;
+	}
+	public String getCompanySummary() {
+		return companySummary;
+	}
+	public void setCompanySummary(String companySummary) {
+		this.companySummary = companySummary;
+	}
 	public String getLogo() {
 		return logo;
 	}

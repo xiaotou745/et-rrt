@@ -294,7 +294,9 @@ SELECT  rrt.id ,
         ISNULL(t.TemplateName ,'') AS TemplateName,
         CASE WHEN o.ClienterId >0 THEN 1 ELSE 0 END AS IsHad,--1已经领取 0  没有领取
         ISNULL(o.id,0) AS orderId,
-        b.Logo
+        b.Logo,
+        rrt.CompanySummary,
+        rrt.AuditCycle
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 LEFT JOIN dbo.Business AS b (NOLOCK) ON b.Id = rrt.BusinessId
 LEFT JOIN dbo.Template AS t (NOLOCK) ON t.id=rrt.templateId AND t.BusinessId = rrt.BusinessId

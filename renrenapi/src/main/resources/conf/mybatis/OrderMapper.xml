@@ -259,6 +259,7 @@ WHERE   id = ${orderId}
 		</if>
 	    <if test="auditStatus != -1">
 			AND o.AuditStatus=${auditStatus}
+			AND o.OrderStatus!=0
 		</if>
 		<if test="companyName != null and companyName!=''">
 			AND b.CompanyName LIKE ''%${companyName}%''
