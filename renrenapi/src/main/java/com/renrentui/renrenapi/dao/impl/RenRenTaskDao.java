@@ -1,7 +1,8 @@
 package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
-import java.util.List;import org.springframework.stereotype.Repository;
+import java.util.List;
+import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
@@ -110,10 +111,11 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	}
 
 	@Override
-	public int setTaskStatus(long taskID, int status) {
+	public int setTaskStatus(long taskID, int status,String userName) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("taskID", taskID);
 		map.put("status", status);
+		map.put("userName", userName);
 		return getMasterSqlSessionUtil()
 				.update("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.setTaskStatus",
 						map);

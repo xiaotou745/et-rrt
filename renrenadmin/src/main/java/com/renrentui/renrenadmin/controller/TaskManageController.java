@@ -177,7 +177,8 @@ public class TaskManageController {
 
 	@RequestMapping("settaskstatus")
 	@ResponseBody
-	public int setTaskStatus(long taskID,int status) {
-		return renRenTaskService.setTaskStatus(taskID, status);
+	public int setTaskStatus(HttpServletRequest request,long taskID,int status) {
+		UserContext context=UserContext.getCurrentContext(request);
+		return renRenTaskService.setTaskStatus(taskID, status,context.getUserName());
 	}
 }
