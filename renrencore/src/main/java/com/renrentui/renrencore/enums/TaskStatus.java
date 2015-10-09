@@ -10,17 +10,17 @@ public enum TaskStatus {
 	 */
 	Audited(1, "审核通过"),
 	/**
-	 * 有效
+	 * 驳回
 	 */
-	Valid(2, "有效"),
+	Reject(2, "驳回"),
 	/**
-	 * 无效
+	 * 过期
 	 */
-	InValid(3, "无效"),
+	Expired(3, "过期"),
 	/**
-	 * 暂停
+	 * 中止
 	 */
-	Pause(4, "暂停");
+	Stop(4, "中止");
 
 	private int value = 0;
 	private String desc;

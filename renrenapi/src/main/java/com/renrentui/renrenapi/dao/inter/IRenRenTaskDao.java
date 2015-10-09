@@ -32,7 +32,7 @@ public interface IRenRenTaskDao {
     int cutTaskAvailableCount(Long taskID);
     int addTaskAvailableCount(Long taskID);
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
-	public int setTaskStatus(long taskID,int status);
+	public int setTaskStatus(long taskID,int status,String userName);
 	List<TaskModel> getNewTaskList(TaskReq req);
 
 	int getNewTaskTotal(TaskReq req);

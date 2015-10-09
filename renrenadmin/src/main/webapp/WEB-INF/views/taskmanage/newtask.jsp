@@ -91,7 +91,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">支付方式: </label>
 								<div class="col-sm-8">
-									<select id="paymentMethod" name="paymentMethod">
+									<select id="paymentMethod" name="paymentMethod"  class="form-control m-b">
 										<option value="1">线下支付</option>
 										<!--<option value="2">线上支付</option> -->
 									</select>
@@ -193,7 +193,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">指派群体: </label>
 								<div class="col-sm-8">
-									<select id="targetPeople" name="targetPeople">
+									<select id="targetPeople" name="targetPeople"  class="form-control m-b">
 										<option value="1">所有用户</option>
 										<!-- 									<option value="2">大望路用户群</option> -->
 									</select>
@@ -204,7 +204,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">关联商户: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,null, "全部", "width:143px")%>
+									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,null, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -212,7 +212,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">合同模板: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", null,null, "全部", "width:143px")%>
+									<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", null,null, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -231,7 +231,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">省份: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("provinceCode", provincelist, "name", "code", null,-1, "全部", "width:143px")%>
+									<%=HtmlHelper.getSelect("provinceCode", provincelist, "name", "code", null,-1, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -239,7 +239,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">城市: </label>
 								<div class="col-sm-8">
-									<select id="cityCode" name="cityCode">
+									<select id="cityCode" name="cityCode"  class="form-control m-b">
 										<option value="-1">全部城市</option>
 									</select>
 								</div>

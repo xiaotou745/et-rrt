@@ -56,7 +56,7 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 						<div class="form-group">
 							<label class="col-sm-4 control-label">商户名称:</label>
 							<div class="col-sm-8">
-								<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,-1, "全部", "width:143px")%>
+								<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,-1, "全部")%>
 							</div>
 						</div>
 					</div>
@@ -89,7 +89,7 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 							<div class="form-group">
 								<label class="col-sm-4 control-label">合同模板: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", null,-1, "全部", "width:143px")%>
+									<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", null,-1, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -97,18 +97,28 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 							<div class="form-group">
 								<label class="col-sm-4 control-label">支付方式: </label>
 								<div class="col-sm-8">
-									<select id="paymentMethod" name="paymentMethod">
+									<select id="paymentMethod" name="paymentMethod" class="form-control m-b">
 										<option value="1">线下支付</option>
 										<!--<option value="2">线上支付</option> -->
 									</select>
 								</div>
 							</div>
 						</div>
+										</div>
+				<div class="row">
 						<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">任务状态:</label>
 							<div class="col-sm-8">
-							<%=HtmlHelper.getSelect("status", EnumHelper.GetEnumItems(TaskStatus.class), "desc", "value",null,"-1","全部","","form-control m-b") %>
+							<%=HtmlHelper.getSelect("status", EnumHelper.GetEnumItems(TaskStatus.class), "desc", "value",null,"-1","全部") %>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">发布人:</label>
+							<div class="col-sm-8">
+								<input type="text" class="form-control"  name="pusher"  id="pusher"/>
 							</div>
 						</div>
 					</div>
@@ -153,6 +163,15 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 		jss.search(1);
 	});
 	function setTaskStatus(taskID,status){
+		var optype="";
+		switch(status){
+		case 1:optype="审核通过";break;
+		case 2:optype="驳回";break;
+		case 4:optype="终止";break;
+		}
+		if (!confirm("确定要"+optype+"该任务吗？")){
+			return;
+		}
 		var paramaters={"taskID":taskID,"status":status};
 		var url = "<%=basePath%>/taskmanage/settaskstatus";
 		$.ajax({
