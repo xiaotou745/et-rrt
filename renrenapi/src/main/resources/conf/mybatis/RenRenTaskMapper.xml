@@ -338,8 +338,11 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		<if test="createName != null and createName!=''">
 			and a.createName like ''%${createName}%''
 		</if>
-		<if test="createTime != null and createTime!=''">
-			and a.createTime >= ''${createTime}'' and ''${createTime} 23:59:59'' > a.createTime
+		<if test="createTimeBegin != null and createTimeBegin!=''">
+			and a.createTime >=''${createTimeBegin}''
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd!=''">
+			and ''${createTimeEnd} 23:59:59''>a.createTime
 		</if>
 	    <if test="beginTime != null and beginTime!=''">
 			and a.endTime>=''${beginTime}''

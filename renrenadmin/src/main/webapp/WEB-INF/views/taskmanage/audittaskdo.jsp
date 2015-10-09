@@ -17,7 +17,7 @@
 			<th style="width: 200px;">任务标题</th>
 			<th style="width: 150px;">创建人</th>
 			<th style="width: 150px;">创建时间</th>
-			<th style="width: 200px;">起止时间</th>
+			<th style="width: 200px;">起止日期</th>
 			<th style="width: 150px;">发布人</th>
 			<th style="width: 100px;">商家名称</th>
 			<th style="width: 100px;">模板名称</th>
