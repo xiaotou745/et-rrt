@@ -18,7 +18,7 @@ public class TaskModel implements Serializable {
 	private int availableCount;
 	
 	private int status;
-	
+	private int auditStatus;
 	private Date beginTime;
 	
 	private Date endTime;
@@ -170,5 +170,13 @@ public class TaskModel implements Serializable {
 
 	public void setWaitAuditCount(Integer waitAuditCount) {
 		this.waitAuditCount = waitAuditCount;
+	}
+
+	public int getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(int auditStatus) {
+		this.auditStatus = auditStatus;
 	} 
 }
