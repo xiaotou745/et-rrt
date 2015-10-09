@@ -63,7 +63,7 @@ public class TemplateController {
 			}
 			TemplateDetail detail=new TemplateDetail();
 			detail.setControlData("");
-			detail.setControlId(1l);
+			detail.setDefaultValue("");
 			String[] childItem=item.split(";");
 			for (String childvalue : childItem) {
 				String[] values=childvalue.split("=");
@@ -72,8 +72,11 @@ public class TemplateController {
 					detailValue=values[1];
 				}
 				switch (values[0]) {
-				case "orderNum":
+				case "ordernum":
 					detail.setOrderNum(ParseHelper.ToInt(detailValue, 0));
+					break;
+				case "controlid":
+					detail.setControlId(ParseHelper.ToLong(detailValue, 0));
 					break;
 				case "title":
 					detail.setTitle(detailValue);

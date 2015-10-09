@@ -292,8 +292,8 @@ public class RenRenTaskService implements IRenRenTaskService{
 		return rereRenTaskDao.getPagedRenRenTaskList(req);
 	}
 	@Override
-	public int setTaskStatus(long taskID, int status) {
-		return rereRenTaskDao.setTaskStatus(taskID, status);
+	public int setTaskStatus(long taskID, int status,String userName) {
+		return rereRenTaskDao.setTaskStatus(taskID, status,userName);
 	}
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) { 
