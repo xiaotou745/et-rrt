@@ -294,7 +294,9 @@ SELECT  rrt.id ,
         ISNULL(t.TemplateName ,'') AS TemplateName,
         CASE WHEN o.ClienterId >0 THEN 1 ELSE 0 END AS IsHad,--1已经领取 0  没有领取
         ISNULL(o.id,0) AS orderId,
-        b.Logo
+        b.Logo,
+        rrt.CompanySummary,
+        rrt.AuditCycle
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 LEFT JOIN dbo.Business AS b (NOLOCK) ON b.Id = rrt.BusinessId
 LEFT JOIN dbo.Template AS t (NOLOCK) ON t.id=rrt.templateId AND t.BusinessId = rrt.BusinessId
@@ -305,7 +307,7 @@ WHERE rrt.id=${taskId}
  <select id="checkTask" resultType="com.renrentui.renrenentity.domain.CheckTask" parameterType="com.renrentui.renrenentity.req.TaskDetailReq" >
 SELECT TOP 1
 CASE WHEN rrt.AvailableCount>0 THEN 1 ELSE 0 END AS BlanceCan,--1 任务剩余量足够领取
-CASE WHEN rrt.EndTime>GETDATE() THEN 1 ELSE 0 END AS EndTimeCan,--1 任务尚未关闭
+CASE WHEN rrt.[Status]=1 AND rrt.EndTime>GETDATE() THEN 1 ELSE 0 END AS EndTimeCan,--1 任务尚未关闭
 CASE WHEN o.clienterid IS NULL THEN 1 ELSE 0 END AS OrderCan,--1 可以领取
 TaskCycle,
 rrt.Amount
@@ -338,8 +340,11 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		<if test="createName != null and createName!=''">
 			and a.createName like ''%${createName}%''
 		</if>
-		<if test="createTime != null and createTime!=''">
-			and a.createTime >= ''${createTime}'' and ''${createTime} 23:59:59'' > a.createTime
+		<if test="createTimeBegin != null and createTimeBegin!=''">
+			and a.createTime >=''${createTimeBegin}''
+		</if>
+		<if test="createTimeEnd != null and createTimeEnd!=''">
+			and ''${createTimeEnd} 23:59:59''>a.createTime
 		</if>
 	    <if test="beginTime != null and beginTime!=''">
 			and a.endTime>=''${beginTime}''

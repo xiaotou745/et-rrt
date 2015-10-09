@@ -152,6 +152,16 @@ public class ParseHelper {
 	public static String ToDateString(Date o) {
 		return ToDateString(o, null);
 	}
+	public static String ToDateString(String s){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");                
+		Date date;
+		try {
+			date = sdf.parse(s);
+		} catch (Exception e) {
+			date=new Date();
+		}
+		return ToDateString(date, null);
+	}
 
 	/**
 	 * 

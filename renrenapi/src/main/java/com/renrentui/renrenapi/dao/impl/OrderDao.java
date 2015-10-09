@@ -6,9 +6,12 @@ import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenentity.Order;
+import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 @Repository
 public class OrderDao extends DaoBase implements IOrderDao{
@@ -93,6 +96,13 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	@Override
 	public int submitOrder(SubmitTaskReq req) {
 		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.submitOrder", req);
+	}
+	/**
+	 * 管理后台-获取订单列表分页
+	 */
+	@Override
+	public PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req) {
+		return getReadOnlySqlSessionUtil().selectPageList("com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderAuditList", req);
 	}
 
 

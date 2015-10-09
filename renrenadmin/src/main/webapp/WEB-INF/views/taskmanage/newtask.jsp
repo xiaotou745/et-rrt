@@ -38,7 +38,7 @@ String city_region = (String) request.getAttribute("city_region");
 
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">起止时间:</label>
+								<label class="col-sm-4 control-label">起止日期:</label>
 								<div class="col-sm-8">
 									<div class="input-group date">
 										<span class="input-group-addon"><i
@@ -69,6 +69,8 @@ String city_region = (String) request.getAttribute("city_region");
 								</div>
 							</div>
 						</div>
+						</div>
+						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务总数: </label>
@@ -107,6 +109,8 @@ String city_region = (String) request.getAttribute("city_region");
 								</div>
 							</div>
 						</div>
+						</div>
+						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务介绍: </label>
@@ -172,7 +176,7 @@ String city_region = (String) request.getAttribute("city_region");
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label"></label>
-								<div class="col-sm-8">
+								<div class="col-sm-2">
 								<input id="file1" type="file" name="file1">
 									<button type="button" class="btn btn-w-m btn-primary" id="uploadfile"
 										style="margin-left: 3px; height: 30px;">上传</button>
@@ -292,6 +296,20 @@ $(function(){
         calendarWeeks: true,
         autoclose: true
     });
+	  $("input[type='text']").on('keypress',function(e){
+		  if(e.target.id=="auditCycle"||e.target.id=="taskTotalCount"||e.target.id=="amount"){
+				var  key=e.keyCode|| e.which;
+				var oldValue=this.value;
+				if((oldValue==""||oldValue=="0") && key==48){
+					this.value="";
+					return false;
+				}
+				if (key<=57 && key>=48) { //数字
+				   	return true;
+				}
+				return false;  
+		  }
+		});
 });
 $("#uploadfile").click(function(){
 	if ($("#file1").val().length <= 0) {
@@ -410,11 +428,21 @@ function chanageSelectAll(){
 };
 function savetask(){
 	var hasempty=false;
+	$("select").each(function(index,e){
+		if($(e).val()==""||$(e).val()==null){
+			alert($(this).parent().prev().html().replace(": ","")+"不能为空");
+			hasempty=true;
+			return false;
+		}
+	});
+	if(hasempty){
+		return;
+	}
 	$("input[type='text']").each(function(index,e){
 		if(e.id=="taskNotice"||e.id=="link"||e.id=="companySummary"||e.id=="taskNote"){
 			return true;
 		}
-		if($(e).val()==""){
+		if($(e).val()==""||$(e).val()==null){
 			if(e.id=="beginTime"||e.id=="EndTime"){
 				alert("起止日期不能为空");
 			}else{
@@ -427,9 +455,33 @@ function savetask(){
 	if(hasempty){
 		return;
 	}
+	var startDate = $('#beginTime').val();
+    var endDate = $('#EndTime').val();
+    if (startDate != "" && endDate != "") {
+        var intStartDate = startDate.replace(/-/g, "");
+        var intEndDate = endDate.replace(/-/g, "");
+        if (intStartDate > intEndDate) {
+            alert('开始日期不能大于结束日期');
+            $('#beginTime').val("");
+            return;
+        }
+    }
 	var checkedNum=$("#divregion input[type='checkbox']:checked").length;
 	if($("#cityCode").val()!="-1"&&checkedNum==0){
 		alert("城市不是全部城市时,请至少选择一个区域");
+		return;
+	}
+	var numtest=/^[1-9]*[1-9][0-9]*$/;
+	if(!numtest.test($("#auditCycle").val())){
+		alert("审核周期只能为数字");
+		return;
+	}
+	if(!numtest.test($("#taskTotalCount").val())){
+		alert("任务总数只能为数字");
+		return;
+	}
+	if(!numtest.test($("#amount").val())){
+		alert("单次佣金只能为数字");
 		return;
 	}
 	var paramaters=$("#searchForm").serialize();
