@@ -9,7 +9,7 @@ import com.renrentui.renrencore.util.SpringBeanHelper;
  * @date 20151009
  */
 public class TaskWindowService {
-	 IRenRenTaskService iRenRenTaskService = (IRenRenTaskService) SpringBeanHelper .getCustomBean("RenRenTaskService");
+	 IRenRenTaskService iRenRenTaskService = (IRenRenTaskService) SpringBeanHelper .getCustomBean("renRenTaskService");
 	/**
 	 * 超时取消任务服务
 	 * 

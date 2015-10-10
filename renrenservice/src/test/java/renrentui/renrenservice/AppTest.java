@@ -1,38 +1,22 @@
 package renrentui.renrenservice;
 
-import junit.framework.Test;
+import com.renrentui.renrenservice.service.TaskWindowService;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-    extends TestCase
+public class AppTest extends TestCase
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
+   //TaskWindowService windowService;
+	
+	public AppTest() {
+		/*windowService = SpringBeanHelper
+				.getCustomBeanByType(TaskWindowService.class);*/
+	}
+	public void test1(){
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+		new    TaskWindowService ().outTimeCanelTask();
+	}
 }
