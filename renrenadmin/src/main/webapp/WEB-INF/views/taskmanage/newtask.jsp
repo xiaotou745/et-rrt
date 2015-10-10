@@ -355,6 +355,19 @@ function deleterow(delobj){
 	var deltr=$(delobj).parent().parent();
 	var rownum=parseInt(deltr.children('td').eq(0).html());
 	deltr.remove();
+	var oldfiles=$("#attachmentfiles").val();
+	var files=oldfiles.split(";");
+	var newFiles="";
+	for(var i=0;i<files.length;i++){
+		if((i+1)!=parseInt(rownum)){
+			if(newFiles==""){
+				newFiles=files[i];	
+			}else{
+				newFiles+=(";"+files[i]);	
+			}
+		}
+	}
+	$("#attachmentfiles").val(newFiles);
 	//将要删除的行的下面的所有行的行号重置
 	if(rownum<oldRowNum){
 		 for(var i=rownum+1;i<oldRowNum+1;i++){ 

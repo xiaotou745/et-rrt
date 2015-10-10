@@ -14,17 +14,10 @@ import com.renrentui.renrenentity.req.TaskReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 public interface IRenRenTaskDao {
-    int deleteByPrimaryKey(Long id);
 
     int insert(RenRenTask record);
 
-    int insertSelective(RenRenTask record);
-
-    RenRenTask selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(RenRenTask record);
-
-    int updateByPrimaryKey(RenRenTask record);
+    RenRenTask selectById(Long id);
     
     TaskDetail getTaskDetail(TaskDetailReq req);
     

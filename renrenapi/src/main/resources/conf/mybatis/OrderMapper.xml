@@ -289,10 +289,10 @@ WHERE   id = ${orderId}
         o.ClienterId
 		',
 		' dbo.[Order] AS o ( NOLOCK )
-        LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON rrt.Id = o.TaskId
-        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON o.ClienterId = c.Id
-        LEFT JOIN dbo.Business AS b ( NOLOCK ) ON b.Id = rrt.BusinessId
-        LEFT JOIN dbo.Template AS t ( NOLOCK ) ON rrt.TemplateId = t.id ',
+        JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON rrt.Id = o.TaskId
+        JOIN dbo.Business AS b ( NOLOCK ) ON b.Id = rrt.BusinessId
+        JOIN dbo.TemplateSnapshot AS t ( NOLOCK ) ON rrt.TemplateId = t.id
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON o.ClienterId = c.Id ',
 		'
 		<include refid="getOrderAuditListWhere" />
 		',

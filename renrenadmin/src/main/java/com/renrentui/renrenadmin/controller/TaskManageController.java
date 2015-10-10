@@ -32,6 +32,7 @@ import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
@@ -182,5 +183,47 @@ public class TaskManageController {
 		UserContext context=UserContext.getCurrentContext(request);
 		req.setUserName(context.getUserName());
 		return renRenTaskService.setTaskStatus(req);
+	}
+	@RequestMapping("detail")
+	public ModelAndView taskDetail(Long taskId) {
+		if (taskId==null||taskId<0) {
+			throw new RuntimeException("taskId不能为空");
+		}
+		RenRenTaskDetail taskInfo=renRenTaskService.getTaskInfo(taskId);
+		if (taskInfo==null) {
+			throw new RuntimeException("id="+taskId+"的任务不存在");
+		}
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "任务管理");
+		model.addObject("currenttitle", "修改任务");
+		model.addObject("viewPath", "taskmanage/detail");
+		model.addObject("taskInfo", taskInfo);
+		List<Business> datalist=businessService.getAllList();
+		model.addObject("businessData", datalist);
+		List<Template> templatelist=templateService.getAllList();
+		model.addObject("templatelist", templatelist);
+		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
+		
+		model.addObject("provincelist", getOpenCityByJiBie(list,1));
+		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,2);
+		model.addObject("pro_city", getCityStr(citylistlist));
+		List<PublicProvinceCity> regionlist =getOpenCityByJiBie(list,3);
+		model.addObject("city_region", getCityStr(regionlist));
+		return model;
+	}
+	@RequestMapping("updatetask")
+	@ResponseBody
+	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
+		taskItem.setPusher("");
+		taskItem.setStatus(TaskStatus.WaitAudit.value());
+		taskItem.setTaskCycle(0d);
+		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
+		taskItem.setEndTime(ParseHelper.ToDate(endDate));
+		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
+		UserContext context=UserContext.getCurrentContext(request);
+		taskItem.setModifyName(context.getUserName());
+		List<Integer> regionCodes=getRegionCodeList(request);
+		List<Attachment> attachments=getAttachList(request);
+		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
 	}
 }

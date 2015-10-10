@@ -227,10 +227,10 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 			success : function(result) {
 				if (result > 0) {
 					alert("操作成功");
-					window.location.href = window.location.href;
 				} else {
 					alert("操作失败");
 				}
+				window.location.href = window.location.href;
 			}
 		});
 	}

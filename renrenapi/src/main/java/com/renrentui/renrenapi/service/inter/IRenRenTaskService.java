@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
@@ -49,7 +50,7 @@ public interface IRenRenTaskService {
 	 */
 	public SubmitTaskCode submitTask(SubmitTaskReq req);
 	public int insert(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
-	
+	public int updateTask(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
 	public int setTaskStatus(UpdateStatusReq req);
 	
@@ -70,4 +71,5 @@ public interface IRenRenTaskService {
 	 * @date 20151009
 	 */
 	public void outTimeCanelTask();
+	public RenRenTaskDetail getTaskInfo(Long taskId);
 }
