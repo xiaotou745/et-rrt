@@ -113,7 +113,7 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	 */
 	@Override
 	public void outTimeCanelOrder() {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.outTimeCanelOrder";
+		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.outTimeCanelOrder";
 		int count= getMasterSqlSessionUtil().update(statement);
 	}
 }

@@ -1,6 +1,8 @@
 package renrentui.renrenservice;
 
+import com.renrentui.renrenservice.service.OrderWindowService;
 import com.renrentui.renrenservice.service.TaskWindowService;
+
 import junit.framework.TestCase;
 
 
@@ -18,5 +20,10 @@ public class AppTest extends TestCase
 	public void test1(){
 
 		new    TaskWindowService ().outTimeCanelTask();
+	}
+	
+	public void test2(){
+
+		new    OrderWindowService().outTimeCanelOrder();;
 	}
 }

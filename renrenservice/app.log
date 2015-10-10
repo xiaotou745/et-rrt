@@ -252,3 +252,9 @@ Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Cannot open database
 [2015-10-10 11:18:27 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
 [2015-10-10 11:18:27 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
 [2015-10-10 11:18:27 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:22:15 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 11:22:15 CST 2015]; root of context hierarchy
+[2015-10-10 11:22:15 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:22:15 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:22:15 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:22:15 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:22:15 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
