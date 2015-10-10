@@ -33,5 +33,11 @@ public interface IOrderDao {
     
     PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req);
     
-    
+	/**
+	 * 超时取消订单服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+     void outTimeCanelOrder();
 }

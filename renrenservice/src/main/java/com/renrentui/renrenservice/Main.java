@@ -9,11 +9,9 @@ import java.io.OutputStreamWriter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * 定时生成数据发送邮件
- *
- * @author duanzq
- * @date Apr 10, 2015
- * @time 4:46:05 PM
+ * 系统服务
+ * @author CaoHeYang
+ * @date 20151009
  */
 public class Main {   
     public static void main(String[] args) throws Exception {

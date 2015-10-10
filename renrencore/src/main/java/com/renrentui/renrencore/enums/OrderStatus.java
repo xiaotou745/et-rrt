@@ -5,6 +5,7 @@ public enum OrderStatus {
 	 * 进行中
 	 */
 	Gonging(0, "进行中"),
+	NoFetch(-1,"未领取"),
 	/**
 	 * 已完成
 	 */

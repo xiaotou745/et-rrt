@@ -372,4 +372,14 @@ public class RenRenTaskService implements IRenRenTaskService{
 		return rereRenTaskDao.getSubmittedTaskListTotal(req);
 	}
 
+	/**
+	 * 超时取消任务服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelTask() {
+		rereRenTaskDao.outTimeCanelTask();
+	}
 }

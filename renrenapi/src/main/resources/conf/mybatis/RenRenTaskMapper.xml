@@ -494,4 +494,16 @@ order by rt.Id desc;
    	select count(1) from  dbo.[Order] o
                 join dbo.RenRenTask rt on rt.Id = o.TaskId and o.ClienterId =  ${userId} where  o.OrderStatus = 1 
   </select> 
+  <!-- 超时取消任务服务  add by caoheyang 20151010 -->
+	<update id="outTimeCanelTask">
+		update dbo.RenRenTask set Status=3
+		output inserted.Id,3,'系统服务','超时任务自动过期' into RenRenTasklog (RenRenTaskId,
+		OptType,
+		OptName,
+		Remark)
+		where EndTime 
+<![CDATA[<]]>
+		=GETDATE()
+		   and Status=1
+	</update>
 </mapper>

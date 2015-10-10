@@ -159,4 +159,16 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
 	}
+	
+	/**
+	 * 超时取消任务服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelTask(){
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.outTimeCanelTask";
+		int count= getMasterSqlSessionUtil().update(statement);
+	}
 }
