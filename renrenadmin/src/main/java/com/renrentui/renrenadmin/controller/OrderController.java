@@ -1,15 +1,20 @@
 package com.renrentui.renrenadmin.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.IOrderService;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
+import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
 
@@ -48,5 +53,19 @@ public class OrderController {
 		ModelAndView model = new ModelAndView("ordermanage/auditorderdo");		
 		model.addObject("listData", resp);
 		return model;		
+	}
+	
+	/**
+	 * 订单审核 
+	 * @author 茹化肖
+	 * @Date 2015年9月30日 15:35:12
+	 * @param search 查询条件实体
+	 * @return	
+	 */	
+	@RequestMapping("orderaudit")
+	@ResponseBody
+	public int orderAudit(HttpServletRequest request,OrderAuditReq req) {
+		req.setAuditName(UserContext.getCurrentContext(request).getUserName());
+		return orderService.orderAudit( req);
 	}
 }
