@@ -1,43 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.IRenRenTaskDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.RenRenTask" >
-    <id column="Id" property="id" jdbcType="BIGINT" />
-    <result column="TaskTitle" property="tasktitle" jdbcType="NVARCHAR" />
-    <result column="TaskNotice" property="tasknotice" jdbcType="NVARCHAR" />
-    <result column="TaskGeneralInfo" property="taskgeneralinfo" jdbcType="NVARCHAR" />
-    <result column="BusinessId" property="businessid" jdbcType="BIGINT" />
-    <result column="Pusher" property="pusher" jdbcType="NVARCHAR" />
-    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="ModifyName" property="modifyname" jdbcType="NVARCHAR" />
-    <result column="ModifyTime" property="modifytime" jdbcType="TIMESTAMP" />
-    <result column="BeginTime" property="begintime" jdbcType="TIMESTAMP" />
-    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
-    <result column="TaskCycle" property="taskcycle" jdbcType="DOUBLE" />
-    <result column="AvailableCount" property="availablecount" jdbcType="INTEGER" />
-    <result column="Amount" property="amount" jdbcType="DECIMAL" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="TaskToatlCount" property="tasktoatlcount" jdbcType="INTEGER" />
-    <result column="templateId" property="templateId" jdbcType="BIGINT" />
-    <result column="Link" property="link" jdbcType="NVARCHAR" />
-    <result column="PaymentMethod" property="paymentmethod" jdbcType="SMALLINT" />
-  </resultMap>
   <sql id="Base_Column_List" >
     Id, TaskTitle, TaskNotice, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
     ModifyName, ModifyTime, BeginTime, EndTime, TaskCycle, AvailableCount, Amount, status, 
-    TaskToatlCount, templateId, Link, PaymentMethod
+    TaskTotalCount, templateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from RenRenTask
     where Id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from RenRenTask
-    where Id = #{id,jdbcType=BIGINT}
-  </delete>
+
   <insert id="insert" parameterType="com.renrentui.renrenentity.RenRenTask" >
     	  <selectKey resultType="java.lang.Long" keyProperty="id"
 				order="AFTER">
@@ -49,7 +24,7 @@
       ModifyTime, BeginTime, EndTime, 
       TaskCycle, AvailableCount, Amount, 
       status, TaskTotalCount, templateId, 
-      Link, PaymentMethod,TargetPeople,CompanySummary)
+      Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary)
     values (#{taskTitle,jdbcType=NVARCHAR}, #{taskNotice,jdbcType=NVARCHAR}, 
       #{taskGeneralInfo,jdbcType=NVARCHAR}, #{businessId,jdbcType=BIGINT}, 
       #{pusher,jdbcType=NVARCHAR}, 
@@ -57,226 +32,14 @@
        #{modifyName,jdbcType=NVARCHAR}, getdate(),
       #{beginTime,jdbcType=TIMESTAMP},
        #{endTime,jdbcType=TIMESTAMP}, 
-      #{taskCycle,jdbcType=DOUBLE}, #{availableCount,jdbcType=INTEGER}, 
+      #{taskCycle,jdbcType=BIGINT}, #{availableCount,jdbcType=INTEGER}, 
       #{amount,jdbcType=DECIMAL}, 
       #{status,jdbcType=INTEGER}, #{taskTotalCount,jdbcType=INTEGER},
        #{templateId,jdbcType=BIGINT}, 
       #{link,jdbcType=NVARCHAR}, #{paymentMethod,jdbcType=SMALLINT},
+      #{auditCycle,jdbcType=BIGINT}, #{taskNote,jdbcType=NVARCHAR},
       #{targetPeople,jdbcType=BIGINT}, #{companySummary,jdbcType=NVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.RenRenTask" >
-    insert into RenRenTask
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="tasktitle != null" >
-        TaskTitle,
-      </if>
-      <if test="tasknotice != null" >
-        TaskNotice,
-      </if>
-      <if test="taskgeneralinfo != null" >
-        TaskGeneralInfo,
-      </if>
-      <if test="businessid != null" >
-        BusinessId,
-      </if>
-      <if test="pusher != null" >
-        Pusher,
-      </if>
-      <if test="createname != null" >
-        CreateName,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="modifyname != null" >
-        ModifyName,
-      </if>
-      <if test="modifytime != null" >
-        ModifyTime,
-      </if>
-      <if test="begintime != null" >
-        BeginTime,
-      </if>
-      <if test="endtime != null" >
-        endtime,
-      </if>
-      <if test="taskcycle != null" >
-        TaskCycle,
-      </if>
-      <if test="availablecount != null" >
-        AvailableCount,
-      </if>
-      <if test="amount != null" >
-        Amount,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="tasktoatlcount != null" >
-        TaskToatlCount,
-      </if>
-      <if test="templateId != null" >
-        templateId,
-      </if>
-      <if test="link != null" >
-        Link,
-      </if>
-      <if test="paymentmethod != null" >
-        PaymentMethod,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="tasktitle != null" >
-        #{tasktitle,jdbcType=NVARCHAR},
-      </if>
-      <if test="tasknotice != null" >
-        #{tasknotice,jdbcType=NVARCHAR},
-      </if>
-      <if test="taskgeneralinfo != null" >
-        #{taskgeneralinfo,jdbcType=NVARCHAR},
-      </if>
-      <if test="businessid != null" >
-        #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="pusher != null" >
-        #{pusher,jdbcType=NVARCHAR},
-      </if>
-      <if test="createname != null" >
-        #{createname,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyname != null" >
-        #{modifyname,jdbcType=NVARCHAR},
-      </if>
-      <if test="modifytime != null" >
-        #{modifytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="begintime != null" >
-        #{begintime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endtime != null" >
-        #{endtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="taskcycle != null" >
-        #{taskcycle,jdbcType=DOUBLE},
-      </if>
-      <if test="availablecount != null" >
-        #{availablecount,jdbcType=INTEGER},
-      </if>
-      <if test="amount != null" >
-        #{amount,jdbcType=DECIMAL},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="tasktoatlcount != null" >
-        #{tasktoatlcount,jdbcType=INTEGER},
-      </if>
-      <if test="templateId != null" >
-        #{templateId,jdbcType=BIGINT},
-      </if>
-      <if test="link != null" >
-        #{link,jdbcType=NVARCHAR},
-      </if>
-      <if test="paymentmethod != null" >
-        #{paymentmethod,jdbcType=SMALLINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.RenRenTask" >
-    update RenRenTask
-    <set >
-      <if test="tasktitle != null" >
-        TaskTitle = #{tasktitle,jdbcType=NVARCHAR},
-      </if>
-      <if test="tasknotice != null" >
-        TaskNotice = #{tasknotice,jdbcType=NVARCHAR},
-      </if>
-      <if test="taskgeneralinfo != null" >
-        TaskGeneralInfo = #{taskgeneralinfo,jdbcType=NVARCHAR},
-      </if>
-      <if test="businessid != null" >
-        BusinessId = #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="pusher != null" >
-        Pusher = #{pusher,jdbcType=NVARCHAR},
-      </if>
-      <if test="createname != null" >
-        CreateName = #{createname,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifyname != null" >
-        ModifyName = #{modifyname,jdbcType=NVARCHAR},
-      </if>
-      <if test="modifytime != null" >
-        ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="begintime != null" >
-        BeginTime = #{begintime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endtime != null" >
-        endtime = #{endtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="taskcycle != null" >
-        TaskCycle = #{taskcycle,jdbcType=DOUBLE},
-      </if>
-      <if test="availablecount != null" >
-        AvailableCount = #{availablecount,jdbcType=INTEGER},
-      </if>
-      <if test="amount != null" >
-        Amount = #{amount,jdbcType=DECIMAL},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="tasktoatlcount != null" >
-        TaskToatlCount = #{tasktoatlcount,jdbcType=INTEGER},
-      </if>
-      <if test="templateId != null" >
-        templateId = #{templateId,jdbcType=BIGINT},
-      </if>
-      <if test="link != null" >
-        Link = #{link,jdbcType=NVARCHAR},
-      </if>
-      <if test="paymentmethod != null" >
-        PaymentMethod = #{paymentmethod,jdbcType=SMALLINT},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.RenRenTask" >
-    update RenRenTask
-    set TaskTitle = #{tasktitle,jdbcType=NVARCHAR},
-      TaskNotice = #{tasknotice,jdbcType=NVARCHAR},
-      TaskGeneralInfo = #{taskgeneralinfo,jdbcType=NVARCHAR},
-      BusinessId = #{businessid,jdbcType=BIGINT},
-      Pusher = #{pusher,jdbcType=NVARCHAR},
-      CreateName = #{createname,jdbcType=NVARCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      ModifyName = #{modifyname,jdbcType=NVARCHAR},
-      ModifyTime = #{modifytime,jdbcType=TIMESTAMP},
-      BeginTime = #{begintime,jdbcType=TIMESTAMP},
-      endtime = #{endtime,jdbcType=TIMESTAMP},
-      TaskCycle = #{taskcycle,jdbcType=DOUBLE},
-      AvailableCount = #{availablecount,jdbcType=INTEGER},
-      Amount = #{amount,jdbcType=DECIMAL},
-      status = #{status,jdbcType=INTEGER},
-      TaskToatlCount = #{tasktoatlcount,jdbcType=INTEGER},
-      templateId = #{templateId,jdbcType=BIGINT},
-      Link = #{link,jdbcType=NVARCHAR},
-      PaymentMethod = #{paymentmethod,jdbcType=SMALLINT}
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
   <!-- 获取任务详情接口  2015年9月29日13:18:05茹化肖  -->
    <select id="getTaskDetail" resultType="com.renrentui.renrenentity.domain.TaskDetail" parameterType="com.renrentui.renrenentity.req.TaskDetailReq" >
 SELECT  rrt.id ,

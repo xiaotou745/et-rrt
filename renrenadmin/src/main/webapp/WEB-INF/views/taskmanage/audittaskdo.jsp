@@ -9,6 +9,10 @@
 <%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
 <%@page import="com.renrentui.renrenentity.domain.RenRenTaskModel"%>
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%
+	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
+%>
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
@@ -40,7 +44,7 @@
 		%>
 		<tr>
 			<td><%=i + 1%></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%> </td>
+			<td><a class="blue2" href="<%=basePath%>/taskmanage/detail?taskId=<%=data.get(i).getId()%>"><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></a></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getCreateName())%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getBeginTime(),"yyyy-MM-dd")+"-"+ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-MM-dd")%></td>
