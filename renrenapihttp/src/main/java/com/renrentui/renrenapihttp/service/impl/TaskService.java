@@ -109,7 +109,7 @@ public class TaskService implements ITaskService{
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
 		if(taskModelList!=null && taskModelList.size()>0){
-			td.setNextId(taskModelList.get(0).getTaskId());
+			td.setNextId(taskModelList.get(taskModelList.size()-1).getOrderId());
 		}
 		td.setTotal(taskTotal);
 		hrm.setData(td); 
@@ -133,12 +133,16 @@ public class TaskService implements ITaskService{
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
 		if(taskModelList!=null && taskModelList.size()>0){
-			td.setNextId(taskModelList.get(0).getTaskId());
+			td.setNextId(taskModelList.get(taskModelList.size()-1).getOrderId());
 		}
 		td.setTotal(taskTotal);
 		hrm.setData(td); 
 		return hrm;
 	}
+	/*
+	 * 获取已提交的任务
+	 * wangchao
+	 */
 	@Override
 	public HttpResultModel<TaskDomain> getSubmittedTaskList(TaskReq req) {
 		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
@@ -153,7 +157,7 @@ public class TaskService implements ITaskService{
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
 		if(taskModelList!=null && taskModelList.size()>0){
-			td.setNextId(taskModelList.get(0).getTaskId());
+			td.setNextId(taskModelList.get(taskModelList.size()-1).getOrderId());
 		}
 		td.setTotal(taskTotal);
 		hrm.setData(td); 

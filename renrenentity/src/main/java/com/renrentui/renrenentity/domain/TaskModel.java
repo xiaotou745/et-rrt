@@ -11,7 +11,7 @@ public class TaskModel implements Serializable {
 	
 	private long myReceivedTaskId;
 	private String taskGeneralInfo;
-	
+	private long orderId;
 	private String pusher;
 	
 	private String taskName;
@@ -41,6 +41,7 @@ public class TaskModel implements Serializable {
 	private Date finishTime;
 	
 	private Integer waitAuditCount;
+	
 	public Date getAuditTime() {
 		return auditTime;
 	}
@@ -181,5 +182,13 @@ public class TaskModel implements Serializable {
 
 	public void setAuditStatus(int auditStatus) {
 		this.auditStatus = auditStatus;
+	}
+
+	public long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
 	} 
 }
