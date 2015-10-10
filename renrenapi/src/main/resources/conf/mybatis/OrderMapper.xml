@@ -285,7 +285,8 @@ WHERE   id = ${orderId}
         (SELECT COUNT(1) FROM dbo.[Order] (NOLOCK) o2 WHERE o2.TaskId=rrt.id AND o.ClienterId=c.id AND o2.OrderStatus=1) AS compCount ,
         o.AuditStatus,
         datediff(mi,o.FinishTime,GETDATE()) AS TimeAfter,
-        o.OrderStatus
+        o.OrderStatus,
+        o.ClienterId
 		',
 		' dbo.[Order] AS o ( NOLOCK )
         LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON rrt.Id = o.TaskId
@@ -302,4 +303,10 @@ WHERE   id = ${orderId}
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
+	
+	    <!-- 审核订单2015年9月30日13:36:59茹化肖 -->
+  <update id="orderAudit" parameterType="com.renrentui.renrenentity.req.OrderAuditReq">
+UPDATE dbo.[Order] SET AuditStatus=${auditStatus},AuditTime=GETDATE(),AuditName='${auditName}'
+WHERE id=${orderId}
+  </update>
 </mapper>

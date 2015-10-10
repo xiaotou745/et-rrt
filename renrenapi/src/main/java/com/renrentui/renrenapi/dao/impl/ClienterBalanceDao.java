@@ -44,6 +44,7 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 						record);	
 	}
 	
+	
 	@Override
 	public int deleteByPrimaryKey(Long id) {
 		// TODO Auto-generated method stub

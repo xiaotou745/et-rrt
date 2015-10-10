@@ -11,6 +11,7 @@ import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 @Repository
@@ -103,6 +104,16 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	@Override
 	public PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList("com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderAuditList", req);
+	}
+	/**
+	 * 订单审核
+	 * 茹化肖
+	 * 2015年10月10日11:10:27
+	 * 
+	 */
+	@Override
+	public int orderAudit(OrderAuditReq req) {
+		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.orderAudit", req);
 	}
 
 
