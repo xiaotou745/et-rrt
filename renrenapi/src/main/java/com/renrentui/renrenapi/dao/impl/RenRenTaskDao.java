@@ -17,6 +17,7 @@ import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 @Repository
 public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
@@ -112,14 +113,10 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	}
 
 	@Override
-	public int setTaskStatus(long taskID, int status,String userName) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("taskID", taskID);
-		map.put("status", status);
-		map.put("userName", userName);
+	public int setTaskStatus(UpdateStatusReq req) {
 		return getMasterSqlSessionUtil()
 				.update("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.setTaskStatus",
-						map);
+						req);
 	}
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {

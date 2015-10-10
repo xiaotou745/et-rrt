@@ -18,6 +18,7 @@ import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 public interface IRenRenTaskService {
 
@@ -50,7 +51,7 @@ public interface IRenRenTaskService {
 	public int insert(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
 	
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
-	public int setTaskStatus(long taskID,int status,String userName);
+	public int setTaskStatus(UpdateStatusReq req);
 	
 	public List<TaskModel> getNewTaskList(TaskReq req); 
 	public int getNewTaskTotal(TaskReq req); 

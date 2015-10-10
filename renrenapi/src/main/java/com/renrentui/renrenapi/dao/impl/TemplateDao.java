@@ -12,6 +12,8 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.PageTemplateModel;
 import com.renrentui.renrenentity.domain.TemplateModel;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
+import com.renrentui.renrenentity.req.TemplateSnapshotReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 @Repository
 public class TemplateDao extends DaoBase implements ITemplateDao {
 
@@ -40,14 +42,12 @@ public class TemplateDao extends DaoBase implements ITemplateDao {
 	}
 
 	@Override
-	public int setTemplateStatus(long templateID, int status, String userName) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("templateID", templateID);
-		map.put("status", status);
-		map.put("userName", userName);
+	public int setTemplateStatus(UpdateStatusReq req) {
 		return getMasterSqlSessionUtil()
 				.update("com.renrentui.renrenapi.dao.inter.ITemplateDao.setTemplateStatus",
-						map);
+						req);
 	}
+
+
 
 }

@@ -11,6 +11,7 @@ import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 public interface IRenRenTaskDao {
     int deleteByPrimaryKey(Long id);
@@ -32,7 +33,7 @@ public interface IRenRenTaskDao {
     int cutTaskAvailableCount(Long taskID);
     int addTaskAvailableCount(Long taskID);
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
-	public int setTaskStatus(long taskID,int status,String userName);
+	public int setTaskStatus(UpdateStatusReq req);
 	List<TaskModel> getNewTaskList(TaskReq req);
 
 	int getNewTaskTotal(TaskReq req);

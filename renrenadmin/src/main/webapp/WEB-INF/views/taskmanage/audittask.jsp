@@ -208,7 +208,7 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 	    }
 		jss.search(1);
 	});
-	function setTaskStatus(taskID,status){
+	function setTaskStatus(taskID,status,oldStatus){
 		var optype="";
 		switch(status){
 		case 1:optype="审核通过";break;
@@ -218,7 +218,7 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 		if (!confirm("确定要"+optype+"该任务吗？")){
 			return;
 		}
-		var paramaters={"taskID":taskID,"status":status};
+		var paramaters={"reocrdId":taskID,"status":status,"oldStatus":oldStatus};
 		var url = "<%=basePath%>/taskmanage/settaskstatus";
 		$.ajax({
 			type : 'POST',

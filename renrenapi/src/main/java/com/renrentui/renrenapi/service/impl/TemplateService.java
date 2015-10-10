@@ -17,6 +17,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.PageTemplateModel;
 import com.renrentui.renrenentity.domain.TemplateModel;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 @Service
 public class TemplateService implements ITemplateService {
@@ -53,8 +54,8 @@ public class TemplateService implements ITemplateService {
 	}
 
 	@Override
-	public int setTemplateStatus(long templateID, int status, String userName) {
-		return templateDao.setTemplateStatus(templateID, status, userName);
+	public int setTemplateStatus(UpdateStatusReq req) {
+		return templateDao.setTemplateStatus(req);
 	}
 
 }
