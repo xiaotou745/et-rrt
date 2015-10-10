@@ -105,5 +105,15 @@ public class OrderDao extends DaoBase implements IOrderDao{
 		return getReadOnlySqlSessionUtil().selectPageList("com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderAuditList", req);
 	}
 
-
+	/**
+	 * 超时取消订单服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelOrder() {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.outTimeCanelOrder";
+		int count= getMasterSqlSessionUtil().update(statement);
+	}
 }

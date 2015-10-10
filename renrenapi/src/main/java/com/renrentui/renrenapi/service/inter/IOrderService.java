@@ -11,4 +11,12 @@ import com.renrentui.renrenentity.req.PagedAuditorderReq;
  */
 public interface IOrderService {
 	PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req);
+	
+	/**
+	 * 超时取消订单服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	public void outTimeCanelOrder();
 }

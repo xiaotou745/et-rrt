@@ -27,4 +27,14 @@ public class OrderService implements IOrderService{
 	public PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req) {
 		return orderDao.getOrderAuditList(req);
 	}
+	/**
+	 * 超时取消订单服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelOrder() {
+       orderDao.outTimeCanelOrder();
+	}
 }

@@ -44,4 +44,12 @@ public interface IRenRenTaskDao {
 	List<TaskModel> getSubmittedTaskList(TaskReq req);
 
 	int getSubmittedTaskListTotal(TaskReq req);
+	
+	/**
+	 * 超时取消任务服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	public void outTimeCanelTask();
 }
