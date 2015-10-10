@@ -41,10 +41,10 @@
 			<td><%=TemplateStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>
 			<% if(data.get(i).getStatus()==TemplateStatus.Valid.value()){%>
-				<a href="javascript:setTemplateStatus('<%=data.get(i).getId()%>',0)">置为无效</a>
+				<a href="javascript:setTemplateStatus('<%=data.get(i).getId()%>',0,1)">置为无效</a>
 			<%} 
 			if(data.get(i).getStatus()==TemplateStatus.InValid.value()){%>
-			<a href="javascript:setTemplateStatus('<%=data.get(i).getId()%>',1)">置为有效</a>
+			<a href="javascript:setTemplateStatus('<%=data.get(i).getId()%>',1,0)">置为有效</a>
 			<%}%>
 			</td>
 		</tr>

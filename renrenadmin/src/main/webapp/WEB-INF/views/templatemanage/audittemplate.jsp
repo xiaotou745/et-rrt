@@ -143,7 +143,7 @@ List<Business> businessData = (List<Business>) request.getAttribute("businessDat
 	    }
 		jss.search(1);
 	});
-	function setTemplateStatus(templateID,status){
+	function setTemplateStatus(templateID,status,oldStatus){
 		var optype="";
 		switch(status){
 		case 0:optype="无效";break;
@@ -152,7 +152,7 @@ List<Business> businessData = (List<Business>) request.getAttribute("businessDat
 		if (!confirm("确定要将该模板置为"+optype+"吗？")){
 			return;
 		}
-		var paramaters={"templateID":templateID,"status":status};
+		var paramaters={"reocrdId":templateID,"status":status,"oldStatus":oldStatus};
 		var url = "<%=basePath%>/templatemanage/settemplatestatus";
 		$.ajax({
 			type : 'POST',

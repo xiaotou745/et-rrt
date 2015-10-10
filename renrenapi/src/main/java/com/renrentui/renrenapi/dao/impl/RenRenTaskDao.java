@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
 import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -16,6 +17,7 @@ import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 @Repository
 public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
@@ -111,14 +113,10 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	}
 
 	@Override
-	public int setTaskStatus(long taskID, int status,String userName) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("taskID", taskID);
-		map.put("status", status);
-		map.put("userName", userName);
+	public int setTaskStatus(UpdateStatusReq req) {
 		return getMasterSqlSessionUtil()
 				.update("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.setTaskStatus",
-						map);
+						req);
 	}
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
@@ -160,5 +158,17 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getSubmittedTaskListTotal";
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
+	}
+	
+	/**
+	 * 超时取消任务服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelTask(){
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.outTimeCanelTask";
+		int count= getMasterSqlSessionUtil().update(statement);
 	}
 }

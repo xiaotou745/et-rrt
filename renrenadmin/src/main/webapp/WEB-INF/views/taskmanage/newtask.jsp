@@ -443,7 +443,7 @@ function savetask(){
 			return true;
 		}
 		if($(e).val()==""||$(e).val()==null){
-			if(e.id=="beginTime"||e.id=="EndTime"){
+			if(e.id=="beginDate"||e.id=="endDate"){
 				alert("起止日期不能为空");
 			}else{
 				alert($(this).parent().prev().html().replace(": ","")+"不能为空");
@@ -455,14 +455,14 @@ function savetask(){
 	if(hasempty){
 		return;
 	}
-	var startDate = $('#beginTime').val();
-    var endDate = $('#EndTime').val();
+	var startDate = $('#beginDate').val();
+    var endDate = $('#endDate').val();
     if (startDate != "" && endDate != "") {
         var intStartDate = startDate.replace(/-/g, "");
         var intEndDate = endDate.replace(/-/g, "");
         if (intStartDate > intEndDate) {
             alert('开始日期不能大于结束日期');
-            $('#beginTime').val("");
+            $('#beginDate').val("");
             return;
         }
     }

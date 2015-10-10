@@ -17,13 +17,19 @@ import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
+import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
 import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
+import com.renrentui.renrenapi.dao.inter.ITemplateDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
+import com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao;
+import com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
+import com.renrentui.renrencore.enums.TaskOpType;
+import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.common.PagedResponse;
@@ -34,6 +40,7 @@ import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.OrderChild;
 import com.renrentui.renrenentity.OrderLog;
 import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.RenRenTaskLog;
 import com.renrentui.renrenentity.TaskCityRelation;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
@@ -46,10 +53,16 @@ import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
+import com.renrentui.renrenentity.req.TemplateSnapshotReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 @Service
 public class RenRenTaskService implements IRenRenTaskService{
 	@Autowired
 	private IRenRenTaskDao rereRenTaskDao;	
+	@Autowired
+	private ITemplateSnapshotDao templateSnapshotDao;
+	@Autowired
+	private ITemplateDetailSnapshotDao templateDetailSnapshotDao;	
 	@Autowired
 	private ITemplateDetailDao templateDetailDao;	
 	@Autowired
@@ -68,6 +81,9 @@ public class RenRenTaskService implements IRenRenTaskService{
 	
 	@Autowired
 	private IAttachmentDao attachmentDao;
+	
+	@Autowired 
+	private IRenRenTaskLogDao renRenTaskLogDao;
 
 	/**
 	 * 获取任务详情
@@ -257,34 +273,53 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int insert(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments) {
-		int result =rereRenTaskDao.insert(record);
-		if (result>0) {
-			Map<Integer,String> regionMap=publicProvinceCityService.getOpenCityMap();
-			List<TaskCityRelation> recordList=new ArrayList<TaskCityRelation>();
-			for (Integer regionCode : regionCodes) {
-				TaskCityRelation taskCityRelation=new TaskCityRelation();
-				taskCityRelation.setTaskId(record.getId());
-				taskCityRelation.setBusinessId(record.getBusinessId());
-				taskCityRelation.setCityCode(regionCode);
-				taskCityRelation.setCityName("");
-				if (regionMap.containsKey(regionCode)) {
-					taskCityRelation.setCityName(regionMap.get(regionCode));
-				}
-				recordList.add(taskCityRelation);
-			}
-			int relationResult= taskCityRelationDao.insertList(recordList);
-			if (relationResult>0){
-				if(attachments!=null&&attachments.size()>0) {
-					for (Attachment attachment : attachments) {
-						attachment.setTaskId(record.getId());
-						attachment.setBusinessId(record.getBusinessId());
+		//一：将任务的模板的数据复制到模板快照表
+		TemplateSnapshotReq req=new TemplateSnapshotReq();
+		req.setTemplateId(record.getTemplateId());
+		int snapshotResult=templateSnapshotDao.copySnapshot(req);
+		if (snapshotResult>0) {
+			int detailSnapshotResult=templateDetailSnapshotDao.copySnapshot(record.getTemplateId(), req.getTemplateSnapshotId());
+			if (detailSnapshotResult>0) {
+				//二：将任务的模板id设置为模板快照表的id，保存任务
+				record.setTemplateId(req.getTemplateSnapshotId());
+				int result =rereRenTaskDao.insert(record);
+				if (result>0) {
+					//三：保存任务的投放区域信息
+					Map<Integer,String> regionMap=publicProvinceCityService.getOpenCityMap();
+					List<TaskCityRelation> recordList=new ArrayList<TaskCityRelation>();
+					for (Integer regionCode : regionCodes) {
+						TaskCityRelation taskCityRelation=new TaskCityRelation();
+						taskCityRelation.setTaskId(record.getId());
+						taskCityRelation.setBusinessId(record.getBusinessId());
+						taskCityRelation.setCityCode(regionCode);
+						taskCityRelation.setCityName("");
+						if (regionMap.containsKey(regionCode)) {
+							taskCityRelation.setCityName(regionMap.get(regionCode));
+						}
+						recordList.add(taskCityRelation);
 					}
-					return attachmentDao.insertList(attachments);
+					int relationResult= taskCityRelationDao.insertList(recordList);
+					if (relationResult>0){
+						//三：保存任务的附件信息
+						if(attachments!=null&&attachments.size()>0) {
+							for (Attachment attachment : attachments) {
+								attachment.setTaskId(record.getId());
+								attachment.setBusinessId(record.getBusinessId());
+							}
+							attachmentDao.insertList(attachments);
+						}
+						//四：记录任务的操作日志
+						RenRenTaskLog logRecord=new RenRenTaskLog();
+						logRecord.setRenrenTaskId(record.getId());
+						logRecord.setOptName(record.getCreateName());
+						logRecord.setOptType((short)TaskOpType.NewTask.value());
+						logRecord.setRemark(TaskOpType.NewTask.desc());
+						renRenTaskLogDao.insert(logRecord);
+					}
 				}
 			}
-			return relationResult;
 		}
-		return result;
+		return snapshotResult;
 	}
 	@Override
 	public PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(
@@ -292,8 +327,25 @@ public class RenRenTaskService implements IRenRenTaskService{
 		return rereRenTaskDao.getPagedRenRenTaskList(req);
 	}
 	@Override
-	public int setTaskStatus(long taskID, int status,String userName) {
-		return rereRenTaskDao.setTaskStatus(taskID, status,userName);
+	public int setTaskStatus(UpdateStatusReq req) {
+		int result= rereRenTaskDao.setTaskStatus(req);
+		RenRenTaskLog logRecord=new RenRenTaskLog();
+		logRecord.setRenrenTaskId(req.getReocrdId());
+		logRecord.setOptName(req.getUserName());
+		TaskStatus status=TaskStatus.getEnum(req.getStatus());
+		TaskOpType opType=TaskOpType.NewTask;
+		if (status==TaskStatus.Audited) {
+			opType=TaskOpType.Audited;
+		}else if (status==TaskStatus.Reject) {
+			opType=TaskOpType.Reject;
+		}else if (status==TaskStatus.Stop) {
+			opType=TaskOpType.Stop;
+		}
+
+		logRecord.setOptType((short)opType.value());
+		logRecord.setRemark(opType.desc());
+		renRenTaskLogDao.insert(logRecord);
+		return result;
 	}
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) { 
@@ -320,4 +372,14 @@ public class RenRenTaskService implements IRenRenTaskService{
 		return rereRenTaskDao.getSubmittedTaskListTotal(req);
 	}
 
+	/**
+	 * 超时取消任务服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelTask() {
+		rereRenTaskDao.outTimeCanelTask();
+	}
 }

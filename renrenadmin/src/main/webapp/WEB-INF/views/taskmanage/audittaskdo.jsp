@@ -53,11 +53,11 @@
 			<td><%=TaskStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>
 			<% if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()){%>
-				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',1)">审核通过</a>
-				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',2)">驳回</a>
+				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',1,0)">审核通过</a>
+				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',2,0)">驳回</a>
 			<%} 
 			if(data.get(i).getStatus()==TaskStatus.Audited.value()){%>
-			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',4)">终止</a>
+			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',4,1)">终止</a>
 			<%}%>
 			</td>
 		</tr>

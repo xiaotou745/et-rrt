@@ -80,7 +80,7 @@ parameterType="com.renrentui.renrenentity.req.PagedTemplateReq" statementType="C
     <include refid="Base_Column_List" />
     from Template with(nolock) where Status=1
   </select>
-  <update id="setTemplateStatus" parameterType="java.util.HashMap" >
+  <update id="setTemplateStatus" parameterType="com.renrentui.renrenentity.req.UpdateStatusReq" >
 	UPDATE dbo.Template 
 	<set >
       <if test="status != null" >
@@ -90,6 +90,6 @@ parameterType="com.renrentui.renrenentity.req.PagedTemplateReq" statementType="C
        LastOptName=#{userName,jdbcType=NVARCHAR},LastOptTime=getdate(),
       </if>
     </set>
-    where Id = #{templateID,jdbcType=BIGINT}
+    where Id = #{reocrdId,jdbcType=BIGINT} and status=#{oldStatus,jdbcType=BIGINT}
   </update>
 </mapper>

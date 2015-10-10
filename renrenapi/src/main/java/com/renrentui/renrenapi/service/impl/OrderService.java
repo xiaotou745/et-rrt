@@ -89,4 +89,15 @@ public class OrderService implements IOrderService{
 			throw new RuntimeErrorException(new Error("审核失败"));
 		}
 	}
+
+	/**
+	 * 超时取消订单服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelOrder() {
+       orderDao.outTimeCanelOrder();
+	}
 }

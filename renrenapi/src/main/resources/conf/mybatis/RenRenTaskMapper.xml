@@ -299,7 +299,7 @@ SELECT  rrt.id ,
         rrt.AuditCycle
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 LEFT JOIN dbo.Business AS b (NOLOCK) ON b.Id = rrt.BusinessId
-LEFT JOIN dbo.Template AS t (NOLOCK) ON t.id=rrt.templateId AND t.BusinessId = rrt.BusinessId
+LEFT JOIN dbo.TemplateSnapshot AS t (NOLOCK) ON t.id=rrt.templateId AND t.BusinessId = rrt.BusinessId
 LEFT JOIN dbo.[Order] AS o (NOLOCK) ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
 WHERE rrt.id=${taskId}
   </select>
@@ -369,7 +369,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		{call Sp_CustomPage2015_V1(
 		' a.Id DESC ',
 		'a.*,b.templateName,c.CompanyName as businessName',
-		'RenRenTask a  WITH (NOLOCK) join Template b  WITH (NOLOCK) on a.templateId=b.id 
+		'RenRenTask a  WITH (NOLOCK) join TemplateSnapshot b  WITH (NOLOCK) on a.templateId=b.id 
 		join Business c  WITH (NOLOCK) on a.businessId=c.id',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />
@@ -381,7 +381,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
-	  <update id="setTaskStatus" parameterType="java.util.HashMap" >
+	  <update id="setTaskStatus" parameterType="com.renrentui.renrenentity.req.UpdateStatusReq" >
 	UPDATE dbo.RenRenTask 
 	<set >
       <if test="status != null" >
@@ -394,7 +394,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
         pusher=#{userName,jdbcType=NVARCHAR},
       </if>
     </set>
-    where Id = #{taskID,jdbcType=BIGINT}
+     where Id = #{reocrdId,jdbcType=BIGINT} and status=#{oldStatus,jdbcType=BIGINT}
   </update>
 <select id="getNewTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select 
@@ -494,4 +494,16 @@ order by rt.Id desc;
    	select count(1) from  dbo.[Order] o
                 join dbo.RenRenTask rt on rt.Id = o.TaskId and o.ClienterId =  ${userId} where  o.OrderStatus = 1 
   </select> 
+  <!-- 超时取消任务服务  add by caoheyang 20151010 -->
+	<update id="outTimeCanelTask">
+		update dbo.RenRenTask set Status=3
+		output inserted.Id,3,'系统服务','超时任务自动过期' into RenRenTasklog (RenRenTaskId,
+		OptType,
+		OptName,
+		Remark)
+		where EndTime 
+<![CDATA[<]]>
+		=GETDATE()
+		   and Status=1
+	</update>
 </mapper>
