@@ -6,6 +6,7 @@ import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 
@@ -33,11 +34,14 @@ public interface IOrderDao {
     
     PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req);
     
-	/**
+    /**
 	 * 超时取消订单服务
 	 * 
 	 * @author CaoHeYang
 	 * @date 20151009
 	 */
-     void outTimeCanelOrder();
+    void outTimeCanelOrder();
+	 
+	int orderAudit(OrderAuditReq req);
+
 }

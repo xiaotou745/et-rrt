@@ -1,4 +1,4 @@
-package renrentui.renrenservice;
+package com.renrentui.renrenservicetest;
 
 import com.renrentui.renrenservice.service.OrderWindowService;
 import com.renrentui.renrenservice.service.TaskWindowService;
