@@ -3,6 +3,9 @@ package com.renrentui.renrenentity.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.renrentui.renrencore.enums.OrderStatus;
+import com.renrentui.renrencore.enums.PaymentMethodType;
+
 public class TaskModel implements Serializable {
 	private long taskId;
 	
@@ -102,8 +105,8 @@ public class TaskModel implements Serializable {
 		this.availableCount = availableCount;
 	}
 
-	public int getStatus() {
-		return status;
+	public String getStatus() {
+		return OrderStatus.getEnum(status).desc();
 	}
 
 	public void setStatus(int status) {
@@ -125,8 +128,8 @@ public class TaskModel implements Serializable {
 		this.endTime = endTime;
 	}
 
-	public int getPaymentMethod() {
-		return paymentMethod;
+	public String getPaymentMethod() {
+		return PaymentMethodType.getEnum(paymentMethod).desc();
 	}
 
 	public void setPaymentMethod(int paymentMethod) {
