@@ -3,6 +3,7 @@
 <mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateDetailDao" >
   <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.TemplateDetail" >
     <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="TemplateId" property="templateId" jdbcType="BIGINT" />
     <result column="ControlId" property="controlid" jdbcType="BIGINT" />
     <result column="OrderNum" property="ordernum" jdbcType="INTEGER" />
     <result column="Name" property="name" jdbcType="NVARCHAR" />
@@ -11,7 +12,7 @@
     <result column="ControlData" property="controldata" jdbcType="NVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, ControlId, OrderNum, Name, Title, DefaultValue, ControlData
+    Id, TemplateId,ControlId, OrderNum, Name, Title, DefaultValue, ControlData
   </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from TemplateDetail
@@ -46,4 +47,5 @@ FROM    dbo.TemplateDetail AS td ( NOLOCK )
 WHERE   td.TemplateId = #{templateId,jdbcType=INTEGER}
 ORDER BY OrderNum ASC
   </select>
+
 </mapper>

@@ -9,11 +9,12 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.PageTemplateModel;
 import com.renrentui.renrenentity.domain.TemplateModel;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 public interface ITemplateService {
 	public int insert(TemplateModel record) ;
 	public TemplateModel detail(int templateId) ;
 	public  PagedResponse<PageTemplateModel>  queryTemplate(PagedTemplateReq req);
 	public List<Template> getAllList();
-	public int setTemplateStatus(long templateID,int status,String userName);
+	public int setTemplateStatus(UpdateStatusReq req);
 }

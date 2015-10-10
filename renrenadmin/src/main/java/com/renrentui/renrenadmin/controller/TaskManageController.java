@@ -34,6 +34,7 @@ import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 
 @Controller
@@ -177,8 +178,9 @@ public class TaskManageController {
 
 	@RequestMapping("settaskstatus")
 	@ResponseBody
-	public int setTaskStatus(HttpServletRequest request,long taskID,int status) {
+	public int setTaskStatus(HttpServletRequest request,UpdateStatusReq req) {
 		UserContext context=UserContext.getCurrentContext(request);
-		return renRenTaskService.setTaskStatus(taskID, status,context.getUserName());
+		req.setUserName(context.getUserName());
+		return renRenTaskService.setTaskStatus(req);
 	}
 }

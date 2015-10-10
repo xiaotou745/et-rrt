@@ -25,6 +25,7 @@ import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TemplateModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 
 @Controller
@@ -125,8 +126,9 @@ public class TemplateController {
 
 	@RequestMapping("settemplatestatus")
 	@ResponseBody
-	public int setTemplateStatus(HttpServletRequest request,long templateID,int status) {
+	public int setTemplateStatus(HttpServletRequest request,UpdateStatusReq req) {
 		UserContext context=UserContext.getCurrentContext(request);
-		return templateService.setTemplateStatus(templateID, status, context.getUserName());
+		req.setUserName(context.getUserName());
+		return templateService.setTemplateStatus(req);
 	}
 }
