@@ -10,14 +10,14 @@
 	 <import resource="classpath:conf/core/dev-context.xml" />
 	<context:property-placeholder
 		ignore-resource-not-found="true" location="classpath*:constant.properties" />
-	<!-- spring注入 -->
-<!-- 	<context:component-scan base-package="com.kuaiyoujia.service" -->
-<!-- 		use-default-filters="false"> -->
-<!-- 		<context:include-filter type="annotation" -->
-<!-- 			expression="org.springframework.stereotype.Service" /> -->
-<!-- 		<context:include-filter type="annotation" -->
-<!-- 			expression="org.springframework.stereotype.Component" /> -->
-<!-- 	</context:component-scan>  -->
+	<!-- spring注入 base-package 后的包受spring容器管理 -->
+	<!-- <context:component-scan base-package="com.renrentui.renrenservice"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Component" />
+	</context:component-scan>  -->
     <!-- 定时更新过时订单需要调用的业务类 add by caoheyang 20151010-->
     <bean id="orderWindowService" class="com.renrentui.renrenservice.service.OrderWindowService"></bean>
    <!--  定义调用对象和调用对象的方法 -->
