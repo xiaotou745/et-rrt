@@ -222,7 +222,7 @@ UPDATE dbo.[Order] SET
 OrderStatus=2,
 CancelTime=GETDATE(),
 CancelName='${userId}',
-CancelRemark=(SELECT ClienterName FROM dbo.Clienter AS c WHERE c.id=${userId})'
+CancelRemark=(SELECT ClienterName FROM dbo.Clienter AS c WHERE c.id=${userId})
 WHERE id=${orderId}
   </update>
   
