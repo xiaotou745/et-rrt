@@ -29,8 +29,18 @@ public class OrderAudit {
 	private int auditStatus;
 	private int timeAfter;
 	private int orderStatus;
+	private Long clienterId;
+	public Long getClienterId() {
+		return clienterId;
+	}
+	public void setClienterId(Long clienterId) {
+		this.clienterId = clienterId;
+	}
 	public String getOrderStatus() {
 		return OrderStatus.getEnum(this.orderStatus).desc()  ;
+	}
+	public int getOrderStatusCode() {
+		return this.orderStatus  ;
 	}
 	public void setOrderStatus(int orderStatus) {
 		this.orderStatus = orderStatus;
@@ -107,6 +117,9 @@ public class OrderAudit {
 	}
 	public String getAuditStatus() {
 		return AuditStatus.getEnum(this.auditStatus).desc();
+	}
+	public int getAuditStatusCode() {
+		return this.auditStatus;
 	}
 	public void setAuditStatus(int auditStatus) {
 		this.auditStatus = auditStatus;

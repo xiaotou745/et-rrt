@@ -54,7 +54,17 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getTimeAfter()%></td>
 			<td><%=data.get(i).getOrderStatus()%></td>	
 			<td><%=data.get(i).getAuditStatus()%></td>
-			<td>操作</td>						
+			<td>
+			<%if(data.get(i).getAuditStatusCode()==0&&data.get(i).getOrderStatusCode()==1) 
+			{%>
+			<a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getOrderId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getOrderNo()%>)">审核通过</a>
+		    <a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getOrderId()%>,3,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getOrderNo()%>)">审核拒绝</a>
+			<%} else if(data.get(i).getAuditStatusCode()==3&&data.get(i).getOrderStatusCode()==1) {%>
+			<a href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getOrderId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getOrderNo()%>)">审核通过</a>
+			<%} %>
+			
+			
+			</td>						
 		</tr>
 		<%
 			}
@@ -66,6 +76,29 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
 		responsePageList.getTotalPage())%>
 <script type="text/javascript">
-
+   //订单审核
+   function Audit(orderId,auditStatus,userId,amount,orderNo){
+	   if(!confirm("确定操作该审核结果?")){
+		   return false;
+		   }
+	   var paramaters = { 				 
+				 "auditStatus":auditStatus,
+				 "orderId":orderId,
+				 "userId":userId,
+				 "amount":amount,
+				 "orderNo":orderNo
+				 };
+		   var url = "<%=basePath%>/ordermanage/orderaudit";
+		   $.ajax({
+		        type: 'POST',
+		        url: url,
+		        data: paramaters,
+		        success: function (result) {   	
+		        	if(result=='1'||result==1){
+		        		alert('操作成功!')
+		        		}
+		        }
+		    });
+   }
 </script>
 	

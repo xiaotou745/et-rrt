@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
+import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 
 /**
@@ -11,7 +12,9 @@ import com.renrentui.renrenentity.req.PagedAuditorderReq;
  */
 public interface IOrderService {
 	PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req);
-	
+
+	int orderAudit(OrderAuditReq req);
+
 	/**
 	 * 超时取消订单服务
 	 * 
@@ -19,4 +22,5 @@ public interface IOrderService {
 	 * @date 20151009
 	 */
 	public void outTimeCanelOrder();
+
 }
