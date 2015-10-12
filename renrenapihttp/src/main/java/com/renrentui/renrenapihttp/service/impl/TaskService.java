@@ -109,7 +109,7 @@ public class TaskService implements ITaskService{
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
 		if(taskModelList!=null && taskModelList.size()>0){
-			td.setNextId(taskModelList.get(taskModelList.size()-1).getOrderId());
+			td.setNextId(taskModelList.get(taskModelList.size()-1).getTaskId());
 		}
 		td.setTotal(taskTotal);
 		hrm.setData(td); 
