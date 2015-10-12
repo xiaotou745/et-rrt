@@ -7,5 +7,6 @@ public interface ITemplateSnapshotDao {
 	public int copySnapshot(TemplateSnapshotReq req) ;
 	public TemplateSnapshot detailById(Long id) ;
 	public TemplateSnapshot detailByTemplateId(Long templateId) ;
+	public int deleteById(Long id) ;
 	public int deleteByTemplateId(Long templateId) ;
 }

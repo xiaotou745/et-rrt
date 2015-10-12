@@ -112,7 +112,6 @@ public class TaskManageController {
 	public int saveTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
 		taskItem.setPusher("");
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setTaskCycle(0d);
 		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
 		taskItem.setEndTime(ParseHelper.ToDate(endDate));
 		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
@@ -221,7 +220,6 @@ public class TaskManageController {
 	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
 		taskItem.setPusher("");
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setTaskCycle(0d);
 		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
 		taskItem.setEndTime(ParseHelper.ToDate(endDate));
 		taskItem.setAvailableCount(taskItem.getTaskTotalCount());

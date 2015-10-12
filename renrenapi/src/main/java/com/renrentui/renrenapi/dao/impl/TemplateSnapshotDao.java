@@ -16,16 +16,22 @@ public class TemplateSnapshotDao extends DaoBase implements ITemplateSnapshotDao
 				.insert("com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao.copySnapshot",
 						req);
 	}
+
 	@Override
-	public TemplateSnapshot detailById(Long id) {
-		return  getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao.detailById", id);
+	public int deleteById(Long id) {
+		return  getReadOnlySqlSessionUtil().delete(
+				"com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao.deleteById", id);
 	}
 	@Override
 	public int deleteByTemplateId(Long templateId) {
 		return  getReadOnlySqlSessionUtil().delete(
 				"com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao.deleteByTemplateId", templateId);
 
+	}
+	@Override
+	public TemplateSnapshot detailById(Long id) {
+		return  getReadOnlySqlSessionUtil().selectOne(
+				"com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao.detailById", id);
 	}
 	@Override
 	public TemplateSnapshot detailByTemplateId(Long templateId) {

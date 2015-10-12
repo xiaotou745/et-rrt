@@ -148,4 +148,11 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.outTimeCanelTask";
 		int count= getMasterSqlSessionUtil().update(statement);
 	}
+
+	@Override
+	public int update(RenRenTask record) {
+		return getMasterSqlSessionUtil().update(
+				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.update",
+				record);
+	}
 }

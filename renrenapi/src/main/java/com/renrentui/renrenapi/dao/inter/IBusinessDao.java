@@ -13,7 +13,7 @@ public interface IBusinessDao {
 
     int insertSelective(Business record);
 
-    Business selectByPrimaryKey(Long id);
+    Business selectById(Long id);
 
     int updateByPrimaryKeySelective(Business record);
 

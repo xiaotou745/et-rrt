@@ -32,9 +32,9 @@ public class BusinessDao extends DaoBase implements IBusinessDao{
 	}
 
 	@Override
-	public Business selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Business selectById(Long id) {
+		return getReadOnlySqlSessionUtil().selectOne(
+				"com.renrentui.renrenapi.dao.inter.IBusinessDao.selectById", id);
 	}
 
 	@Override
