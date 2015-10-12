@@ -207,7 +207,7 @@ VALUES  ( '${orderNo}' ,
   </insert>
   <!-- 验证订单是否可以取消 2015年9月30日13:36:59茹化肖 -->
   <select id="checkCancelOrder" parameterType="com.renrentui.renrenentity.req.CancelTaskReq" resultType="com.renrentui.renrenentity.domain.CheckCancelOrder">
-  SELECT CASE WHEN o.OrderStatus=0 AND FinishTime IS NULL THEN 1 ELSE 0 END AS CancelCan,
+  SELECT TOP 1 CASE WHEN o.OrderStatus=0 AND FinishTime IS NULL THEN 1 ELSE 0 END AS CancelCan,
 CASE WHEN o.OrderStatus=1 AND FinishTime IS NOT NULL THEN 1 ELSE 0 END AS IsComplete,
 CASE WHEN o.OrderStatus=2 OR o.OrderStatus=3 THEN 1 ELSE 0 END AS IsCancle,
 OrderNo,
@@ -222,13 +222,13 @@ UPDATE dbo.[Order] SET
 OrderStatus=2,
 CancelTime=GETDATE(),
 CancelName='${userId}',
-CancelRemark=(SELECT ClienterName FROM dbo.Clienter AS c WHERE c.id=${userId})'
+CancelRemark=(SELECT ClienterName FROM dbo.Clienter AS c WHERE c.id=${userId})
 WHERE id=${orderId}
   </update>
   
   <!-- 验证合同是否可以提交  2015年9月30日13:36:59茹化肖 -->
   <select id="checkOrderSubmit" parameterType="com.renrentui.renrenentity.req.SubmitTaskReq" resultType="com.renrentui.renrenentity.domain.CheckSubmitTask">
-SELECT 
+SELECT TOP 1
 CASE WHEN (o.OrderStatus=0 AND FinishTime IS NULL AND rrt.EndTime>GETDATE()) OR (o.OrderStatus=1 AND o.AuditStatus=3 AND rrt.Status!=0 AND rrt.Status!=4 ) THEN 1 ELSE 0 END AS SubmitCan,--1  可以提交
 CASE WHEN o.OrderStatus=2 OR o.OrderStatus=3 THEN 1 ELSE 0 END AS IsCancel,-- 1订单已经取消
 CASE WHEN (GETDATE()>rrt.EndTime AND FinishTime IS NULL) THEN 1 ELSE 0 END AS TaskClosed,--任务已经关闭 不可提交
@@ -289,10 +289,10 @@ WHERE   id = ${orderId}
         o.ClienterId
 		',
 		' dbo.[Order] AS o ( NOLOCK )
-        LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON rrt.Id = o.TaskId
-        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON o.ClienterId = c.Id
-        LEFT JOIN dbo.Business AS b ( NOLOCK ) ON b.Id = rrt.BusinessId
-        LEFT JOIN dbo.Template AS t ( NOLOCK ) ON rrt.TemplateId = t.id ',
+        JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON rrt.Id = o.TaskId
+        JOIN dbo.Business AS b ( NOLOCK ) ON b.Id = rrt.BusinessId
+        JOIN dbo.TemplateSnapshot AS t ( NOLOCK ) ON rrt.TemplateId = t.id
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON o.ClienterId = c.Id ',
 		'
 		<include refid="getOrderAuditListWhere" />
 		',
