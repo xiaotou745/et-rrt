@@ -42,9 +42,9 @@
         DefaultValue ,
         ControlData ,
         OrderNum
-FROM    dbo.TemplateDetail AS td ( NOLOCK )
+FROM    dbo.TemplateDetailSnapshot  AS td ( NOLOCK )
         LEFT JOIN dbo.TemplateControl AS tc ( NOLOCK ) ON td.ControlId = tc.id
-WHERE   td.TemplateId = #{templateId,jdbcType=INTEGER}
+WHERE   td.SnapshotTemplateId = #{templateId,jdbcType=INTEGER}
 ORDER BY OrderNum ASC
   </select>
 

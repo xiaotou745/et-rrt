@@ -62,8 +62,7 @@ public class BusinessService implements IBusinessService{
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int Add(Business record) {
-		record.setPassWord("111111");
-		record.setLogo("");
+		record.setPassWord("111111");		
 		record.setCityCode(0);			
 		businessDao.insert(record);
 		

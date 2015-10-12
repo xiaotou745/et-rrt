@@ -11,11 +11,13 @@
 INSERT INTO dbo.OrderChild
         ( OrderId ,
           ControlName ,
-          ControlValue 
+          ControlValue,
+          TemplateSnapshotId 
         )
 VALUES  ( ${orderId} , 
           '${controlName}' , 
-          '${controlValue}' 
+          '${controlValue}',
+          ${templateSnapshotId} 
         )
   </insert>
 </mapper>
