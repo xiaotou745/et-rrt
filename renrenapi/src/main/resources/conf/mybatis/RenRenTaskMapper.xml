@@ -52,7 +52,7 @@ SELECT TOP 1 rrt.id ,
         TaskGeneralInfo ,
         rrt.TaskNote ,
         rrt.BusinessId ,
-        rrt.templateId,
+        rrt.SnapshotTemplateId as templateId,
         Pusher,
         ISNULL(t.TemplateName ,'') AS TemplateName,
         CASE WHEN o.ClienterId >0 THEN 1 ELSE 0 END AS IsHad,--1已经领取 0  没有领取
