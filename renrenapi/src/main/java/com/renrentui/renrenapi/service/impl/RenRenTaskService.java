@@ -263,6 +263,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 			child.setOrderId(req.getOrderId());
 			child.setControlName(req.getValueInfo().get(i).getControlName());
 			child.setControlValue(req.getValueInfo().get(i).getControlValue());
+			child.setTemplateSnapshotId(req.getTemplateId());
 			childres+=orderChildDaoDao.insert(child);
 		}
 		if(resSubmit>0&&orderlogres>0&&(childres==req.getValueInfo().size()))
