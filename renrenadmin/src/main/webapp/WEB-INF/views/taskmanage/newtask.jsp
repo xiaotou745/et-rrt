@@ -38,7 +38,7 @@ String city_region = (String) request.getAttribute("city_region");
 
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">起止时间:</label>
+								<label class="col-sm-4 control-label">起止日期:</label>
 								<div class="col-sm-8">
 									<div class="input-group date">
 										<span class="input-group-addon"><i
@@ -69,6 +69,8 @@ String city_region = (String) request.getAttribute("city_region");
 								</div>
 							</div>
 						</div>
+						</div>
+						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务总数: </label>
@@ -91,7 +93,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">支付方式: </label>
 								<div class="col-sm-8">
-									<select id="paymentMethod" name="paymentMethod">
+									<select id="paymentMethod" name="paymentMethod"  class="form-control m-b">
 										<option value="1">线下支付</option>
 										<!--<option value="2">线上支付</option> -->
 									</select>
@@ -107,6 +109,8 @@ String city_region = (String) request.getAttribute("city_region");
 								</div>
 							</div>
 						</div>
+						</div>
+						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务介绍: </label>
@@ -172,7 +176,7 @@ String city_region = (String) request.getAttribute("city_region");
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label"></label>
-								<div class="col-sm-8">
+								<div class="col-sm-2">
 								<input id="file1" type="file" name="file1">
 									<button type="button" class="btn btn-w-m btn-primary" id="uploadfile"
 										style="margin-left: 3px; height: 30px;">上传</button>
@@ -193,7 +197,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">指派群体: </label>
 								<div class="col-sm-8">
-									<select id="targetPeople" name="targetPeople">
+									<select id="targetPeople" name="targetPeople"  class="form-control m-b">
 										<option value="1">所有用户</option>
 										<!-- 									<option value="2">大望路用户群</option> -->
 									</select>
@@ -204,7 +208,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">关联商户: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,null, "全部", "width:143px")%>
+									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,null, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -212,7 +216,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">合同模板: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", null,null, "全部", "width:143px")%>
+									<%=HtmlHelper.getSelect("snapshotTemplateId", templatelist, "templateName", "id", null,null, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -231,7 +235,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">省份: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("provinceCode", provincelist, "name", "code", null,-1, "全部", "width:143px")%>
+									<%=HtmlHelper.getSelect("provinceCode", provincelist, "name", "code", null,-1, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -239,7 +243,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">城市: </label>
 								<div class="col-sm-8">
-									<select id="cityCode" name="cityCode">
+									<select id="cityCode" name="cityCode"  class="form-control m-b">
 										<option value="-1">全部城市</option>
 									</select>
 								</div>
@@ -292,6 +296,20 @@ $(function(){
         calendarWeeks: true,
         autoclose: true
     });
+	  $("input[type='text']").on('keypress',function(e){
+		  if(e.target.id=="auditCycle"||e.target.id=="taskTotalCount"||e.target.id=="amount"){
+				var  key=e.keyCode|| e.which;
+				var oldValue=this.value;
+				if((oldValue==""||oldValue=="0") && key==48){
+					this.value="";
+					return false;
+				}
+				if (key<=57 && key>=48) { //数字
+				   	return true;
+				}
+				return false;  
+		  }
+		});
 });
 $("#uploadfile").click(function(){
 	if ($("#file1").val().length <= 0) {
@@ -337,6 +355,19 @@ function deleterow(delobj){
 	var deltr=$(delobj).parent().parent();
 	var rownum=parseInt(deltr.children('td').eq(0).html());
 	deltr.remove();
+	var oldfiles=$("#attachmentfiles").val();
+	var files=oldfiles.split(";");
+	var newFiles="";
+	for(var i=0;i<files.length;i++){
+		if((i+1)!=parseInt(rownum)){
+			if(newFiles==""){
+				newFiles=files[i];	
+			}else{
+				newFiles+=(";"+files[i]);	
+			}
+		}
+	}
+	$("#attachmentfiles").val(newFiles);
 	//将要删除的行的下面的所有行的行号重置
 	if(rownum<oldRowNum){
 		 for(var i=rownum+1;i<oldRowNum+1;i++){ 
@@ -353,12 +384,12 @@ $("#provinceCode").change(function(){
         
         var i,j,tmpprocity=new Array();  
         var tmpkeyvalue=new Array();  
-        for(i=1;i<pro_city.length;i++){
+        for(i=0;i<pro_city.length;i++){
         	tmpcity=pro_city[i].split("=");
             if(pro==tmpcity[0]){  
                 tmpcity=tmpcity[1].split(";");  
                 $("#cityCode").html("<option value='-1'>全部城市</option>");  
-                for(j=1;j<tmpcity.length;j++){  
+                for(j=0;j<tmpcity.length;j++){  
                 	tmpkeyvalue=tmpcity[j].split("|");
                     $("#cityCode").append("<option value='"+tmpkeyvalue[0]+"'>"+tmpkeyvalue[1]+"</option>");     
                 }  
@@ -379,12 +410,12 @@ $("#cityCode").change(function(){
         
         var i,j,tmpprocity=new Array();  
         var tmpkeyvalue=new Array();  
-        for(i=1;i<pro_city.length;i++){
+        for(i=0;i<pro_city.length;i++){
         	tmpcity=pro_city[i].split("=");
             if(pro==tmpcity[0]){  
                 tmpcity=tmpcity[1].split(";");  
                 $("#divregion").html("");  
-                for(j=1;j<tmpcity.length;j++){  
+                for(j=0;j<tmpcity.length;j++){  
                 	tmpkeyvalue=tmpcity[j].split("|");
                     $("#divregion").append("<input type='checkbox' name='regionCode"+tmpkeyvalue[0]+"' onclick='chanageSelectAll()' value='"+tmpkeyvalue[0]+"' /> <label>"+tmpkeyvalue[1]+"</label>");     
                 }  
@@ -410,12 +441,22 @@ function chanageSelectAll(){
 };
 function savetask(){
 	var hasempty=false;
+	$("select").each(function(index,e){
+		if($(e).val()==""||$(e).val()==null){
+			alert($(this).parent().prev().html().replace(": ","")+"不能为空");
+			hasempty=true;
+			return false;
+		}
+	});
+	if(hasempty){
+		return;
+	}
 	$("input[type='text']").each(function(index,e){
 		if(e.id=="taskNotice"||e.id=="link"||e.id=="companySummary"||e.id=="taskNote"){
 			return true;
 		}
-		if($(e).val()==""){
-			if(e.id=="beginTime"||e.id=="EndTime"){
+		if($(e).val()==""||$(e).val()==null){
+			if(e.id=="beginDate"||e.id=="endDate"){
 				alert("起止日期不能为空");
 			}else{
 				alert($(this).parent().prev().html().replace(": ","")+"不能为空");
@@ -427,9 +468,33 @@ function savetask(){
 	if(hasempty){
 		return;
 	}
+	var startDate = $('#beginDate').val();
+    var endDate = $('#endDate').val();
+    if (startDate != "" && endDate != "") {
+        var intStartDate = startDate.replace(/-/g, "");
+        var intEndDate = endDate.replace(/-/g, "");
+        if (intStartDate > intEndDate) {
+            alert('开始日期不能大于结束日期');
+            $('#beginDate').val("");
+            return;
+        }
+    }
 	var checkedNum=$("#divregion input[type='checkbox']:checked").length;
 	if($("#cityCode").val()!="-1"&&checkedNum==0){
 		alert("城市不是全部城市时,请至少选择一个区域");
+		return;
+	}
+	var numtest=/^[1-9]*[1-9][0-9]*$/;
+	if(!numtest.test($("#auditCycle").val())){
+		alert("审核周期只能为数字");
+		return;
+	}
+	if(!numtest.test($("#taskTotalCount").val())){
+		alert("任务总数只能为数字");
+		return;
+	}
+	if(!numtest.test($("#amount").val())){
+		alert("单次佣金只能为数字");
 		return;
 	}
 	var paramaters=$("#searchForm").serialize();

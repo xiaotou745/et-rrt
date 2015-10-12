@@ -12,7 +12,8 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 
     private String createName;
 
-    private String createTime;
+    private String createTimeBegin;
+    private String createTimeEnd;
 
     private String beginTime;
 
@@ -20,7 +21,7 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 
     private Integer status;
 
-    private Long templateId;
+    private Long snapshotTemplateId;
 
     private Short paymentMethod;
 
@@ -56,14 +57,6 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 		this.createName = createName;
 	}
 
-	public String getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-
 	public String getBeginTime() {
 		return beginTime;
 	}
@@ -90,13 +83,7 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 	}
 
 
-	public Long getTemplateId() {
-		return templateId;
-	}
 
-	public void setTemplateId(Long templateId) {
-		this.templateId = templateId;
-	}
 
 	public Short getPaymentMethod() {
 		return paymentMethod;
@@ -104,5 +91,29 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 
 	public void setPaymentMethod(Short paymentMethod) {
 		this.paymentMethod = paymentMethod;
+	}
+
+	public String getCreateTimeBegin() {
+		return createTimeBegin;
+	}
+
+	public void setCreateTimeBegin(String createTimeBegin) {
+		this.createTimeBegin = createTimeBegin;
+	}
+
+	public String getCreateTimeEnd() {
+		return createTimeEnd;
+	}
+
+	public void setCreateTimeEnd(String createTimeEnd) {
+		this.createTimeEnd = createTimeEnd;
+	}
+
+	public Long getSnapshotTemplateId() {
+		return snapshotTemplateId;
+	}
+
+	public void setSnapshotTemplateId(Long snapshotTemplateId) {
+		this.snapshotTemplateId = snapshotTemplateId;
 	}
 }

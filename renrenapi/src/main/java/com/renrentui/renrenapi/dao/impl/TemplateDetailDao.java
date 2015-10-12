@@ -45,4 +45,11 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 		return res;
 	}
 
+	@Override
+	public List<TemplateDetail> detail(Long templateId) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.detail", templateId);
+
+	}
+
 }

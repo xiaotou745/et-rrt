@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
@@ -18,6 +19,7 @@ import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 public interface IRenRenTaskService {
 
@@ -48,9 +50,9 @@ public interface IRenRenTaskService {
 	 */
 	public SubmitTaskCode submitTask(SubmitTaskReq req);
 	public int insert(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
-	
+	public int updateTask(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
-	public int setTaskStatus(long taskID,int status);
+	public int setTaskStatus(UpdateStatusReq req);
 	
 	public List<TaskModel> getNewTaskList(TaskReq req); 
 	public int getNewTaskTotal(TaskReq req); 
@@ -61,4 +63,13 @@ public interface IRenRenTaskService {
 
 	public List<TaskModel> getSubmittedTaskList(TaskReq req); 
 	public int getSubmittedTaskListTotal(TaskReq req);
+	
+	/**
+	 * 超时取消任务服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	public void outTimeCanelTask();
+	public RenRenTaskDetail getTaskInfo(Long taskId);
 }

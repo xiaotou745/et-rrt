@@ -1,0 +1,302 @@
+[2015-10-10 10:56:45 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@5e25a92e: startup date [Sat Oct 10 10:56:45 CST 2015]; root of context hierarchy
+[2015-10-10 10:56:45 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 10:56:45 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 10:56:45 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 10:56:47 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 10:56:47 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 10:56:48 main] org.apache.ibatis.logging.slf4j.Slf4jImpl 39: Could not get a databaseId from dataSource
+org.apache.commons.dbcp.SQLNestedException: Cannot create PoolableConnectionFactory (Cannot open database "superman_log" requested by the login. The login failed. ClientConnectionId:442bdbfe-81f4-4ca2-af16-26374c6d458b)
+	at org.apache.commons.dbcp.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:1549)
+	at org.apache.commons.dbcp.BasicDataSource.createDataSource(BasicDataSource.java:1388)
+	at org.apache.commons.dbcp.BasicDataSource.getConnection(BasicDataSource.java:1044)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseProductName(VendorDatabaseIdProvider.java:76)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseName(VendorDatabaseIdProvider.java:61)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseId(VendorDatabaseIdProvider.java:49)
+	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:449)
+	at org.mybatis.spring.SqlSessionFactoryBean.afterPropertiesSet(SqlSessionFactoryBean.java:340)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1625)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:539)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:743)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.context.support.ClassPathXmlApplicationContext.<init>(ClassPathXmlApplicationContext.java:139)
+	at org.springframework.context.support.ClassPathXmlApplicationContext.<init>(ClassPathXmlApplicationContext.java:83)
+	at com.renrentui.renrencore.util.SpringBeanHelper.<clinit>(SpringBeanHelper.java:15)
+	at renrentui.renrenservice.AppTest.<init>(AppTest.java:21)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:408)
+	at junit.framework.TestSuite.createTest(TestSuite.java:63)
+	at junit.framework.TestSuite.addTestMethod(TestSuite.java:310)
+	at junit.framework.TestSuite.addTestsFromTestCase(TestSuite.java:153)
+	at junit.framework.TestSuite.<init>(TestSuite.java:132)
+	at org.junit.internal.runners.JUnit38ClassRunner.<init>(JUnit38ClassRunner.java:72)
+	at org.junit.internal.builders.JUnit3Builder.runnerForClass(JUnit3Builder.java:11)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:26)
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)
+	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:26)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.<init>(JUnit4TestReference.java:33)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestClassReference.<init>(JUnit4TestClassReference.java:25)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader.createTest(JUnit4TestLoader.java:48)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader.loadTests(JUnit4TestLoader.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:444)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Cannot open database "superman_log" requested by the login. The login failed. ClientConnectionId:442bdbfe-81f4-4ca2-af16-26374c6d458b
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:216)
+	at com.microsoft.sqlserver.jdbc.TDSTokenHandler.onEOF(tdsparser.java:254)
+	at com.microsoft.sqlserver.jdbc.TDSParser.parse(tdsparser.java:84)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.sendLogon(SQLServerConnection.java:2908)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.logon(SQLServerConnection.java:2234)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.access$000(SQLServerConnection.java:41)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection$LogonCommand.doExecute(SQLServerConnection.java:2220)
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:5696)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:1715)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.connectHelper(SQLServerConnection.java:1326)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.login(SQLServerConnection.java:991)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.connect(SQLServerConnection.java:827)
+	at com.microsoft.sqlserver.jdbc.SQLServerDriver.connect(SQLServerDriver.java:1012)
+	at org.apache.commons.dbcp.DriverConnectionFactory.createConnection(DriverConnectionFactory.java:38)
+	at org.apache.commons.dbcp.PoolableConnectionFactory.makeObject(PoolableConnectionFactory.java:582)
+	at org.apache.commons.dbcp.BasicDataSource.validateConnectionFactory(BasicDataSource.java:1556)
+	at org.apache.commons.dbcp.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:1545)
+	... 44 more
+[2015-10-10 11:00:55 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 11:00:55 CST 2015]; root of context hierarchy
+[2015-10-10 11:00:55 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:00:55 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:00:55 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:00:57 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:00:57 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:01:02 main] org.apache.ibatis.logging.slf4j.Slf4jImpl 39: Could not get a databaseId from dataSource
+org.apache.commons.dbcp.SQLNestedException: Cannot create PoolableConnectionFactory (Cannot open database "superman_log" requested by the login. The login failed. ClientConnectionId:3f9cb915-ce8b-4667-b338-c1866c9902dd)
+	at org.apache.commons.dbcp.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:1549)
+	at org.apache.commons.dbcp.BasicDataSource.createDataSource(BasicDataSource.java:1388)
+	at org.apache.commons.dbcp.BasicDataSource.getConnection(BasicDataSource.java:1044)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseProductName(VendorDatabaseIdProvider.java:76)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseName(VendorDatabaseIdProvider.java:61)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseId(VendorDatabaseIdProvider.java:49)
+	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:449)
+	at org.mybatis.spring.SqlSessionFactoryBean.afterPropertiesSet(SqlSessionFactoryBean.java:340)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1625)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:539)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:743)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.context.support.ClassPathXmlApplicationContext.<init>(ClassPathXmlApplicationContext.java:139)
+	at org.springframework.context.support.ClassPathXmlApplicationContext.<init>(ClassPathXmlApplicationContext.java:83)
+	at com.renrentui.renrencore.util.SpringBeanHelper.<clinit>(SpringBeanHelper.java:15)
+	at com.renrentui.renrenservice.service.TaskWindowService.<init>(TaskWindowService.java:12)
+	at renrentui.renrenservice.AppTest.test1(AppTest.java:25)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:84)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Cannot open database "superman_log" requested by the login. The login failed. ClientConnectionId:3f9cb915-ce8b-4667-b338-c1866c9902dd
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:216)
+	at com.microsoft.sqlserver.jdbc.TDSTokenHandler.onEOF(tdsparser.java:254)
+	at com.microsoft.sqlserver.jdbc.TDSParser.parse(tdsparser.java:84)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.sendLogon(SQLServerConnection.java:2908)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.logon(SQLServerConnection.java:2234)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.access$000(SQLServerConnection.java:41)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection$LogonCommand.doExecute(SQLServerConnection.java:2220)
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:5696)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:1715)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.connectHelper(SQLServerConnection.java:1326)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.login(SQLServerConnection.java:991)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.connect(SQLServerConnection.java:827)
+	at com.microsoft.sqlserver.jdbc.SQLServerDriver.connect(SQLServerDriver.java:1012)
+	at org.apache.commons.dbcp.DriverConnectionFactory.createConnection(DriverConnectionFactory.java:38)
+	at org.apache.commons.dbcp.PoolableConnectionFactory.makeObject(PoolableConnectionFactory.java:582)
+	at org.apache.commons.dbcp.BasicDataSource.validateConnectionFactory(BasicDataSource.java:1556)
+	at org.apache.commons.dbcp.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:1545)
+	... 42 more
+[2015-10-10 11:02:46 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6e38921c: startup date [Sat Oct 10 11:02:46 CST 2015]; root of context hierarchy
+[2015-10-10 11:02:46 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:02:46 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:02:46 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:02:48 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:02:48 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:02:53 main] org.apache.ibatis.logging.slf4j.Slf4jImpl 39: Could not get a databaseId from dataSource
+org.apache.commons.dbcp.SQLNestedException: Cannot create PoolableConnectionFactory (Cannot open database "superman_log" requested by the login. The login failed. ClientConnectionId:2e237d4b-84bb-4691-8b61-5af6ba38974b)
+	at org.apache.commons.dbcp.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:1549)
+	at org.apache.commons.dbcp.BasicDataSource.createDataSource(BasicDataSource.java:1388)
+	at org.apache.commons.dbcp.BasicDataSource.getConnection(BasicDataSource.java:1044)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseProductName(VendorDatabaseIdProvider.java:76)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseName(VendorDatabaseIdProvider.java:61)
+	at org.apache.ibatis.mapping.VendorDatabaseIdProvider.getDatabaseId(VendorDatabaseIdProvider.java:49)
+	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:449)
+	at org.mybatis.spring.SqlSessionFactoryBean.afterPropertiesSet(SqlSessionFactoryBean.java:340)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1625)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:539)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:743)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.context.support.ClassPathXmlApplicationContext.<init>(ClassPathXmlApplicationContext.java:139)
+	at org.springframework.context.support.ClassPathXmlApplicationContext.<init>(ClassPathXmlApplicationContext.java:83)
+	at com.renrentui.renrencore.util.SpringBeanHelper.<clinit>(SpringBeanHelper.java:15)
+	at com.renrentui.renrenservice.service.TaskWindowService.<init>(TaskWindowService.java:12)
+	at renrentui.renrenservice.AppTest.test1(AppTest.java:25)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at junit.framework.TestCase.runTest(TestCase.java:176)
+	at junit.framework.TestCase.runBare(TestCase.java:141)
+	at junit.framework.TestResult$1.protect(TestResult.java:122)
+	at junit.framework.TestResult.runProtected(TestResult.java:142)
+	at junit.framework.TestResult.run(TestResult.java:125)
+	at junit.framework.TestCase.run(TestCase.java:129)
+	at junit.framework.TestSuite.runTest(TestSuite.java:255)
+	at junit.framework.TestSuite.run(TestSuite.java:250)
+	at org.junit.internal.runners.JUnit38ClassRunner.run(JUnit38ClassRunner.java:84)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Cannot open database "superman_log" requested by the login. The login failed. ClientConnectionId:2e237d4b-84bb-4691-8b61-5af6ba38974b
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:216)
+	at com.microsoft.sqlserver.jdbc.TDSTokenHandler.onEOF(tdsparser.java:254)
+	at com.microsoft.sqlserver.jdbc.TDSParser.parse(tdsparser.java:84)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.sendLogon(SQLServerConnection.java:2908)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.logon(SQLServerConnection.java:2234)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.access$000(SQLServerConnection.java:41)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection$LogonCommand.doExecute(SQLServerConnection.java:2220)
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:5696)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:1715)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.connectHelper(SQLServerConnection.java:1326)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.login(SQLServerConnection.java:991)
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.connect(SQLServerConnection.java:827)
+	at com.microsoft.sqlserver.jdbc.SQLServerDriver.connect(SQLServerDriver.java:1012)
+	at org.apache.commons.dbcp.DriverConnectionFactory.createConnection(DriverConnectionFactory.java:38)
+	at org.apache.commons.dbcp.PoolableConnectionFactory.makeObject(PoolableConnectionFactory.java:582)
+	at org.apache.commons.dbcp.BasicDataSource.validateConnectionFactory(BasicDataSource.java:1556)
+	at org.apache.commons.dbcp.BasicDataSource.createPoolableConnectionFactory(BasicDataSource.java:1545)
+	... 42 more
+[2015-10-10 11:05:56 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6e38921c: startup date [Sat Oct 10 11:05:55 CST 2015]; root of context hierarchy
+[2015-10-10 11:05:56 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:05:56 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:05:56 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:05:58 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:05:58 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:10:55 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@473b46c3: startup date [Sat Oct 10 11:10:55 CST 2015]; root of context hierarchy
+[2015-10-10 11:10:56 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:10:56 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:10:56 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:10:58 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:10:58 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:12:19 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6e38921c: startup date [Sat Oct 10 11:12:19 CST 2015]; root of context hierarchy
+[2015-10-10 11:12:19 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:12:19 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:12:20 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:12:21 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:12:21 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:13:53 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 11:13:53 CST 2015]; root of context hierarchy
+[2015-10-10 11:13:54 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:13:54 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:13:54 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:13:56 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:13:56 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:15:55 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 11:15:55 CST 2015]; root of context hierarchy
+[2015-10-10 11:15:55 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:15:55 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:15:55 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:15:57 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:15:57 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:16:52 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6e38921c: startup date [Sat Oct 10 11:16:52 CST 2015]; root of context hierarchy
+[2015-10-10 11:16:52 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:16:53 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:16:53 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:16:53 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:16:53 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:18:27 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6e38921c: startup date [Sat Oct 10 11:18:27 CST 2015]; root of context hierarchy
+[2015-10-10 11:18:27 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:18:27 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:18:27 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:18:27 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:18:27 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 11:22:15 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 11:22:15 CST 2015]; root of context hierarchy
+[2015-10-10 11:22:15 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 11:22:15 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 11:22:15 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 11:22:15 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 11:22:15 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 14:17:23 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 14:17:23 CST 2015]; root of context hierarchy
+[2015-10-10 14:17:23 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 14:17:23 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 14:17:23 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 14:17:23 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 14:17:23 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 14:18:20 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 14:18:20 CST 2015]; root of context hierarchy
+[2015-10-10 14:18:20 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 14:18:21 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 14:18:21 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 14:18:22 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 14:18:22 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 14:19:10 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@473b46c3: startup date [Sat Oct 10 14:19:10 CST 2015]; root of context hierarchy
+[2015-10-10 14:19:10 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 14:19:10 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 14:19:11 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 14:19:12 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 14:19:12 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 14:20:51 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 14:20:51 CST 2015]; root of context hierarchy
+[2015-10-10 14:20:51 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 14:20:51 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 14:20:51 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 14:20:53 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 14:20:53 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 14:21:12 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 14:21:12 CST 2015]; root of context hierarchy
+[2015-10-10 14:21:12 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 14:21:12 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 14:21:12 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 14:21:13 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 14:21:13 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 14:26:05 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6e38921c: startup date [Sat Oct 10 14:26:05 CST 2015]; root of context hierarchy
+[2015-10-10 14:26:05 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 14:26:05 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 14:26:05 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 14:26:05 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 14:26:05 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-10 17:55:39 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@7ff2a664: startup date [Sat Oct 10 17:55:39 CST 2015]; root of context hierarchy
+[2015-10-10 17:55:39 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-10 17:55:39 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-10 17:55:39 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-10 17:55:39 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-10 17:55:39 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]

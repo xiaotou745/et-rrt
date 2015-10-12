@@ -47,7 +47,7 @@ List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
 						单独分配<input type="radio" id="usertype" name="objtype" value="1">
 					</div>
 					<div class="control-group" id="rolediv">
-						<%=HtmlHelper.getSelect("roleid", roleData, "roleName", "id",null,null,"全部","width:100px")%>
+						<%=HtmlHelper.getSelect("roleid", roleData, "roleName", "id",null,null,"全部")%>
 					</div>
 					<div class="control-group" id="userdiv" style="display: hidden;">
 						<div class="controls">

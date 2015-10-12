@@ -2,7 +2,10 @@ package com.renrentui.renrenapi.dao.inter;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.renrentui.renrenentity.domain.ControlInfo;
+import com.renrentui.renrenentity.domain.TemplateModel;
+import com.renrentui.renrenentity.req.TemplateSnapshotReq;
 import com.renrentui.renrenentity.TemplateDetail;
 
 public interface ITemplateDetailDao {
@@ -15,5 +18,7 @@ public interface ITemplateDetailDao {
      * @param emplateId
      * @return
      */
-    ArrayList<ControlInfo> getTemplateList(Long emplateId);
+    ArrayList<ControlInfo> getTemplateList(Long templateId);
+	public List<TemplateDetail> detail(Long templateId) ;
+
 }

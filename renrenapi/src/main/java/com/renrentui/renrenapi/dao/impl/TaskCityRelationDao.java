@@ -13,12 +13,6 @@ public class TaskCityRelationDao extends DaoBase implements
 		ITaskCityRelationDao {
 
 	@Override
-	public int deleteByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int insertList(List<TaskCityRelation> recordList) {
 		return getMasterSqlSessionUtil()
 				.update("com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao.insertList",
@@ -26,27 +20,16 @@ public class TaskCityRelationDao extends DaoBase implements
 	}
 
 	@Override
-	public int insertSelective(TaskCityRelation record) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<TaskCityRelation> selectByTaskId(Long taskId) {
+		return getMasterSqlSessionUtil()
+				.selectList("com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao.selectByTaskId",
+						taskId);
 	}
 
 	@Override
-	public TaskCityRelation selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public int deleteByTaskId(Long taskId) {
+		return getMasterSqlSessionUtil()
+				.delete("com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao.deleteByTaskId",
+						taskId);
 	}
-
-	@Override
-	public int updateByPrimaryKeySelective(TaskCityRelation record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(TaskCityRelation record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

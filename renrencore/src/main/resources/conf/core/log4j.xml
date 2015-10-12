@@ -40,18 +40,18 @@
 			<param name="LevelMin" value="INFO" />
 		</filter>
 	</appender>
-	<appender name="dbAppender" class="com.renrentui.renrenapi.common.JDBCPoolAppender">
-<!--         <param name="url" value="jdbc:microsoft:sqlserver://10.8.7.41:1433;DatabaseName=superman_log;" /> -->
-<!--          <param name="driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>  -->
-<!--         <param name="user" value="sa"/> -->
-<!--         <param name="password" value="110"/> -->
+	<!-- <appender name="dbAppender" class="com.renrentui.renrenapi.common.JDBCPoolAppender">
+        <param name="url" value="jdbc:microsoft:sqlserver://10.8.7.41:1433;DatabaseName=superman_log;" />
+         <param name="driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/> 
+        <param name="user" value="sa"/>
+        <param name="password" value="110"/>
         <param name="sql" value="INSERT INTO ActionLog (AppServer, UserID, UserName, SourceSys,ClientFrom,
 						        MethodName,ExecuteTime,Param,StackTrace,
 						        Exception,RequestTime,RequestEndTime,RequestType) 
         VALUES ('%X{appServer}', '%X{userID}', '%X{userName}', '%X{sourceSys}', '%X{clientFrom}'
         , '%X{methodName}', '%X{executeTime}', '%X{param}', '%X{stackTrace}'
         , '%X{exception}', '%X{requestTime}', '%X{requestEndTime}', '%X{requestType}')"/>
-    </appender>
+    </appender> -->
 	<category name="renrenAdminLogger" additivity="false">
 		<level value="INFO" />
 		<appender-ref ref="renrenAdminAppender" />

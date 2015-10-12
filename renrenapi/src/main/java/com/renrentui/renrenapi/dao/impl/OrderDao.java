@@ -6,9 +6,13 @@ import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenentity.Order;
+import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.OrderAuditReq;
+import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 @Repository
 public class OrderDao extends DaoBase implements IOrderDao{
@@ -94,6 +98,33 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	public int submitOrder(SubmitTaskReq req) {
 		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.submitOrder", req);
 	}
+	/**
+	 * 管理后台-获取订单列表分页
+	 */
+	@Override
+	public PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req) {
+		return getReadOnlySqlSessionUtil().selectPageList("com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderAuditList", req);
+	}
+	/**
+	 * 订单审核
+	 * 茹化肖
+	 * 2015年10月10日11:10:27
+	 * 
+	 */
+	@Override
+	public int orderAudit(OrderAuditReq req) {
+		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.orderAudit", req);
+	}
 
-
+	/**
+	 * 超时取消订单服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelOrder() {
+		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.outTimeCanelOrder";
+		int count= getMasterSqlSessionUtil().update(statement);
+	}
 }

@@ -7,7 +7,6 @@ public class TaskCityRelation {
 
     private Integer cityCode;
 
-    private Long businessId;
 
     private String cityName;
 
@@ -33,14 +32,6 @@ public class TaskCityRelation {
 
 	public void setCityCode(Integer cityCode) {
 		this.cityCode = cityCode;
-	}
-
-	public Long getBusinessId() {
-		return businessId;
-	}
-
-	public void setBusinessId(Long businessId) {
-		this.businessId = businessId;
 	}
 
 	public String getCityName() {

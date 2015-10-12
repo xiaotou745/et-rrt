@@ -54,6 +54,7 @@ List<Business> businessData = (List<Business>) request.getAttribute("businessDat
 				<thead>
 					<tr>
 						<th width="5%">续号</th>
+						<th>控件类型</th>
 						<th>说明文本（必须唯一）</th>
 						<th>名称（英文，必须唯一）</th>
 						<th>默认值（可空）</th>
@@ -63,9 +64,10 @@ List<Business> businessData = (List<Business>) request.getAttribute("businessDat
 				<tbody>
 					<tr id="tr1">
 						<td>1</td>
-						<td><input type="text" class="form-control" value="年龄" id="title1" /></td>
-						<td><input type="text" class="form-control" value="age" id="name1" /></td>
-						<td><input type="text" class="form-control" value="18" id="defaultvalue1" /></td>
+						<td>文本框</td>
+						<td><input type="text" class="form-control" placeholder="年龄" value="" id="title1" /></td>
+						<td><input type="text" class="form-control" placeholder="age" value="" id="name1" /></td>
+						<td><input type="text" class="form-control" placeholder="18" value="" id="defaultvalue1" /></td>
 						<td></td>
 					</tr>
 				</tbody>
@@ -77,7 +79,9 @@ List<Business> businessData = (List<Business>) request.getAttribute("businessDat
 			<button type="button" class="btn btn-w-m btn-primary" id="save"
 				style="margin-left: 3px; height: 30px;">保存</button>
 			<button type="button" class="btn btn-w-m btn-primary" id="addrow"
-				style="margin-left: 3px; height: 30px;">新增一行</button>
+				style="margin-left: 3px; height: 30px;">新增一行文本框</button>
+			<button type="button" class="btn btn-w-m btn-primary" id="addImgRow"
+				style="margin-left: 3px; height: 30px;">新增一行图片上传</button>
 		</div>
 	</div>
 </div>
@@ -88,9 +92,22 @@ $("#addrow").click(function(){
 	var newRowNum=rowNum+1;
 	var row = $("<tr></tr>");
 	row.append("<td>"+newRowNum+"</td>");
-	row.append("<td><input type='text' class='form-control' value='' id='title"+newRowNum+"' /></td>");
-	row.append("<td><input type='text' class='form-control' value='' id='name"+newRowNum+"' /></td>");
-	row.append("<td><input type='text' class='form-control' value='' id='defaultvalue"+newRowNum+"' /></td>");
+	row.append("<td>文本框</td>");
+	row.append("<td><input type='text' class='form-control' placeholder='性别' value='' id='title"+newRowNum+"' /></td>");
+	row.append("<td><input type='text' class='form-control' placeholder='sex' value='' id='name"+newRowNum+"' /></td>");
+	row.append("<td><input type='text' class='form-control' placeholder='女' value='' id='defaultvalue"+newRowNum+"' /></td>");
+	row.append("<td><a href='javascript:void(0)' onclick='deleterow(this)'>删除</a></td>");
+	$("#templatetable").append(row);
+});
+$("#addImgRow").click(function(){
+	var rowNum=$("#templatetable tr").length-1;
+	var newRowNum=rowNum+1;
+	var row = $("<tr></tr>");
+	row.append("<td>"+newRowNum+"</td>");
+	row.append("<td>图片上传</td>");
+	row.append("<td><input type='text' placeholder='身份证正面照片' class='form-control' value='' id='title"+newRowNum+"' /></td>");
+	row.append("<td><input type='text' placeholder='face_pic' class='form-control' value='' id='name"+newRowNum+"' /></td>");
+	row.append("<td></td>");
 	row.append("<td><a href='javascript:void(0)' onclick='deleterow(this)'>删除</a></td>");
 	$("#templatetable").append(row);
 });
@@ -110,6 +127,10 @@ function deleterow(delobj){
 	}
 }
 $("#save").click(function(){
+	if($("#businessId").val()==""||$("#businessId").val()==null){
+		alert("所属商家不能为空");
+		return;
+	}
 	if($("#tempName").val()==""){
 		alert("模板名称不能为空");
 		return;
@@ -124,7 +145,14 @@ $("#save").click(function(){
 	var childparamaters="";
 	for(var i=1;i<=oldRowNum;i++){ 
 	     var rownum=$(trs[i]).children('td').eq(0).html();
-	     childparamaters+=("#orderNum="+rownum+";");
+	     childparamaters+=("#ordernum="+rownum+";");
+	     var controlType=$(trs[i]).children('td').eq(1).html();
+			if(controlType=="文本框"){
+				 childparamaters+=("controlid=1;");
+			}else if(controlType=="图片上传"){
+				 childparamaters+=("controlid=3;");
+			}
+	    
 	     $(trs[i]).find("input").each(function(index,e){
 	    	 if(e.id.indexOf("title")>=0){
 		    	 childparamaters+=("title="+$(e).val()+";");

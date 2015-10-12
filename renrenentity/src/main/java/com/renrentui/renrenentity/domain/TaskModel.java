@@ -3,12 +3,15 @@ package com.renrentui.renrenentity.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.renrentui.renrencore.enums.OrderStatus;
+import com.renrentui.renrencore.enums.PaymentMethodType;
+
 public class TaskModel implements Serializable {
 	private long taskId;
 	
 	private long myReceivedTaskId;
 	private String taskGeneralInfo;
-	
+	private long orderId;
 	private String pusher;
 	
 	private String taskName;
@@ -18,7 +21,7 @@ public class TaskModel implements Serializable {
 	private int availableCount;
 	
 	private int status;
-	
+	private int auditStatus;
 	private Date beginTime;
 	
 	private Date endTime;
@@ -38,6 +41,7 @@ public class TaskModel implements Serializable {
 	private Date finishTime;
 	
 	private Integer waitAuditCount;
+	
 	public Date getAuditTime() {
 		return auditTime;
 	}
@@ -102,8 +106,8 @@ public class TaskModel implements Serializable {
 		this.availableCount = availableCount;
 	}
 
-	public int getStatus() {
-		return status;
+	public String getStatus() {
+		return OrderStatus.getEnum(status).desc();
 	}
 
 	public void setStatus(int status) {
@@ -125,8 +129,8 @@ public class TaskModel implements Serializable {
 		this.endTime = endTime;
 	}
 
-	public int getPaymentMethod() {
-		return paymentMethod;
+	public String getPaymentMethod() {
+		return PaymentMethodType.getEnum(paymentMethod).desc();
 	}
 
 	public void setPaymentMethod(int paymentMethod) {
@@ -170,5 +174,21 @@ public class TaskModel implements Serializable {
 
 	public void setWaitAuditCount(Integer waitAuditCount) {
 		this.waitAuditCount = waitAuditCount;
+	}
+
+	public int getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(int auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	public long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
 	} 
 }

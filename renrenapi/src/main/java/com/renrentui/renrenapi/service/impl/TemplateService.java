@@ -14,8 +14,10 @@ import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateDetail;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.PageTemplateModel;
 import com.renrentui.renrenentity.domain.TemplateModel;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 @Service
 public class TemplateService implements ITemplateService {
@@ -37,18 +39,26 @@ public class TemplateService implements ITemplateService {
 	}
 
 	@Override
-	public TemplateModel detail(int templateId) {
-		return templateDao.detail(templateId);
+	public TemplateModel detail(Long templateId) {
+		TemplateModel result= (TemplateModel)templateDao.detail(templateId);
+		List<TemplateDetail> detailList=templateDetailDao.detail(templateId);
+		result.setDetailList(detailList);
+		return result;
 	}
 
 	@Override
-	public PagedResponse<Template> queryTemplate(PagedTemplateReq req) {
+	public PagedResponse<PageTemplateModel> queryTemplate(PagedTemplateReq req) {
 		return templateDao.queryTemplate(req);
 	}
 
 	@Override
 	public List<Template> getAllList() {
 		return templateDao.getAllList();
+	}
+
+	@Override
+	public int setTemplateStatus(UpdateStatusReq req) {
+		return templateDao.setTemplateStatus(req);
 	}
 
 }

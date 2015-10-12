@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+    
+	 <import resource="classpath:conf/core/dev-context.xml" />
+	<context:property-placeholder
+		ignore-resource-not-found="true" location="classpath*:constant.properties" />
+	<!-- spring注入 base-package 后的包受spring容器管理 -->
+	<!-- <context:component-scan base-package="com.renrentui.renrenservice"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Component" />
+	</context:component-scan>  -->
+    <!-- 定时更新过时订单需要调用的业务类 add by caoheyang 20151010-->
+    <bean id="orderWindowService" class="com.renrentui.renrenservice.service.OrderWindowService"></bean>
+   <!--  定义调用对象和调用对象的方法 -->
+    <bean id="outTimeCanelOrder"
+      class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="orderWindowService" />
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>outTimeCanelOrder</value>
+        </property>
+    </bean>    
+   <!--定义触发时间 -->
+    <bean id="outTimeCanelOrderdoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="outTimeCanelOrder" />
+        </property>
+		<!--cron表达式 -->
+        <property name="cronExpression">
+            <value>0/3 * * * * ?</value>            <!-- 每三秒触发一次 -->
+        </property>
+    </bean>
+    
+    <bean id="taskWindowService" class="com.renrentui.renrenservice.service.TaskWindowService"></bean>
+   <!--  定义调用对象和调用对象的方法 -->
+    <bean id="outTimeCanelTask"
+      class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="taskWindowService" />
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>outTimeCanelTask</value>
+        </property>
+    </bean>    
+    <!--     定义触发时间 -->
+    <bean id="outTimeCanelTaskdoTime" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="outTimeCanelTask" />
+        </property>
+		<!--cron表达式 -->
+        <property name="cronExpression">
+            <value>0/3 * * * * ?</value>            <!-- 每三秒触发一次 -->
+        </property>
+    </bean>
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+    <bean id="startQuertz" lazy-init="false" autowire="no"
+      class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="outTimeCanelOrderdoTime" />
+                <ref bean="outTimeCanelTaskdoTime" />
+            </list>
+        </property>
+    </bean>
+
+</beans> 

@@ -1,11 +1,12 @@
 package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
-import java.util.List;import org.springframework.stereotype.Repository;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
-import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
@@ -15,15 +16,10 @@ import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
+import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 @Repository
 public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
-
-	@Override
-	public int deleteByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public int insert(RenRenTask record) {
@@ -33,28 +29,12 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	}
 
 	@Override
-	public int insertSelective(RenRenTask record) {
-		// TODO Auto-generated method stub
-		return 0;
+	public RenRenTask selectById(Long id) {
+		return getMasterSqlSessionUtil().selectOne(
+				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.selectById",
+				id);
 	}
 
-	@Override
-	public RenRenTask selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int updateByPrimaryKeySelective(RenRenTask record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int updateByPrimaryKey(RenRenTask record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:13:43
@@ -110,13 +90,10 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	}
 
 	@Override
-	public int setTaskStatus(long taskID, int status) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("taskID", taskID);
-		map.put("status", status);
+	public int setTaskStatus(UpdateStatusReq req) {
 		return getMasterSqlSessionUtil()
 				.update("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.setTaskStatus",
-						map);
+						req);
 	}
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
@@ -158,5 +135,17 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getSubmittedTaskListTotal";
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
+	}
+	
+	/**
+	 * 超时取消任务服务
+	 * 
+	 * @author CaoHeYang
+	 * @date 20151009
+	 */
+	@Override
+	public void outTimeCanelTask(){
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.outTimeCanelTask";
+		int count= getMasterSqlSessionUtil().update(statement);
 	}
 }
