@@ -84,6 +84,32 @@ width: 100%;
 		</div>
 	</div>
 </div> 
+
+<div tabindex="-1" class="modal inmodal" id="alertbox"
+	role="dialog" aria-hidden="true" style="display: none;">	
+	
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">合同信息</h4>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body" id="infobox">
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id="btndown">下载合同</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>	
+</div>
+
 <script>
 
 var jss={
@@ -116,5 +142,6 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+
 
 </script>
