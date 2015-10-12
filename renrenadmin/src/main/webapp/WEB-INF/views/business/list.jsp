@@ -4,8 +4,10 @@
 <%@page import="com.renrentui.renrenentity.RoleInfo"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
+ <%@page import="com.renrentui.renrencore.enums.UploadForm"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
+String UploadPath= PropertyUtils.getProperty("ImageServicePath");
 %>
 
 <style type="text/css">
@@ -26,7 +28,7 @@ width: 100%;
 
 	<div class="row">
 		<div class="col-lg-12">
-			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+			<form method="POST" action="#" class="form-horizontal" id="searchForm" enctype="multipart/form-data">
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
@@ -121,6 +123,13 @@ width: 100%;
 			                    <input  name="txtWebSiteA" id="txtWebSiteA" type="text">
 			            </div> 
 			        </fieldset>
+			        <fieldset>			        
+		<img id="showBusiImage" src="" width="200px" height="200px" />
+		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="text" type="hidden">		
+					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
+ <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>  
+			        </fieldset>
+			
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
@@ -166,8 +175,10 @@ width: 100%;
 					</fieldset>
 				</div>
 				<div class="modal-footer">
+				        <form name="form_uploadImg" action="" method="POST">  
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button" id="txtbusinessDelta">确认</button>
+					 </form>  
 				</div>
 			</small>
 		</div>
@@ -222,7 +233,8 @@ function AddBusiness(){
     var loginName = $('#txtLoginNameA').val().trim();
     var address= $('#txtAddressA').val().trim();
     var cityName= $('#txtCityNameA').val().trim();
-    var webSite= $('#txtWebSiteA').val().trim();    
+    var webSite= $('#txtWebSiteA').val().trim();
+    var logo= $('#txtshowBusiImage').val().trim();    
     var reg=/[\u4e00-\u9fa5]+/;   
     
     if(companyName.trim().length <=4 || companyName.trim().length>30){
@@ -238,16 +250,18 @@ function AddBusiness(){
     	return;
     }   
     
+    alert(logo);
     var paramaters = {
             "companyName": companyName,
             "phoneNo": phoneNo,
             "loginName": loginName,
             "address": address,
             "cityName": cityName,
-            "webSite": webSite                 
+            "webSite": webSite,
+            "logo": logo 
         };
    var url = "<%=basePath%>/business/addbusiness";
-   var la= layer.confirm('是否确认创建商户？', {
+   var la = layer.confirm('是否确认创建商户？', {
 	    btn: ['确认','取消'], //按钮
 	    shade: false //显示遮罩
 	},function(){
@@ -265,7 +279,33 @@ function AddBusiness(){
 	        	  
 	           }
 	       });
-	});
-   	    
+	});   	    
 }
+
+    function ajaxFileUpload()  
+    {      	
+     var typeValue=<%=UploadForm.Clienter.value() %>;
+	$.ajaxFileUpload({      
+    url:'<%=basePath %>/FileUpload?type='+typeValue,         
+    secureuri:false,  
+    fileElementId:'uploadFileInput',                         //文件选择框的id属性  
+    //dataType: 'json',                                     //服务器返回的格式，可以是json  	
+    success: function (data, status)             //相当于java中try语句块的用法  
+    {     
+     	//var json=eval("("+data+")")
+     	var url =  data.body.innerText ;  
+     	var fullUrl="<%=basePath%>"+"<%=UploadPath%>"+url;     	
+     	$("showBusiImage").attr("src",fullUrl);   
+     	$("#txtshowBusiImage").val(url);
+       // $('#result').html('上传图片成功!请复制图片地址<br/>'+data.src);  
+
+    },  
+    error: function (data, status, e)             //相当于java中catch语句块的用法  
+    {  
+        //$('#result').html('上传图片失败');  
+    	alert(e);  
+    }  
+  }  
+);  
+    } 
 </script>

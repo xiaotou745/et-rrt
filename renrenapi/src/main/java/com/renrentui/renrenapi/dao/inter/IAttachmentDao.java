@@ -8,4 +8,5 @@ import com.renrentui.renrenentity.TaskCityRelation;
 public interface IAttachmentDao {
     List<Attachment> selectByTaskId(Long taskId);
     int insertList(List<Attachment> recordList);
+    int deleteByTaskId(Long taskId);
 }

@@ -16,7 +16,7 @@ import com.renrentui.renrenentity.req.UpdateStatusReq;
 public interface IRenRenTaskDao {
 
     int insert(RenRenTask record);
-
+    int update(RenRenTask record);
     RenRenTask selectById(Long id);
     
     TaskDetail getTaskDetail(TaskDetailReq req);

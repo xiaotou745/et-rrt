@@ -71,6 +71,15 @@ String city_region = (String) request.getAttribute("city_region");
 						</div>
 						</div>
 						<div class="row">
+							<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">任务周期: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="taskCycle"
+										id="taskCycle" />
+								</div>
+							</div>
+						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务总数: </label>
@@ -100,6 +109,9 @@ String city_region = (String) request.getAttribute("city_region");
 								</div>
 							</div>
 						</div>
+						
+						</div>
+						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务公告: </label>
@@ -109,8 +121,6 @@ String city_region = (String) request.getAttribute("city_region");
 								</div>
 							</div>
 						</div>
-						</div>
-						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务介绍: </label>
@@ -136,7 +146,9 @@ String city_region = (String) request.getAttribute("city_region");
 										id="taskNote" />
 								</div>
 							</div>
+						</div>	
 						</div>
+						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">公司简介: </label>
@@ -297,7 +309,7 @@ $(function(){
         autoclose: true
     });
 	  $("input[type='text']").on('keypress',function(e){
-		  if(e.target.id=="auditCycle"||e.target.id=="taskTotalCount"||e.target.id=="amount"){
+		  if(e.target.id=="auditCycle"||e.target.id=="taskTotalCount"||e.target.id=="amount"||e.target.id=="taskCycle"){
 				var  key=e.keyCode|| e.which;
 				var oldValue=this.value;
 				if((oldValue==""||oldValue=="0") && key==48){
