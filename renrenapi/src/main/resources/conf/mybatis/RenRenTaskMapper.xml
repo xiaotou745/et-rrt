@@ -62,7 +62,7 @@ SELECT TOP 1 rrt.id ,
         rrt.AuditCycle
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 LEFT JOIN dbo.Business AS b (NOLOCK) ON b.Id = rrt.BusinessId
-LEFT JOIN dbo.TemplateSnapshot AS t (NOLOCK) ON t.id=rrt.templateId AND t.BusinessId = rrt.BusinessId
+LEFT JOIN dbo.TemplateSnapshot AS t (NOLOCK) ON t.id=rrt.SnapshotTemplateId AND t.BusinessId = rrt.BusinessId
 LEFT JOIN dbo.[Order] AS o (NOLOCK) ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
 WHERE rrt.id=${taskId}
   </select>
