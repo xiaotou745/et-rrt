@@ -199,17 +199,15 @@ public class UsercService implements IUsercService {
 			String phoneNo=req.getPhoneNo();
 			// 类型 1注册 2修改密码 3忘记密码
 			boolean checkPhoneNo=clienterService.isExistPhoneC(phoneNo);
-			if (req.getsType() == 1) {
-				// 注册
-				//手机号存在
-				if(checkPhoneNo){
+			if (req.getsType() == 1) {				// 注册
+				if(checkPhoneNo){				//手机号存在
 					return resultModel.setCode(SendSmsType.PhoneExists.value()).setMsg(
 							SendSmsType.PhoneExists.desc());//该手机号已经存在，不能注册
 				}
 				key = RedissCacheKey.RR_Clienter_sendcode_register
 						+ phoneNo;
 			} 
-			if(!checkPhoneNo){
+			else if(!checkPhoneNo){     //修改密码  忘记密码   手机号不存在
 				return resultModel.setCode(SendSmsType.PhoneNotExists.value()).setMsg(
 						SendSmsType.PhoneNotExists.desc());//该手机号不存在，不能修改或忘记密码
 			}
