@@ -1,9 +1,11 @@
 package com.renrentui.renrenapi.service.impl;
 
 import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
@@ -13,8 +15,10 @@ import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.OrderLog;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
+import com.renrentui.renrenentity.domain.OrderChildInfoModel;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.OrderAuditReq;
+import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 @Service
 public class OrderService implements IOrderService{
@@ -99,5 +103,20 @@ public class OrderService implements IOrderService{
 	@Override
 	public void outTimeCanelOrder() {
        orderDao.outTimeCanelOrder();
+	}
+	/**
+	 * 获取合同信息
+	 * 茹化肖
+	 * 2015年10月12日16:07:28
+	 * 
+	 */
+	@Override
+	public OrderChildInfoModel getOrderChildInfo(OrderChildReq req) {
+		OrderChildInfoModel model=orderDao.getOrderInfo(req);
+		if(model!=null)
+		{
+			model.setList(orderDao.getOrderChildList(req));
+		}
+		return model;
 	}
 }

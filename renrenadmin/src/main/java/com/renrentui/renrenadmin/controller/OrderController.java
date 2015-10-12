@@ -14,7 +14,9 @@ import com.renrentui.renrenapi.service.inter.IOrderService;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
+import com.renrentui.renrenentity.domain.OrderChildInfoModel;
 import com.renrentui.renrenentity.req.OrderAuditReq;
+import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
 
@@ -67,5 +69,20 @@ public class OrderController {
 	public int orderAudit(HttpServletRequest request,OrderAuditReq req) {
 		req.setAuditName(UserContext.getCurrentContext(request).getUserName());
 		return orderService.orderAudit( req);
+	}
+	
+	/**
+	 * 获取合同信息 
+	 * @author 茹化肖
+	 * @Date 2015年9月29日 11:17:53
+	 * @param search 查询条件实体
+	 * @return	
+	 */	
+	@RequestMapping("orderchildInfo")
+	public ModelAndView getorderchiid(OrderChildReq req)  {			
+		OrderChildInfoModel model=orderService.getOrderChildInfo(req);
+		ModelAndView view = new ModelAndView("ordermanage/orderchildinfo");		
+		view.addObject("listData", model);
+		return view;		
 	}
 }
