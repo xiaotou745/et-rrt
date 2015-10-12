@@ -1,20 +1,22 @@
 package com.renrentui.renrenadmin.controller;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,6 +33,8 @@ import com.renrentui.renrenapi.service.inter.IRoleInfoService;
 import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrencore.util.CookieUtils;
+import com.renrentui.renrencore.util.FileUtil;
+import com.renrentui.renrencore.util.ImageHelper;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
@@ -46,6 +50,7 @@ import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
+
 
 @Controller
 @RequestMapping("business")
@@ -114,4 +119,22 @@ public class BusinessController {
 		return businessService.AddBalance(req);
 	}	
 	
+	/**
+	 * Logo上传
+	 * @author hulingbo	
+	 * @Date 2015年10月9日 14:10:25
+	 * @param search 查询条件实体
+	 * @return	
+	 * @throws IOException 
+	 * @throws ServletException 
+	 */	
+	@RequestMapping("uploadfile")
+	@ResponseBody
+	public int uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+  
+		ImageHelper.UploadImg(request,"business");
+		return 1;
+	}	
+
+
 }
