@@ -291,7 +291,7 @@ WHERE   id = ${orderId}
 		' dbo.[Order] AS o ( NOLOCK )
         JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON rrt.Id = o.TaskId
         JOIN dbo.Business AS b ( NOLOCK ) ON b.Id = rrt.BusinessId
-        JOIN dbo.TemplateSnapshot AS t ( NOLOCK ) ON rrt.TemplateId = t.id
+        JOIN dbo.TemplateSnapshot AS t ( NOLOCK ) ON rrt.snapshotTemplateId = t.id
         LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON o.ClienterId = c.Id ',
 		'
 		<include refid="getOrderAuditListWhere" />

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao" >
   <sql id="Base_Column_List" >
-    Id, TaskId, CityCode, BusinessId, CityName
+    Id, TaskId, CityCode, CityName
   </sql>
   <select id="selectByTaskId" resultType="com.renrentui.renrenentity.TaskCityRelation" parameterType="java.lang.Long" >
     select 
@@ -10,85 +10,15 @@
     from TaskCityRelation
     where taskId = #{taskId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByTaskId" parameterType="java.lang.Long" >
     delete from TaskCityRelation
-    where Id = #{id,jdbcType=BIGINT}
+    where TaskId = #{taskId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
-    insert into TaskCityRelation (TaskId, CityCode, 
-      BusinessId, CityName)
-    values (#{taskId,jdbcType=BIGINT}, #{cityCode,jdbcType=INTEGER}, 
-      #{businessId,jdbcType=BIGINT}, #{cityName,jdbcType=NVARCHAR})
-  </insert>
     <update id="insertList" parameterType="java.util.List">
 		<foreach collection="list" item="item" index="index" >
-	insert into TaskCityRelation (TaskId, CityCode, 
-      BusinessId, CityName)     
+	insert into TaskCityRelation (TaskId, CityCode, CityName)     
 	values (#{item.taskId,jdbcType=BIGINT}, #{item.cityCode,jdbcType=INTEGER}, 
-      #{item.businessId,jdbcType=BIGINT}, #{item.cityName,jdbcType=NVARCHAR});
+      #{item.cityName,jdbcType=NVARCHAR});
 		</foreach>
 	</update>
-  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
-    insert into TaskCityRelation
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="taskid != null" >
-        TaskId,
-      </if>
-      <if test="citycode != null" >
-        CityCode,
-      </if>
-      <if test="businessid != null" >
-        BusinessId,
-      </if>
-      <if test="cityname != null" >
-        CityName,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="taskid != null" >
-        #{taskid,jdbcType=BIGINT},
-      </if>
-      <if test="citycode != null" >
-        #{citycode,jdbcType=INTEGER},
-      </if>
-      <if test="businessid != null" >
-        #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="cityname != null" >
-        #{cityname,jdbcType=NVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
-    update TaskCityRelation
-    <set >
-      <if test="taskid != null" >
-        TaskId = #{taskid,jdbcType=BIGINT},
-      </if>
-      <if test="citycode != null" >
-        CityCode = #{citycode,jdbcType=INTEGER},
-      </if>
-      <if test="businessid != null" >
-        BusinessId = #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="cityname != null" >
-        CityName = #{cityname,jdbcType=NVARCHAR},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.TaskCityRelation" >
-    update TaskCityRelation
-    set TaskId = #{taskid,jdbcType=BIGINT},
-      CityCode = #{citycode,jdbcType=INTEGER},
-      BusinessId = #{businessid,jdbcType=BIGINT},
-      CityName = #{cityname,jdbcType=NVARCHAR}
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
 </mapper>

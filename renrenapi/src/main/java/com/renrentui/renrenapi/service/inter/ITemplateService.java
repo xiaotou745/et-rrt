@@ -13,7 +13,7 @@ import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 public interface ITemplateService {
 	public int insert(TemplateModel record) ;
-	public TemplateModel detail(int templateId) ;
+	public TemplateModel detail(Long templateId) ;
 	public  PagedResponse<PageTemplateModel>  queryTemplate(PagedTemplateReq req);
 	public List<Template> getAllList();
 	public int setTemplateStatus(UpdateStatusReq req);

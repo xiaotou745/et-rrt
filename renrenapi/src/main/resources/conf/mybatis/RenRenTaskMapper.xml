@@ -4,7 +4,7 @@
   <sql id="Base_Column_List" >
     Id, TaskTitle, TaskNotice, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
     ModifyName, ModifyTime, BeginTime, EndTime, TaskCycle, AvailableCount, Amount, status, 
-    TaskTotalCount, templateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary
+    TaskTotalCount, SnapshotTemplateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary
   </sql>
   <select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
     select 
@@ -23,7 +23,7 @@
       CreateName, CreateTime, ModifyName, 
       ModifyTime, BeginTime, EndTime, 
       TaskCycle, AvailableCount, Amount, 
-      status, TaskTotalCount, templateId, 
+      status, TaskTotalCount, SnapshotTemplateId, 
       Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary)
     values (#{taskTitle,jdbcType=NVARCHAR}, #{taskNotice,jdbcType=NVARCHAR}, 
       #{taskGeneralInfo,jdbcType=NVARCHAR}, #{businessId,jdbcType=BIGINT}, 
@@ -35,7 +35,7 @@
       #{taskCycle,jdbcType=BIGINT}, #{availableCount,jdbcType=INTEGER}, 
       #{amount,jdbcType=DECIMAL}, 
       #{status,jdbcType=INTEGER}, #{taskTotalCount,jdbcType=INTEGER},
-       #{templateId,jdbcType=BIGINT}, 
+       #{snapshotTemplateId,jdbcType=BIGINT}, 
       #{link,jdbcType=NVARCHAR}, #{paymentMethod,jdbcType=SMALLINT},
       #{auditCycle,jdbcType=BIGINT}, #{taskNote,jdbcType=NVARCHAR},
       #{targetPeople,jdbcType=BIGINT}, #{companySummary,jdbcType=NVARCHAR})
@@ -52,7 +52,7 @@ SELECT  rrt.id ,
         TaskGeneralInfo ,
         rrt.TaskNote ,
         rrt.BusinessId ,
-        templateId,
+        rrt.templateId,
         Pusher,
         ISNULL(t.TemplateName ,'') AS TemplateName,
         CASE WHEN o.ClienterId >0 THEN 1 ELSE 0 END AS IsHad,--1已经领取 0  没有领取
@@ -118,8 +118,8 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 	    <if test="status != null and status>-1">
 			and a.status=''${status}''
 		</if>
-	    <if test="templateId != null and templateId>0">
-			and a.templateId=''${templateId}''
+	    <if test="snapshotTemplateId != null and snapshotTemplateId>0">
+			and a.SnapshotTemplateId=''${snapshotTemplateId}''
 		</if>
 	    <if test="paymentMethod != null and paymentMethod>0">
 			and a.paymentMethod=''${paymentMethod}''
@@ -132,7 +132,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		{call Sp_CustomPage2015_V1(
 		' a.Id DESC ',
 		'a.*,b.templateName,c.CompanyName as businessName',
-		'RenRenTask a  WITH (NOLOCK) join TemplateSnapshot b  WITH (NOLOCK) on a.templateId=b.id 
+		'RenRenTask a  WITH (NOLOCK) join TemplateSnapshot b  WITH (NOLOCK) on a.snapshotTemplateId=b.id 
 		join Business c  WITH (NOLOCK) on a.businessId=c.id',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />

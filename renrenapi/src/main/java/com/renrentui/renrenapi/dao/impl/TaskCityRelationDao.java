@@ -25,4 +25,11 @@ public class TaskCityRelationDao extends DaoBase implements
 				.selectList("com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao.selectByTaskId",
 						taskId);
 	}
+
+	@Override
+	public int deleteByTaskId(Long taskId) {
+		return getMasterSqlSessionUtil()
+				.delete("com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao.deleteByTaskId",
+						taskId);
+	}
 }

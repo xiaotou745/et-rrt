@@ -16,7 +16,6 @@ import com.renrentui.renrenentity.req.TemplateSnapshotReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
 @Repository
 public class TemplateDao extends DaoBase implements ITemplateDao {
-
 	@Override
 	public int insert(Template record) {
 		return getMasterSqlSessionUtil().insert(
@@ -24,8 +23,8 @@ public class TemplateDao extends DaoBase implements ITemplateDao {
 	}
 
 	@Override
-	public TemplateModel detail(int templateId) {
-		return getReadOnlySqlSessionUtil().selectOne(
+	public Template detail(Long templateId) {
+		return  getReadOnlySqlSessionUtil().selectOne(
 				"com.renrentui.renrenapi.dao.inter.ITemplateDao.detail", templateId);
 	}
 

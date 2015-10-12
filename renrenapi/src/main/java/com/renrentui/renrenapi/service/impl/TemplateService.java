@@ -39,8 +39,11 @@ public class TemplateService implements ITemplateService {
 	}
 
 	@Override
-	public TemplateModel detail(int templateId) {
-		return templateDao.detail(templateId);
+	public TemplateModel detail(Long templateId) {
+		TemplateModel result= (TemplateModel)templateDao.detail(templateId);
+		List<TemplateDetail> detailList=templateDetailDao.detail(templateId);
+		result.setDetailList(detailList);
+		return result;
 	}
 
 	@Override

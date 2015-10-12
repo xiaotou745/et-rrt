@@ -38,7 +38,7 @@ public class RenRenTask {
 
     private Integer taskTotalCount;
 
-    private Long templateId;
+    private Long snapshotTemplateId;
 
     private String link;
 
@@ -206,15 +206,6 @@ public class RenRenTask {
 		this.availableCount = availableCount;
 	}
 
-
-	public Long getTemplateId() {
-		return templateId;
-	}
-
-	public void setTemplateId(Long templateId) {
-		this.templateId = templateId;
-	}
-
 	public Short getPaymentMethod() {
 		return paymentMethod;
 	}
@@ -245,6 +236,14 @@ public class RenRenTask {
 
 	public void setTaskTotalCount(Integer taskTotalCount) {
 		this.taskTotalCount = taskTotalCount;
+	}
+
+	public Long getSnapshotTemplateId() {
+		return snapshotTemplateId;
+	}
+
+	public void setSnapshotTemplateId(Long snapshotTemplateId) {
+		this.snapshotTemplateId = snapshotTemplateId;
 	}
 
     

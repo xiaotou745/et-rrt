@@ -4,18 +4,19 @@ import java.util.Date;
 
 public class TemplateSnapshot {
     private Long id;
+    private Long templateId;
 
-    private Long businessid;
+    private Long businessId;
 
-    private String templatename;
+    private String templateName;
 
-    private String createname;
+    private String createName;
 
-    private Date createtime;
+    private Date createTime;
 
-    private String lastoptname;
+    private String lastOptName;
 
-    private Date lastopttime;
+    private Date lastOptTime;
 
     private Short status;
 
@@ -29,53 +30,7 @@ public class TemplateSnapshot {
         this.id = id;
     }
 
-    public Long getBusinessid() {
-        return businessid;
-    }
-
-    public void setBusinessid(Long businessid) {
-        this.businessid = businessid;
-    }
-
-    public String getTemplatename() {
-        return templatename;
-    }
-
-    public void setTemplatename(String templatename) {
-        this.templatename = templatename == null ? null : templatename.trim();
-    }
-
-    public String getCreatename() {
-        return createname;
-    }
-
-    public void setCreatename(String createname) {
-        this.createname = createname == null ? null : createname.trim();
-    }
-
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
-    public String getLastoptname() {
-        return lastoptname;
-    }
-
-    public void setLastoptname(String lastoptname) {
-        this.lastoptname = lastoptname == null ? null : lastoptname.trim();
-    }
-
-    public Date getLastopttime() {
-        return lastopttime;
-    }
-
-    public void setLastopttime(Date lastopttime) {
-        this.lastopttime = lastopttime;
-    }
+    
 
     public Short getStatus() {
         return status;
@@ -89,7 +44,69 @@ public class TemplateSnapshot {
         return remark;
     }
 
-    public void setRemark(String remark) {
+    public Long getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(Long businessId) {
+		this.businessId = businessId;
+	}
+
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
+
+	public String getCreateName() {
+		return createName;
+	}
+
+	public void setCreateName(String createName) {
+		this.createName = createName;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getLastOptName() {
+		return lastOptName;
+	}
+
+	public void setLastOptName(String lastOptName) {
+		this.lastOptName = lastOptName;
+	}
+
+	public Date getLastOptTime() {
+		return lastOptTime;
+	}
+
+	public void setLastOptTime(Date lastOptTime) {
+		this.lastOptTime = lastOptTime;
+	}
+
+	public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+/**
+ * 当时的模板表的id
+ * @return
+ */
+	public Long getTemplateId() {
+		return templateId;
+	}
+	/**
+	 * 当时的模板表的id
+	 * @return
+	 */
+	public void setTemplateId(Long templateId) {
+		this.templateId = templateId;
+	}
 }

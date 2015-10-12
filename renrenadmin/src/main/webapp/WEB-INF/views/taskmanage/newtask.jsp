@@ -216,7 +216,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">合同模板: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", null,null, "全部")%>
+									<%=HtmlHelper.getSelect("snapshotTemplateId", templatelist, "templateName", "id", null,null, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -384,12 +384,12 @@ $("#provinceCode").change(function(){
         
         var i,j,tmpprocity=new Array();  
         var tmpkeyvalue=new Array();  
-        for(i=1;i<pro_city.length;i++){
+        for(i=0;i<pro_city.length;i++){
         	tmpcity=pro_city[i].split("=");
             if(pro==tmpcity[0]){  
                 tmpcity=tmpcity[1].split(";");  
                 $("#cityCode").html("<option value='-1'>全部城市</option>");  
-                for(j=1;j<tmpcity.length;j++){  
+                for(j=0;j<tmpcity.length;j++){  
                 	tmpkeyvalue=tmpcity[j].split("|");
                     $("#cityCode").append("<option value='"+tmpkeyvalue[0]+"'>"+tmpkeyvalue[1]+"</option>");     
                 }  
@@ -410,12 +410,12 @@ $("#cityCode").change(function(){
         
         var i,j,tmpprocity=new Array();  
         var tmpkeyvalue=new Array();  
-        for(i=1;i<pro_city.length;i++){
+        for(i=0;i<pro_city.length;i++){
         	tmpcity=pro_city[i].split("=");
             if(pro==tmpcity[0]){  
                 tmpcity=tmpcity[1].split(";");  
                 $("#divregion").html("");  
-                for(j=1;j<tmpcity.length;j++){  
+                for(j=0;j<tmpcity.length;j++){  
                 	tmpkeyvalue=tmpcity[j].split("|");
                     $("#divregion").append("<input type='checkbox' name='regionCode"+tmpkeyvalue[0]+"' onclick='chanageSelectAll()' value='"+tmpkeyvalue[0]+"' /> <label>"+tmpkeyvalue[1]+"</label>");     
                 }  

@@ -12,7 +12,7 @@ import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 public interface ITemplateDao {
 	public int insert(Template record) ;
-	public TemplateModel detail(int templateId) ;
+	public Template detail(Long templateId) ;
 	public  PagedResponse<PageTemplateModel>  queryTemplate(PagedTemplateReq req);
 	public List<Template> getAllList();
 	public int setTemplateStatus(UpdateStatusReq req);

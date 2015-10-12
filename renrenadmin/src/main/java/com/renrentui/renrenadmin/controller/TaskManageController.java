@@ -75,13 +75,18 @@ public class TaskManageController {
 				resulMap.get(item.getParentCode()).append(";"+item.getCode()+"|"+item.getName());
 			}else {
 				StringBuilder builder=new StringBuilder();
-				builder.append(";"+item.getCode()+"|"+item.getName());
+				builder.append(item.getCode()+"|"+item.getName());
 				resulMap.put(item.getParentCode(), builder);
 			}
 		}
 		StringBuilder resultBuilder=new StringBuilder();
 		for (Map.Entry<Integer, StringBuilder> entry : resulMap.entrySet()) {  
-			resultBuilder.append("#"+entry.getKey()+"="+entry.getValue().toString());
+			if (resultBuilder.toString().isEmpty()) {
+				resultBuilder.append(entry.getKey()+"="+entry.getValue().toString());
+			}else {
+				resultBuilder.append("#"+entry.getKey()+"="+entry.getValue().toString());
+			}
+			
 		}  
 
 		return resultBuilder.toString();

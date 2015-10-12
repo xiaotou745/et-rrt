@@ -3,19 +3,19 @@ package com.renrentui.renrenentity;
 public class TemplateDetailSnapshot {
     private Long id;
 
-    private Long templateid;
+    private Long snapshotTemplateId;
 
-    private Long controlid;
+    private Long controlId;
 
-    private Integer ordernum;
+    private Integer orderNum;
 
     private String name;
 
     private String title;
 
-    private String defaultvalue;
+    private String defaultValue;
 
-    private String controldata;
+    private String controlData;
 
     public Long getId() {
         return id;
@@ -25,29 +25,7 @@ public class TemplateDetailSnapshot {
         this.id = id;
     }
 
-    public Long getTemplateid() {
-        return templateid;
-    }
-
-    public void setTemplateid(Long templateid) {
-        this.templateid = templateid;
-    }
-
-    public Long getControlid() {
-        return controlid;
-    }
-
-    public void setControlid(Long controlid) {
-        this.controlid = controlid;
-    }
-
-    public Integer getOrdernum() {
-        return ordernum;
-    }
-
-    public void setOrdernum(Integer ordernum) {
-        this.ordernum = ordernum;
-    }
+    
 
     public String getName() {
         return name;
@@ -65,19 +43,45 @@ public class TemplateDetailSnapshot {
         this.title = title == null ? null : title.trim();
     }
 
-    public String getDefaultvalue() {
-        return defaultvalue;
-    }
+	public Long getSnapshotTemplateId() {
+		return snapshotTemplateId;
+	}
 
-    public void setDefaultvalue(String defaultvalue) {
-        this.defaultvalue = defaultvalue == null ? null : defaultvalue.trim();
-    }
+	public void setSnapshotTemplateId(Long snapshotTemplateId) {
+		this.snapshotTemplateId = snapshotTemplateId;
+	}
 
-    public String getControldata() {
-        return controldata;
-    }
+	public Long getControlId() {
+		return controlId;
+	}
 
-    public void setControldata(String controldata) {
-        this.controldata = controldata == null ? null : controldata.trim();
-    }
+	public void setControlId(Long controlId) {
+		this.controlId = controlId;
+	}
+
+	public Integer getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(Integer orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public String getControlData() {
+		return controlData;
+	}
+
+	public void setControlData(String controlData) {
+		this.controlData = controlData;
+	}
+
+    
 }

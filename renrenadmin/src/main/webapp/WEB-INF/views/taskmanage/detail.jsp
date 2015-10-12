@@ -47,6 +47,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 <script src="<%=basePath%>/js/ajaxfileupload.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
+		<input type="hidden" id="id" value="<%=taskInfo.getTaskInfo().getId() %>" />
 		<fieldset>
 			<legend>基本信息</legend>
 			<div class="row">
@@ -249,7 +250,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 							<div class="form-group">
 								<label class="col-sm-4 control-label">合同模板: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", taskInfo.getTaskInfo().getTemplateId(),null, "全部")%>
+									<%=HtmlHelper.getSelect("snapshotTemplateId", templatelist, "templateName", "id", taskInfo.getTaskInfo().getSnapshotTemplateId(),null, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -309,7 +310,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 		</fieldset>
 		<div class="row">
 			<div class="col-lg-4">
-				<button type="button" <%=(detailStatus==TaskStatus.WaitAudit||detailStatus==TaskStatus.Reject)?"":"disabled" %> class="btn btn-w-m btn-primary" id="save" onclick="savetask()"
+				<button type="button"  class="btn btn-w-m btn-primary" id="save" onclick="savetask()"
 					style="margin-left: 3px; height: 30px;">保存</button>
 
 			</div>
@@ -318,7 +319,6 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 
 	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> 
 	<input type="hidden" id="city_region" value="<%=city_region %>" />
-	<input type="hidden" id="id" value="<%=taskInfo.getTaskInfo().getId() %>" />
 </div>
 
 <script>
@@ -345,7 +345,25 @@ $(function(){
 		  }
 		});
 	  initRegion();
+	  lockpage();
 });
+function lockpage(){
+	var canedit="<%=(detailStatus==TaskStatus.WaitAudit||detailStatus==TaskStatus.Reject)%>";
+	if(canedit!="true"){
+	    $("input[type='text']").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	    $("input[type='file']").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	    $("select").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	    $("button").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	}
+}
 function initRegion(){
 	var regionList="<%=oldRegionCode%>";
 	if(regionList!=""&&regionList!="-1"){
@@ -360,12 +378,12 @@ function initRegion(){
 		}
 		var tmpcity=new Array();  
 		var city_region=$("#city_region").val().split("#");
-        for(var i=1;i<city_region.length;i++){
+        for(var i=0;i<city_region.length;i++){
         	tmpcity=city_region[i].split("=");
 			 if(tmpcity[1].indexOf(codes[0])>=0){
 				 var tmpProvince=new Array();  
 				 var pro_city=$("#pro_city").val().split("#");
-				  for(var j=1;j<pro_city.length;j++){
+				  for(var j=0;j<pro_city.length;j++){
 						tmpProvince=pro_city[j].split("=");
 						if(tmpProvince[1].indexOf(tmpcity[0])>=0){
 						   $("#provinceCode").val(tmpProvince[0]);
@@ -457,12 +475,12 @@ $("#provinceCode").change(function(){
         
         var i,j,tmpprocity=new Array();  
         var tmpkeyvalue=new Array();  
-        for(i=1;i<pro_city.length;i++){
+        for(i=0;i<pro_city.length;i++){
         	tmpcity=pro_city[i].split("=");
             if(pro==tmpcity[0]){  
                 tmpcity=tmpcity[1].split(";");  
                 $("#cityCode").html("<option value='-1'>全部城市</option>");  
-                for(j=1;j<tmpcity.length;j++){  
+                for(j=0;j<tmpcity.length;j++){  
                 	tmpkeyvalue=tmpcity[j].split("|");
                     $("#cityCode").append("<option value='"+tmpkeyvalue[0]+"'>"+tmpkeyvalue[1]+"</option>");     
                 }  
@@ -483,12 +501,12 @@ $("#cityCode").change(function(){
         
         var i,j,tmpprocity=new Array();  
         var tmpkeyvalue=new Array();  
-        for(i=1;i<pro_city.length;i++){
+        for(i=0;i<pro_city.length;i++){
         	tmpcity=pro_city[i].split("=");
             if(pro==tmpcity[0]){  
                 tmpcity=tmpcity[1].split(";");  
                 $("#divregion").html("");  
-                for(j=1;j<tmpcity.length;j++){  
+                for(j=0;j<tmpcity.length;j++){  
                 	tmpkeyvalue=tmpcity[j].split("|");
                     $("#divregion").append("<input type='checkbox' id='regionCode"+tmpkeyvalue[0]+"' name='regionCode"+tmpkeyvalue[0]+"' onclick='chanageSelectAll()' value='"+tmpkeyvalue[0]+"' /> <label>"+tmpkeyvalue[1]+"</label>");     
                 }  

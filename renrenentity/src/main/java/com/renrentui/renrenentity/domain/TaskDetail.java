@@ -137,17 +137,17 @@ public class TaskDetail {
 	public void setBusinessId(Long businessId) {
 		this.businessId = businessId;
 	}
-	public Long getTemplateId() {
-		return templateId;
-	}
-	public void setTemplateId(Long templateId) {
-		this.templateId = templateId;
-	}
 	public ArrayList<ControlInfo> getControlInfo() {
 		return controlInfo;
 	}
 	public void setControlInfo(ArrayList<ControlInfo> controlInfo) {
 		this.controlInfo = controlInfo;
+	}
+	public Long getTemplateId() {
+		return templateId;
+	}
+	public void setTemplateId(Long templateId) {
+		this.templateId = templateId;
 	}
 	
 }

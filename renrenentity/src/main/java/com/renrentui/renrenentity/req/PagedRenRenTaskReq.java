@@ -21,7 +21,7 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 
     private Integer status;
 
-    private Long templateId;
+    private Long snapshotTemplateId;
 
     private Short paymentMethod;
 
@@ -83,13 +83,7 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 	}
 
 
-	public Long getTemplateId() {
-		return templateId;
-	}
 
-	public void setTemplateId(Long templateId) {
-		this.templateId = templateId;
-	}
 
 	public Short getPaymentMethod() {
 		return paymentMethod;
@@ -113,5 +107,13 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 
 	public void setCreateTimeEnd(String createTimeEnd) {
 		this.createTimeEnd = createTimeEnd;
+	}
+
+	public Long getSnapshotTemplateId() {
+		return snapshotTemplateId;
+	}
+
+	public void setSnapshotTemplateId(Long snapshotTemplateId) {
+		this.snapshotTemplateId = snapshotTemplateId;
 	}
 }

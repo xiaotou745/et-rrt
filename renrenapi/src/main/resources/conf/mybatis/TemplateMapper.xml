@@ -8,7 +8,7 @@
     select 
     <include refid="Base_Column_List" />
     from Template
-    where Id = #{id,jdbcType=BIGINT}
+    where Id = #{templateId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from Template

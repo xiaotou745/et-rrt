@@ -7,4 +7,5 @@ import com.renrentui.renrenentity.TaskCityRelation;
 public interface ITaskCityRelationDao {
     int insertList(List<TaskCityRelation> recordList);
     List<TaskCityRelation> selectByTaskId(Long taskId);
+    int deleteByTaskId(Long taskId);
 }
