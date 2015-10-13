@@ -42,7 +42,7 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 		String statement = "com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.getTemplateList";
 		HashMap<String, Object> map=new HashMap<String, Object>();
 		map.put("templateId", templateId);
-		map.put("orderId", templateId);
+		map.put("orderId", orderId);
 		ArrayList<ControlInfo> res = (ArrayList) getReadOnlySqlSessionUtil().selectList(statement, map);
 		return res;
 	}

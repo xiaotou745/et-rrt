@@ -6,6 +6,13 @@ package com.renrentui.renrenentity.domain;
  */
 public class ControlInfo {
 
+	private String hadValue;
+	public String getHadValue() {
+		return hadValue;
+	}
+	public void setHadValue(String hadValue) {
+		this.hadValue = hadValue;
+	}
 	private String controlType;
 	private String title;
 	private String name;
