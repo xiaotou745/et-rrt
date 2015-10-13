@@ -22,7 +22,7 @@ public class TemplateDetailSnapshotDao extends DaoBase implements ITemplateDetai
 	@Override
 	public int deleteBySnapshotTemplateId(Long snapshotTemplateId) {
 		return getMasterSqlSessionUtil()
-				.delete("com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao.deleteByTemplateId",
+				.delete("com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao.deleteBySnapshotTemplateId",
 						snapshotTemplateId);
 	}
 

@@ -284,4 +284,29 @@ order by o.Id asc;
 		=GETDATE()
 		   and Status=1
 	</update>
+	  <update id="update" parameterType="com.renrentui.renrenentity.RenRenTask" >
+    update RenRenTask
+    set TaskTitle = #{taskTitle,jdbcType=NVARCHAR},
+      TaskNotice = #{taskNotice,jdbcType=NVARCHAR},
+      TaskGeneralInfo = #{taskGeneralInfo,jdbcType=NVARCHAR},
+      BusinessId = #{businessId,jdbcType=BIGINT},
+      Pusher = #{pusher,jdbcType=NVARCHAR},
+      ModifyName = #{modifyName,jdbcType=NVARCHAR},
+      ModifyTime = getdate(),
+      BeginTime = #{beginTime,jdbcType=TIMESTAMP},
+      EndTime = #{endTime,jdbcType=TIMESTAMP},
+      TaskCycle = #{taskCycle,jdbcType=DOUBLE},
+      AvailableCount = #{availableCount,jdbcType=INTEGER},
+      Amount = #{amount,jdbcType=DECIMAL},
+      Status = #{status,jdbcType=INTEGER},
+      TaskTotalCount = #{taskTotalCount,jdbcType=INTEGER},
+      SnapshotTemplateId = #{snapshotTemplateId,jdbcType=BIGINT},
+      Link = #{link,jdbcType=NVARCHAR},
+      PaymentMethod = #{paymentMethod,jdbcType=SMALLINT},
+      AuditCycle=#{auditCycle,jdbcType=INTEGER},
+      TaskNote = #{taskNote,jdbcType=NVARCHAR},
+      TargetPeople = #{targetPeople,jdbcType=INTEGER},
+      CompanySummary= #{companySummary,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=BIGINT} and (Status=0 or Status=2)
+  </update>
 </mapper>

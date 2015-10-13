@@ -5,7 +5,7 @@
     Id, CompanyName, PhoneNo, PassWord, LoginName, Logo, Address, CityCode, CityName, 
     WebSite
   </sql>
-  <select id="selectByPrimaryKey" resultType="com.renrentui.renrenentity.Business"
+  <select id="selectById" resultType="com.renrentui.renrenentity.Business"
    parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

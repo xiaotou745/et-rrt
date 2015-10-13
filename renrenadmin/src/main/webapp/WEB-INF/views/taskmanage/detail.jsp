@@ -47,7 +47,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 <script src="<%=basePath%>/js/ajaxfileupload.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
-		<input type="hidden" id="id" value="<%=taskInfo.getTaskInfo().getId() %>" />
+		<input type="hidden" id="id" name="id" value="<%=taskInfo.getTaskInfo().getId() %>" />
 		<fieldset>
 			<legend>基本信息</legend>
 			<div class="row">
@@ -96,8 +96,18 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 								</div>
 							</div>
 						</div>
+				
 						</div>
 						<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">任务周期: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="taskCycle" value="<%=taskInfo.getTaskInfo().getTaskCycle() %>"
+										id="taskCycle" />
+								</div>
+							</div>
+						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务总数: </label>
@@ -127,6 +137,9 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 								</div>
 							</div>
 						</div>
+						
+						</div>
+						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务公告: </label>
@@ -136,8 +149,6 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 								</div>
 							</div>
 						</div>
-						</div>
-						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务介绍: </label>
@@ -164,6 +175,8 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 								</div>
 							</div>
 						</div>
+						</div>
+						<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">公司简介: </label>
@@ -250,7 +263,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 							<div class="form-group">
 								<label class="col-sm-4 control-label">合同模板: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("snapshotTemplateId", templatelist, "templateName", "id", taskInfo.getTaskInfo().getSnapshotTemplateId(),null, "全部")%>
+									<%=HtmlHelper.getSelect("snapshotTemplateId", templatelist, "templateName", "id", taskInfo.getTemplateId(),null, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -331,7 +344,7 @@ $(function(){
         autoclose: true
     });
 	  $("input[type='text']").on('keypress',function(e){
-		  if(e.target.id=="auditCycle"||e.target.id=="taskTotalCount"||e.target.id=="amount"){
+		  if(e.target.id=="auditCycle"||e.target.id=="taskTotalCount"||e.target.id=="amount"||e.target.id=="taskCycle"){
 				var  key=e.keyCode|| e.which;
 				var oldValue=this.value;
 				if((oldValue==""||oldValue=="0") && key==48){

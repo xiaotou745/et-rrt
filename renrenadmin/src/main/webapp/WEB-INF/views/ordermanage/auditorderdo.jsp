@@ -61,7 +61,16 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		    <a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getOrderId()%>,3,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getOrderNo()%>)">审核拒绝</a>
 			<%} else if(data.get(i).getAuditStatusCode()==3&&data.get(i).getOrderStatusCode()==1) {%>
 			<a href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getOrderId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getOrderNo()%>)">审核通过</a>
-			<%} %>
+
+			<%}
+			if(!data.get(i).getFinishTime().equals(""))
+			{
+			%>
+			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getOrderId()%>)">查看合同</a>
+			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getOrderId()%>)">下载合同</a>
+			<%	
+			}
+			%>
 			
 			
 			</td>						
@@ -99,6 +108,29 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        		}
 		        }
 		    });
+   }
+   function ShowInfo(orderId){
+	   var paramaters = {"orderId":orderId};
+		   var url = "<%=basePath%>/ordermanage/orderchildInfo";
+		   $.ajax({
+		        type: 'POST',
+		        url: url,
+		        data: paramaters,
+		        success: function (result) {   	
+		        	//alert(result);
+		        	$('#infobox').html(result);
+		        	$('#contentid').val(result);
+		        	$('#filename').val('123.html');
+		        	$('#alertbox').modal('show'); 
+		        	
+		        }
+		    });
+	   
+   }
+ //保存
+   function saveFile(orderId){
+	   var url = '<%=basePath%>/ordermanage/orderdownload?orderId='+orderId;
+	   window.open(url);
    }
 </script>
 	

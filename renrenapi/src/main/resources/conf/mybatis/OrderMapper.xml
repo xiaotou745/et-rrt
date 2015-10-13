@@ -319,4 +319,26 @@ where CancelTime <![CDATA[<]]> =GETDATE() and OrderStatus=0
 UPDATE dbo.[Order] SET AuditStatus=${auditStatus},AuditTime=GETDATE(),AuditName='${auditName}'
 WHERE id=${orderId}
   </update>
+  
+    <!-- 获取合同头  2015年9月30日13:36:59茹化肖 -->
+  <select id="getOrderInfo" parameterType="com.renrentui.renrenentity.req.OrderChildReq" resultType="com.renrentui.renrenentity.domain.OrderChildInfoModel">
+SELECT rrt.TaskTitle,c.ClienterName,b.CompanyName FROM dbo.[Order] AS o (NOLOCK)
+        JOIN dbo.RenRenTask AS rrt (NOLOCK) ON o.TaskId=rrt.id
+		JOIN dbo.Clienter AS c (nolock) ON c.id=o.ClienterId
+		JOIN dbo.Business AS b (NOLOCK) ON B.ID=rrt.BusinessId
+        WHERE o.id=${orderId}
+  </select>
+  
+     <!-- 获取合同控件值信息  2015年9月30日13:36:59茹化肖 -->
+  <select id="getOrderChildList" parameterType="com.renrentui.renrenentity.req.OrderChildReq" resultType="com.renrentui.renrenentity.domain.OrderChildModel">
+SELECT  
+        Title ,
+        oc.ControlValue ,
+        tc.ControlType
+FROM    dbo.OrderChild AS oc
+        LEFT JOIN dbo.TemplateDetailSnapshot AS tds ON tds.SnapshotTemplateId = oc.TemplateSnapshotId  AND tds.Name = oc.ControlName
+        LEFT JOIN dbo.TemplateControl AS tc ON tds.ControlId = tc.id
+WHERE   oc.IsEnable = 1
+        AND oc.OrderId =${orderId}
+  </select>
 </mapper>
