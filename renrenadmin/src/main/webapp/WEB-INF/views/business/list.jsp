@@ -32,7 +32,7 @@ width: 100%;
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">公司名称:</label>
+							<label class="col-sm-4 control-label">商户名称:</label>
 							<div class="col-sm-8">						
 								<input type="text" class="form-control" name="txtCompanyName"  id="txtCompanyName" />
 							</div>
@@ -98,7 +98,7 @@ width: 100%;
 					<fieldset>
 			            <br>
 			             <div class="control-group">
-			                <label >公司名称：</label> 
+			                <label >商户名称：</label> 
 			                    <input  name="txtCompanyNameA" id="txtCompanyNameA" type="text">			                    
 
 			            </div>
@@ -124,12 +124,14 @@ width: 100%;
 			            </div> 
 			        </fieldset>
 			        <fieldset>			        
-		<img id="showBusiImage" src="" width="200px" height="200px" />
+<!-- 		<img id="showBusiImage" src="" width="200px" height="200px" />
 		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="text" type="hidden">	
-		<iframe src=http://upload.aaa.com/aaa.html id="uploadframe"></iframe>
+		<iframe src=http://upload.aaa.com/aaa.html id="uploadframe"></iframe> -->
 			
-<!-- 					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />   -->
-<!--  <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>   -->
+			<img id="showBusiImage" src="" width="200px" height="200px" />
+			<input  name="txtshowBusiImage" id="txtshowBusiImage" type="hidden">
+					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" /> 
+  <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/> 
 			        </fieldset>
 			
 				</div>
@@ -149,7 +151,7 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<h4 class="modal-title">商户冲值</h4>				
+				<h4 class="modal-title">商户充值</h4>				
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
@@ -158,14 +160,14 @@ width: 100%;
 						  <div class="control-group">
 		                <label>公司名称：</label>
 		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
-		                <input name="txtIdD" id="txtIdD" type="hidden">
+		                <input name="txtBusinessIdD" id="txtBusinessIdD" type="hidden">
 		            	</div>
 			            <div class="control-group">
 			                <label>商户电话：</label>
 			                <input name="txtPhoneNoD" id="txtPhoneNoD" disabled="disabled" type="text">
 			            </div>
 			            <div class="control-group">
-			                <label>余&nbsp;&nbsp;额：</label>
+			                <label>充值金额：</label>
 			                <input name="txtAmountD" id="txtAmountD" type="text">元
 			            </div>
 			            <div class="control-group">
@@ -191,6 +193,62 @@ width: 100%;
 </div>
 
 
+<div tabindex="-1" class="modal inmodal" id="modifyBusiness"
+	role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">修改商户</h4> 				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+			            <br>
+			             <div class="control-group">
+			                <label >公司名称：</label> 
+			                    <input  name="txtCompanyNameM" id="txtCompanyNameM" type="text">			                    
+							<input name="txtBusinessIdM" id="txtBusinessIdM" type="hidden">
+			            </div>
+			            <div class="control-group">
+			                <label>电话号码：</label> 
+			                <input  name="txtPhoneNoM" id="txtPhoneNoM" type="text">					               
+			            </div>
+			            <div class="control-group">
+			                <label >登录名称：</label> 
+			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >地&nbsp;&nbsp;址：</label> 
+			                    <input  name="txtAddressM" id="txtAddressM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >所属城市：</label> 
+			                    <input  name="txtCityNameM" id="txtCityNameM" type="text">
+			            </div> 
+			             <div class="control-group">
+			                <label >站&nbsp;&nbsp;点：</label> 
+			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
+			            </div> 
+			        </fieldset>
+			        <fieldset>			        			        
+		<img id="showBusiImage" src="" width="200px" height="200px" />		
+		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="hidden">
+					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
+ <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>  
+			        </fieldset>
+			
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="AddBusiness()">保存</button>
+				</div> 
+			</small>
+		</div>  
+	</div>
+</div>
 <script>
 
 var jss={
@@ -240,19 +298,18 @@ function AddBusiness(){
     var reg=/[\u4e00-\u9fa5]+/;   
     
     if(companyName.trim().length <=4 || companyName.trim().length>30){
-    	alert("公司名称必须在5-30个字符");
+    	alert("商户名称必须在5-30个字符");
     	return;
     }
     if (reg.test(loginName)){
-    	alert("登录账号不能为中文字符");
+    	alert("登录名称不能为中文字符");
     	return;
     }
     if(loginName.trim().length <6 || loginName.trim().length>20){
-    	alert("登录账号除中文外6-20位字符");
+    	alert("登录名称除中文外6-20位字符");
     	return;
-    }   
+    }       
     
-    alert(logo);
     var paramaters = {
             "companyName": companyName,
             "phoneNo": phoneNo,
@@ -262,26 +319,21 @@ function AddBusiness(){
             "webSite": webSite,
             "logo": logo 
         };
-   var url = "<%=basePath%>/business/addbusiness";
-   var la = layer.confirm('是否确认创建商户？', {
-	    btn: ['确认','取消'], //按钮
-	    shade: false //显示遮罩
-	},function(){
-		layer.close(la);
+   var url = "<%=basePath%>/business/addbusiness";  
 		$.ajax({
 	           type: 'POST',
 	           url: url,
 	           data: paramaters,
-	           success: function (result) {
-	        	   window.location.href = "<%=basePath%>/business/list";
-	        	   //alert(result.message);
-	             <%--   if (result.responseCode > 0) {
-	                   window.location.href = "<%=basePath%>/business/list";
-	               } --%>
-	        	  
+	           success: function (result) {        
+	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+						window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
 	           }
-	       });
-	});   	    
+	       });	 	    
 }
 
     function ajaxFileUpload()  
