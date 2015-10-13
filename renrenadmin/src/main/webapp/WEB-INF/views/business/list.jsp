@@ -125,9 +125,11 @@ width: 100%;
 			        </fieldset>
 			        <fieldset>			        
 		<img id="showBusiImage" src="" width="200px" height="200px" />
-		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="text" type="hidden">		
-					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
- <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>  
+		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="text" type="hidden">	
+		<iframe src=http://upload.aaa.com/aaa.html id="uploadframe"></iframe>
+			
+<!-- 					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />   -->
+<!--  <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>   -->
 			        </fieldset>
 			
 				</div>
@@ -286,7 +288,7 @@ function AddBusiness(){
     {      	
      var typeValue=<%=UploadForm.Clienter.value() %>;
 	$.ajaxFileUpload({      
-    url:'<%=basePath %>/FileUpload?type='+typeValue,         
+    url:'http://192.168.1.38/upload/uploadimg?uploadFrom=1',         
     secureuri:false,  
     fileElementId:'uploadFileInput',                         //文件选择框的id属性  
     //dataType: 'json',                                     //服务器返回的格式，可以是json  	
