@@ -11,16 +11,17 @@
 				<input id="txtClienterName" type="tel" name="txtClienterName" placeholder="地推员姓名" class="form-control"/>
 		</div>
 	</div>
-	<div class="col-lg-3">
+<%-- 	<div class="col-lg-3">
 		<div class="form-group">
-			<div class="col-sm-4" style="line-height:30px;font-size:14px;">
+			<div class="col-sm-5" style="line-height:30px;font-size:14px;">
 		     	审核状态:
 		    </div>
-			<div class="col-sm-8">
+			<div class="col-sm-7">
 				<%=HtmlHelper.getSelect("clienterStatus", EnumHelper.GetEnumItems(ClienterStatus.class),"desc", "value", null, "-1", "全部")%>
 			</div>
 		</div>
-	</div>
+	</div> --%>
+	<input type="hidden" name="clienterStatus" id="clienterStatus" value="1"/> 
 	<div class="col-lg-2">
 		<div class="form-group">
 				<input id="txtPhoneNo" type="tel" name="txtPhoneNo" placeholder="手机号" class="form-control"/>

@@ -38,8 +38,8 @@
 				order="AFTER">
 				select @@IDENTITY as id
 	  </selectKey>
-	    insert into Clienter (ClienterName, PhoneNo, Password)
-	    values (#{name,jdbcType=NVARCHAR}, #{phoneNo,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR});
+	    insert into Clienter (ClienterName, PhoneNo, Password,[Status])
+	    values (#{name,jdbcType=NVARCHAR}, #{phoneNo,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR},1);
 <!-- 		values('1','1','1') -->
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Clienter" >

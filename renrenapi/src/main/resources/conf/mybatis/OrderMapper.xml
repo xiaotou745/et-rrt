@@ -250,10 +250,7 @@ WHERE   id = ${orderId}
   <!-- 获取订单审核列表 茹化肖-->
   
    <sql id="getOrderAuditListWhere">
-		1=1		
-		<if test="businessId != null and businessId!=0">
-			b.id=${businessId}
-		</if>		
+		1=1			
 		<if test="orderId != null and orderId!=0">
 			 AND o.id=${orderId}
 		</if>
@@ -264,6 +261,9 @@ WHERE   id = ${orderId}
 		<if test="companyName != null and companyName!=''">
 			AND b.CompanyName LIKE ''%${companyName}%''
 		</if>
+		<if test="clienterName != null and clienterName!=''">
+			AND c.ClienterName LIKE ''%${clienterName}%''
+		</if>	
 	
 	</sql>
 	<select id="getOrderAuditList" resultType="com.renrentui.renrenentity.domain.OrderAudit"
