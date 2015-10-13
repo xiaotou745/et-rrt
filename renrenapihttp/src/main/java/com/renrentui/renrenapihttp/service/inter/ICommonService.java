@@ -1,12 +1,8 @@
 package com.renrentui.renrenapihttp.service.inter;
-import java.util.List;
-
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.AppVersion;
 import com.renrentui.renrenentity.req.VersionCheckReq;
@@ -30,6 +26,16 @@ public interface ICommonService {
 	@POST
 	@Path("/versioncheck")
 	 public HttpResultModel<AppVersion> versionCheck(VersionCheckReq para);
+
+	/**
+	 * C端获取所有的筛选条件类型
+	 * @author CaoHeYang
+	 * @date 20150909
+	 * @return
+	 */
+	@POST
+	@Path("/getrecordtypec")
+	public HttpResultModel<List<String>> getRecordtypeC();	
 
 }
 
