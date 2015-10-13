@@ -1,6 +1,9 @@
 package com.renrentui.renrenapi.dao.impl;
 
 
+
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -10,8 +13,11 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.OrderAudit;
+import com.renrentui.renrenentity.domain.OrderChildInfoModel;
+import com.renrentui.renrenentity.domain.OrderChildModel;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.OrderAuditReq;
+import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 @Repository
@@ -127,4 +133,29 @@ public class OrderDao extends DaoBase implements IOrderDao{
 		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.outTimeCanelOrder";
 		int count= getMasterSqlSessionUtil().update(statement);
 	}
+
+	/**
+	 * 获取合同头信息
+	 */
+	@Override
+	public OrderChildInfoModel getOrderInfo(OrderChildReq req) {
+		
+		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderInfo";
+		return getReadOnlySqlSessionUtil().selectOne(statement,req);
+	}
+	/**
+	 * 获取合同控件信息
+	 */
+	@Override
+	public ArrayList<OrderChildModel> getOrderChildList(OrderChildReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderChildList";
+		List<OrderChildModel> list= getReadOnlySqlSessionUtil().selectList(statement,req);
+		if(list.size()>0)
+		{
+			return (ArrayList<OrderChildModel>)list;
+		}
+		return null;
+	}
+	
+	
 }

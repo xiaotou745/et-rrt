@@ -2,7 +2,9 @@ package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
+import com.renrentui.renrenentity.domain.OrderChildInfoModel;
 import com.renrentui.renrenentity.req.OrderAuditReq;
+import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 
 /**
@@ -22,5 +24,9 @@ public interface IOrderService {
 	 * @date 20151009
 	 */
 	public void outTimeCanelOrder();
+	
+	public OrderChildInfoModel getOrderChildInfo(OrderChildReq req);
+	
+	public String downLoadOrderInfo(OrderChildReq req);
 
 }

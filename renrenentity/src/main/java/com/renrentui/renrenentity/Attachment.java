@@ -5,8 +5,6 @@ import java.util.Date;
 public class Attachment {
     private Long id;
 
-    private Long businessId;
-
     private Long taskId;
 
     private String attachmentName;
@@ -22,14 +20,6 @@ public class Attachment {
     public void setId(Long id) {
         this.id = id;
     }
-
-	public Long getBusinessId() {
-		return businessId;
-	}
-
-	public void setBusinessId(Long businessId) {
-		this.businessId = businessId;
-	}
 
 	public Long getTaskId() {
 		return taskId;

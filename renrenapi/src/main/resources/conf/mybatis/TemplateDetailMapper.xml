@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateDetailDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.TemplateDetail" >
-    <id column="Id" property="id" jdbcType="BIGINT" />
-    <result column="TemplateId" property="templateId" jdbcType="BIGINT" />
-    <result column="ControlId" property="controlid" jdbcType="BIGINT" />
-    <result column="OrderNum" property="ordernum" jdbcType="INTEGER" />
-    <result column="Name" property="name" jdbcType="NVARCHAR" />
-    <result column="Title" property="title" jdbcType="NVARCHAR" />
-    <result column="DefaultValue" property="defaultvalue" jdbcType="NVARCHAR" />
-    <result column="ControlData" property="controldata" jdbcType="NVARCHAR" />
-  </resultMap>
   <sql id="Base_Column_List" >
     Id, TemplateId,ControlId, OrderNum, Name, Title, DefaultValue, ControlData
   </sql>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByTemplateId" parameterType="java.lang.Long" >
     delete from TemplateDetail
-    where Id = #{id,jdbcType=BIGINT}
+    where TemplateId = #{templateId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.TemplateDetail" >
     insert into TemplateDetail (templateId,ControlId, OrderNum, 
@@ -42,10 +32,15 @@
         DefaultValue ,
         ControlData ,
         OrderNum
-FROM    dbo.TemplateDetail AS td ( NOLOCK )
+FROM    dbo.TemplateDetailSnapshot  AS td ( NOLOCK )
         LEFT JOIN dbo.TemplateControl AS tc ( NOLOCK ) ON td.ControlId = tc.id
-WHERE   td.TemplateId = #{templateId,jdbcType=INTEGER}
+WHERE   td.SnapshotTemplateId = #{templateId,jdbcType=INTEGER}
 ORDER BY OrderNum ASC
   </select>
+  <select id="listByTemplateId" resultType="com.renrentui.renrenentity.TemplateDetail" parameterType="java.lang.Long" >
+    SELECT  * 
+FROM    dbo.TemplateDetail  AS td ( NOLOCK )
+WHERE   td.TemplateId = #{templateId,jdbcType=INTEGER} order by OrderNum
 
+  </select>
 </mapper>

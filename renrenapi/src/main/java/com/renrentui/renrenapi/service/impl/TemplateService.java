@@ -39,8 +39,21 @@ public class TemplateService implements ITemplateService {
 	}
 
 	@Override
-	public TemplateModel detail(int templateId) {
-		return templateDao.detail(templateId);
+	public TemplateModel detail(Long templateId) {
+		TemplateModel result= new TemplateModel();
+		Template model=templateDao.detail(templateId);
+		List<TemplateDetail> detailList=templateDetailDao.listByTemplateId(templateId);
+		result.setId(model.getId());
+		result.setTemplateName(model.getTemplateName());
+		result.setRemark(model.getRemark());
+		result.setStatus(model.getStatus());
+		result.setBusinessId(model.getBusinessId());
+		result.setCreateName(model.getCreateName());
+		result.setCreateTime(model.getCreateTime());
+		result.setLastOptName(model.getLastOptName());
+		result.setLastOptTime(model.getLastOptTime());
+		result.setDetailList(detailList);
+		return result;
 	}
 
 	@Override
@@ -49,13 +62,24 @@ public class TemplateService implements ITemplateService {
 	}
 
 	@Override
-	public List<Template> getAllList() {
-		return templateDao.getAllList();
+	public List<Template> getAllList(PagedTemplateReq req) {
+		return templateDao.getAllList(req);
 	}
 
 	@Override
 	public int setTemplateStatus(UpdateStatusReq req) {
 		return templateDao.setTemplateStatus(req);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public int update(TemplateModel record) {
+		 int result=templateDao.update(record);
+		 if (result>0) {
+			 templateDetailDao.deleteByTemplateId(record.getId());
+			 templateDetailDao.insertList(record.getDetailList());
+		 }
+		 return result;
 	}
 
 }

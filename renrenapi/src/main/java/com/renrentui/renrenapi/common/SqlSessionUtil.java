@@ -54,6 +54,9 @@ public class SqlSessionUtil {
 	 */
 	public <E> PagedResponse<E> selectPageList(String statement, Object parameter) {
 		try {
+			if (parameter==null) {
+				throw new RuntimeException("request不能为null");
+			}
 			if (!(parameter instanceof PagedRequestBase)) {
 				throw new RuntimeException("分页请求必须继承于PagedRequestBase");
 			}

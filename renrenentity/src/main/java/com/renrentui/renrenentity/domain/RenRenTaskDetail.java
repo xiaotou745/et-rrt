@@ -8,6 +8,7 @@ import com.renrentui.renrenentity.TaskCityRelation;
 
 public class RenRenTaskDetail{
 private RenRenTask taskInfo;
+private Long templateId;
 private List<TaskCityRelation> cityRelationList;
 private List<Attachment> attachmentsList;
 public List<TaskCityRelation> getCityRelationList() {
@@ -27,5 +28,11 @@ public RenRenTask getTaskInfo() {
 }
 public void setTaskInfo(RenRenTask taskInfo) {
 	this.taskInfo = taskInfo;
+}
+public Long getTemplateId() {
+	return templateId;
+}
+public void setTemplateId(Long templateId) {
+	this.templateId = templateId;
 }
 }

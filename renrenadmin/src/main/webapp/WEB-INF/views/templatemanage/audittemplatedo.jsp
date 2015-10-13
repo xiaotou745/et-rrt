@@ -9,11 +9,15 @@
 <%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
 <%@page import="com.renrentui.renrenentity.domain.PageTemplateModel"%>
 <%@page import="com.renrentui.renrencore.enums.TemplateStatus"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%
+	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
+%>
 <table
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr>
-			<th>编号</th>
+			<th style="width: 80px;">编号</th>
 			<th style="width: 200px;">模板名称</th>
 			<th style="width: 150px;">创建人</th>
 			<th style="width: 150px;">创建时间</th>
@@ -34,7 +38,7 @@
 		%>
 		<tr>
 			<td><%=i + 1%></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getTemplateName())%> </td>
+			<td><a class="blue2" href="<%=basePath%>/templatemanage/detail?templateId=<%=data.get(i).getId()%>"><%=ParseHelper.ShowString(data.get(i).getTemplateName())%></a></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getCreateName())%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getBusinessName())%></td>

@@ -99,7 +99,7 @@ public class AccountController {
 	@RequestMapping("updateuser")
 	@ResponseBody
 	public int updateUser(HttpServletRequest request,AccountInfo account) {
-		if (account.getPassWord()!=null||!account.getPassWord().isEmpty()) {
+		if (account.getPassWord()!=null&&!account.getPassWord().isEmpty()) {
 			String password = MD5Util.MD5(account.getPassWord());
 			account.setPassWord(password);
 		}

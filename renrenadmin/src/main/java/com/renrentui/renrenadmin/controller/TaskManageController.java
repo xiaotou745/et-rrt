@@ -19,15 +19,18 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
+import com.renrentui.renrenapi.service.inter.IBusinessBalanceService;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
+import com.renrentui.renrencore.enums.TemplateStatus;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.Business;
+import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.Template;
@@ -35,6 +38,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
+import com.renrentui.renrenentity.req.PagedTemplateReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 
@@ -49,6 +53,8 @@ public class TaskManageController {
 	private IPublicProvinceCityService publicProvinceCityService;
 	@Autowired
 	private IRenRenTaskService renRenTaskService;
+	@Autowired
+	private IBusinessBalanceService businessBalanceService;
 	@RequestMapping("newtask")
 	public ModelAndView newTask() {
 		ModelAndView model = new ModelAndView("adminView");
@@ -57,8 +63,7 @@ public class TaskManageController {
 		model.addObject("viewPath", "taskmanage/newtask");
 		List<Business> datalist=businessService.getAllList();
 		model.addObject("businessData", datalist);
-		List<Template> templatelist=templateService.getAllList();
-		model.addObject("templatelist", templatelist);
+		model.addObject("templatelist", getTemplateList());
 		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
 		
 		model.addObject("provincelist", getOpenCityByJiBie(list,1));
@@ -68,6 +73,33 @@ public class TaskManageController {
 		model.addObject("city_region", getCityStr(regionlist));
 		return model;
 	}
+
+	private String getTemplateList() {
+		PagedTemplateReq req=new PagedTemplateReq();
+		req.setStatus(TemplateStatus.Valid.value());
+		List<Template> templateList= templateService.getAllList(req);
+		Map<Long, StringBuilder> resulMap=new HashMap<Long, StringBuilder>();
+		for (Template item : templateList) {
+			if (resulMap.containsKey(item.getBusinessId())) {
+				resulMap.get(item.getBusinessId()).append(";"+item.getId()+"|"+item.getTemplateName());
+			}else {
+				StringBuilder builder=new StringBuilder();
+				builder.append(item.getId()+"|"+item.getTemplateName());
+				resulMap.put(item.getBusinessId(), builder);
+			}
+		}
+		StringBuilder resultBuilder=new StringBuilder();
+		for (Map.Entry<Long, StringBuilder> entry : resulMap.entrySet()) {  
+			if (resultBuilder.toString().isEmpty()) {
+				resultBuilder.append(entry.getKey()+"="+entry.getValue().toString());
+			}else {
+				resultBuilder.append("#"+entry.getKey()+"="+entry.getValue().toString());
+			}
+			
+		}  
+
+		return resultBuilder.toString();
+	}
 	private String getCityStr(List<PublicProvinceCity> list){
 		Map<Integer, StringBuilder> resulMap=new HashMap<Integer, StringBuilder>();
 		for (PublicProvinceCity item : list) {
@@ -75,13 +107,18 @@ public class TaskManageController {
 				resulMap.get(item.getParentCode()).append(";"+item.getCode()+"|"+item.getName());
 			}else {
 				StringBuilder builder=new StringBuilder();
-				builder.append(";"+item.getCode()+"|"+item.getName());
+				builder.append(item.getCode()+"|"+item.getName());
 				resulMap.put(item.getParentCode(), builder);
 			}
 		}
 		StringBuilder resultBuilder=new StringBuilder();
 		for (Map.Entry<Integer, StringBuilder> entry : resulMap.entrySet()) {  
-			resultBuilder.append("#"+entry.getKey()+"="+entry.getValue().toString());
+			if (resultBuilder.toString().isEmpty()) {
+				resultBuilder.append(entry.getKey()+"="+entry.getValue().toString());
+			}else {
+				resultBuilder.append("#"+entry.getKey()+"="+entry.getValue().toString());
+			}
+			
 		}  
 
 		return resultBuilder.toString();
@@ -107,7 +144,6 @@ public class TaskManageController {
 	public int saveTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
 		taskItem.setPusher("");
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setTaskCycle(0d);
 		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
 		taskItem.setEndTime(ParseHelper.ToDate(endDate));
 		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
@@ -123,16 +159,17 @@ public class TaskManageController {
 		List<Integer> regionCodes=new ArrayList<>();
 		Integer provinceCode=ParseHelper.ToInt(request.getParameter("provinceCode"),0);
 		if (provinceCode>-1) {
-			Long cityCode=ParseHelper.ToLong(request.getParameter("cityCode"),0);
+			Integer cityCode=ParseHelper.ToInt(request.getParameter("cityCode"),0);
 			if (cityCode>-1) {
-				String name="";
-				Enumeration pNames=request.getParameterNames();
-				while(pNames.hasMoreElements()){    
-				    name=(String)pNames.nextElement();  
-					if (name.indexOf("regionCode")==0) {
-						regionCodes.add(ParseHelper.ToInt(request.getParameter(name),0));
-					}
-				}
+				regionCodes.add(cityCode);
+//				String name="";
+//				Enumeration pNames=request.getParameterNames();
+//				while(pNames.hasMoreElements()){    
+//				    name=(String)pNames.nextElement();  
+//					if (name.indexOf("regionCode")==0) {
+//						regionCodes.add(ParseHelper.ToInt(request.getParameter(name),0));
+//					}
+//				}
 			}else {
 				regionCodes.add(provinceCode);
 			}
@@ -165,7 +202,9 @@ public class TaskManageController {
 		model.addObject("viewPath", "taskmanage/audittask");
 		List<Business> datalist=businessService.getAllList();
 		model.addObject("businessData", datalist);
-		List<Template> templatelist=templateService.getAllList();
+		PagedTemplateReq req=new PagedTemplateReq();
+		req.setStatus(TemplateStatus.Valid.value());
+		List<Template> templatelist=templateService.getAllList(req);
 		model.addObject("templatelist", templatelist);
 		return model;
 	}
@@ -200,8 +239,7 @@ public class TaskManageController {
 		model.addObject("taskInfo", taskInfo);
 		List<Business> datalist=businessService.getAllList();
 		model.addObject("businessData", datalist);
-		List<Template> templatelist=templateService.getAllList();
-		model.addObject("templatelist", templatelist);
+		model.addObject("templatelist", getTemplateList());
 		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
 		
 		model.addObject("provincelist", getOpenCityByJiBie(list,1));
@@ -216,7 +254,6 @@ public class TaskManageController {
 	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
 		taskItem.setPusher("");
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setTaskCycle(0d);
 		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
 		taskItem.setEndTime(ParseHelper.ToDate(endDate));
 		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
@@ -225,5 +262,14 @@ public class TaskManageController {
 		List<Integer> regionCodes=getRegionCodeList(request);
 		List<Attachment> attachments=getAttachList(request);
 		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
+	}
+	@RequestMapping("getbusinessbanlance")
+	@ResponseBody
+	public double getBusinessBanlance(Long businessId){
+		BusinessBalance balance= businessBalanceService.selectById(businessId);
+		if (balance!=null) {
+			return balance.getBalance();
+		}
+		return 0;
 	}
 }

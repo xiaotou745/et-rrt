@@ -28,7 +28,7 @@ public class RenRenTask {
 
     private Date endTime;
 
-    private Double taskCycle;
+    private Integer taskCycle;
 
     private Integer availableCount;
 
@@ -38,21 +38,20 @@ public class RenRenTask {
 
     private Integer taskTotalCount;
 
-    private Long templateId;
-
+    private Long snapshotTemplateId;
     private String link;
 
     private Short paymentMethod;
-    private int auditCycle;
+    private Integer auditCycle;
 
     private String taskNote;
     private Long targetPeople;
     private String companySummary;
-    public int getAuditCycle() {
+    public Integer getAuditCycle() {
 		return auditCycle;
 	}
 
-	public void setAuditCycle(int auditCycle) {
+	public void setAuditCycle(Integer auditCycle) {
 		this.auditCycle = auditCycle;
 	}
 
@@ -190,11 +189,11 @@ public class RenRenTask {
 		this.endTime = endTime;
 	}
 
-	public Double getTaskCycle() {
+	public Integer getTaskCycle() {
 		return taskCycle;
 	}
 
-	public void setTaskCycle(Double taskCycle) {
+	public void setTaskCycle(Integer taskCycle) {
 		this.taskCycle = taskCycle;
 	}
 
@@ -204,15 +203,6 @@ public class RenRenTask {
 
 	public void setAvailableCount(Integer availableCount) {
 		this.availableCount = availableCount;
-	}
-
-
-	public Long getTemplateId() {
-		return templateId;
-	}
-
-	public void setTemplateId(Long templateId) {
-		this.templateId = templateId;
 	}
 
 	public Short getPaymentMethod() {
@@ -246,6 +236,18 @@ public class RenRenTask {
 	public void setTaskTotalCount(Integer taskTotalCount) {
 		this.taskTotalCount = taskTotalCount;
 	}
-
-    
+	/**
+	 * 快照模板id
+	 * @param templateId
+	 */
+	public Long getSnapshotTemplateId() {
+		return snapshotTemplateId;
+	}
+	/**
+	 * 快照模板id
+	 * @param templateId
+	 */
+	public void setSnapshotTemplateId(Long snapshotTemplateId) {
+		this.snapshotTemplateId = snapshotTemplateId;
+	} 
 }

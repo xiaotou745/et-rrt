@@ -1,152 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao" >
-  <resultMap id="BaseResultMap" type="com.renrentui.renrenentity.TemplateSnapshot" >
-    <id column="Id" property="id" jdbcType="BIGINT" />
-    <result column="BusinessId" property="businessid" jdbcType="BIGINT" />
-    <result column="TemplateName" property="templatename" jdbcType="NVARCHAR" />
-    <result column="CreateName" property="createname" jdbcType="NVARCHAR" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="LastOptName" property="lastoptname" jdbcType="NVARCHAR" />
-    <result column="LastOptTime" property="lastopttime" jdbcType="TIMESTAMP" />
-    <result column="Status" property="status" jdbcType="SMALLINT" />
-    <result column="Remark" property="remark" jdbcType="NVARCHAR" />
-  </resultMap>
   <sql id="Base_Column_List" >
-    Id, BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, Status, 
+    Id, TemplateId,BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, Status, 
     Remark
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="detailById" resultType="com.renrentui.renrenentity.TemplateSnapshot" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from TemplateSnapshot
     where Id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <select id="detailByTemplateId" resultType="com.renrentui.renrenentity.TemplateSnapshot" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from TemplateSnapshot
+    where templateId = #{templateId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByTemplateId" parameterType="java.lang.Long" >
     delete from TemplateSnapshot
-    where Id = #{id,jdbcType=BIGINT}
+    where TemplateId = #{templateId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.TemplateSnapshot" >
-    insert into TemplateSnapshot (Id, BusinessId, TemplateName, 
-      CreateName, CreateTime, LastOptName, 
-      LastOptTime, Status, Remark
-      )
-    values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=BIGINT}, #{templatename,jdbcType=NVARCHAR}, 
-      #{createname,jdbcType=NVARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{lastoptname,jdbcType=NVARCHAR}, 
-      #{lastopttime,jdbcType=TIMESTAMP}, #{status,jdbcType=SMALLINT}, #{remark,jdbcType=NVARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.TemplateSnapshot" >
-    insert into TemplateSnapshot
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="businessid != null" >
-        BusinessId,
-      </if>
-      <if test="templatename != null" >
-        TemplateName,
-      </if>
-      <if test="createname != null" >
-        CreateName,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="lastoptname != null" >
-        LastOptName,
-      </if>
-      <if test="lastopttime != null" >
-        LastOptTime,
-      </if>
-      <if test="status != null" >
-        Status,
-      </if>
-      <if test="remark != null" >
-        Remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="businessid != null" >
-        #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="templatename != null" >
-        #{templatename,jdbcType=NVARCHAR},
-      </if>
-      <if test="createname != null" >
-        #{createname,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastoptname != null" >
-        #{lastoptname,jdbcType=NVARCHAR},
-      </if>
-      <if test="lastopttime != null" >
-        #{lastopttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=SMALLINT},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=NVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.TemplateSnapshot" >
-    update TemplateSnapshot
-    <set >
-      <if test="businessid != null" >
-        BusinessId = #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="templatename != null" >
-        TemplateName = #{templatename,jdbcType=NVARCHAR},
-      </if>
-      <if test="createname != null" >
-        CreateName = #{createname,jdbcType=NVARCHAR},
-      </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastoptname != null" >
-        LastOptName = #{lastoptname,jdbcType=NVARCHAR},
-      </if>
-      <if test="lastopttime != null" >
-        LastOptTime = #{lastopttime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        Status = #{status,jdbcType=SMALLINT},
-      </if>
-      <if test="remark != null" >
-        Remark = #{remark,jdbcType=NVARCHAR},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.TemplateSnapshot" >
-    update TemplateSnapshot
-    set BusinessId = #{businessid,jdbcType=BIGINT},
-      TemplateName = #{templatename,jdbcType=NVARCHAR},
-      CreateName = #{createname,jdbcType=NVARCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      LastOptName = #{lastoptname,jdbcType=NVARCHAR},
-      LastOptTime = #{lastopttime,jdbcType=TIMESTAMP},
-      Status = #{status,jdbcType=SMALLINT},
-      Remark = #{remark,jdbcType=NVARCHAR}
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
-      <insert id="copySnapshot" parameterType="com.renrentui.renrenentity.req.TemplateSnapshotReq" >
+    <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from TemplateSnapshot
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="copySnapshot" parameterType="com.renrentui.renrenentity.req.TemplateSnapshotReq" >
   	  <selectKey resultType="java.lang.Long" keyProperty="templateSnapshotId"
 				order="AFTER">
 				select @@IDENTITY as templateSnapshotId
 	  </selectKey>
-	  Insert into TemplateSnapshot(BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, Status, 
+	  Insert into TemplateSnapshot(TemplateId,BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, Status, 
     Remark) 
-      select BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, Status, 
+      select #{templateId,jdbcType=BIGINT}, BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, Status, 
     Remark from Template WHERE id=#{templateId,jdbcType=BIGINT}
   </insert>
 </mapper>

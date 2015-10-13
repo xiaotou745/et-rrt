@@ -1,5 +1,7 @@
 package com.renrentui.renrenapihttp.service.impl;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
@@ -28,7 +30,8 @@ import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
-import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.FileUploadReq;
+import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
@@ -120,7 +123,12 @@ public class UsercService implements IUsercService {
 			resultModel.setMsg(WithdrawState.Failure.desc());
 			return resultModel;
 		}		
-		
+		if(req.getAmount()<=0)
+		{
+			resultModel.setCode(WithdrawState.ParaError.value());
+			resultModel.setMsg(WithdrawState.ParaError.desc());
+			return resultModel;
+		}
 		WithdrawState code=clienterService.WithdrawC(req);		
 		resultModel.setCode(code.value());
 		resultModel.setMsg(code.desc());
@@ -199,17 +207,15 @@ public class UsercService implements IUsercService {
 			String phoneNo=req.getPhoneNo();
 			// 类型 1注册 2修改密码 3忘记密码
 			boolean checkPhoneNo=clienterService.isExistPhoneC(phoneNo);
-			if (req.getsType() == 1) {
-				// 注册
-				//手机号存在
-				if(checkPhoneNo){
+			if (req.getsType() == 1) {				// 注册
+				if(checkPhoneNo){				//手机号存在
 					return resultModel.setCode(SendSmsType.PhoneExists.value()).setMsg(
 							SendSmsType.PhoneExists.desc());//该手机号已经存在，不能注册
 				}
 				key = RedissCacheKey.RR_Clienter_sendcode_register
 						+ phoneNo;
 			} 
-			if(!checkPhoneNo){
+			else if(!checkPhoneNo){     //修改密码  忘记密码   手机号不存在
 				return resultModel.setCode(SendSmsType.PhoneNotExists.value()).setMsg(
 						SendSmsType.PhoneNotExists.desc());//该手机号不存在，不能修改或忘记密码
 			}
@@ -308,5 +314,38 @@ public class UsercService implements IUsercService {
 		return resultModel.setCode(ModifyUserCReturnCode.Success.value()).setMsg(ModifyUserCReturnCode.Success.desc());
 	}
 
+	/**
+	 * 上传文件
+	 * @author 胡灵波
+	 * @date 2015年10月12日 15:58:42
+	 * @return
+	 *//*
+	@Override
+	public HttpResultModel<Object> FileUpload(FileUploadReq req) {
+		HttpResultModel<Object> resultModel=new HttpResultModel<Object>();       		
+		
+		byte [] bytes=req.getBytes();
+		String fileName=req.getFileName();
+		int uploadForm=req.getUploadForm();
+		
+		FileOutputStream fos = null;  
+		       try{  
+		            fos = new FileOutputStream("F:\\"+fileName);  
+		              
+		            //将字节数组bytes中的数据，写入文件输出流fos中  
+		            fos.write(bytes);  
+		            fos.flush();  
+		        }catch (Exception e){  
+		            e.printStackTrace();  		       
+		        }finally{  
+		            try {  
+		                fos.close();  
+		            } catch (IOException e) {  
+		                e.printStackTrace();  
+		            }     
+		        }  		        
+
+       return resultModel;
+	}*/
 
 }

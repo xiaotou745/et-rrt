@@ -4,7 +4,7 @@
   <sql id="Base_Column_List" >
     Id, TaskTitle, TaskNotice, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
     ModifyName, ModifyTime, BeginTime, EndTime, TaskCycle, AvailableCount, Amount, status, 
-    TaskTotalCount, templateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary
+    TaskTotalCount, SnapshotTemplateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary
   </sql>
   <select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
     select 
@@ -23,7 +23,7 @@
       CreateName, CreateTime, ModifyName, 
       ModifyTime, BeginTime, EndTime, 
       TaskCycle, AvailableCount, Amount, 
-      status, TaskTotalCount, templateId, 
+      status, TaskTotalCount, SnapshotTemplateId, 
       Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary)
     values (#{taskTitle,jdbcType=NVARCHAR}, #{taskNotice,jdbcType=NVARCHAR}, 
       #{taskGeneralInfo,jdbcType=NVARCHAR}, #{businessId,jdbcType=BIGINT}, 
@@ -35,7 +35,7 @@
       #{taskCycle,jdbcType=BIGINT}, #{availableCount,jdbcType=INTEGER}, 
       #{amount,jdbcType=DECIMAL}, 
       #{status,jdbcType=INTEGER}, #{taskTotalCount,jdbcType=INTEGER},
-       #{templateId,jdbcType=BIGINT}, 
+       #{snapshotTemplateId,jdbcType=BIGINT}, 
       #{link,jdbcType=NVARCHAR}, #{paymentMethod,jdbcType=SMALLINT},
       #{auditCycle,jdbcType=BIGINT}, #{taskNote,jdbcType=NVARCHAR},
       #{targetPeople,jdbcType=BIGINT}, #{companySummary,jdbcType=NVARCHAR})
@@ -52,7 +52,7 @@ SELECT TOP 1 rrt.id ,
         TaskGeneralInfo ,
         rrt.TaskNote ,
         rrt.BusinessId ,
-        rrt.templateId,
+        rrt.SnapshotTemplateId as templateId,
         Pusher,
         ISNULL(t.TemplateName ,'') AS TemplateName,
         CASE WHEN o.ClienterId >0 THEN 1 ELSE 0 END AS IsHad,--1已经领取 0  没有领取
@@ -62,7 +62,7 @@ SELECT TOP 1 rrt.id ,
         rrt.AuditCycle
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 LEFT JOIN dbo.Business AS b (NOLOCK) ON b.Id = rrt.BusinessId
-LEFT JOIN dbo.TemplateSnapshot AS t (NOLOCK) ON t.id=rrt.templateId AND t.BusinessId = rrt.BusinessId
+LEFT JOIN dbo.TemplateSnapshot AS t (NOLOCK) ON t.id=rrt.SnapshotTemplateId AND t.BusinessId = rrt.BusinessId
 LEFT JOIN dbo.[Order] AS o (NOLOCK) ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
 WHERE rrt.id=${taskId}
   </select>
@@ -118,8 +118,8 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 	    <if test="status != null and status>-1">
 			and a.status=''${status}''
 		</if>
-	    <if test="templateId != null and templateId>0">
-			and a.templateId=''${templateId}''
+	    <if test="snapshotTemplateId != null and snapshotTemplateId>0">
+			and a.SnapshotTemplateId=''${snapshotTemplateId}''
 		</if>
 	    <if test="paymentMethod != null and paymentMethod>0">
 			and a.paymentMethod=''${paymentMethod}''
@@ -132,7 +132,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		{call Sp_CustomPage2015_V1(
 		' a.Id DESC ',
 		'a.*,b.templateName,c.CompanyName as businessName',
-		'RenRenTask a  WITH (NOLOCK) join TemplateSnapshot b  WITH (NOLOCK) on a.templateId=b.id 
+		'RenRenTask a  WITH (NOLOCK) join TemplateSnapshot b  WITH (NOLOCK) on a.snapshotTemplateId=b.id 
 		join Business c  WITH (NOLOCK) on a.businessId=c.id',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />
@@ -285,4 +285,29 @@ order by o.Id asc;
 		=GETDATE()
 		   and Status=1
 	</update>
+	  <update id="update" parameterType="com.renrentui.renrenentity.RenRenTask" >
+    update RenRenTask
+    set TaskTitle = #{taskTitle,jdbcType=NVARCHAR},
+      TaskNotice = #{taskNotice,jdbcType=NVARCHAR},
+      TaskGeneralInfo = #{taskGeneralInfo,jdbcType=NVARCHAR},
+      BusinessId = #{businessId,jdbcType=BIGINT},
+      Pusher = #{pusher,jdbcType=NVARCHAR},
+      ModifyName = #{modifyName,jdbcType=NVARCHAR},
+      ModifyTime = getdate(),
+      BeginTime = #{beginTime,jdbcType=TIMESTAMP},
+      EndTime = #{endTime,jdbcType=TIMESTAMP},
+      TaskCycle = #{taskCycle,jdbcType=DOUBLE},
+      AvailableCount = #{availableCount,jdbcType=INTEGER},
+      Amount = #{amount,jdbcType=DECIMAL},
+      Status = #{status,jdbcType=INTEGER},
+      TaskTotalCount = #{taskTotalCount,jdbcType=INTEGER},
+      SnapshotTemplateId = #{snapshotTemplateId,jdbcType=BIGINT},
+      Link = #{link,jdbcType=NVARCHAR},
+      PaymentMethod = #{paymentMethod,jdbcType=SMALLINT},
+      AuditCycle=#{auditCycle,jdbcType=INTEGER},
+      TaskNote = #{taskNote,jdbcType=NVARCHAR},
+      TargetPeople = #{targetPeople,jdbcType=INTEGER},
+      CompanySummary= #{companySummary,jdbcType=NVARCHAR}
+    where Id = #{id,jdbcType=BIGINT} and (Status=0 or Status=2)
+  </update>
 </mapper>

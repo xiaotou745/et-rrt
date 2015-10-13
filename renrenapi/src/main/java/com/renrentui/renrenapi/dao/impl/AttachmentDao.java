@@ -22,4 +22,10 @@ public class AttachmentDao extends DaoBase implements IAttachmentDao{
 				"com.renrentui.renrenapi.dao.inter.IAttachmentDao.selectByTaskId", taskId);
 	}
 
+	@Override
+	public int deleteByTaskId(Long taskId) {
+		return getMasterSqlSessionUtil().delete(
+				"com.renrentui.renrenapi.dao.inter.IAttachmentDao.deleteByTaskId", taskId);
+	}
+
 }
