@@ -64,11 +64,11 @@ public class BusinessService implements IBusinessService{
 	 * 胡灵波
 	 * 2015年9月29日 16:58:06
 	 * @param req
-	 * @return 临时为1
+	 * @return 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int Add(Business record) {
+	public int add(Business record) {
 		
 		String password = MD5Util.MD5("111111");//默认值
 		record.setPassWord(password);			
@@ -89,6 +89,28 @@ public class BusinessService implements IBusinessService{
 		}			
 	}
 	
+	
+	/**
+	 * 修改商户
+	 * 胡灵波
+	 * 2015年10月13日 22:05:05
+	 * @param req
+	 * @return 
+	 */
+	@Override	
+	public int modify(Business record) {		
+	
+		int bId= businessDao.updateByPrimaryKeySelective(record);		
+
+		if(bId>0 )
+			return 1;
+		else
+		{
+			Error error=new Error("修改商户错误");
+			throw new RuntimeErrorException(error);
+		}			
+	}	
+	
 	/**
 	 * @Des 商户充值
 	 * @Author 胡灵波
@@ -98,7 +120,7 @@ public class BusinessService implements IBusinessService{
 	 */
 	@Override
 	//@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int AddBalance(BusinessBalanceReq req,String userName)
+	public int addBalance(BusinessBalanceReq req,String userName)
 	{
 		int bbId= businessBalanceDao.updateBalanceByBusinessId(req);
 		

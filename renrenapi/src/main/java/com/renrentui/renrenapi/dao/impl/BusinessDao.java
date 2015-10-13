@@ -39,8 +39,8 @@ public class BusinessDao extends DaoBase implements IBusinessDao{
 
 	@Override
 	public int updateByPrimaryKeySelective(Business record) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getMasterSqlSessionUtil().update(
+				"com.renrentui.renrenapi.dao.inter.IBusinessDao.updateByPrimaryKeySelective", record);
 	}
 
 	@Override

@@ -102,8 +102,23 @@ public class BusinessController {
 	@ResponseBody
 	public int addBusiness(Business record) {
 	
-		return businessService.Add(record);
+		return businessService.add(record);
 	}
+	
+	/**
+	 * 添加商户 
+	 * @author hulignbo
+	 * @Date 2015年9月30日 15:35:12
+	 * @param search 查询条件实体
+	 * @return	
+	 */	
+	@RequestMapping("modifybusiness")
+	@ResponseBody
+	public int modifyBusiness(Business record) {
+	
+		return businessService.modify(record);
+	}
+	
 	
 	/**
 	 * 商户充值
@@ -118,7 +133,7 @@ public class BusinessController {
 	
 		UserContext context=UserContext.getCurrentContext(request);		
 		String userName=context.getUserName();
-		return businessService.AddBalance(req,userName);
+		return businessService.addBalance(req,userName);
 	}	
 	
 	/**

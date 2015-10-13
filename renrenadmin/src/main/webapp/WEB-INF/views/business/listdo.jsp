@@ -43,7 +43,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getWebSite()%></td>
 			<td>
 			<a href="javascript:void(0)"  onclick="BusinessDelta('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>')" >充值 </a>
-			<a href="javascript:void(0)"  onclick="BusinessModify('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>')" >修改 </a>
+			<a href="javascript:void(0)"  onclick="BusinessModify('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>', '<%=data.get(i).getLoginName() %>', '<%=data.get(i).getAddress() %>', '<%=data.get(i).getCityName() %>', '<%=data.get(i).getWebSite() %>')" >修改 </a>
 			</td>				
 			
 						
@@ -67,8 +67,27 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	   $('#txtBusinessIdD').val(id);
 	   $('#txtCompanyNameD').val(name);
 	   $('#txtPhoneNoD').val(phone);
-	   $('#businessDeltaShow').modal('show');	   
-	   
+	   $('#businessDeltaShow').modal('show');	   	   
+   }
+   //商户修改
+   function BusinessModify(id, name, phone,loginName,address,cityName,webSite) {
+	   $('#txtBusinessIdM').val(0);
+	   $('#txtCompanyNameM').val('');	   
+	   $('#txtPhoneNoM').val('');	   
+	   $('#txtLoginNameM').val('');
+	   $('#txtAddressM').val('');
+	   $('#txtCityNameM').val('');
+	   $('#txtWebSiteM').val('');	    
+
+	   $('#txtBusinessIdM').val(id);
+	   $('#txtCompanyNameM').val(name);	   
+	   $('#txtPhoneNoM').val(phone);	   
+	    $('#txtLoginNameM').val(loginName);
+	   $('#txtAddressM').val(address);
+	   $('#txtCityNameM').val(cityName);
+	   $('#txtWebSiteM').val(webSite);	 	   
+
+	   $('#modifyBusiness').modal('show');	   	   
    }
   </script>
 	

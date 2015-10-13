@@ -134,17 +134,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Business" >
     update Business
     <set >
-      <if test="companyname != null" >
-        CompanyName = #{companyname,jdbcType=NVARCHAR},
+      <if test="companyName != null" >
+        CompanyName = #{companyName,jdbcType=NVARCHAR},
       </if>
-      <if test="phoneno != null" >
-        PhoneNo = #{phoneno,jdbcType=VARCHAR},
+      <if test="phoneNo != null" >
+        PhoneNo = #{phoneNo,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        PassWord = #{password,jdbcType=VARCHAR},
+      <if test="passWord != null" >
+        PassWord = #{passWord,jdbcType=VARCHAR},
       </if>
-      <if test="loginname != null" >
-        LoginName = #{loginname,jdbcType=VARCHAR},
+      <if test="loginName != null" >
+        LoginName = #{loginName,jdbcType=VARCHAR},
       </if>
       <if test="logo != null" >
         Logo = #{logo,jdbcType=NVARCHAR},
@@ -152,14 +152,14 @@
       <if test="address != null" >
         Address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="citycode != null" >
-        CityCode = #{citycode,jdbcType=INTEGER},
+      <if test="cityCode != null" >
+        CityCode = #{cityCode,jdbcType=INTEGER},
       </if>
-      <if test="cityname != null" >
-        CityName = #{cityname,jdbcType=NVARCHAR},
+      <if test="cityName != null" >
+        CityName = #{cityName,jdbcType=NVARCHAR},
       </if>
-      <if test="website != null" >
-        WebSite = #{website,jdbcType=VARCHAR},
+      <if test="webSite != null" >
+        WebSite = #{webSite,jdbcType=VARCHAR},
       </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}
