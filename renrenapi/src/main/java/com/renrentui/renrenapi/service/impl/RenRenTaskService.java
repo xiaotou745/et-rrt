@@ -567,8 +567,6 @@ public class RenRenTaskService implements IRenRenTaskService{
 			result="合同模板从:"+oldName+"改为了:"+nowTemplate.getTemplateName()+";";
 		}
 		if (needReCreateSnapshot) {
-			templateSnapshotDao.deleteById(oldTaskmodel.getSnapshotTemplateId());
-			templateDetailSnapshotDao.deleteBySnapshotTemplateId(oldTaskmodel.getSnapshotTemplateId());
 			TemplateSnapshotReq req=new TemplateSnapshotReq();
 			req.setTemplateId(newTemplateId);
 			int snapshotResult=templateSnapshotDao.copySnapshot(req);
@@ -579,6 +577,9 @@ public class RenRenTaskService implements IRenRenTaskService{
 			if (detailSnapshotResult==0) {
 				throw new RuntimeException("生成任务的模板详情快照失败");
 			}
+			//重新生成了模板的快照数据之后，才删除原来的模板快照数据
+			templateSnapshotDao.deleteById(oldTaskmodel.getSnapshotTemplateId());
+			templateDetailSnapshotDao.deleteBySnapshotTemplateId(oldTaskmodel.getSnapshotTemplateId());
 			//将当前任务的模板id设置为模板快照表的id
 			record.setSnapshotTemplateId(req.getTemplateSnapshotId());
 		}
