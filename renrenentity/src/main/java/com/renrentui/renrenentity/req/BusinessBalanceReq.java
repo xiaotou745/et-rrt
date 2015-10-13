@@ -8,10 +8,10 @@ public class BusinessBalanceReq {
 
     private Double balance;
     
-    private String remark;
-    
+    private String remark;      
 
-    public Double getBalance() {
+
+	public Double getBalance() {
         return balance;
     }
 

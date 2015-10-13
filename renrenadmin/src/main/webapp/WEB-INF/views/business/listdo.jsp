@@ -16,10 +16,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	<thead>
 		<tr class="tdbg">
 			<th width="%5">编号</th>
-			<th width="10%">公司名称</th>
-			<th width="10%">电话号码</th>
-			<th width="10%">登陆名称</th>
-			<th width="10%">地址</th>
+			<th width="15%">商户名称</th>
+			<th width="15%">电话号码</th>
+			<th width="15%">登录名称</th>
+			<th width="15%">地址</th>
 			<th width="10%">所属城市</th>
 			<th width="10%">站点</th>
 			<th width="10%">操作</th>							
@@ -57,18 +57,17 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
 		responsePageList.getTotalPage())%>
 <script type="text/javascript">
-   //商户冲值 
+   //商户充值 
    function BusinessDelta(id, name, phone) {
- /*       $('#clienterId').val(0);
-       $('#clienterName').val('');
-       $('#clienterPhone').val('');
-       $('#clienterRechargeAmount').val('');
-       $('#rechargeLog').val('');
-       $('#clienterId').val(id);
-       $('#clienterName').val(name);
-       $('#clienterPhone').val(phone); 
-       */
-	   $('#businessDeltaShow').modal('show'); 
+	   $('#txtBusinessIdD').val(0);
+	   $('#txtCompanyNameD').val('');
+	   $('#txtPhoneNoD').val('');
+	   $('#txtRemarkD').val('');
+	   $('#txtBusinessIdD').val(id);
+	   $('#txtCompanyNameD').val(name);
+	   $('#txtPhoneNoD').val(phone);
+	   $('#businessDeltaShow').modal('show');	   
+	   
    }
   </script>
 	

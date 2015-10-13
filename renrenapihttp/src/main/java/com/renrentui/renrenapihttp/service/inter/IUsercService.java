@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
+import com.renrentui.renrenentity.req.FileUploadReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
@@ -102,5 +103,15 @@ public interface IUsercService {
 	@Path("/modifyuserc")
 	public HttpResultModel<Object> modifyuserc (ModifyUserCReq req);
 	
+	/**
+	 * 上传图片
+	 * @author 胡灵波
+	 * @date 2015年10月12日 15:58:42
+	 * @return
+	 */
+	
+/*	@POST
+	@Path("/fileupload")
+	public HttpResultModel<Object> FileUpload(FileUploadReq req); */
 	
 }

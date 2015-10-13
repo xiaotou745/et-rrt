@@ -38,6 +38,7 @@ $(function(){
 	  $("#provinceCode").on("change",provinceChange);
 	  $("#cityCode").on("change",cityChange);
 	  $('#selectAll').on('click',selectAllChange);
+	  initFunction();
 });
 
 function appendAttachRow(fileinfo){
@@ -98,7 +99,8 @@ function provinceChange(){
                 for(j=0;j<tmpcity.length;j++){  
                 	tmpkeyvalue=tmpcity[j].split("|");
                     $("#cityCode").append("<option value='"+tmpkeyvalue[0]+"'>"+tmpkeyvalue[1]+"</option>");     
-                }  
+                }
+                break;
             }  
         }
         $("#divregion").html(""); 
@@ -127,6 +129,7 @@ function cityChange(){
 //                     $("#divregion").append("<input type='checkbox' name='regionCode"+tmpkeyvalue[0]+"' onclick='chanageSelectAll()' value='"+tmpkeyvalue[0]+"' /> <label>"+tmpkeyvalue[1]+"</label>");     
 //                 }  
 //             }  
+//	     	 break;
 //         } 
 //     }catch(e){  
 //         alert(e);     
@@ -194,17 +197,22 @@ function validPage(){
 		return false;
 	}
 	
-	var startDate = $('#beginDate').val();
-  var endDate = $('#endDate').val();
-  if (startDate != "" && endDate != "") {
-      var intStartDate = startDate.replace(/-/g, "");
-      var intEndDate = endDate.replace(/-/g, "");
-      if (intStartDate > intEndDate) {
-          alert('开始日期不能大于结束日期');
-          $('#beginDate').val("");
-          return false;
-      }
-  }
+	  var startDate = $('#beginDate').val();
+	  var endDate = $('#endDate').val();
+	  var intStartDate = startDate.replace(/-/g, "");
+	  var intEndDate = endDate.replace(/-/g, "");
+	  if (intStartDate > intEndDate) {
+	      alert('开始日期不能大于结束日期');
+	      $('#beginDate').val("");
+	      return false;
+	  }
+	var pagestart=new Date(startDate);
+	var myDate = new Date();
+	if(pagestart<myDate){
+		alert("开始日期必须大于等于今天");
+		return;
+	}
+
   $("input[type='text']").each(function(index,e){
 		  if(e.id=="auditCycle"||e.id=="taskTotalCount"||e.id=="amount"||e.id=="taskCycle"){
 				if(isNaN($(e).val())){
@@ -243,4 +251,26 @@ function validPage(){
 //		return;
 //	}
 	return true;
+};
+function initSelectTemplate(templateList,selectedTemplateId){
+	var data=templateList.split("#");
+	var i,j,tmpTemplate=new Array();  
+    var tmpkeyvalue=new Array();
+    var tmpOption=new Array();
+    $("#snapshotTemplateId").html("");
+    for(i=0;i<data.length;i++){
+    	tmpTemplate=data[i].split("=");
+        if($("#businessId").val()==tmpTemplate[0]){  
+        	tmpkeyvalue=tmpTemplate[1].split(";");  
+            for(j=0;j<tmpkeyvalue.length;j++){  
+            	tmpOption=tmpkeyvalue[j].split("|");
+            	if(tmpOption[0]==selectedTemplateId&&selectedTemplateId!=null&&selectedTemplateId!=""){
+            		 $("#snapshotTemplateId").append("<option selected='selected' value='"+tmpOption[0]+"'>"+tmpOption[1]+"</option>");     
+            	}else{
+            		 $("#snapshotTemplateId").append("<option value='"+tmpOption[0]+"'>"+tmpOption[1]+"</option>");     	
+            	}
+            }
+            return;
+        }  
+    }
 };
