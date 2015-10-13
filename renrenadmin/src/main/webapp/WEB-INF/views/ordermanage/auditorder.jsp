@@ -57,7 +57,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">审核状态</label>
 							<div class="col-sm-8">
-								<select id="auditStatus">
+								<select id="auditStatus" class="form-control m-b">
 								<option value=-1>全部</option>
 								<option value=0>待审核</option>
 								<option value=2>审核通过</option>
