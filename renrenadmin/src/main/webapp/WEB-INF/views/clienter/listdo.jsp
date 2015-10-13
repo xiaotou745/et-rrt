@@ -36,9 +36,9 @@
 			    <td><%=i+1 %></td>
                 <td><%=list.get(i).getClienterName() %></td>
                 <td><%=list.get(i).getPhoneNo() %></td>
-                <td><%=list.get(i).getBalance() %></td>
-                <td><%=list.get(i).getWithdraw() %></td>
-                <td><%=list.get(i).getHadWithdraw() %></td>
+                <td><%=ParseHelper.digitsNum( list.get(i).getBalance(), 2)%></td>
+                <td><%=ParseHelper.digitsNum(list.get(i).getWithdraw(), 2)%></td>
+                <td><%=ParseHelper.digitsNum(list.get(i).getHadWithdraw(), 2)%></td>
                 <td><%=ClienterStatus.getEnum(list.get(i).getStatus()).desc() %></td>
                 <td><%=ParseHelper.ToDateString(list.get(i).getLastOptTime())%></td>
                 <td><%=list.get(i).getLastOptName() %></td>
