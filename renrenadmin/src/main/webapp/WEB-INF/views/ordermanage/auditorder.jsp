@@ -30,7 +30,7 @@ width: 100%;
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">商户ID:</label>
+							<label class="col-sm-4 control-label">地推员名称:</label>
 							<div class="col-sm-8">						
 								<input type="text" class="form-control" name="businessId"  id="businessId" />
 							</div>
@@ -38,7 +38,7 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">订单ID:</label>
+							<label class="col-sm-4 control-label">订单编号:</label>
 							<div class="col-sm-8">								
 								<input type="text" class="form-control" name="orderId"  id="orderId" />
 							</div>
