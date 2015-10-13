@@ -45,7 +45,7 @@ String city_region = (String) request.getAttribute("city_region");
 									<input type="text" class="form-control" name="auditCycle" id="auditCycle" />
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
-	  							   小时
+	  							   天
 								</div>
 							</div>
 						</div>
