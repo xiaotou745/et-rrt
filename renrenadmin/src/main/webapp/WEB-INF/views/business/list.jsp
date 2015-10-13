@@ -156,7 +156,7 @@ width: 100%;
 						  <div class="control-group">
 		                <label>商户名称：</label>
 		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
-		                <input name="txtIdD" id="txtIdD" type="hidden">
+		                <input name="txtBusinessIdD" id="txtBusinessIdD" type="hidden">
 		            	</div>
 			            <div class="control-group">
 			                <label>商户电话：</label>
@@ -186,6 +186,63 @@ width: 100%;
 
 </div>
 
+
+<div tabindex="-1" class="modal inmodal" id="modifyBusiness"
+	role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">修改商户</h4> 				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+			            <br>
+			             <div class="control-group">
+			                <label >公司名称：</label> 
+			                    <input  name="txtCompanyNameM" id="txtCompanyNameM" type="text">			                    
+							<input name="txtBusinessIdM" id="txtBusinessIdM" type="hidden">
+			            </div>
+			            <div class="control-group">
+			                <label>电话号码：</label> 
+			                <input  name="txtPhoneNoM" id="txtPhoneNoM" type="text">					               
+			            </div>
+			            <div class="control-group">
+			                <label >登录名称：</label> 
+			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >地&nbsp;&nbsp;址：</label> 
+			                    <input  name="txtAddressM" id="txtAddressM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >所属城市：</label> 
+			                    <input  name="txtCityNameM" id="txtCityNameM" type="text">
+			            </div> 
+			             <div class="control-group">
+			                <label >站&nbsp;&nbsp;点：</label> 
+			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
+			            </div> 
+			        </fieldset>
+			        <fieldset>			        			        
+		<img id="showBusiImage" src="" width="200px" height="200px" />		
+		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="hidden">
+					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
+ <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>  
+			        </fieldset>
+			
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="AddBusiness()">保存</button>
+				</div> 
+			</small>
+		</div>  
+	</div>
+</div>
 <script>
 
 var jss={
