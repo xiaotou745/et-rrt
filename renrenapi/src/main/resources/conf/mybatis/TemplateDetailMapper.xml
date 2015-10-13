@@ -30,7 +30,8 @@
         Title ,
         Name ,
         DefaultValue ,
-        CASE WHEN oc.ControlValue IS NOT NULL THEN oc.ControlValue ELSE td.ControlData END  AS ControlData, ,
+        td.ControlData, 
+        CASE WHEN oc.ControlValue IS NOT NULL THEN oc.ControlValue ELSE '' END  AS HadValue,
         OrderNum
 FROM    dbo.TemplateDetailSnapshot  AS td ( NOLOCK )
         LEFT JOIN dbo.TemplateControl AS tc ( NOLOCK ) ON td.ControlId = tc.id
