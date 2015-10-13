@@ -14,13 +14,18 @@ import org.springframework.web.servlet.ModelAndView;
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
+import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.enums.TemplateStatus;
 import com.renrentui.renrencore.util.ParseHelper;
+import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.Business;
+import com.renrentui.renrenentity.PublicProvinceCity;
+import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateDetail;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.PageTemplateModel;
+import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TemplateModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
@@ -55,9 +60,71 @@ public class TemplateController {
 			child==null||child.isEmpty()) {
 			return -1;
 		}
+		TemplateModel model=getTemplateModel(request,null,tempName,tempRemark,businessId,child);
+		return templateService.insert(model);
+	}
+	@RequestMapping("audittemplate")
+	public ModelAndView auditTemplate() {
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "模板管理");
+		model.addObject("currenttitle", "审核模板");
+		model.addObject("viewPath", "templatemanage/audittemplate");
+		List<Business> datalist=businessService.getAllList();
+		model.addObject("businessData", datalist);
+		return model;
+	}
+
+	@RequestMapping("audittemplatedo")
+	public ModelAndView auditTemplateDo(PagedTemplateReq req) {
+		ModelAndView model = new ModelAndView("templatemanage/audittemplatedo");
+		PagedResponse<PageTemplateModel> resp=templateService.queryTemplate(req);
+		model.addObject("listData", resp);
+		return model;
+	}
+
+	@RequestMapping("settemplatestatus")
+	@ResponseBody
+	public int setTemplateStatus(HttpServletRequest request,UpdateStatusReq req) {
+		UserContext context=UserContext.getCurrentContext(request);
+		req.setUserName(context.getUserName());
+		return templateService.setTemplateStatus(req);
+	}
+	@RequestMapping("detail")
+	public ModelAndView templateDetail(Long templateId) {
+		if (templateId==null||templateId<0) {
+			throw new RuntimeException("templateId不能为空");
+		}
+		TemplateModel templateInfo=templateService.detail(templateId);
+		if (templateInfo==null) {
+			throw new RuntimeException("id="+templateId+"的模板不存在");
+		}
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "模板管理");
+		model.addObject("currenttitle", "修改模板");
+		model.addObject("viewPath", "templatemanage/detail");
+		model.addObject("templateInfo", templateInfo);
+		List<Business> datalist=businessService.getAllList();
+		model.addObject("businessData", datalist);
+		return model;
+	}
+	@RequestMapping("updatetemplate")
+	@ResponseBody
+	public int updateTemplate(HttpServletRequest request,Long id,String tempName,String tempRemark,Long businessId,String child) {
+		if (tempName==null||tempName.isEmpty()||
+				tempRemark==null||tempRemark.isEmpty()||
+				businessId==null||businessId<=0||
+				child==null||child.isEmpty()) {
+				return -1;
+			}
+		TemplateModel model=getTemplateModel(request,id,tempName,tempRemark,businessId,child);
+		model.setCreateName("");
+		return templateService.update(model);
+	}
+	private TemplateModel getTemplateModel(HttpServletRequest request,Long id,String tempName,String tempRemark,Long businessId,String child){
 		UserContext context = UserContext.getCurrentContext(request);
 		
 		TemplateModel record=new TemplateModel();
+		record.setId(id);
 		record.setBusinessId(businessId);
 		record.setLastOptName(context.getUserName());
 		record.setCreateName(context.getUserName());
@@ -71,6 +138,7 @@ public class TemplateController {
 				continue;
 			}
 			TemplateDetail detail=new TemplateDetail();
+			detail.setTemplateId(id);
 			detail.setControlData("");
 			detail.setDefaultValue("");
 			String[] childItem=item.split(";");
@@ -103,32 +171,6 @@ public class TemplateController {
 			detailList.add(detail);
 		}
 		record.setDetailList(detailList);
-		return templateService.insert(record);
-	}
-	@RequestMapping("audittemplate")
-	public ModelAndView auditTemplate() {
-		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "模板管理");
-		model.addObject("currenttitle", "审核模板");
-		model.addObject("viewPath", "templatemanage/audittemplate");
-		List<Business> datalist=businessService.getAllList();
-		model.addObject("businessData", datalist);
-		return model;
-	}
-
-	@RequestMapping("audittemplatedo")
-	public ModelAndView auditTemplateDo(PagedTemplateReq req) {
-		ModelAndView model = new ModelAndView("templatemanage/audittemplatedo");
-		PagedResponse<PageTemplateModel> resp=templateService.queryTemplate(req);
-		model.addObject("listData", resp);
-		return model;
-	}
-
-	@RequestMapping("settemplatestatus")
-	@ResponseBody
-	public int setTemplateStatus(HttpServletRequest request,UpdateStatusReq req) {
-		UserContext context=UserContext.getCurrentContext(request);
-		req.setUserName(context.getUserName());
-		return templateService.setTemplateStatus(req);
+		return record;
 	}
 }

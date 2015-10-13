@@ -11,7 +11,7 @@
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
-List<Template> templatelist = (List<Template>) request.getAttribute("templatelist");
+String templatelist = (String) request.getAttribute("templatelist");
 List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");
 String pro_city = (String) request.getAttribute("pro_city");
 String city_region = (String) request.getAttribute("city_region");
@@ -144,7 +144,7 @@ String city_region = (String) request.getAttribute("city_region");
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">任务介绍: </label>
+								<label class="col-sm-4 control-label">任务描述: </label>
 								<div class="col-sm-8">
 									<textarea maxlength="200"  rows="3" cols="20" class="form-control" name="taskGeneralInfo"
 										id="taskGeneralInfo"></textarea>
@@ -233,14 +233,6 @@ String city_region = (String) request.getAttribute("city_region");
 <!-- 						</div> -->
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">合同模板: </label>
-								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("snapshotTemplateId", templatelist, "templateName", "id", null,null, "全部")%>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
 								<label class="col-sm-4 control-label">关联商户: </label>
 								<div class="col-sm-8">
 									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,null, "全部")%>
@@ -252,6 +244,14 @@ String city_region = (String) request.getAttribute("city_region");
 								<label class="col-sm-4 control-label">当前账户余额: </label>
 								<div class="col-sm-8">
 									<label class="control-label" id="businessBalance">0元</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">合同模板: </label>
+								<div class="col-sm-8">
+									<select id="snapshotTemplateId" name="snapshotTemplateId"  class='form-control m-b'></select>
 								</div>
 							</div>
 						</div>
@@ -332,7 +332,7 @@ String city_region = (String) request.getAttribute("city_region");
 </div>
 
 <script>
-$("#uploadfile").click(function(){
+function uploadfile(){
 	if ($("#file1").val().length <= 0) {
       alert("请选择文件！");
       return;
@@ -354,9 +354,11 @@ $("#uploadfile").click(function(){
       }
   });
 	
-});
+};
 
-$("#businessId").change(function(){  
+function businessChange(){  
+	var templateList="<%=templatelist%>";
+	initSelectTemplate(templateList,null);
 	var paramaters={"businessId":$("#businessId").val()};
 	var url = "<%=basePath%>/taskmanage/getbusinessbanlance";
 	$.ajax({
@@ -367,10 +369,14 @@ $("#businessId").change(function(){
 			$("#businessBalance").html(result+"元");
 		}
 	});
-});
-$("#businessId").change();
+};
 
 
+function initFunction(){
+	$("#uploadfile").on("click",uploadfile);
+	$("#businessId").on("change",businessChange);
+	$("#businessId").change();
+}
 function savetask(){
 	if(!validPage()){
 		return;

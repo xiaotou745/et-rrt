@@ -82,7 +82,7 @@ $("#update").click(function(){
 			success : function(result) {
 				if (result>0) {
 					alert("操作成功");
-					window.location.href = window.location.href;
+					window.location.href = "<%=basePath %>/account/logoff";
 				} else {
 					alert("操作失败");
 				}
