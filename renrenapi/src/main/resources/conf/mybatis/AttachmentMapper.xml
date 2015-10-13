@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.IAttachmentDao" >
   <sql id="Base_Column_List" >
-    Id, BusinessId, TaskId, AttachmentName, AttachUrl, UploadTime
+    Id,TaskId, AttachmentName, AttachUrl, UploadTime
   </sql>
   <select id="selectByTaskId" resultType="com.renrentui.renrenentity.Attachment" parameterType="java.lang.Long" >
     select 
@@ -10,95 +10,14 @@
     from Attachment
     where TaskId = #{taskId,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByTaskId" parameterType="java.lang.Long" >
     delete from Attachment
-    where Id = #{id,jdbcType=BIGINT}
+    where TaskId = #{taskId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renrentui.renrenentity.Attachment" >
-    insert into Attachment (Id, BusinessId, TaskId, 
-      AttachmentName, AttachUrl, UploadTime
-      )
-    values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=BIGINT}, #{taskid,jdbcType=BIGINT}, 
-      #{attachmentname,jdbcType=NVARCHAR}, #{attachurl,jdbcType=NVARCHAR}, #{uploadtime,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Attachment" >
-    insert into Attachment
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="businessid != null" >
-        BusinessId,
-      </if>
-      <if test="taskid != null" >
-        TaskId,
-      </if>
-      <if test="attachmentname != null" >
-        AttachmentName,
-      </if>
-      <if test="attachurl != null" >
-        AttachUrl,
-      </if>
-      <if test="uploadtime != null" >
-        UploadTime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="businessid != null" >
-        #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="taskid != null" >
-        #{taskid,jdbcType=BIGINT},
-      </if>
-      <if test="attachmentname != null" >
-        #{attachmentname,jdbcType=NVARCHAR},
-      </if>
-      <if test="attachurl != null" >
-        #{attachurl,jdbcType=NVARCHAR},
-      </if>
-      <if test="uploadtime != null" >
-        #{uploadtime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Attachment" >
-    update Attachment
-    <set >
-      <if test="businessid != null" >
-        BusinessId = #{businessid,jdbcType=BIGINT},
-      </if>
-      <if test="taskid != null" >
-        TaskId = #{taskid,jdbcType=BIGINT},
-      </if>
-      <if test="attachmentname != null" >
-        AttachmentName = #{attachmentname,jdbcType=NVARCHAR},
-      </if>
-      <if test="attachurl != null" >
-        AttachUrl = #{attachurl,jdbcType=NVARCHAR},
-      </if>
-      <if test="uploadtime != null" >
-        UploadTime = #{uploadtime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.Attachment" >
-    update Attachment
-    set BusinessId = #{businessid,jdbcType=BIGINT},
-      TaskId = #{taskid,jdbcType=BIGINT},
-      AttachmentName = #{attachmentname,jdbcType=NVARCHAR},
-      AttachUrl = #{attachurl,jdbcType=NVARCHAR},
-      UploadTime = #{uploadtime,jdbcType=TIMESTAMP}
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
     <update id="insertList" parameterType="java.util.List">
 		<foreach collection="list" item="item" index="index" >
-	insert into Attachment (BusinessId, TaskId, AttachmentName, AttachUrl, UploadTime)
-    values (#{item.businessId,jdbcType=BIGINT}, #{item.taskId,jdbcType=BIGINT}, 
+	insert into Attachment (TaskId, AttachmentName, AttachUrl, UploadTime)
+    values (#{item.taskId,jdbcType=BIGINT}, 
       #{item.attachmentName,jdbcType=NVARCHAR}, #{item.attachUrl,jdbcType=NVARCHAR},
        getdate());
 		</foreach>

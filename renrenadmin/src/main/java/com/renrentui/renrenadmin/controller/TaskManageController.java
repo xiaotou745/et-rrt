@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
+import com.renrentui.renrenapi.service.inter.IBusinessBalanceService;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
@@ -28,6 +29,7 @@ import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.Business;
+import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.Template;
@@ -49,6 +51,8 @@ public class TaskManageController {
 	private IPublicProvinceCityService publicProvinceCityService;
 	@Autowired
 	private IRenRenTaskService renRenTaskService;
+	@Autowired
+	private IBusinessBalanceService businessBalanceService;
 	@RequestMapping("newtask")
 	public ModelAndView newTask() {
 		ModelAndView model = new ModelAndView("adminView");
@@ -112,7 +116,6 @@ public class TaskManageController {
 	public int saveTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
 		taskItem.setPusher("");
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setTaskCycle(0d);
 		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
 		taskItem.setEndTime(ParseHelper.ToDate(endDate));
 		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
@@ -221,7 +224,6 @@ public class TaskManageController {
 	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
 		taskItem.setPusher("");
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setTaskCycle(0d);
 		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
 		taskItem.setEndTime(ParseHelper.ToDate(endDate));
 		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
@@ -230,5 +232,14 @@ public class TaskManageController {
 		List<Integer> regionCodes=getRegionCodeList(request);
 		List<Attachment> attachments=getAttachList(request);
 		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
+	}
+	@RequestMapping("getbusinessbanlance")
+	@ResponseBody
+	public double getBusinessBanlance(Long businessId){
+		BusinessBalance balance= businessBalanceService.selectById(businessId);
+		if (balance!=null) {
+			return balance.getBalance();
+		}
+		return 0;
 	}
 }

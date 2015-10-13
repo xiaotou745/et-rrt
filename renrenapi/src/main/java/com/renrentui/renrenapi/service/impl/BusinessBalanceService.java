@@ -35,6 +35,11 @@ public class BusinessBalanceService implements IBusinessBalanceService{
 	@Override
 	public int updateBalanceByBusinessId(BusinessBalanceReq record) {
 		return businessBalanceDao.updateBalanceByBusinessId(record);
+	}
+
+	@Override
+	public BusinessBalance selectById(Long businessId) {
+		return businessBalanceDao.selectByPrimaryKey(businessId);
 	}		
 	
 }

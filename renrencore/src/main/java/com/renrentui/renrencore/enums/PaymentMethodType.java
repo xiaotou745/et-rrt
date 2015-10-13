@@ -6,11 +6,11 @@ package com.renrentui.renrencore.enums;
  */
 public enum PaymentMethodType {
 	/**
-	 * 成功
+	 * 线下结算
 	 */
 	Offline(1, "线下结算"),
 	/**
-	 * 用户ID不存在
+	 * 线上结算
 	 */
 	Online(2, "线上结算");
 	private int value = 0;

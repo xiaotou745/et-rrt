@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IAppVersionDao" >
+  <sql id="Base_Column_List" >
+    ID, Version, IsMust, UpdateUrl, Message, PlatForm, UserType, CreateDate, CreateBy, 
+    UpdateDate, UpdateBy, IsTiming, TimingDate, PubStatus
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from AppVersion
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.renrentui.renrenentity.AppVersion" >
+    insert into AppVersion (ID, Version, IsMust, 
+      UpdateUrl, Message, PlatForm, 
+      UserType, CreateDate, CreateBy, 
+      UpdateDate, UpdateBy, IsTiming, 
+      TimingDate, PubStatus)
+    values (#{id,jdbcType=INTEGER}, #{version,jdbcType=NVARCHAR}, #{ismust,jdbcType=INTEGER}, 
+      #{updateurl,jdbcType=NVARCHAR}, #{message,jdbcType=NVARCHAR}, #{platform,jdbcType=TINYINT}, 
+      #{usertype,jdbcType=TINYINT}, #{createdate,jdbcType=TIMESTAMP}, #{createby,jdbcType=NVARCHAR}, 
+      #{updatedate,jdbcType=TIMESTAMP}, #{updateby,jdbcType=NVARCHAR}, #{istiming,jdbcType=INTEGER}, 
+      #{timingdate,jdbcType=TIMESTAMP}, #{pubstatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.renrentui.renrenentity.AppVersion" >
+    insert into AppVersion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="version != null" >
+        Version,
+      </if>
+      <if test="ismust != null" >
+        IsMust,
+      </if>
+      <if test="updateurl != null" >
+        UpdateUrl,
+      </if>
+      <if test="message != null" >
+        Message,
+      </if>
+      <if test="platform != null" >
+        PlatForm,
+      </if>
+      <if test="usertype != null" >
+        UserType,
+      </if>
+      <if test="createdate != null" >
+        CreateDate,
+      </if>
+      <if test="createby != null" >
+        CreateBy,
+      </if>
+      <if test="updatedate != null" >
+        UpdateDate,
+      </if>
+      <if test="updateby != null" >
+        UpdateBy,
+      </if>
+      <if test="istiming != null" >
+        IsTiming,
+      </if>
+      <if test="timingdate != null" >
+        TimingDate,
+      </if>
+      <if test="pubstatus != null" >
+        PubStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=NVARCHAR},
+      </if>
+      <if test="ismust != null" >
+        #{ismust,jdbcType=INTEGER},
+      </if>
+      <if test="updateurl != null" >
+        #{updateurl,jdbcType=NVARCHAR},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=NVARCHAR},
+      </if>
+      <if test="platform != null" >
+        #{platform,jdbcType=TINYINT},
+      </if>
+      <if test="usertype != null" >
+        #{usertype,jdbcType=TINYINT},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createby != null" >
+        #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="istiming != null" >
+        #{istiming,jdbcType=INTEGER},
+      </if>
+      <if test="timingdate != null" >
+        #{timingdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pubstatus != null" >
+        #{pubstatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.AppVersion" >
+    update AppVersion
+    <set >
+      <if test="version != null" >
+        Version = #{version,jdbcType=NVARCHAR},
+      </if>
+      <if test="ismust != null" >
+        IsMust = #{ismust,jdbcType=INTEGER},
+      </if>
+      <if test="updateurl != null" >
+        UpdateUrl = #{updateurl,jdbcType=NVARCHAR},
+      </if>
+      <if test="message != null" >
+        Message = #{message,jdbcType=NVARCHAR},
+      </if>
+      <if test="platform != null" >
+        PlatForm = #{platform,jdbcType=TINYINT},
+      </if>
+      <if test="usertype != null" >
+        UserType = #{usertype,jdbcType=TINYINT},
+      </if>
+      <if test="createdate != null" >
+        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createby != null" >
+        CreateBy = #{createby,jdbcType=NVARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        UpdateDate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null" >
+        UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      </if>
+      <if test="istiming != null" >
+        IsTiming = #{istiming,jdbcType=INTEGER},
+      </if>
+      <if test="timingdate != null" >
+        TimingDate = #{timingdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pubstatus != null" >
+        PubStatus = #{pubstatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.AppVersion" >
+    update AppVersion
+    set Version = #{version,jdbcType=NVARCHAR},
+      IsMust = #{ismust,jdbcType=INTEGER},
+      UpdateUrl = #{updateurl,jdbcType=NVARCHAR},
+      Message = #{message,jdbcType=NVARCHAR},
+      PlatForm = #{platform,jdbcType=TINYINT},
+      UserType = #{usertype,jdbcType=TINYINT},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      CreateBy = #{createby,jdbcType=NVARCHAR},
+      UpdateDate = #{updatedate,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateby,jdbcType=NVARCHAR},
+      IsTiming = #{istiming,jdbcType=INTEGER},
+      TimingDate = #{timingdate,jdbcType=TIMESTAMP},
+      PubStatus = #{pubstatus,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!--  app 版本控制 查询升级信息 add by caoheyang 20151013 -->
+   <select id="getVersionCheck" resultType="com.renrentui.renrenentity.AppVersion" parameterType="com.renrentui.renrenentity.req.VersionCheckReq" >
+	SELECT TOP 1 [Version],IsMust,UpdateUrl,[Message] FROM dbo.AppVersion
+	WHERE PubStatus<![CDATA[<]]>>2
+	and [PlatForm]=#{platForm,jdbcType=TINYINT}
+	AND UserType=#{userType,jdbcType=TINYINT} and TimingDate  <![CDATA[< getdate()]]>
+	ORDER BY [Version] DESC
+  </select>
+  
+</mapper>

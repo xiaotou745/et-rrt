@@ -1,12 +1,18 @@
 package com.renrentui.renrenapi.dao.inter;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.OrderAudit;
+import com.renrentui.renrenentity.domain.OrderChildInfoModel;
+import com.renrentui.renrenentity.domain.OrderChildModel;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.OrderAuditReq;
+import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 
@@ -43,5 +49,9 @@ public interface IOrderDao {
     void outTimeCanelOrder();
 	 
 	int orderAudit(OrderAuditReq req);
+	
+	OrderChildInfoModel getOrderInfo(OrderChildReq req);
+	
+	ArrayList<OrderChildModel> getOrderChildList(OrderChildReq req);
 
 }

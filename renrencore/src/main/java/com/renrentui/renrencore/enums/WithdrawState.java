@@ -9,6 +9,7 @@ public enum WithdrawState  {
 	 * 提取金额大于可提现金额
 	 */
 	MoneyError(1211, "提取金额大于可提现金额"),
+	ParaError(1213, "参数错误"),
 	/**
 	 * 提现失败
 	 */

@@ -21,6 +21,10 @@
     delete from TemplateSnapshot
     where TemplateId = #{templateId,jdbcType=BIGINT}
   </delete>
+    <delete id="deleteById" parameterType="java.lang.Long" >
+    delete from TemplateSnapshot
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
   <insert id="copySnapshot" parameterType="com.renrentui.renrenentity.req.TemplateSnapshotReq" >
   	  <selectKey resultType="java.lang.Long" keyProperty="templateSnapshotId"
 				order="AFTER">

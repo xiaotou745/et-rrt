@@ -11,7 +11,7 @@ import com.renrentui.renrencore.util.SpringBeanHelper;
  * @date 20151009
  */
 public class OrderWindowService {
-	 IOrderService orderService = (IOrderService) SpringBeanHelper .getCustomBean("orderService");
+	 IOrderService orderService = (IOrderService)SpringBeanHelper.getCustomBean("orderService");
 	/**
 	 * 超时取消订单服务
 	 * 
@@ -20,5 +20,6 @@ public class OrderWindowService {
 	 */
 	public void outTimeCanelOrder() {
 		orderService.outTimeCanelOrder();
+		System.out.println("================");
 	}
 }

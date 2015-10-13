@@ -2,11 +2,10 @@ package com.renrentui.renrenapi.service.impl;
 
 import java.util.Date;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.lang.Math.*;
 import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
@@ -14,9 +13,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
-import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.WithdrawState;
-import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
@@ -28,12 +25,11 @@ import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
-import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
 import com.renrentui.renrenentity.resp.ClienterResp;
-import com.renrentui.renrenentity.resp.MyIncomeResp;
+
 @Service
 public class ClienterService implements IClienterService{
 	@Autowired
@@ -169,7 +165,7 @@ public class ClienterService implements IClienterService{
 		
 	    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(req.getUserId());
-		clienterBalanceRecordModel.setAmount(-req.getAmount());		
+		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));		
 		clienterBalanceRecordModel.setRecordType((short)2);		
 		clienterBalanceRecordModel.setOptName("admin");
 		clienterBalanceRecordModel.setOrderId((long)clienterWithdrawFormModel.getId());
