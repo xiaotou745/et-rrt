@@ -27,15 +27,5 @@ public interface ICommonService {
 	@Path("/versioncheck")
 	 public HttpResultModel<AppVersion> versionCheck(VersionCheckReq para);
 
-	/**
-	 * C端获取所有的筛选条件类型
-	 * @author CaoHeYang
-	 * @date 20150909
-	 * @return
-	 */
-	@POST
-	@Path("/getrecordtypec")
-	public HttpResultModel<List<String>> getRecordtypeC();	
-
 }
 
