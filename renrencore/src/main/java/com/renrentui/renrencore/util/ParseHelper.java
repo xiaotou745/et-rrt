@@ -1,6 +1,8 @@
 package com.renrentui.renrencore.util;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -297,5 +299,18 @@ public class ParseHelper {
 		} catch (Exception ex) {
 			return 0;
 		}
+	}
+	/**
+	 * 按照指定的精度保留n位小数
+	 * @param numVaule 要处理的数值
+	 * @param digits 小数位数
+	 * @date 20151013
+	 * @author hailongzhao
+	 * @return
+	 */
+	public static String digitsNum(Object numVaule, int digits){
+		NumberFormat ddf1=NumberFormat.getNumberInstance() ;
+		ddf1.setMaximumFractionDigits(digits);
+		return ddf1.format(numVaule) ; 
 	}
 }
