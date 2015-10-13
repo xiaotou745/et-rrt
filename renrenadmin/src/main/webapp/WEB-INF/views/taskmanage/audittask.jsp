@@ -208,10 +208,18 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 	    }
 		jss.search(1);
 	});
-	function setTaskStatus(taskID,status,oldStatus){
+	function setTaskStatus(taskID,status,oldStatus,endtime){
 		var optype="";
 		switch(status){
-		case 1:optype="审核通过";break;
+		case 1:optype="审核通过";
+		var end=endtime.replace(/-/g, "");
+		var myDate = new Date();
+		var nowdate=myDate.getFullYear()+""+(myDate.getMonth()+1)+""+myDate.getDate();
+		if(parseInt(end)<parseInt(nowdate)){
+			alert("任务已经过期，不能审核");
+			return;
+		}
+		break;
 		case 2:optype="驳回";break;
 		case 4:optype="终止";break;
 		}

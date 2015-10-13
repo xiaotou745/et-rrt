@@ -35,9 +35,9 @@ public class TemplateDao extends DaoBase implements ITemplateDao {
 	}
 
 	@Override
-	public List<Template> getAllList() {
+	public List<Template> getAllList(PagedTemplateReq req) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDao.getAllList");
+				"com.renrentui.renrenapi.dao.inter.ITemplateDao.getAllList",req);
 	}
 
 	@Override
@@ -45,6 +45,12 @@ public class TemplateDao extends DaoBase implements ITemplateDao {
 		return getMasterSqlSessionUtil()
 				.update("com.renrentui.renrenapi.dao.inter.ITemplateDao.setTemplateStatus",
 						req);
+	}
+
+	@Override
+	public int update(Template record) {
+		return getMasterSqlSessionUtil().insert(
+				"com.renrentui.renrenapi.dao.inter.ITemplateDao.update", record);
 	}
 
 
