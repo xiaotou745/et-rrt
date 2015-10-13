@@ -117,8 +117,8 @@ public class BusinessController {
 	public int addBusinessDelta(HttpServletRequest request,BusinessBalanceReq req) {
 	
 		UserContext context=UserContext.getCurrentContext(request);		
-		req.setOptName(context.getUserName());
-		return businessService.AddBalance(req);
+		String userName=context.getUserName();
+		return businessService.AddBalance(req,userName);
 	}	
 	
 	/**
