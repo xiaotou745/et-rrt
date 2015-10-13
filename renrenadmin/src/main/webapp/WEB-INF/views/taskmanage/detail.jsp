@@ -368,7 +368,26 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 </div>
 
 <script>
-
+function lockpage(){
+	var canedit="<%=(detailStatus==TaskStatus.WaitAudit||detailStatus==TaskStatus.Reject)%>";
+	if(canedit!="true"){
+	    $("input[type='text']").each(function (i, each) {
+	        each.disabled = true;
+	    });
+		$("textarea").each(function(index,e){
+			 e.disabled = true;
+		});
+	    $("input[type='file']").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	    $("select").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	    $("button").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	}
+}
 function initRegion(){
 	var regionList="<%=oldRegionCode%>";
 	if(regionList!=""&&regionList!="-1"){
@@ -441,6 +460,7 @@ function initFunction(){
 	$("#uploadfile").on("click",uploadfile);
 	$("#businessId").on("change",businessChange);
 	$("#businessId").change();
+	lockpage();
 }
 function savetask(){
 	if(!validPage()){
