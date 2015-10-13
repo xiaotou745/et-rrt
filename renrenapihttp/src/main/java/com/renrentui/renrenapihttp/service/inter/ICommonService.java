@@ -37,6 +37,7 @@ public interface ICommonService {
 	 */
 	@POST
 	@Path("/getrecordtypec")
-	 public HttpResultModel<List<String>> getRecordtypeC();
+	public HttpResultModel<List<String>> getRecordtypeC();	
+
 }
 

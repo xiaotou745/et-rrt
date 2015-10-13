@@ -32,7 +32,7 @@ width: 100%;
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">公司名称:</label>
+							<label class="col-sm-4 control-label">商户名称:</label>
 							<div class="col-sm-8">						
 								<input type="text" class="form-control" name="txtCompanyName"  id="txtCompanyName" />
 							</div>
@@ -91,7 +91,7 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<h4 class="modal-title">添加商户</h4> 
+				<h4 class="modal-title">添加商户</h4> 				
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
@@ -123,9 +123,9 @@ width: 100%;
 			                    <input  name="txtWebSiteA" id="txtWebSiteA" type="text">
 			            </div> 
 			        </fieldset>
-			        <fieldset>			        
-		<img id="showBusiImage" src="" width="200px" height="200px" />
-		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="text" type="hidden">		
+			        <fieldset>			        			        
+		<img id="showBusiImage" src="" width="200px" height="200px" />		
+		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="hidden">
 					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
  <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>  
 			        </fieldset>
@@ -147,14 +147,14 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<h4 class="modal-title">商户冲值</h4>				
+				<h4 class="modal-title">商户充值</h4>				
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
 					<fieldset>
 						<br>
 						  <div class="control-group">
-		                <label>公司名称：</label>
+		                <label>商户名称：</label>
 		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
 		                <input name="txtIdD" id="txtIdD" type="hidden">
 		            	</div>
@@ -163,7 +163,7 @@ width: 100%;
 			                <input name="txtPhoneNoD" id="txtPhoneNoD" disabled="disabled" type="text">
 			            </div>
 			            <div class="control-group">
-			                <label>余&nbsp;&nbsp;额：</label>
+			                <label>充值金额：</label>
 			                <input name="txtAmountD" id="txtAmountD" type="text">元
 			            </div>
 			            <div class="control-group">
@@ -174,11 +174,9 @@ width: 100%;
 			            </div>
 					</fieldset>
 				</div>
-				<div class="modal-footer">
-				        <form name="form_uploadImg" action="" method="POST">  
+				<div class="modal-footer">				   
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id="txtbusinessDelta">确认</button>
-					 </form>  
+					<button class="btn btn-primary" type="button" id="txtbusinessDelta"  onclick="AddBusinessDelta()">确认</button>				
 				</div>
 			</small>
 		</div>
@@ -187,7 +185,6 @@ width: 100%;
 	<small class="font-bold"> </small>
 
 </div>
-
 
 <script>
 
@@ -222,12 +219,12 @@ $("#btnSearch").click(function(){
 	jss.search(1);
 });
 
-
+//添加商户
 function AddShow(){
     $('#addBusiness').modal('show');
 }
 //保存商户
-function AddBusiness(){
+function AddBusiness(){	
 	var companyName= $('#txtCompanyNameA').val().trim();
 	var phoneNo= $('#txtPhoneNoA').val().trim();	
     var loginName = $('#txtLoginNameA').val().trim();
@@ -242,15 +239,14 @@ function AddBusiness(){
     	return;
     }
     if (reg.test(loginName)){
-    	alert("登录账号不能为中文字符");
+    	alert("登录名称不能为中文字符");
     	return;
     }
     if(loginName.trim().length <6 || loginName.trim().length>20){
-    	alert("登录账号除中文外6-20位字符");
+    	alert("登录名称除中文外6-20位字符");
     	return;
-    }   
+    }       
     
-    alert(logo);
     var paramaters = {
             "companyName": companyName,
             "phoneNo": phoneNo,
@@ -260,35 +256,33 @@ function AddBusiness(){
             "webSite": webSite,
             "logo": logo 
         };
-   var url = "<%=basePath%>/business/addbusiness";
-   var la = layer.confirm('是否确认创建商户？', {
-	    btn: ['确认','取消'], //按钮
-	    shade: false //显示遮罩
-	},function(){
-		layer.close(la);
+   var url = "<%=basePath%>/business/addbusiness";   
 		$.ajax({
 	           type: 'POST',
 	           url: url,
 	           data: paramaters,
 	           success: function (result) {
-	        	   window.location.href = "<%=basePath%>/business/list";
-	        	   //alert(result.message);
-	             <%--   if (result.responseCode > 0) {
-	                   window.location.href = "<%=basePath%>/business/list";
-	               } --%>
+	        	   if(result>0)
+	        		{
+	        		    alert("操作成功");
+	        	   		window.location.href = "<%=basePath%>/business/list";	     
+	        		}
+	        	   else
+	        		   {
+	        		   alert("操作失败");
+	        		   }
 	        	  
 	           }
-	       });
-	});   	    
+	       });		    
 }
 
-    function ajaxFileUpload()  
-    {      	
-     var typeValue=<%=UploadForm.Clienter.value() %>;
-	$.ajaxFileUpload({      
-    url:'<%=basePath %>/FileUpload?type='+typeValue,         
-    secureuri:false,  
-    fileElementId:'uploadFileInput',                         //文件选择框的id属性  
+     function ajaxFileUpload()  
+     {      	
+     	var typeValue=<%=UploadForm.Business.value() %>;
+	 	$.ajaxFileUpload({      
+    	url:'<%=basePath %>/FileUpload?type='+typeValue,         
+    	secureuri:false,  
+    	fileElementId:'uploadFileInput',                         //文件选择框的id属性  
     //dataType: 'json',                                     //服务器返回的格式，可以是json  	
     success: function (data, status)             //相当于java中try语句块的用法  
     {     
@@ -308,4 +302,56 @@ function AddBusiness(){
   }  
 );  
     } 
+
+   //商户充值
+     function AddBusinessDelta(){
+     	
+     	var businessId= $('#txtBusinessIdD').val();	
+     	var balance= $('#txtAmountD').val().trim();	
+        
+         var paramaters = {
+                 businessId: businessId,
+                 balance: balance                   
+             };
+         
+             var url = "<%=basePath%>/business/addbusinessdelta";  	
+     		$.ajax({
+     	           type: 'POST',
+     	           url: url,
+     	           data: paramaters,
+     	           success: function (result) {
+     	        	  if(result>0)
+  	        		 {
+  	        		    alert("操作成功");
+     	        	   window.location.href = "<%=basePath%>/business/list";
+  	        		 }
+     	        	else
+					{
+     	        		 alert("操作失败");
+					}            		  
+     	           }
+     	       });
+        	    
+     }
+    
+/*   function ajaxFileUpload()  
+  {	   
+      $.ajaxFileUpload({  
+          url:'http://localhost/api/Upload/UploadImg?UploadFrom=1',  
+          secureuri:false,  
+          fileElementId:'uploadFileInput',//file标签的id  
+          //dataType: 'json',//返回数据的类型                
+          type: 'POST',
+          success: function (data, status) {      
+        	  alert(data);
+          },  
+          error: function (data, status, e) {  
+              alert(e);  
+          }            
+        
+      });        
+ 
+  } */
+
+
 </script>
