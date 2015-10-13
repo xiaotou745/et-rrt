@@ -119,4 +119,64 @@ public class OrderService implements IOrderService{
 		}
 		return model;
 	}
+	/**
+	 * 下载合同信息
+	 * 茹化肖
+	 */
+	@Override
+	public String downLoadOrderInfo(OrderChildReq req) {
+		OrderChildInfoModel model=orderDao.getOrderInfo(req);
+		if(model!=null)
+		{
+			model.setList(orderDao.getOrderChildList(req));
+		}
+		StringBuilder sBuilder=new StringBuilder();
+		sBuilder.append(" ");
+		sBuilder.append(" <html xmlns=\"http://www.w3.org/1999/xhtml\">");
+		sBuilder.append(" <head>");
+		sBuilder.append(" <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+		sBuilder.append(" <title>"+req.getOrderId()+"合同信息</title>");
+		sBuilder.append(" </head><body>");
+		sBuilder.append(" <html xmlns=\"http://www.w3.org/1999/xhtml\">");
+		sBuilder.append(" <style type=\"text/css\">");
+		sBuilder.append(" .border-table { ");
+		sBuilder.append(" border-collapse: collapse;  ");
+		sBuilder.append(" border: none;} ");
+		sBuilder.append(" .border-table td {");
+		sBuilder.append(" border: solid #000 1px;}");
+		sBuilder.append(" </style>");
+		//拼接内容
+		if(model==null)
+		{
+			sBuilder.append("<h3>该订单没有合同信息</h3>");
+		}
+		else{
+			sBuilder.append("<div style=\"text-align:center;\">");			
+			sBuilder.append("<h3>任务名称:"+model.getTaskTitle()+"</h3>");
+			sBuilder.append("<h3>地推员名称:"+model.getClienterName()+"</h3>");
+			sBuilder.append("<h3>公司名称:"+model.getCompanyName()+"</h3>");
+			sBuilder.append("</div>");
+			sBuilder.append("<div style=\"text-align:center;\">");	
+			sBuilder.append("<table align=\"center\" class=\"border-table\"><thead><tr><th>条目</th><th >内容</th></tr></thead><tbody>");
+			for(int i=0;i<model.getList().size();i++)
+			{
+				sBuilder.append("<tr>"); 
+				sBuilder.append("<td>"+model.getList().get(i).getTitle()+"</td>");
+				if(model.getList().get(i).getControlType().equals("FileUpload"))
+				{
+					sBuilder.append("<td><img src=\""+model.getList().get(i).getControlValue()+"\"/></td>");
+					
+				}
+				else{
+					sBuilder.append("<td>"+model.getList().get(i).getControlValue()+"</td>");
+				}	
+				sBuilder.append("</tr>");
+			}
+			sBuilder.append("</tbody></table>");
+			sBuilder.append("</div>");
+		}
+		//拼接内容结束
+		sBuilder.append("</body></html>");
+		return sBuilder.toString();
+	}
 }

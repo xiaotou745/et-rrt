@@ -67,7 +67,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			{
 			%>
 			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getOrderId()%>)">查看合同</a>
-			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getOrderId()%>)" id="alink">下载合同</a>
+			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getOrderId()%>)">下载合同</a>
 			<%	
 			}
 			%>
@@ -129,17 +129,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
    }
  //保存
    function saveFile(orderId){
-   	   var paramaters = {"orderId":orderId};
-	   var url = "<%=basePath%>/ordermanage/orderchildInfo";
-	   $.ajax({
-	        type: 'POST',
-	        url: url,
-	        data: paramaters,
-	        success: function (result) {   	
-	        	alert(result);
-	        	content=result;
-	        }
-	    });
+	   var url = '<%=basePath%>/ordermanage/orderdownload?orderId='+orderId;
+	   window.open(url);
    }
 </script>
 	
