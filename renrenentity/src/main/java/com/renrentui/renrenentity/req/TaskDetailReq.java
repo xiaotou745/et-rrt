@@ -8,6 +8,13 @@ package com.renrentui.renrenentity.req;
 public class TaskDetailReq {
 	private Long  userId;
 	private Long  taskId;
+	private Long orderId;
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 	public Long getUserId() {
 		return userId;
 	}
