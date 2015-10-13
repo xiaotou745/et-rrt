@@ -26,5 +26,7 @@ public interface IOrderService {
 	public void outTimeCanelOrder();
 	
 	public OrderChildInfoModel getOrderChildInfo(OrderChildReq req);
+	
+	public String downLoadOrderInfo(OrderChildReq req);
 
 }

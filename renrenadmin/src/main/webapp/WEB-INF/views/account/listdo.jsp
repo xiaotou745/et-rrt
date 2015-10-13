@@ -15,7 +15,7 @@
 	<thead>
 		<tr>
 			<th width="5%">编号</th>
-			<th>账号名称</th>
+			<th>真实姓名</th>
 			<th>登录名称</th>
 			<th>最后操作时间</th>
 			<th>启用状态</th>

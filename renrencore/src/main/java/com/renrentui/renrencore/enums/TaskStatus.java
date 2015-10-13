@@ -18,9 +18,9 @@ public enum TaskStatus {
 	 */
 	Expired(3, "过期"),
 	/**
-	 * 中止
+	 * 终止
 	 */
-	Stop(4, "中止");
+	Stop(4, "终止");
 
 	private int value = 0;
 	private String desc;
