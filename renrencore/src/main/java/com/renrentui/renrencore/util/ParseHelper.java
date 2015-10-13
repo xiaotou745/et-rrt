@@ -1,5 +1,6 @@
 package com.renrentui.renrencore.util;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -309,8 +310,12 @@ public class ParseHelper {
 	 * @return
 	 */
 	public static String digitsNum(Object numVaule, int digits){
-		NumberFormat ddf1=NumberFormat.getNumberInstance() ;
-		ddf1.setMaximumFractionDigits(digits);
-		return ddf1.format(numVaule) ; 
+		if (digits<0) {
+			digits=2;
+		}
+		String f=".0000000000";
+		String aString=f.substring(0, digits+1);
+		DecimalFormat decimalFormat=new DecimalFormat(aString);//构造方法的字符格式这里如果小数不足2位,会以0补足.
+		return decimalFormat.format(numVaule);
 	}
 }
