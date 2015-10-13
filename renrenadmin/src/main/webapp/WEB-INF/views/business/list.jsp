@@ -244,7 +244,6 @@ width: 100%;
 	</div>
 </div>
 <script>
-
 var jss={
 		search:function(currentPage){	
 			 var companyName = $("#txtCompanyName").val();				   
