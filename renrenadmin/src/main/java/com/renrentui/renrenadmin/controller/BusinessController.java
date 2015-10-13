@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,7 @@ import com.renrentui.renrenentity.BusinessBalanceRecord;
 import com.renrentui.renrenentity.MenuInfo;
 import com.renrentui.renrenentity.RoleInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.BusinessModel;
 import com.renrentui.renrenentity.domain.SimpleUserInfoModel;
 import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
@@ -85,7 +87,7 @@ public class BusinessController {
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedBusinessReq req)  {			
 		
-		PagedResponse<Business> resp = businessService.getBusinessList(req);
+		PagedResponse<BusinessModel> resp = businessService.getBusinessList(req);
 		ModelAndView model = new ModelAndView("business/listdo");		
 		model.addObject("listData", resp);
 		return model;		

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.BusinessModel;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
 
 public interface IBusinessDao {
@@ -18,6 +19,6 @@ public interface IBusinessDao {
     int updateByPrimaryKeySelective(Business record);
 
     int updateByPrimaryKey(Business record);
-    PagedResponse<Business> getBusinessList(PagedBusinessReq req);
+    PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req);
     List<Business> getAllList();
 }
