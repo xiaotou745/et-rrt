@@ -421,18 +421,22 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int updateTask(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments){
 		RenRenTask model=renRenTaskDao.selectById(record.getId());
-		if (model==null) {
+		if (model==null||
+			(model.getStatus()!=TaskStatus.Reject.value()&&
+			   model.getStatus()!=TaskStatus.WaitAudit.value())) {
 			return -1;
 		}
 		StringBuilder sbRemark=new StringBuilder();
 		
 		//如果任务的合同模板有变更，则重新生成模板的快照
 		String templateremark=updateTemplateSnapshot(record,model);
-
 		//如果任务的属性有变更，则更新db（在此之前必须先更新快照，否则模板id不对）
 		String taskRemark=getUpdateRemark(record,model);
 		if (taskRemark!=null&&!taskRemark.isEmpty()) {
-			renRenTaskDao.update(record);
+			int result=renRenTaskDao.update(record);
+			if (result==0) {
+				throw new RuntimeException("更新任务基础信息时失败");
+			}
 			sbRemark.append(taskRemark);
 		}
 		if (templateremark!=null&&!templateremark.isEmpty()) {
@@ -461,6 +465,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 
 		return 1;
 	}
+
 	private String updateRegion(RenRenTask record,List<Integer> regionCodes){
 		boolean isExist=false;
 		StringBuilder sb=new StringBuilder();
@@ -498,6 +503,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 		}
 		return sb.toString();
 	}
+
 	private String updateAttachment(RenRenTask record,List<Attachment> attachments){
 		if(attachments!=null&&attachments.size()>0) {
 			for (Attachment attachment : attachments) {
@@ -540,6 +546,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 		}
 		return sb.toString();
 	}
+
 	private String updateTemplateSnapshot(RenRenTask record,RenRenTask oldTaskmodel){
 		String result="";
 		boolean needReCreateSnapshot=false;

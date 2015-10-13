@@ -8,4 +8,5 @@ import com.renrentui.renrenentity.req.BusinessBalanceReq;
 
 public interface IBusinessBalanceService {
 	int updateBalanceByBusinessId(BusinessBalanceReq record);
+    BusinessBalance selectById(Long businessId);
 }
