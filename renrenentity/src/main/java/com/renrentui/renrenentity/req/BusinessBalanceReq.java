@@ -8,18 +8,8 @@ public class BusinessBalanceReq {
 
     private Double balance;
     
-    private String remark;
-    
-    private String optName;
-    
+    private String remark;      
 
-    public String getOptName() {
-		return optName;
-	}
-
-	public void setOptName(String optName) {
-		this.optName = optName;
-	}
 
 	public Double getBalance() {
         return balance;

@@ -3,10 +3,13 @@ package com.renrentui.renrenapi.service.impl;
 import java.util.List;
 
 import javax.management.RuntimeErrorException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
 
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
@@ -94,27 +97,29 @@ public class BusinessService implements IBusinessService{
 	 * @return   临时为1
 	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int AddBalance(BusinessBalanceReq req)
+	//@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public int AddBalance(BusinessBalanceReq req,String userName)
 	{
 		int bbId= businessBalanceDao.updateBalanceByBusinessId(req);
 		
 		BusinessBalanceRecord businessBalanceRecordModel=new BusinessBalanceRecord();
 		businessBalanceRecordModel.setBusinessId(req.getBusinessId());
 		businessBalanceRecordModel.setAmount(req.getBalance());		
-		businessBalanceRecordModel.setRecordType((short)BBalanceRecordType.Delta.value());		
-		businessBalanceRecordModel.setOptName(req.getOptName());
+		businessBalanceRecordModel.setRecordType((short)BBalanceRecordType.Delta.value());	
+		businessBalanceRecordModel.setOptName(userName);//登 陆名称
 		businessBalanceRecordModel.setOrderId((long)0);
 		businessBalanceRecordModel.setRelationNo("");
 		businessBalanceRecordModel.setRemark("商户充值");		
 		int bbrId= businessBalanceRecordDao.insert(businessBalanceRecordModel);
 		
-		if(bbId>0 && bbId>0 )
+		/*if(bbId>0 && bbId>0 )
 			return 1;
 		else
 		{
 			Error error=new Error("商户充值失败");
 			throw new RuntimeErrorException(error);
-		}
+		}*/
+		
+		return 1;
 	}	
 }
