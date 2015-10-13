@@ -119,7 +119,7 @@ public class BusinessService implements IBusinessService{
 	 * @return   临时为1
 	 */
 	@Override
-	//@Transactional(rollbackFor = Exception.class, timeout = 30)
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int addBalance(BusinessBalanceReq req,String userName)
 	{
 		int bbId= businessBalanceDao.updateBalanceByBusinessId(req);
@@ -134,14 +134,13 @@ public class BusinessService implements IBusinessService{
 		businessBalanceRecordModel.setRemark("商户充值");		
 		int bbrId= businessBalanceRecordDao.insert(businessBalanceRecordModel);
 		
-		/*if(bbId>0 && bbId>0 )
+		if(bbId>0 && bbId>0 )
 			return 1;
 		else
 		{
 			Error error=new Error("商户充值失败");
 			throw new RuntimeErrorException(error);
-		}*/
+		}		
 		
-		return 1;
 	}	
 }

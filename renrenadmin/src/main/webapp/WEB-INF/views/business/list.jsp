@@ -158,7 +158,7 @@ width: 100%;
 					<fieldset>
 						<br>
 						  <div class="control-group">
-		                <label>公司名称：</label>
+		                <label>商户名称：</label>
 		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
 		                <input name="txtBusinessIdD" id="txtBusinessIdD" type="hidden">
 		            	</div>
@@ -181,7 +181,7 @@ width: 100%;
 				<div class="modal-footer">
 				        <form name="form_uploadImg" action="" method="POST">  
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id="txtbusinessDelta">确认</button>
+					<button class="btn btn-primary" type="button" id="txtbusinessDelta" onclick="AddBusinessDelta()">确认</button>
 					 </form>  
 				</div>
 			</small>
@@ -382,6 +382,35 @@ function ModifyBusiness(){
 	       });	 	    
   }
     
+//保存商户
+function AddBusinessDelta(){
+	
+	var businessId= $('#txtBusinessIdD').val();	
+	var balance= $('#txtAmountD').val().trim();	
+   
+    var paramaters = {
+            businessId: businessId,
+            balance: balance                   
+        };
+    
+        var url = "<%=basePath%>/business/addbusinessdelta";  	
+		$.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+						window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
+	        	  
+	           }
+	       });
+   	    
+}
+
     //上传图片
     function ajaxFileUpload()  
     {      	
