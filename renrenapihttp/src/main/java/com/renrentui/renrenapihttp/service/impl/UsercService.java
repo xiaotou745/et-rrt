@@ -120,7 +120,12 @@ public class UsercService implements IUsercService {
 			resultModel.setMsg(WithdrawState.Failure.desc());
 			return resultModel;
 		}		
-		
+		if(req.getAmount()<=0)
+		{
+			resultModel.setCode(WithdrawState.ParaError.value());
+			resultModel.setMsg(WithdrawState.ParaError.desc());
+			return resultModel;
+		}
 		WithdrawState code=clienterService.WithdrawC(req);		
 		resultModel.setCode(code.value());
 		resultModel.setMsg(code.desc());
