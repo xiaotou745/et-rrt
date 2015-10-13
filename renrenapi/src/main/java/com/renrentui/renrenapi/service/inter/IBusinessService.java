@@ -24,7 +24,9 @@ public interface IBusinessService {
 	 */
 	PagedResponse<Business> getBusinessList(PagedBusinessReq req);	
 	
-	int Add(Business record);
+	int add(Business record);
+	
+	int modify(Business record);
 
-	public int AddBalance(BusinessBalanceReq req,String userName);
+	public int addBalance(BusinessBalanceReq req,String userName);
 }

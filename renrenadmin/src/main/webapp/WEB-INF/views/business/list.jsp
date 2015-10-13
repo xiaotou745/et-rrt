@@ -208,7 +208,7 @@ width: 100%;
 					<fieldset>
 			            <br>
 			             <div class="control-group">
-			                <label >公司名称：</label> 
+			                <label >商户名称：</label> 
 			                    <input  name="txtCompanyNameM" id="txtCompanyNameM" type="text">			                    
 							<input name="txtBusinessIdM" id="txtBusinessIdM" type="hidden">
 			            </div>
@@ -232,18 +232,12 @@ width: 100%;
 			                <label >站&nbsp;&nbsp;点：</label> 
 			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
 			            </div> 
-			        </fieldset>
-			        <fieldset>			        			        
-		<img id="showBusiImage" src="" width="200px" height="200px" />		
-		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="hidden">
-					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
- <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>  
-			        </fieldset>
+			        </fieldset>			
 			
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="AddBusiness()">保存</button>
+					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="ModifyBusiness()">保存</button>
 				</div> 
 			</small>
 		</div>  
@@ -286,7 +280,8 @@ $("#btnSearch").click(function(){
 function AddShow(){
     $('#addBusiness').modal('show');
 }
-//保存商户
+
+//添加,保存商户
 function AddBusiness(){
 	var companyName= $('#txtCompanyNameA').val().trim();
 	var phoneNo= $('#txtPhoneNoA').val().trim();	
@@ -334,8 +329,60 @@ function AddBusiness(){
 					}      
 	           }
 	       });	 	    
-}
-
+  }
+    
+  //修改,保存商户
+function ModifyBusiness(){
+	var id= $('#txtBusinessIdM').val().trim();
+	var companyName= $('#txtCompanyNameM').val().trim();
+	var phoneNo= $('#txtPhoneNoM').val().trim();	
+    var loginName = $('#txtLoginNameM').val().trim();
+    var address= $('#txtAddressM').val().trim();
+    var cityName= $('#txtCityNameM').val().trim();
+    var webSite= $('#txtWebSiteM').val().trim();     
+    
+    var reg=/[\u4e00-\u9fa5]+/;   
+    
+    if(companyName.trim().length <=4 || companyName.trim().length>30){
+    	alert("商户名称必须在5-30个字符");
+    	return;
+    }
+    if (reg.test(loginName)){
+    	alert("登录名称不能为中文字符");
+    	return;
+    }
+    if(loginName.trim().length <6 || loginName.trim().length>20){
+    	alert("登录名称除中文外6-20位字符");
+    	return;
+    }       
+    
+    var paramaters = {
+    		"id": id,
+            "companyName": companyName,
+            "phoneNo": phoneNo,
+            "loginName": loginName,
+            "address": address,
+            "cityName": cityName,
+            "webSite": webSite            
+        };
+   var url = "<%=basePath%>/business/modifybusiness";  
+		$.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {        
+	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+						window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
+	           }
+	       });	 	    
+  }
+    
+    //上传图片
     function ajaxFileUpload()  
     {      	
      var typeValue=<%=UploadForm.Clienter.value() %>;
