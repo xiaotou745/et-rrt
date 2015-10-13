@@ -18,7 +18,7 @@ public interface ITemplateDetailDao {
      * @param emplateId
      * @return
      */
-    ArrayList<ControlInfo> getTemplateList(Long templateId);
+    ArrayList<ControlInfo> getTemplateList(Long templateId,Long orderId);
 	public List<TemplateDetail> listByTemplateId(Long templateId) ;
 
 }
