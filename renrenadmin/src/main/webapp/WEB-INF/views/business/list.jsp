@@ -124,12 +124,13 @@ width: 100%;
 			            </div> 
 			        </fieldset>
 			        <fieldset>			        
-		<img id="showBusiImage" src="" width="200px" height="200px" />
-		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="text" type="hidden">	
-		<iframe src=http://upload.aaa.com/aaa.html id="uploadframe"></iframe>
-			
-<!-- 					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />   -->
-<!--  <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>   -->
+					<img id="showBusiImage" src="" width="200px" height="200px" />
+					<input  name="txtshowBusiImage" id="txtshowBusiImage" type="text" type="hidden">	
+					<iframe style="width:0; height:0;" name="myFrame" src="about:blank"></iframe>
+					<form ame="classid" id="classid" method="post" action="http://upload.aaa.com/api/upload/uploadimg?UploadFrom=1" target="myFrame">
+						<input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
+ 					 	<input type="submit" id="buttonUpload"  value="上传图片"/>
+					</form>
 			        </fieldset>
 			
 				</div>
@@ -304,7 +305,6 @@ function AddBusiness(){
     },  
     error: function (data, status, e)             //相当于java中catch语句块的用法  
     {  
-        //$('#result').html('上传图片失败');  
     	alert(e);  
     }  
   }  
