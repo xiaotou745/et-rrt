@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.BusinessModel;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
@@ -54,8 +55,8 @@ public class BusinessDao extends DaoBase implements IBusinessDao{
 		return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.IBusinessDao.getAllList");
 	}
 	@Override
-	public	PagedResponse<Business> getBusinessList(PagedBusinessReq req){
-		PagedResponse<Business> model = getReadOnlySqlSessionUtil()
+	public	PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req){
+		PagedResponse<BusinessModel> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
 						"com.renrentui.renrenapi.dao.inter.IBusinessDao.getBusinessList",						 
 						req);

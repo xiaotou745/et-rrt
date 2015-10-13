@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
@@ -24,6 +25,7 @@ import com.renrentui.renrencore.enums.BBalanceRecordType;
 import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.BusinessModel;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
@@ -50,7 +52,7 @@ public class BusinessService implements IBusinessService{
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
 
 	@Override
-	public PagedResponse<Business> getBusinessList(PagedBusinessReq req) {
+	public PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req) {
 		// TODO Auto-generated method stub
 		return businessDao.getBusinessList(req);
 	}
@@ -131,7 +133,7 @@ public class BusinessService implements IBusinessService{
 		businessBalanceRecordModel.setOptName(userName);//登 陆名称
 		businessBalanceRecordModel.setOrderId((long)0);
 		businessBalanceRecordModel.setRelationNo("");
-		businessBalanceRecordModel.setRemark("商户充值");		
+		businessBalanceRecordModel.setRemark(req.getRemark());		
 		int bbrId= businessBalanceRecordDao.insert(businessBalanceRecordModel);
 		
 		if(bbId>0 && bbId>0 )

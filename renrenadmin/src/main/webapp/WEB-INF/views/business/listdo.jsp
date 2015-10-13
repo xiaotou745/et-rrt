@@ -4,7 +4,7 @@
 <%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
 <%@page import="com.renrentui.renrencore.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.renrentui.renrenentity.Business"%>
+<%@page import="com.renrentui.renrenentity.domain.BusinessModel"%>
 <%@page import="java.util.List"%><%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 
 <%
@@ -22,6 +22,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<th width="15%">地址</th>
 			<th width="10%">所属城市</th>
 			<th width="10%">站点</th>
+			<th width="10%">金额</th>
 			<th width="10%">操作</th>							
 		</tr>
 	</thead>
@@ -29,8 +30,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	<tbody>
 
 		<%
-			PagedResponse<Business> responsePageList = (PagedResponse<Business>)request.getAttribute("listData");
-			List<Business> data=responsePageList.getResultList();
+			PagedResponse<BusinessModel> responsePageList = (PagedResponse<BusinessModel>)request.getAttribute("listData");
+			List<BusinessModel> data=responsePageList.getResultList();
 			for (int i = 0; i < data.size(); i++) {			
 		%>
 		<tr>
@@ -41,6 +42,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getAddress()%></td>	
 			<td><%=data.get(i).getCityName()%></td>
 			<td><%=data.get(i).getWebSite()%></td>
+			<td><%=data.get(i).getBalance()%></td>
 			<td>
 			<a href="javascript:void(0)"  onclick="BusinessDelta('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>')" >充值 </a>
 			<a href="javascript:void(0)"  onclick="BusinessModify('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>', '<%=data.get(i).getLoginName() %>', '<%=data.get(i).getAddress() %>', '<%=data.get(i).getCityName() %>', '<%=data.get(i).getWebSite() %>')" >修改 </a>
