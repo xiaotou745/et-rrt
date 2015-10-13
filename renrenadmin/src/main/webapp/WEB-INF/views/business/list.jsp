@@ -168,12 +168,12 @@ width: 100%;
 			            </div>
 			            <div class="control-group">
 			                <label>充值金额：</label>
-			                <input name="txtAmountD" id="txtAmountD" type="text">元
+			                <input name="txtAmountD" id="txtAmountD" text="0" type="text">元
 			            </div>
 			            <div class="control-group">
 			                <label>备&nbsp;&nbsp;注：</label>
 			                <div class="controls">
-			                    <textarea cols="45" rows="5" id="txtRemarkD	"></textarea>
+			                    <textarea cols="45" rows="5" id="txtRemarkD"></textarea>
 			                </div>
 			            </div>
 					</fieldset>
@@ -384,13 +384,26 @@ function ModifyBusiness(){
     
 //保存商户
 function AddBusinessDelta(){
-	
+
 	var businessId= $('#txtBusinessIdD').val();	
-	var balance= $('#txtAmountD').val().trim();	
+	var balance= $('#txtAmountD').val().trim();
+	var remark= $('#txtRemarkD').val().trim();	
+	
+    var reg=/^(-)?(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/;
+    if (!reg.test(balance)){
+    	alert("请输入正确的金额");
+    	return;
+    }
+    if(balance<=0)
+    	{
+    	alert("充值金额必须大于0");
+    	return; 
+    	}
    
     var paramaters = {
             businessId: businessId,
-            balance: balance                   
+            balance: balance,
+            remark:remark
         };
     
         var url = "<%=basePath%>/business/addbusinessdelta";  	

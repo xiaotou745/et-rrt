@@ -131,7 +131,7 @@ public class BusinessService implements IBusinessService{
 		businessBalanceRecordModel.setOptName(userName);//登 陆名称
 		businessBalanceRecordModel.setOrderId((long)0);
 		businessBalanceRecordModel.setRelationNo("");
-		businessBalanceRecordModel.setRemark("商户充值");		
+		businessBalanceRecordModel.setRemark(req.getRemark());		
 		int bbrId= businessBalanceRecordDao.insert(businessBalanceRecordModel);
 		
 		if(bbId>0 && bbId>0 )
