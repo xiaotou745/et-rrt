@@ -17,7 +17,7 @@
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr>
-			<th>编号</th>
+			<th style="width: 80px;">编号</th>
 			<th style="width: 200px;">任务标题</th>
 			<th style="width: 150px;">创建人</th>
 			<th style="width: 150px;">创建时间</th>
@@ -47,7 +47,7 @@
 			<td><a class="blue2" href="<%=basePath%>/taskmanage/detail?taskId=<%=data.get(i).getId()%>"><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></a></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getCreateName())%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>
-			<td><%=ParseHelper.ToDateString(data.get(i).getBeginTime(),"yyyy-MM-dd")+"-"+ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-MM-dd")%></td>
+			<td><%=ParseHelper.ToDateString(data.get(i).getBeginTime(),"yyyy-MM-dd")+"/"+ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-MM-dd")%></td>
 			<td><%=ParseHelper.ShowString(data.get(i).getPusher())%></td>
 			<td><%=data.get(i).getBusinessName()%></td>
 			<td><%=data.get(i).getTemplateName()%></td>
@@ -57,11 +57,11 @@
 			<td><%=TaskStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>
 			<% if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()){%>
-				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',1,0)">审核通过</a>
-				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',2,0)">驳回</a>
+				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',1,0,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">审核通过</a>
+				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',2,0,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">驳回</a>
 			<%} 
 			if(data.get(i).getStatus()==TaskStatus.Audited.value()){%>
-			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',4,1)">终止</a>
+			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',4,1,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">终止</a>
 			<%}%>
 			</td>
 		</tr>

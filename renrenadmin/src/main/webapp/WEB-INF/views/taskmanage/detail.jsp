@@ -17,7 +17,7 @@
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 RenRenTaskDetail taskInfo = (RenRenTaskDetail) request.getAttribute("taskInfo");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
-List<Template> templatelist = (List<Template>) request.getAttribute("templatelist");
+String templatelist = (String) request.getAttribute("templatelist");
 List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");
 String pro_city = (String) request.getAttribute("pro_city");
 String city_region = (String) request.getAttribute("city_region");
@@ -174,7 +174,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">任务介绍: </label>
+								<label class="col-sm-4 control-label">任务描述: </label>
 								<div class="col-sm-8">
 									<textarea maxlength="200"  rows="3" cols="20" class="form-control" name="taskGeneralInfo" 
 										id="taskGeneralInfo"><%=taskInfo.getTaskInfo().getTaskGeneralInfo() %></textarea>
@@ -270,14 +270,6 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 <!-- 						</div> -->
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">合同模板: </label>
-								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("snapshotTemplateId", templatelist, "templateName", "id", taskInfo.getTemplateId(),null, "全部")%>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
 								<label class="col-sm-4 control-label">关联商户: </label>
 								<div class="col-sm-8">
 									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", taskInfo.getTaskInfo().getBusinessId(),null, "全部")%>
@@ -289,6 +281,15 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 								<label class="col-sm-4 control-label">当前账户余额: </label>
 								<div class="col-sm-8">
 									<label class="control-label" id="businessBalance">0元</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">合同模板: </label>
+								<div class="col-sm-8">
+								<div id="templateDiv">
+								<select id="snapshotTemplateId" name="snapshotTemplateId"  class='form-control m-b'></select>
 								</div>
 							</div>
 						</div>
@@ -369,7 +370,36 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 </div>
 
 <script>
-$("#uploadfile").click(function(){
+
+function initRegion(){
+	var regionList="<%=oldRegionCode%>";
+	if(regionList!=""&&regionList!="-1"){
+		var codes=regionList.split(";");
+		if(codes.length==1){
+			var provinceCode=$("#provinceCode").html();
+			if(provinceCode.indexOf(codes[0])>=0){//如果是省份
+				$("#provinceCode").val(codes[0]);
+				$("#provinceCode").change();
+				return;
+			}else{
+				 var tmpProvince=new Array();  
+				 var pro_city=$("#pro_city").val().split("#");
+				  for(var j=0;j<pro_city.length;j++){
+						tmpProvince=pro_city[j].split("=");
+						if(tmpProvince[1].indexOf(codes[0])>=0){
+						   $("#provinceCode").val(tmpProvince[0]);
+						   $("#provinceCode").change();
+							$("#cityCode").val(codes[0]);
+							$("#cityCode").change();
+						   return;
+						}
+				  }
+			}
+		}
+	}
+}
+
+function uploadfile(){
 	if ($("#file1").val().length <= 0) {
       alert("请选择文件！");
       return;
@@ -391,9 +421,12 @@ $("#uploadfile").click(function(){
       }
   });
 	
-});
+};
 
-$("#businessId").change(function(){  
+function businessChange(){  
+	var templateList="<%=templatelist%>";
+	var selectedTemplateId="<%=taskInfo.getTemplateId()%>";
+	initSelectTemplate(templateList,selectedTemplateId);
 	var paramaters={"businessId":$("#businessId").val()};
 	var url = "<%=basePath%>/taskmanage/getbusinessbanlance";
 	$.ajax({
@@ -404,8 +437,13 @@ $("#businessId").change(function(){
 			$("#businessBalance").html(result+"元");
 		}
 	});
-});
-$("#businessId").change();
+};
+function initFunction(){
+	initRegion();
+	$("#uploadfile").on("click",uploadfile);
+	$("#businessId").on("change",businessChange);
+	$("#businessId").change();
+}
 function savetask(){
 	if(!validPage()){
 		return;

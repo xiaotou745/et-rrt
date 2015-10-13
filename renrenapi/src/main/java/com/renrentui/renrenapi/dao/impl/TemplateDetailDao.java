@@ -14,9 +14,9 @@ import com.renrentui.renrenentity.TemplateDetail;
 public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 
 	@Override
-	public int deleteByPrimaryKey(Long id) {
+	public int deleteByTemplateId(Long templateId) {
 		return getMasterSqlSessionUtil().delete(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.deleteByPrimaryKey", id);
+				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.deleteByTemplateId", templateId);
 	}
 
 	@Override
@@ -46,9 +46,9 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 	}
 
 	@Override
-	public List<TemplateDetail> detail(Long templateId) {
+	public List<TemplateDetail> listByTemplateId(Long templateId) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.detail", templateId);
+				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.listByTemplateId", templateId);
 
 	}
 

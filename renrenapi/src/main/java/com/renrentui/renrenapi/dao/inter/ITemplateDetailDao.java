@@ -9,7 +9,7 @@ import com.renrentui.renrenentity.req.TemplateSnapshotReq;
 import com.renrentui.renrenentity.TemplateDetail;
 
 public interface ITemplateDetailDao {
-    int deleteByPrimaryKey(Long id);
+    int deleteByTemplateId(Long templateId);
 
     int insert(TemplateDetail record);
     int insertList(List<TemplateDetail> recordList);
@@ -19,6 +19,6 @@ public interface ITemplateDetailDao {
      * @return
      */
     ArrayList<ControlInfo> getTemplateList(Long templateId);
-	public List<TemplateDetail> detail(Long templateId) ;
+	public List<TemplateDetail> listByTemplateId(Long templateId) ;
 
 }

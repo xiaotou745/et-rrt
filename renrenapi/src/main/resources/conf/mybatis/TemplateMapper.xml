@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateDao" >
   <sql id="Base_Column_List" >
-    Id, BusinessId, TemplateName, CreateTime, LastOptName, LastOptTime, Status,createName
+    Id, BusinessId, TemplateName, CreateTime, LastOptName, LastOptTime, Status,createName,remark
   </sql>
   <select id="detail" resultType="com.renrentui.renrenentity.Template" parameterType="java.lang.Long" >
     select 
@@ -28,13 +28,13 @@
   </insert>
   
   
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.Template" >
+  <update id="update" parameterType="com.renrentui.renrenentity.Template" >
     update Template
-    set BusinessId = #{businessid,jdbcType=BIGINT},
-      TemplateName = #{templatename,jdbcType=NVARCHAR},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      LastOptName = #{lastoptname,jdbcType=NVARCHAR},
-      LastOptTime = #{lastopttime,jdbcType=TIMESTAMP},
+    set BusinessId = #{businessId,jdbcType=BIGINT},
+      TemplateName = #{templateName,jdbcType=NVARCHAR},
+      LastOptName = #{lastOptName,jdbcType=NVARCHAR},
+      LastOptTime = getdate(),
+      remark=#{remark,jdbcType=NVARCHAR},
       Status = #{status,jdbcType=SMALLINT}
     where Id = #{id,jdbcType=BIGINT}
   </update>
@@ -75,10 +75,11 @@ parameterType="com.renrentui.renrenentity.req.PagedTemplateReq" statementType="C
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)} 
   </select>
-      <select id="getAllList" resultType="com.renrentui.renrenentity.Template" >
+      <select id="getAllList" resultType="com.renrentui.renrenentity.Template" 
+      parameterType="com.renrentui.renrenentity.req.PagedTemplateReq">
     select 
     <include refid="Base_Column_List" />
-    from Template with(nolock) where Status=1
+    from Template with(nolock) where  <include refid="queryTemplateWhere" />
   </select>
   <update id="setTemplateStatus" parameterType="com.renrentui.renrenentity.req.UpdateStatusReq" >
 	UPDATE dbo.Template 

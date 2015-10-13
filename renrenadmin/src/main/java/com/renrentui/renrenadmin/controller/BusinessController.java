@@ -106,7 +106,7 @@ public class BusinessController {
 	}
 	
 	/**
-	 * 商户冲值
+	 * 商户充值
 	 * @author hulingbo	
 	 * @Date 2015年9月30日 15:35:51
 	 * @param search 查询条件实体
@@ -114,8 +114,10 @@ public class BusinessController {
 	 */	
 	@RequestMapping("addbusinessdelta")
 	@ResponseBody
-	public int addBusinessDelta(BusinessBalanceReq req) {
+	public int addBusinessDelta(HttpServletRequest request,BusinessBalanceReq req) {
 	
+		UserContext context=UserContext.getCurrentContext(request);		
+		req.setOptName(context.getUserName());
 		return businessService.AddBalance(req);
 	}	
 	

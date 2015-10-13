@@ -1,5 +1,7 @@
 package com.renrentui.renrenapihttp.service.impl;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
@@ -28,7 +30,8 @@ import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
-import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.FileUploadReq;
+import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
@@ -311,5 +314,38 @@ public class UsercService implements IUsercService {
 		return resultModel.setCode(ModifyUserCReturnCode.Success.value()).setMsg(ModifyUserCReturnCode.Success.desc());
 	}
 
+	/**
+	 * 上传文件
+	 * @author 胡灵波
+	 * @date 2015年10月12日 15:58:42
+	 * @return
+	 *//*
+	@Override
+	public HttpResultModel<Object> FileUpload(FileUploadReq req) {
+		HttpResultModel<Object> resultModel=new HttpResultModel<Object>();       		
+		
+		byte [] bytes=req.getBytes();
+		String fileName=req.getFileName();
+		int uploadForm=req.getUploadForm();
+		
+		FileOutputStream fos = null;  
+		       try{  
+		            fos = new FileOutputStream("F:\\"+fileName);  
+		              
+		            //将字节数组bytes中的数据，写入文件输出流fos中  
+		            fos.write(bytes);  
+		            fos.flush();  
+		        }catch (Exception e){  
+		            e.printStackTrace();  		       
+		        }finally{  
+		            try {  
+		                fos.close();  
+		            } catch (IOException e) {  
+		                e.printStackTrace();  
+		            }     
+		        }  		        
+
+       return resultModel;
+	}*/
 
 }
