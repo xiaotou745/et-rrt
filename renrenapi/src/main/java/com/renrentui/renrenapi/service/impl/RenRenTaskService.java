@@ -361,6 +361,9 @@ public class RenRenTaskService implements IRenRenTaskService{
 		balanceRecord.setRemark(recordType.desc());
 		businessBalanceRecordDao.insert(balanceRecord);
 	}
+	/**
+	 *  审核任务 列表  数据
+	 */
 	@Override
 	public PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(
 			PagedRenRenTaskReq req) {
