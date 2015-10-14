@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ import com.renrentui.renrencore.util.ImageHelper;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
+import com.renrentui.renrencore.util.StreamUtils;
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
@@ -45,6 +47,7 @@ import com.renrentui.renrenentity.BusinessBalanceRecord;
 import com.renrentui.renrenentity.MenuInfo;
 import com.renrentui.renrenentity.RoleInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.BusinessModel;
 import com.renrentui.renrenentity.domain.SimpleUserInfoModel;
 import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
@@ -85,7 +88,7 @@ public class BusinessController {
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedBusinessReq req)  {			
 		
-		PagedResponse<Business> resp = businessService.getBusinessList(req);
+		PagedResponse<BusinessModel> resp = businessService.getBusinessList(req);
 		ModelAndView model = new ModelAndView("business/listdo");		
 		model.addObject("listData", resp);
 		return model;		
@@ -102,8 +105,23 @@ public class BusinessController {
 	@ResponseBody
 	public int addBusiness(Business record) {
 	
-		return businessService.Add(record);
+		return businessService.add(record);
 	}
+	
+	/**
+	 * 添加商户 
+	 * @author hulignbo
+	 * @Date 2015年9月30日 15:35:12
+	 * @param search 查询条件实体
+	 * @return	
+	 */	
+	@RequestMapping("modifybusiness")
+	@ResponseBody
+	public int modifyBusiness(Business record) {
+	
+		return businessService.modify(record);
+	}
+	
 	
 	/**
 	 * 商户充值
@@ -118,7 +136,7 @@ public class BusinessController {
 	
 		UserContext context=UserContext.getCurrentContext(request);		
 		String userName=context.getUserName();
-		return businessService.AddBalance(req,userName);
+		return businessService.addBalance(req,userName);
 	}	
 	
 	/**
@@ -133,10 +151,11 @@ public class BusinessController {
 	@RequestMapping("uploadfile")
 	@ResponseBody
 	public int uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-  
+	 byte[] byteArrary=	StreamUtils.copyToByteArray( request.getInputStream());
+		businessService.UploadFile(byteArrary, "1");
 		ImageHelper.UploadImg(request,"business");
 		return 1;
 	}	
 
-
+	
 }

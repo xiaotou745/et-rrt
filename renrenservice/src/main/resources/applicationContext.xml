@@ -16,7 +16,6 @@
 	<bean id="jobOrderWindowService" class="com.renrentui.renrenservice.service.OrderWindowService"></bean>
 	<bean id="jobOrderWindowServiceDetail"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-
 		<property name="targetObject">
 			<ref bean="jobOrderWindowService" />
 		</property>
@@ -24,7 +23,6 @@
 			<value>outTimeCanelOrder</value>
 		</property>
 	</bean>
-
 	<bean id="doOrderWindowService"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail">
@@ -42,7 +40,6 @@
 	<bean id="jobTaskWindowService" class="com.renrentui.renrenservice.service.TaskWindowService"></bean>
 	<bean id="jobTaskWindowServiceDetail"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-
 		<property name="targetObject">
 			<ref bean="jobTaskWindowService" />
 		</property>
@@ -50,7 +47,6 @@
 			<value>outTimeCanelTask</value>
 		</property>
 	</bean>
-
 	<bean id="doTaskWindowService"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail">
@@ -67,6 +63,7 @@
 		<property name="triggers">
 			<list>
 				<ref bean="doOrderWindowService" />
+				<ref bean="doTaskWindowService" />
 			</list>
 		</property>
 	</bean>

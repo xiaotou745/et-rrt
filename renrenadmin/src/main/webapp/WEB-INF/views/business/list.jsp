@@ -4,12 +4,11 @@
 <%@page import="com.renrentui.renrenentity.RoleInfo"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
- <%@page import="com.renrentui.renrencore.enums.UploadForm"%>
+ <%@page import="com.renrentui.renrencore.enums.UploadForm"%> 
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 String UploadPath= PropertyUtils.getProperty("ImageServicePath");
-%>
-
+%>   
 <style type="text/css">
 #map_contain {
     height: 90%;
@@ -123,22 +122,19 @@ width: 100%;
 			                    <input  name="txtWebSiteA" id="txtWebSiteA" type="text">
 			            </div> 
 			        </fieldset>
-			        <fieldset>			        
-<!-- 		<img id="showBusiImage" src="" width="200px" height="200px" />
-		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="text" type="hidden">	
-		<iframe src=http://upload.aaa.com/aaa.html id="uploadframe"></iframe> -->
-			
-			<img id="showBusiImage" src="" width="200px" height="200px" />
-			<input  name="txtshowBusiImage" id="txtshowBusiImage" type="hidden">
-					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" /> 
-  <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/> 
-			        </fieldset>
-			
 				</div>
+				<div style="margin-left:30px">
+		<div id="fileQueue" style="height:80px"></div>
+	        	<input type="file" name="uploadify" id="uploadify" />
+		        <p>
+		        <a href="javascript:jQuery('#uploadify').uploadifyUpload()">文件上传</a>&nbsp;
+		        <a href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消所有上传</a>
+		        </p>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="AddBusiness()">保存</button>
 				</div> 
+				</div>
 			</small>
 		</div>  
 	</div>
@@ -158,7 +154,7 @@ width: 100%;
 					<fieldset>
 						<br>
 						  <div class="control-group">
-		                <label>公司名称：</label>
+		                <label>商户名称：</label>
 		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
 		                <input name="txtBusinessIdD" id="txtBusinessIdD" type="hidden">
 		            	</div>
@@ -168,21 +164,23 @@ width: 100%;
 			            </div>
 			            <div class="control-group">
 			                <label>充值金额：</label>
-			                <input name="txtAmountD" id="txtAmountD" type="text">元
+			                <input name="txtAmountD" id="txtAmountD" text="0" type="text">元
 			            </div>
 			            <div class="control-group">
 			                <label>备&nbsp;&nbsp;注：</label>
 			                <div class="controls">
-			                    <textarea cols="45" rows="5" id="txtRemarkD	"></textarea>
+			                    <textarea cols="45" rows="5" id="txtRemarkD"></textarea>
 			                </div>
 			            </div>
 					</fieldset>
 				</div>
 				<div class="modal-footer">
-				        <form name="form_uploadImg" action="" method="POST">  
+	<!--   <form name="form_uploadImg" action="" method="POST">   -->
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id="txtbusinessDelta">确认</button>
-					 </form>  
+					<button class="btn btn-primary" type="button" id="txtbusinessDelta" onclick="AddBusinessDelta()">确认</button>
+					 </form>   -->
+
+			 
 				</div>
 			</small>
 		</div>
@@ -191,7 +189,6 @@ width: 100%;
 	<small class="font-bold"> </small>
 
 </div>
-
 
 <div tabindex="-1" class="modal inmodal" id="modifyBusiness"
 	role="dialog" aria-hidden="true" style="display: none;">
@@ -208,7 +205,7 @@ width: 100%;
 					<fieldset>
 			            <br>
 			             <div class="control-group">
-			                <label >公司名称：</label> 
+			                <label >商户名称：</label> 
 			                    <input  name="txtCompanyNameM" id="txtCompanyNameM" type="text">			                    
 							<input name="txtBusinessIdM" id="txtBusinessIdM" type="hidden">
 			            </div>
@@ -232,26 +229,19 @@ width: 100%;
 			                <label >站&nbsp;&nbsp;点：</label> 
 			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
 			            </div> 
-			        </fieldset>
-			        <fieldset>			        			        
-		<img id="showBusiImage" src="" width="200px" height="200px" />		
-		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="hidden">
-					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
- <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>  
-			        </fieldset>
+			        </fieldset>			
 			
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="AddBusiness()">保存</button>
+					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="ModifyBusiness()">保存</button>
 				</div> 
 			</small>
 		</div>  
 	</div>
 </div>
 <script>
-
-var jss={
+var jss={ 
 		search:function(currentPage){	
 			 var companyName = $("#txtCompanyName").val();				   
 			 var phoneNo = $("#txtPhoneNo").val();
@@ -281,12 +271,43 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
-
+$(document).ready(function() {
+    $("#uploadify").uploadify({
+     	'buttonImg':'../js/jquery.uploadify-v2.1.0/selectFile.gif',
+        'uploader':'../js/jquery.uploadify-v2.1.0/uploadify.swf',
+        'script':'http://192.168.1.38/Upload/UploadImg?uploadFrom=1',//后台处理的请求
+        'cancelImg':'../js/jquery.uploadify-v2.1.0/cancel.png',
+        'folder':'uploads',//您想将文件保存到的路径
+        'queueID':'fileQueue',//与下面的id对应
+        'queueSizeLimit':1,
+        'wmode':'transparent',
+        'fileDesc':'图片文件',    
+    	'fileExt':'*.jpg;*.png', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
+       	'auto':false,
+        'multi':false,
+        'simUploadLimit':1,
+        'maxQueueSize': 1,
+        'successTimeout':600,
+         'buttonText':"BROWSER",
+        'fileSizeLimit' : '2MB',
+        onComplete: function (event, queueId, fileObj, response, data) {
+            var jsonstr = JSON.parse(response);
+             alert("上传成功，地址："+jsonstr.Result.FileUrl);
+//              {"Status":1,"Message":"成功","Result":{"FileUrl":
+//             	 "http://192.168.1.38:8999/Business/2015/10/13/23/49452547d2.jpg",
+//             	 "RelativePath":"Business/2015/10/13/23/49452547d2.jpg",
+//             	 "OriginalName":"Chrysanthemum.jpg","ModifyOriginalName":
+//             		 "49452547d2_0_0.jpg"}}
+        }
+    });
+});
 
 function AddShow(){
     $('#addBusiness').modal('show');
+//     $('#uploadify').uploadify('settings','buttonImg','../js/jquery.uploadify-v2.1.0/selectFile.gif');
 }
-//保存商户
+
+//添加,保存商户
 function AddBusiness(){
 	var companyName= $('#txtCompanyNameA').val().trim();
 	var phoneNo= $('#txtPhoneNoA').val().trim();	
@@ -308,7 +329,7 @@ function AddBusiness(){
     if(loginName.trim().length <6 || loginName.trim().length>20){
     	alert("登录名称除中文外6-20位字符");
     	return;
-    }       
+    }   
     
     var paramaters = {
             "companyName": companyName,
@@ -328,19 +349,113 @@ function AddBusiness(){
 	        	   
 	        	   if (result>0) {
 						alert("操作成功");
-						window.location.href = "<%=basePath%>/business/list";
+	        	   window.location.href = "<%=basePath%>/business/list";
 					} else {
 						alert("操作失败");
 					}      
 	           }
 	       });	 	    
+  }
+    
+  //修改,保存商户
+function ModifyBusiness(){
+	var id= $('#txtBusinessIdM').val().trim();
+	var companyName= $('#txtCompanyNameM').val().trim();
+	var phoneNo= $('#txtPhoneNoM').val().trim();	
+    var loginName = $('#txtLoginNameM').val().trim();
+    var address= $('#txtAddressM').val().trim();
+    var cityName= $('#txtCityNameM').val().trim();
+    var webSite= $('#txtWebSiteM').val().trim();     
+    
+    var reg=/[\u4e00-\u9fa5]+/;   
+    
+    if(companyName.trim().length <=4 || companyName.trim().length>30){
+    	alert("商户名称必须在5-30个字符");
+    	return;
+    }
+    if (reg.test(loginName)){
+    	alert("登录名称不能为中文字符");
+    	return;
+    }
+    if(loginName.trim().length <6 || loginName.trim().length>20){
+    	alert("登录名称除中文外6-20位字符");
+    	return;
+    }       
+    
+    var paramaters = {
+    		"id": id,
+            "companyName": companyName,
+            "phoneNo": phoneNo,
+            "loginName": loginName,
+            "address": address,
+            "cityName": cityName,
+            "webSite": webSite            
+        };
+   var url = "<%=basePath%>/business/modifybusiness";  
+		$.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {        
+	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+	                   window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
+	           }
+	       });	 	    
+  }
+	        	  
+//保存商户
+function AddBusinessDelta(){
+
+	var businessId= $('#txtBusinessIdD').val();	
+	var balance= $('#txtAmountD').val().trim();
+	var remark= $('#txtRemarkD').val().trim();	
+	
+    var reg=/^(-)?(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/;
+    if (!reg.test(balance)){
+    	alert("请输入正确的金额");
+    	return;
+	           }
+    if(balance<=0)
+    	{
+    	alert("充值金额必须大于0");
+    	return; 
+    	}
+   
+    var paramaters = {
+            businessId: businessId,
+            balance: balance,
+            remark:remark
+        };
+    
+        var url = "<%=basePath%>/business/addbusinessdelta";  	
+		$.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+						window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
+	        	  
+	           }
+	       });
+   	    
 }
 
+    //上传图片
     function ajaxFileUpload()  
     {      	
      var typeValue=<%=UploadForm.Clienter.value() %>;
 	$.ajaxFileUpload({      
-    url:'http://192.168.1.38/upload/uploadimg?uploadFrom=1',         
+    //url:'http://192.168.1.38/upload/uploadimg?uploadFrom=1',  
     secureuri:false,  
     fileElementId:'uploadFileInput',                         //文件选择框的id属性  
     //dataType: 'json',                                     //服务器返回的格式，可以是json  	

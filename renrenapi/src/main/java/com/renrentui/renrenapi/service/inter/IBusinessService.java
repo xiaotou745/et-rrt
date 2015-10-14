@@ -1,11 +1,13 @@
 package com.renrentui.renrenapi.service.inter;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.BusinessModel;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
 
@@ -22,9 +24,13 @@ public interface IBusinessService {
 	 * 查询商家分页列表
 	 * @return
 	 */
-	PagedResponse<Business> getBusinessList(PagedBusinessReq req);	
+	PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req);	
 	
-	int Add(Business record);
+	int add(Business record);
+	
+	int modify(Business record);
 
-	public int AddBalance(BusinessBalanceReq req,String userName);
+	public int addBalance(BusinessBalanceReq req,String userName);
+	
+	public String UploadFile(byte[] fileArr,String fileType);
 }

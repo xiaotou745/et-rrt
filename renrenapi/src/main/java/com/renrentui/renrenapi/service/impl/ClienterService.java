@@ -5,7 +5,11 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.lang.Math.*;
+
+import javax.management.RuntimeErrorException;
+
 import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
@@ -13,7 +17,12 @@ import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrencore.enums.CBalanceRecordStatus;
+import com.renrentui.renrencore.enums.CBalanceRecordType;
+import com.renrentui.renrencore.enums.ClienterWithdrawFormStatus;
+import com.renrentui.renrencore.enums.ClienterWithdrawFormWithType;
 import com.renrentui.renrencore.enums.WithdrawState;
+import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
@@ -126,60 +135,8 @@ public class ClienterService implements IClienterService{
 	@Override
 	public ClienterDetail getUserC(long userId) {
 		return clienterDao.getUserC(userId);
-	}
+	}	
 	
-	/**
-	 * @Des 用户提现 申请
-	 * @Author 胡灵波
-	 * @Date 2015年9月28日 16:58:06
-	 * @param req
-	 * @return
-	 */
-	@Override
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public WithdrawState WithdrawC(ClienterBalanceReq req)
-	{		
-		ClienterBalance clienterBalanceModel= clienterBalanceDao.selectByPrimaryKey(req.getUserId());
-
-		double amount=clienterBalanceModel.getWithdraw();
-		if(req.getAmount()>amount)
-		{	
-			return WithdrawState.MoneyError;
-		}		
-		
-	     //创建提现表
-		ClienterWithdrawForm clienterWithdrawFormModel=new ClienterWithdrawForm();
-		clienterWithdrawFormModel.setClienterId(req.getUserId());
-		clienterWithdrawFormModel.setAmount(req.getAmount());
-		clienterWithdrawFormModel.setWithdrawNo("No001");
-		clienterWithdrawFormModel.setWithType((short)1);
-		clienterWithdrawFormModel.setAccountInfo(req.getAccountInfo());
-		clienterWithdrawFormModel.setTrueName(req.getTrueName());
-		clienterWithdrawFormModel.setStatus((short)0);				
-		int cwfId= clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
-		
-		ClienterBalanceReq cBReq=new ClienterBalanceReq();
-		cBReq.setUserId(req.getUserId());
-		cBReq.setAmount(-req.getAmount());
-		int cbId= clienterBalanceDao.updateMoneyByKey(cBReq);
-		
-	    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
-		clienterBalanceRecordModel.setClienterId(req.getUserId());
-		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));		
-		clienterBalanceRecordModel.setRecordType((short)2);		
-		clienterBalanceRecordModel.setOptName("admin");
-		clienterBalanceRecordModel.setOrderId((long)clienterWithdrawFormModel.getId());
-		clienterBalanceRecordModel.setRelationNo("001");
-		clienterBalanceRecordModel.setRemark("提现申请");
-		clienterBalanceRecordModel.setStatus((short)2);
-		int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);				
-		
-		if(cwfId>0&&cbId>0&&cbrId>0)
-		{
-			return WithdrawState.Success;
-		}
-		return WithdrawState.Failure;
-	}
 	/**
 	* @Des 获取地推员信息列表  
 	* @Author WangXuDan

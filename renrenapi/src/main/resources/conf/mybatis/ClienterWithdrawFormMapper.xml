@@ -28,12 +28,15 @@
 		<if test="withdrawNo != null and withdrawNo!=''">
 			and cwf.withdrawNo=''${withdrawNo}''
 		</if>		
-		<if test="clienterName != null and clienterName!=''">
-			and c.clienterName=''${clienterName}''
-		</if>
 		<if test="phoneNo != null and phoneNo!=''">
 			and c.phoneNo=''${phoneNo}''
-		</if>	 
+		</if>
+		<if test="status != -1 ">
+			and cwf.status=${status}
+		</if>	
+		<if test="clienterName != null and clienterName!=''">
+			and c.clienterName LIKE ''%${clienterName}%''
+		</if> 
 	
 	</sql>
 	

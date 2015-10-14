@@ -99,10 +99,13 @@ public class ClienterWithdrawFormController {
 	 */	
 	@RequestMapping("auditpass")
 	@ResponseBody
-	public int auditpass(int  withwardId) {
+	public int auditpass(HttpServletRequest request,int  withwardId) {
 	
 		ClienterWithdrawForm record=new ClienterWithdrawForm();
 		record.setId((long)withwardId);
+		
+		UserContext context=UserContext.getCurrentContext(request);
+		record.setAuditName(context.getUserName());
 		return clienterWithdrawFormService.AuditPass(record);			
 	}	
 	
@@ -115,10 +118,12 @@ public class ClienterWithdrawFormController {
 	 */	
 	@RequestMapping("auditrefuse")
 	@ResponseBody
-	public int auditrefuse(int  withwardId) {
+	public int auditrefuse(HttpServletRequest request,int  withwardId) {
 	
 		ClienterWithdrawForm record=new ClienterWithdrawForm();
 		record.setId((long)withwardId);
+		UserContext context=UserContext.getCurrentContext(request);
+		record.setAuditName(context.getUserName());
 		return clienterWithdrawFormService.AuditRefuse(record);	
 	}	
 }

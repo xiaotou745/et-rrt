@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
 import com.renrentui.renrencore.cache.redis.RedisService;
@@ -57,6 +58,9 @@ public class UsercService implements IUsercService {
 	
 	@Autowired
 	private IClienterBalanceService clienterBalanceService;	
+	
+	@Autowired
+	private IClienterWithdrawFormService clienterWithdrawFormService;
 
 	@Autowired
 	RedisService redisService;
@@ -123,13 +127,13 @@ public class UsercService implements IUsercService {
 			resultModel.setMsg(WithdrawState.Failure.desc());
 			return resultModel;
 		}		
-		if(req.getAmount()<=0)
+		if(req.getAmount()<10)
 		{
 			resultModel.setCode(WithdrawState.ParaError.value());
 			resultModel.setMsg(WithdrawState.ParaError.desc());
 			return resultModel;
 		}
-		WithdrawState code=clienterService.WithdrawC(req);		
+		WithdrawState code=clienterWithdrawFormService.WithdrawC(req);		
 		resultModel.setCode(code.value());
 		resultModel.setMsg(code.desc());
 		return resultModel;

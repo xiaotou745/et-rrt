@@ -77,14 +77,6 @@ public interface IClienterService {
 	*/
 	ClienterDetail getUserC(long userId);
 	/**
-	 * 用户提现
-	 * 胡灵波
-	 * 2015年9月28日 16:58:06
-	 * @param req
-	 * @return
-	 */
-	WithdrawState WithdrawC(ClienterBalanceReq req);
-	/**
 	* @Des 获取地推员信息列表  
 	* @Author WangXuDan
 	* @Date 2015年9月29日16:15:39
