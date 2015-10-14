@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ import com.renrentui.renrencore.util.ImageHelper;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
+import com.renrentui.renrencore.util.StreamUtils;
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
@@ -133,10 +135,11 @@ public class BusinessController {
 	@RequestMapping("uploadfile")
 	@ResponseBody
 	public int uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-  
+	 byte[] byteArrary=	StreamUtils.copyToByteArray( request.getInputStream());
+		businessService.UploadFile(byteArrary, "1");
 		ImageHelper.UploadImg(request,"business");
 		return 1;
 	}	
 
-
+	
 }

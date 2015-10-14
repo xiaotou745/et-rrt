@@ -1,5 +1,6 @@
 package com.renrentui.renrenapi.service.inter;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,4 +28,6 @@ public interface IBusinessService {
 	int Add(Business record);
 
 	public int AddBalance(BusinessBalanceReq req,String userName);
+	
+	public String UploadFile(byte[] fileArr,String fileType);
 }
