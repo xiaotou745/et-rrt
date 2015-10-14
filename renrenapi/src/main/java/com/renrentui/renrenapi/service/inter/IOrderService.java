@@ -33,5 +33,5 @@ public interface IOrderService {
 	
 	public String downLoadOrderInfo(OrderChildReq req);
 	public int cancelOrder(CancelTaskReq req);
-
+	public Double getOrderTotalAmount(Long taskId);
 }

@@ -222,6 +222,7 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 		break;
 		case 2:optype="驳回";break;
 		case 4:optype="终止";break;
+		case 5:optype="取消";break;
 		}
 		if (!confirm("确定要"+optype+"该任务吗？")){
 			return;
@@ -237,6 +238,26 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 					alert("操作成功");
 				} else {
 					alert("操作失败");
+				}
+				window.location.href = window.location.href;
+			}
+		});
+	};
+	function settlementtask(taskId){
+		if (!confirm("确定要结算该任务吗？")){
+			return;
+		}
+		var paramaters={"taskId":taskId};
+		var url = "<%=basePath%>/taskmanage/settlementtask";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result > 0) {
+					alert("操作成功");
+				} else {
+					alert("操作失败：数据异常，请重试");
 				}
 				window.location.href = window.location.href;
 			}

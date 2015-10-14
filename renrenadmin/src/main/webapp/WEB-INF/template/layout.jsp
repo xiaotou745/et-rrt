@@ -107,6 +107,9 @@
     });
     
 	$(document).ready(function() {
+		if($("#rememberMe").length>0){
+			window.location.href ='<%=basePath%>';
+		}
 		$("#gloablShowError").click(function() {
 			if ($("#gloablShowError").html() == "显示详细信息") {
 				$("#gloablShowError").html("隐藏详细信息");

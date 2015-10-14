@@ -135,7 +135,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		{call Sp_CustomPage2015_V1(
 		' a.Id DESC ',
 		'a.*,b.templateName,c.CompanyName as businessName, 
-        CASE when o.TaskAudi is not null then 1
+        CASE when o.TaskAudi is  null and (a.status=3 or a.status=4) then 1
              else 0 end  as canSettlement 
         ',
 		'RenRenTask a with ( nolock )
@@ -144,7 +144,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
         left  join ( select distinct
                             TaskId as TaskAudi
                      from   [Order] (nolock) 
-                     where  AuditStatus != 2
+                     where  (AuditStatus =0 or AuditStatus=1)
                             and OrderStatus = 1
                    ) as o on a.Id = o.TaskAudi  
         ',

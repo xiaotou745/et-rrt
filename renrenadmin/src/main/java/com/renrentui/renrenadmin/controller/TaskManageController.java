@@ -175,13 +175,12 @@ public class TaskManageController {
 		List<Attachment> attachments=new ArrayList<>();
 		String attachs=request.getParameter("attachmentfiles");
 		if (attachs!=null&&!attachs.isEmpty()) {
-			String relativePath = PropertyUtils.getProperty("Task_Attach_Path");
 			String [] attachList=attachs.split(";");
 			for (String fileinfo : attachList) {
 				String [] fileNames=fileinfo.split("#");
 				Attachment attach=new Attachment();
 				attach.setAttachmentName(fileNames[0]);
-				attach.setAttachUrl(relativePath+fileNames[1]);
+				attach.setAttachUrl(fileNames[1]);
 				attachments.add(attach);
 			}
 		}

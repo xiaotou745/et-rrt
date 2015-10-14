@@ -341,4 +341,28 @@ FROM    dbo.OrderChild AS oc
 WHERE   oc.IsEnable = 1
         AND oc.OrderId =${orderId}
   </select>
+    <select id="getOrderTotalAmount" parameterType="java.lang.Long" resultType="java.lang.Double">
+          SELECT ISNULL(SUM(Amount), 0) AS totalAmount
+         FROM   dbo.[Order]
+         WHERE  taskid = #{taskId,jdbcType=BIGINT}
+                AND OrderStatus = 1
+                AND AuditStatus = 2
+                AND EXISTS ( SELECT *
+                             FROM   RenRenTask a
+                                    LEFT  JOIN ( SELECT DISTINCT
+                                                        TaskId AS TaskAudi
+                                                 FROM   [Order] (NOLOCK)
+                                                 WHERE  ( AuditStatus = 0
+                                                          OR AuditStatus = 1
+                                                        )
+                                                        AND OrderStatus = 1
+                                                        AND taskid = #{taskId,jdbcType=BIGINT}
+                                               ) AS o ON a.Id = o.TaskAudi
+                             WHERE  a.id = #{taskId,jdbcType=BIGINT}
+                                    AND ( a.[status] = 3
+                                          OR a.[status] = 4
+                                        )
+                                    AND o.TaskAudi IS  NULL )
+
+  </select>
 </mapper>

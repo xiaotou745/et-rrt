@@ -47,7 +47,7 @@ function appendAttachRow(fileinfo){
 	var row = $("<tr></tr>");
 	row.append("<td>"+newRowNum+"</td>");
 	row.append("<td>"+fileinfo.split("#")[0]+"</td>");
-	row.append("<td><a href='javascript:void(0)' onclick='deleterow(this)'>删除</a></td>");
+	row.append("<td><a href='javascript:void(0)' onclick='deleterow(this)'>删除</a>&nbsp;&nbsp;&nbsp;<a target='_blank' href='"+fileinfo.split("#")[2]+"' )'>预览</a></td>");
 	$("#uploadfiletable").append(row);
 	var oldAttach=$("#attachmentfiles").val();
 	if(oldAttach==""){

@@ -353,7 +353,7 @@ String city_region = (String) request.getAttribute("city_region");
 	        onComplete: function (event, queueId, fileObj, response, data) {
 	            var jsonstr = JSON.parse(response);
 	             if(jsonstr.Status==1){
-	            	 var fileinfo=jsonstr.Result.OriginalName+"#"+jsonstr.Result.RelativePath;
+	            	 var fileinfo=jsonstr.Result.OriginalName+"#"+jsonstr.Result.RelativePath+"#"+jsonstr.Result.FileUrl;
 	            	 appendAttachRow(fileinfo);
 	             }else{
 	            	 alert("上传失败");

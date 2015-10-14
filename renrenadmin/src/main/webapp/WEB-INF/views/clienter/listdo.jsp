@@ -23,8 +23,6 @@
 						<th width="%5">余额</th>
 						<th width="%5">可提现</th>
 						<th width="%5">已提现</th>
-						<th width="%5">操作时间</th>
-						<th width="%5">操作人</th>
 				</tr>
 			</thead>
 			<tbody>                           
@@ -37,8 +35,6 @@
                 <td><%=ParseHelper.digitsNum( list.get(i).getBalance(), 2)%></td>
                 <td><%=ParseHelper.digitsNum(list.get(i).getWithdraw(), 2)%></td>
                 <td><%=ParseHelper.digitsNum(list.get(i).getHadWithdraw(), 2)%></td>
-                <td><%=ParseHelper.ToDateString(list.get(i).getLastOptTime())%></td>
-                <td><%=list.get(i).getLastOptName() %></td>
 			</tr>
 		 <%}%> 	 	
 			</tbody>

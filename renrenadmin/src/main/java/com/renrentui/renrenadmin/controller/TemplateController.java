@@ -169,6 +169,7 @@ public class TemplateController {
 				switch (values[0]) {
 				case "ordernum":
 					detail.setOrderNum(ParseHelper.ToInt(detailValue, 0));
+					detail.setName("key"+detailValue);
 					break;
 				case "controlid":
 					detail.setControlId(ParseHelper.ToLong(detailValue, 0));

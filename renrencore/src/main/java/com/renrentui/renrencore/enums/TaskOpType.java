@@ -28,7 +28,11 @@ public enum TaskOpType {
 	/**
 	 * 取消任务
 	 */
-	CancelTask(6, "取消任务");
+	CancelTask(6, "取消任务"),
+	/**
+	 * 结算任务
+	 */
+	SettlementTask(7, "结算任务");
 
 	private int value = 0;
 	private String desc;
