@@ -312,6 +312,9 @@ order by o.Id asc;
     where Id = #{id,jdbcType=BIGINT} and (Status=0 or Status=2)
   </update>
      <select id="getListByTemplateId" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
-   	select * from  dbo.RenRenTask with(nolock) where  SnapshotTemplateId = #{templateId,jdbcType=BIGINT} and (Status=0 or Status=2)
+   SELECT a.* FROM RenRenTask a with(nolock) JOIN 
+  dbo.TemplateSnapshot b with(nolock) 
+  ON a.SnapshotTemplateId=b.id  
+  where  b.TemplateId = #{templateId,jdbcType=BIGINT} and (a.Status=0 or a.Status=2)
   </select> 
 </mapper>

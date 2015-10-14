@@ -486,8 +486,17 @@ public class RenRenTaskService implements IRenRenTaskService{
 		if (oldBalance==null) {
 			throw new RuntimeException("没有找到id="+record.getBusinessId()+"的商户的余额信息");
 		}
+		Double oldTotalFee=oldTaskModel.getAmount()*oldTaskModel.getTaskTotalCount();
 		Double totalFee=record.getAmount()*record.getTaskTotalCount();
-		if (totalFee.compareTo(oldBalance.getBalance())>0) {
+
+		if(record.getBusinessId().equals(oldTaskModel.getBusinessId())){
+		   Double difFee=totalFee-oldTotalFee;
+			//如果任务修改后，商户id没有变更,但是任务的费用增加了，则需要判断新增的费用是否小于商家余额
+		   if(difFee.compareTo(0d)>0&&difFee.compareTo(oldBalance.getBalance())>0){
+				return -1;
+		   }
+		}else if (totalFee.compareTo(oldBalance.getBalance())>0) {
+			//如果任务修改后，商户id变更了,需要判断变更后的商户的余额是否足够支付任务的费用
 			return -1;
 		}
 		StringBuilder sbRemark=new StringBuilder();
@@ -519,7 +528,6 @@ public class RenRenTaskService implements IRenRenTaskService{
 			sbRemark.append(regionRemark);
 		}
 		//商家id发生了变更，则需要将钱返回给原来的商家
-		Double oldTotalFee=oldTaskModel.getAmount()*oldTaskModel.getTaskTotalCount();
 		if (!record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
 			BusinessBalance oldBusinessBalance=businessBalanceDao.selectByBusinessId(oldTaskModel.getBusinessId());
 			if (oldBusinessBalance==null) {
