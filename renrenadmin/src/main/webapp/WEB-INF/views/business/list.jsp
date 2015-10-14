@@ -107,7 +107,7 @@ width: 100%;
 			                <input  name="txtPhoneNoA" id="txtPhoneNoA" type="text">					               
 			            </div>
 			            <div class="control-group">
-			                <label >登录账号：</label> 
+			                <label >登录名称：</label> 
 			                    <input name="txtLoginNameA" id="txtLoginNameA" type="text">
 			            </div> 
 			            <div class="control-group">
@@ -220,7 +220,7 @@ width: 100%;
 			                <input  name="txtPhoneNoM" id="txtPhoneNoM" type="text">					               
 			            </div>
 			            <div class="control-group">
-			                <label >登录账号：</label> 
+			                <label >登录名称：</label> 
 			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
 			            </div> 
 			            <div class="control-group">
@@ -311,8 +311,7 @@ $(document).ready(function() {
         'fileSizeLimit' : '2MB',
         onComplete: function (event, queueId, fileObj, response, data) {
             var jsonstr = JSON.parse(response);
-            $("#imgShowA").attr("src",jsonstr.Result.FileUrl);   
-            alert(jsonstr.Result.FileUrl);
+            $("#imgShowA").attr("src",jsonstr.Result.FileUrl);           
             $('#txtImgShowA').val(jsonstr.Result.RelativePath)            
             
             
@@ -352,11 +351,11 @@ function AddBusiness(){
     	return;
     }
     if (reg.test(loginName)){
-    	alert("登录账号不能为中文字符");
+    	alert("登录名称不能为中文字符");
     	return;
     }
     if(loginName.trim().length <6 || loginName.trim().length>20){
-    	alert("登录账号为6-20位非中文字符");
+    	alert("登录名称除中文外6-20位字符");
     	return;
     }   
     
@@ -403,11 +402,11 @@ function ModifyBusiness(){
     	return;
     }
     if (reg.test(loginName)){
-    	alert("登录账号不能为中文字符");
+    	alert("登录名称不能为中文字符");
     	return;
     }
     if(loginName.trim().length <6 || loginName.trim().length>20){
-    	alert("登录账号为6-20位非中文字符");
+    	alert("登录名称除中文外6-20位字符");
     	return;
     }       
     

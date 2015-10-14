@@ -81,21 +81,20 @@ String ImgShowUrl= PropertyUtils.getProperty("ImgShowUrl");
 	   $('#txtAddressM').val('');
 	   $('#txtCityNameM').val('');
 	   $('#txtWebSiteM').val('');
-	    $('#txtImgShowM').val('');
+	   $('#txtImgShowM').val('');
 	   $("#imgShowM").attr("src","");  
 	   
 	   $('#txtBusinessIdM').val(id);
 	   $('#txtCompanyNameM').val(name);	   
 	   $('#txtPhoneNoM').val(phone);	   
-	    $('#txtLoginNameM').val(loginName);
+	   $('#txtLoginNameM').val(loginName);
 	   $('#txtAddressM').val(address);
 	   $('#txtCityNameM').val(cityName);
 	   $('#txtWebSiteM').val(webSite);	 	
 	   $('#txtImgShowM').val(logo);	
 	   
-	    var logoUrl="<%=ImgShowUrl%>"+logo ;
-	   //alert(logoUrl);
-	   $("#imgShowM").attr("src","<%=ImgShowUrl%>logo"); 
+	   var logoUrl="<%=ImgShowUrl%>"+logo ;	
+	   $("#imgShowM").attr("src",logoUrl); 
 
 	   $('#modifyBusiness').modal('show');	   	   
    }
