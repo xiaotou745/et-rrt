@@ -80,6 +80,9 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		return res;
 	}
 
+	/**
+	 *  审核任务 列表  数据
+	 */
 	@Override
 	public PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(
 			PagedRenRenTaskReq req) {

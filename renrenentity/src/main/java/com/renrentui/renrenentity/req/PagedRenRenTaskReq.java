@@ -116,4 +116,6 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 	public void setSnapshotTemplateId(Long snapshotTemplateId) {
 		this.snapshotTemplateId = snapshotTemplateId;
 	}
+	
+	
 }
