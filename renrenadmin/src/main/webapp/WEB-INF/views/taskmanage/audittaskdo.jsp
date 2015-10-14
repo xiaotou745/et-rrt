@@ -57,15 +57,20 @@
 			<td><%=TaskStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>
 			<% if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()){%>
-				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',1,0,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">审核通过</a><br/>
+				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',1,0,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">审核通过</a>
 				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',2,0,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">驳回</a>
 			<%} 
 			if(data.get(i).getStatus()==TaskStatus.Audited.value()){%>
 			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',4,1,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">终止</a>
 			<%}
 		    if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()||data.get(i).getStatus()==TaskStatus.Reject.value()){%>
-			<br/><a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',5,<%=data.get(i).getStatus() %>,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">取消</a>
-			<%}%>
+			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',5,<%=data.get(i).getStatus() %>,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">取消</a>
+			<%}
+			if(data.get(i).getStatus()==TaskStatus.Expired.value()||data.get(i).getStatus()==TaskStatus.Stop.value()&&data.get(i).getCanSettlement()==1){
+			%>
+				 结算
+				<%}
+			%>
 			</td>
 		</tr>
 		<%
