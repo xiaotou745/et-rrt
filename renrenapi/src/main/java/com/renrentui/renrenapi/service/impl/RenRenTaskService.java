@@ -491,8 +491,8 @@ public class RenRenTaskService implements IRenRenTaskService{
 			   oldTaskModel.getStatus()!=TaskStatus.WaitAudit.value())) {
 			return -1;
 		}
-		BusinessBalance oldBalance=businessBalanceDao.selectByBusinessId(record.getBusinessId());
-		if (oldBalance==null) {
+		BusinessBalance nowBalance=businessBalanceDao.selectByBusinessId(record.getBusinessId());
+		if (nowBalance==null) {
 			throw new RuntimeException("没有找到id="+record.getBusinessId()+"的商户的余额信息");
 		}
 		Double oldTotalFee=oldTaskModel.getAmount()*oldTaskModel.getTaskTotalCount();
@@ -501,10 +501,10 @@ public class RenRenTaskService implements IRenRenTaskService{
 		if(record.getBusinessId().equals(oldTaskModel.getBusinessId())){
 		   Double difFee=totalFee-oldTotalFee;
 			//如果任务修改后，商户id没有变更,但是任务的费用增加了，则需要判断新增的费用是否小于商家余额
-		   if(difFee.compareTo(0d)>0&&difFee.compareTo(oldBalance.getBalance())>0){
+		   if(difFee.compareTo(0d)>0&&difFee.compareTo(nowBalance.getBalance())>0){
 				return -1;
 		   }
-		}else if (totalFee.compareTo(oldBalance.getBalance())>0) {
+		}else if (totalFee.compareTo(nowBalance.getBalance())>0) {
 			//如果任务修改后，商户id变更了,需要判断变更后的商户的余额是否足够支付任务的费用
 			return -1;
 		}
@@ -538,16 +538,19 @@ public class RenRenTaskService implements IRenRenTaskService{
 		}
 		//商家id发生了变更，则需要将钱返回给原来的商家
 		if (!record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
-			BusinessBalance oldBusinessBalance=businessBalanceDao.selectByBusinessId(oldTaskModel.getBusinessId());
-			if (oldBusinessBalance==null) {
+			BusinessBalance oldBalance=businessBalanceDao.selectByBusinessId(oldTaskModel.getBusinessId());
+			if (oldBalance==null) {
 				throw new RuntimeException("没有找到id="+oldTaskModel.getBusinessId()+"的商户的余额信息");
 			}
 			updateBusinessBalance(record.getId(),oldTaskModel.getBusinessId(),oldTotalFee,
-					oldBusinessBalance.getBalance(),BBalanceRecordType.CancelTask,record.getModifyName());
+					oldBalance.getBalance(),BBalanceRecordType.CancelTask,record.getModifyName());
+			//扣除当前商家的余额
+			updateBusinessBalance(record.getId(),record.getBusinessId(),totalFee,
+					nowBalance.getBalance(),BBalanceRecordType.ReleaseTask,record.getModifyName());
 		}else if(!oldTotalFee.equals(totalFee)){
 			//商家id没变，但是任务的费用发生了变化，则对商户多退少补
 			updateBusinessBalance(record.getId(),record.getBusinessId(),oldTotalFee-totalFee,
-						oldBalance.getBalance(),BBalanceRecordType.UpdateTask,record.getModifyName());
+						nowBalance.getBalance(),BBalanceRecordType.UpdateTask,record.getModifyName());
 		}
 		//记录操作日志
 		if (!sbRemark.toString().isEmpty()) {
