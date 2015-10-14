@@ -10,6 +10,13 @@ private int endTimeCan;
 private int orderCan;
 private double taskCycle;
 private double amount;
+private int countCan;
+public int getCountCan() {
+	return countCan;
+}
+public void setCountCan(int countCan) {
+	this.countCan = countCan;
+}
 public double getAmount() {
 	return amount;
 }
