@@ -50,11 +50,9 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td>
 			<%if(data.get(i).getStatus()==0) {%>
 			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>')" >审核通过 </a>
-			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>')" >审核拒绝</a>
-			<%} else if (data.get(i).getStatus()==1){ %>
-			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>')" >审核拒绝</a>
+			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>')" >审核拒绝</a>			
 			<%}else{ %>
-			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>')" >审核通过 </a>
+	
 			<%} %>
 			
 			</td>				
