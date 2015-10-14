@@ -114,6 +114,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 	public TaskDetail getTaskDetail(TaskDetailReq req) {
 		
 		TaskDetail detail=renRenTaskDao.getTaskDetail(req);//任务信息
+		detail.setOrderId(req.getOrderId());
 		if(detail==null)//没有找到任务信息
 			return null;
 		//控件列表
@@ -513,10 +514,14 @@ public class RenRenTaskService implements IRenRenTaskService{
 		//如果任务的合同模板有变更，则重新生成模板的快照
 		Long oldTemplateId=record.getSnapshotTemplateId();
 		String templateremark=updateTemplateSnapshot(record,oldTaskModel);
+		//没有重新生成模板快照时，当前任务的模板快照id不变
+		if (oldTemplateId.equals(record.getSnapshotTemplateId())) {
+			record.setSnapshotTemplateId(oldTaskModel.getSnapshotTemplateId());
+		}
 		//如果任务的属性或模板快照有变更，则更新db（在此之前必须先更新快照，否则模板id不对）
 		String taskRemark=getUpdateRemark(record,oldTaskModel);
 		if ((taskRemark!=null&&!taskRemark.isEmpty())||
-			!oldTemplateId.equals(record.getSnapshotTemplateId())) {
+			!record.getSnapshotTemplateId().equals(oldTaskModel.getSnapshotTemplateId())) {
 			int result=renRenTaskDao.update(record);
 			if (result==0) {
 				throw new RuntimeException("更新任务基础信息时失败");
