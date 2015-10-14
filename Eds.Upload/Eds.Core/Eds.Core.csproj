@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C13C623D-0CB7-4C81-818F-9F4E7EFF4C0B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eds.Core</RootNamespace>
+    <AssemblyName>Eds.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\..\Eds.SuperMan\Ets.Dao\bin\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Eds.SuperMan\Ets.Dao\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\..\Eds.SuperMan\Ets.Dao\bin\Debug\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceKit.Common">
+      <HintPath>..\..\..\Eds.SuperMan\Ets.Dao\bin\Debug\NServiceKit.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceKit.Interfaces">
+      <HintPath>..\..\..\Eds.SuperMan\Ets.Dao\bin\Debug\NServiceKit.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceKit.Redis">
+      <HintPath>..\..\..\Eds.SuperMan\Ets.Dao\bin\Debug\NServiceKit.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceKit.Text">
+      <HintPath>..\..\..\Eds.SuperMan\Ets.Dao\bin\Debug\NServiceKit.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cacheing\AbstractCache.cs" />
+    <Compile Include="Cacheing\CacheFactory.cs" />
+    <Compile Include="Cacheing\LocalCache.cs" />
+    <Compile Include="Compress\FixedDimensionTransformerAttribute.cs" />
+    <Compile Include="Compress\IImageFileTransformer.cs" />
+    <Compile Include="Compress\ImageSizeTransformManager.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Const\GroupConst.cs" />
+    <Compile Include="Const\MessageConst.cs" />
+    <Compile Include="Const\OrderConst.cs" />
+    <Compile Include="Const\RedissCacheKey.cs" />
+    <Compile Include="Const\SystemConst.cs" />
+    <Compile Include="Enums\AccountEnum.cs" />
+    <Compile Include="Enums\ApiOrderEnum.cs" />
+    <Compile Include="Enums\BusinessEnum.cs" />
+    <Compile Include="Enums\ClienterEnum.cs" />
+    <Compile Include="Enums\ComplainEnum.cs" />
+    <Compile Include="Enums\CustomerRegisterStatusEnum.cs" />
+    <Compile Include="Enums\EnumOrderChildStatus.cs" />
+    <Compile Include="Enums\EnumStatusType.cs" />
+    <Compile Include="Enums\ExportFileFormat.cs" />
+    <Compile Include="Enums\FinanceEnums.cs" />
+    <Compile Include="Enums\GroupEnum.cs" />
+    <Compile Include="Enums\MessageEnums.cs" />
+    <Compile Include="Enums\OrderEnum.cs" />
+    <Compile Include="Enums\RequestPlatFormEnum.cs" />
+    <Compile Include="Enums\SuperPlatform.cs" />
+    <Compile Include="Enums\SystemEnum.cs" />
+    <Compile Include="Enums\TagEnum.cs" />
+    <Compile Include="Enums\UserLoginResults.cs" />
+    <Compile Include="Expand\ActionStatusAttribute.cs" />
+    <Compile Include="Expand\AttribDescription.cs" />
+    <Compile Include="Expand\DisplayTextAttribute.cs" />
+    <Compile Include="Expand\EnumerableExpand.cs" />
+    <Compile Include="Extension\DataRowExtension.cs" />
+    <Compile Include="Extension\DataSetExtenstion.cs" />
+    <Compile Include="Extension\DataTableExtension.cs" />
+    <Compile Include="Extension\DataTableHelper.cs" />
+    <Compile Include="Extension\EnumExtenstion.cs" />
+    <Compile Include="Extension\ListExtensions.cs" />
+    <Compile Include="Extension\StringExtension.cs" />
+    <Compile Include="IO\Common.cs" />
+    <Compile Include="IO\FileHelper.cs" />
+    <Compile Include="IO\FileIO.cs" />
+    <Compile Include="IO\INIFileManager.cs" />
+    <Compile Include="IO\IniParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\AESApp.cs" />
+    <Compile Include="Security\DES.cs" />
+    <Compile Include="Security\MD5.cs" />
+    <Compile Include="Security\ParamDESHelper.cs" />
+    <Compile Include="Util\APiCaching.cs" />
+    <Compile Include="Util\AssertUtils.cs" />
+    <Compile Include="Util\ConfigSettings.cs" />
+    <Compile Include="Util\ConfigUtils.cs" />
+    <Compile Include="Util\ConvertHelper.cs" />
+    <Compile Include="Util\CookieHelper.cs" />
+    <Compile Include="Util\DataTableRenderToExcel.cs" />
+    <Compile Include="Util\DnsUtils.cs" />
+    <Compile Include="Util\EmilHelper.cs" />
+    <Compile Include="Util\EncodeAndDecode.cs" />
+    <Compile Include="Util\EnumItem.cs" />
+    <Compile Include="Util\EnumUtils.cs" />
+    <Compile Include="Util\FileHelper.cs" />
+    <Compile Include="Util\Helper.cs" />
+    <Compile Include="Util\HTTPHelper.cs" />
+    <Compile Include="Util\IEnumItem.cs" />
+    <Compile Include="Util\ImageTools.cs" />
+    <Compile Include="Util\ITranslator.cs" />
+    <Compile Include="Util\JSON.cs" />
+    <Compile Include="Util\JsonHelper.cs" />
+    <Compile Include="Util\LiteralCaptcha.cs" />
+    <Compile Include="Util\LogHelper.cs" />
+    <Compile Include="Util\MailUtils.cs" />
+    <Compile Include="Util\MD5Helper.cs" />
+    <Compile Include="Util\ParseHelper.cs" />
+    <Compile Include="Util\ServiceResult.cs" />
+    <Compile Include="Util\SoaCommon.cs" />
+    <Compile Include="Util\StreamDataSource.cs" />
+    <Compile Include="Util\StringHelper.cs" />
+    <Compile Include="Util\StringVerify.cs" />
+    <Compile Include="Util\TimeHelper.cs" />
+    <Compile Include="Util\TranslatorBase.cs" />
+    <Compile Include="Util\ValidationHelper.cs" />
+    <Compile Include="Util\XmlHelper.cs" />
+    <Compile Include="Util\XmlParser.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
