@@ -5,7 +5,9 @@
 <%@page import="com.renrentui.renrencore.util.PageHelper"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.renrentui.renrenentity.domain.BusinessModel"%>
-<%@page import="java.util.List"%><%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="java.util.List"%>
+<%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
@@ -18,11 +20,11 @@ String ImgShowUrl= PropertyUtils.getProperty("ImgShowUrl");
 		<tr class="tdbg">
 			<th width="%5">编号</th>
 			<th width="15%">商户名称</th>
-			<th width="15%">电话号码</th>
+			<th width="10%">电话号码</th>
 			<th width="15%">登录名称</th>
-			<th width="15%">地址</th>
+			<th width="15%">所属地址</th>
 			<th width="10%">所属城市</th>
-			<th width="10%">站点</th>
+			<th width="10%">站点名称</th>
 			<th width="10%">金额</th>
 			<th width="10%">操作</th>							
 		</tr>
@@ -43,7 +45,7 @@ String ImgShowUrl= PropertyUtils.getProperty("ImgShowUrl");
 			<td><%=data.get(i).getAddress()%></td>	
 			<td><%=data.get(i).getCityName()%></td>
 			<td><%=data.get(i).getWebSite()%></td>
-			<td><%=data.get(i).getBalance()%></td>
+			<td><%=ParseHelper.digitsNum(data.get(i).getBalance(),2)%></td>
 			<td>
 			<a href="javascript:void(0)"  onclick="BusinessDelta('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>')" >充值 </a>
 			<a href="javascript:void(0)"  onclick="BusinessModify('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>', '<%=data.get(i).getLoginName() %>', '<%=data.get(i).getAddress() %>', '<%=data.get(i).getCityName() %>', '<%=data.get(i).getWebSite() %>', '<%=data.get(i).getLogo() %>')" >修改 </a>
