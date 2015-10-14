@@ -111,7 +111,7 @@ public class TemplateController {
 		model.addObject("businessData", datalist);
 		return model;
 	}
-	@RequestMapping("updatetemplate")
+	@RequestMapping(value = "/updatetemplate", produces = {"application/text;charset=UTF-8"})
 	@ResponseBody
 	public String updateTemplate(HttpServletRequest request,Long id,String tempName,String tempRemark,Long businessId,String child) {
 		if (tempName==null||tempName.isEmpty()||
@@ -131,11 +131,7 @@ public class TemplateController {
 					if (!sb.toString().isEmpty()) {
 						sb.append("\n");
 					}
-					sb.append(renRenTask.getId());
-					sb.append(";");
 					sb.append(renRenTask.getTaskTitle());
-					sb.append(";");
-					sb.append(renRenTask.getCreateName());
 				}
 				return sb.toString();
 			}
