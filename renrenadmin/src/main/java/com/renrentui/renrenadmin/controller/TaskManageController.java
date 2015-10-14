@@ -76,15 +76,14 @@ public class TaskManageController {
 
 	private String getTemplateList() {
 		PagedTemplateReq req=new PagedTemplateReq();
-		req.setStatus(TemplateStatus.Valid.value());
 		List<Template> templateList= templateService.getAllList(req);
 		Map<Long, StringBuilder> resulMap=new HashMap<Long, StringBuilder>();
 		for (Template item : templateList) {
 			if (resulMap.containsKey(item.getBusinessId())) {
-				resulMap.get(item.getBusinessId()).append(";"+item.getId()+"|"+item.getTemplateName());
+				resulMap.get(item.getBusinessId()).append(";"+item.getId()+"|"+item.getTemplateName()+"|"+item.getStatus());
 			}else {
 				StringBuilder builder=new StringBuilder();
-				builder.append(item.getId()+"|"+item.getTemplateName());
+				builder.append(item.getId()+"|"+item.getTemplateName()+"|"+item.getStatus());
 				resulMap.put(item.getBusinessId(), builder);
 			}
 		}
@@ -275,7 +274,7 @@ public class TaskManageController {
 	@RequestMapping("getbusinessbanlance")
 	@ResponseBody
 	public String getBusinessBanlance(Long businessId){
-		BusinessBalance balance= businessBalanceService.selectById(businessId);
+		BusinessBalance balance= businessBalanceService.selectByBusinessId(businessId);
 		if (balance!=null) {
 			return ParseHelper.digitsNum(balance.getBalance(),2);
 		}

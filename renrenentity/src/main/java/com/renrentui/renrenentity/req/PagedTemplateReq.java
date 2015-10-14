@@ -8,7 +8,7 @@ private String createName;
 private String createTimeBegin;
 private String createTimeEnd;
 private Long businessId;
-private int status;
+private Integer status;
 public String getTemplateName() {
 	return templateName;
 }
@@ -27,10 +27,10 @@ public Long getBusinessId() {
 public void setBusinessId(Long businessId) {
 	this.businessId = businessId;
 }
-public int getStatus() {
+public Integer getStatus() {
 	return status;
 }
-public void setStatus(int status) {
+public void setStatus(Integer status) {
 	this.status = status;
 }
 public String getCreateTimeBegin() {
