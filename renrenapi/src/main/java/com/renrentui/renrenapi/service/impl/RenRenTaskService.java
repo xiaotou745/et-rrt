@@ -545,7 +545,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 			updateBusinessBalance(record.getId(),oldTaskModel.getBusinessId(),oldTotalFee,
 					oldBalance.getBalance(),BBalanceRecordType.CancelTask,record.getModifyName());
 			//扣除当前商家的余额
-			updateBusinessBalance(record.getId(),record.getBusinessId(),totalFee,
+			updateBusinessBalance(record.getId(),record.getBusinessId(),(-1)*totalFee,
 					nowBalance.getBalance(),BBalanceRecordType.ReleaseTask,record.getModifyName());
 		}else if(!oldTotalFee.equals(totalFee)){
 			//商家id没变，但是任务的费用发生了变化，则对商户多退少补
