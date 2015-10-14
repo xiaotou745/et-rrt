@@ -73,4 +73,5 @@ public interface IRenRenTaskService {
 	public void outTimeCanelTask();
 	public RenRenTaskDetail getTaskInfo(Long taskId);
 	public List<RenRenTask> getListByTemplateId(Long templateId); 
+	public int settlementTask(Long taskId,String userName);
 }
