@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
@@ -31,6 +32,7 @@ import com.renrentui.renrencore.enums.BBalanceRecordType;
 import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.BusinessModel;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
@@ -58,7 +60,7 @@ public class BusinessService implements IBusinessService {
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
 
 	@Override
-	public PagedResponse<Business> getBusinessList(PagedBusinessReq req) {
+	public PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req) {
 		// TODO Auto-generated method stub
 		return businessDao.getBusinessList(req);
 	}
@@ -94,11 +96,11 @@ public class BusinessService implements IBusinessService {
 	 * 添加商户 胡灵波 2015年9月29日 16:58:06
 	 * 
 	 * @param req
-	 * @return 临时为1
+	 * @return 
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int Add(Business record) {
+	public int add(Business record) {
 
 		String password = MD5Util.MD5("111111");// 默认值
 		record.setPassWord(password);
@@ -118,6 +120,28 @@ public class BusinessService implements IBusinessService {
 		}
 	}
 
+	
+	/**
+	 * 修改商户
+	 * 胡灵波
+	 * 2015年10月13日 22:05:05
+	 * @param req
+	 * @return 
+	 */
+	@Override	
+	public int modify(Business record) {		
+	
+		int bId= businessDao.updateByPrimaryKeySelective(record);		
+
+		if(bId>0 )
+			return 1;
+		else
+		{
+			Error error=new Error("修改商户错误");
+			throw new RuntimeErrorException(error);
+		}			
+	}	
+	
 	/**
 	 * @Des 商户充值
 	 * @Author 胡灵波
@@ -126,11 +150,12 @@ public class BusinessService implements IBusinessService {
 	 * @return 临时为1
 	 */
 	@Override
-	// @Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int AddBalance(BusinessBalanceReq req, String userName) {
-		int bbId = businessBalanceDao.updateBalanceByBusinessId(req);
-
-		BusinessBalanceRecord businessBalanceRecordModel = new BusinessBalanceRecord();
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
+	public int addBalance(BusinessBalanceReq req,String userName)
+	{
+		int bbId= businessBalanceDao.updateBalanceByBusinessId(req);
+		
+		BusinessBalanceRecord businessBalanceRecordModel=new BusinessBalanceRecord();
 		businessBalanceRecordModel.setBusinessId(req.getBusinessId());
 		businessBalanceRecordModel.setAmount(req.getBalance());
 		businessBalanceRecordModel
@@ -138,14 +163,16 @@ public class BusinessService implements IBusinessService {
 		businessBalanceRecordModel.setOptName(userName);// 登 陆名称
 		businessBalanceRecordModel.setOrderId((long) 0);
 		businessBalanceRecordModel.setRelationNo("");
-		businessBalanceRecordModel.setRemark("商户充值");
-		int bbrId = businessBalanceRecordDao.insert(businessBalanceRecordModel);
-
-		/*
-		 * if(bbId>0 && bbId>0 ) return 1; else { Error error=new
-		 * Error("商户充值失败"); throw new RuntimeErrorException(error); }
-		 */
-
+		businessBalanceRecordModel.setRemark(req.getRemark());		
+		int bbrId= businessBalanceRecordDao.insert(businessBalanceRecordModel);
+		
+		if(bbId>0 && bbId>0 )
 		return 1;
-	}
+		else
+		{
+			Error error=new Error("商户充值失败");
+			throw new RuntimeErrorException(error);
+		}		
+		
+	}	
 }

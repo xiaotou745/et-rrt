@@ -110,6 +110,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
    }
    function ShowInfo(orderId){
 	   var paramaters = {"orderId":orderId};
+	   $('#btndown').unbind("click");
+	   $('#btndown').click(function(){
+		   saveFile(orderId);
+	   });
 		   var url = "<%=basePath%>/ordermanage/orderchildInfo";
 		   $.ajax({
 		        type: 'POST',

@@ -55,9 +55,14 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label"></label>
+							<label class="col-sm-4 control-label">审核状态</label>
 							<div class="col-sm-8">
-								
+								<select id="typeselect" class="form-control m-b">
+								<option value="-1">全部</option>
+								<option value="0">待审核</option>
+								<option value="1">审核通过</option>
+								<option value="2">审核拒绝</option>
+								</select> 
 							</div>
 						</div>
 					</div>
@@ -88,12 +93,13 @@ var jss={
 			 var withdrawNo = $("#txtWithdrawNo").val();
 			 var clienterName = $("#txtClienterName").val();
 			 var phoneNo = $("#txtPhoneNo").val();	 
-			 
+			 var typeselect=$('#typeselect').val();
 			 var paramaters = { 
 					 "currentPage":currentPage,					 
 					 "withdrawNo":withdrawNo,
 					 "clienterName":clienterName,
-					 "phoneNo":phoneNo,					 
+					 "phoneNo":phoneNo,	
+					 "status":typeselect,
 					 m:Math.round()
 					 };
 		        var url = "<%=basePath%>/clienterwithdraw/listdo";

@@ -31,7 +31,7 @@ width: 100%;
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">公司名称:</label>
+							<label class="col-sm-4 control-label">商户名称:</label>
 							<div class="col-sm-8">						
 								<input type="text" class="form-control" name="txtCompanyName"  id="txtCompanyName" />
 							</div>
@@ -97,7 +97,7 @@ width: 100%;
 					<fieldset>
 			            <br>
 			             <div class="control-group">
-			                <label >公司名称：</label> 
+			                <label >商户名称：</label> 
 			                    <input  name="txtCompanyNameA" id="txtCompanyNameA" type="text">			                    
 
 			            </div>
@@ -147,29 +147,29 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<h4 class="modal-title">商户冲值</h4>				
+				<h4 class="modal-title">商户充值</h4>				
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
 					<fieldset>
 						<br>
 						  <div class="control-group">
-		                <label>公司名称：</label>
+		                <label>商户名称：</label>
 		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
-		                <input name="txtIdD" id="txtIdD" type="hidden">
+		                <input name="txtBusinessIdD" id="txtBusinessIdD" type="hidden">
 		            	</div>
 			            <div class="control-group">
 			                <label>商户电话：</label>
 			                <input name="txtPhoneNoD" id="txtPhoneNoD" disabled="disabled" type="text">
 			            </div>
 			            <div class="control-group">
-			                <label>余&nbsp;&nbsp;额：</label>
-			                <input name="txtAmountD" id="txtAmountD" type="text">元
+			                <label>充值金额：</label>
+			                <input name="txtAmountD" id="txtAmountD" text="0" type="text">元
 			            </div>
 			            <div class="control-group">
 			                <label>备&nbsp;&nbsp;注：</label>
 			                <div class="controls">
-			                    <textarea cols="45" rows="5" id="txtRemarkD	"></textarea>
+			                    <textarea cols="45" rows="5" id="txtRemarkD"></textarea>
 			                </div>
 			            </div>
 					</fieldset>
@@ -177,7 +177,7 @@ width: 100%;
 				<div class="modal-footer">
 	<!--   <form name="form_uploadImg" action="" method="POST">   -->
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id="txtbusinessDelta">确认</button>
+					<button class="btn btn-primary" type="button" id="txtbusinessDelta" onclick="AddBusinessDelta()">确认</button>
 					 </form>   -->
 
 			 
@@ -190,8 +190,57 @@ width: 100%;
 
 </div>
 
+<div tabindex="-1" class="modal inmodal" id="modifyBusiness"
+	role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">修改商户</h4> 				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+			            <br>
+			             <div class="control-group">
+			                <label >商户名称：</label> 
+			                    <input  name="txtCompanyNameM" id="txtCompanyNameM" type="text">			                    
+							<input name="txtBusinessIdM" id="txtBusinessIdM" type="hidden">
+			            </div>
+			            <div class="control-group">
+			                <label>电话号码：</label> 
+			                <input  name="txtPhoneNoM" id="txtPhoneNoM" type="text">					               
+			            </div>
+			            <div class="control-group">
+			                <label >登录名称：</label> 
+			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >地&nbsp;&nbsp;址：</label> 
+			                    <input  name="txtAddressM" id="txtAddressM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >所属城市：</label> 
+			                    <input  name="txtCityNameM" id="txtCityNameM" type="text">
+			            </div> 
+			             <div class="control-group">
+			                <label >站&nbsp;&nbsp;点：</label> 
+			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
+			            </div> 
+			        </fieldset>			
+			
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="ModifyBusiness()">保存</button>
+				</div> 
+			</small>
+		</div>  
+	</div>
+</div>
 <script>
-
 var jss={
 		upload:function(){
 			
@@ -260,7 +309,8 @@ function AddShow(){
     $('#addBusiness').modal('show');
 //     $('#uploadify').uploadify('settings','buttonImg','../js/jquery.uploadify-v2.1.0/selectFile.gif');
 }
-//保存商户
+
+//添加,保存商户
 function AddBusiness(){
 	var companyName= $('#txtCompanyNameA').val().trim();
 	var phoneNo= $('#txtPhoneNoA').val().trim();	
@@ -272,19 +322,18 @@ function AddBusiness(){
     var reg=/[\u4e00-\u9fa5]+/;   
     
     if(companyName.trim().length <=4 || companyName.trim().length>30){
-    	alert("公司名称必须在5-30个字符");
+    	alert("商户名称必须在5-30个字符");
     	return;
     }
     if (reg.test(loginName)){
-    	alert("登录账号不能为中文字符");
+    	alert("登录名称不能为中文字符");
     	return;
     }
     if(loginName.trim().length <6 || loginName.trim().length>20){
-    	alert("登录账号除中文外6-20位字符");
+    	alert("登录名称除中文外6-20位字符");
     	return;
     }   
     
-    alert(logo);
     var paramaters = {
             "companyName": companyName,
             "phoneNo": phoneNo,
@@ -294,28 +343,117 @@ function AddBusiness(){
             "webSite": webSite,
             "logo": logo 
         };
-   var url = "<%=basePath%>/business/addbusiness";
-   var la = layer.confirm('是否确认创建商户？', {
-	    btn: ['确认','取消'], //按钮
-	    shade: false //显示遮罩
-	},function(){
-		layer.close(la);
+   var url = "<%=basePath%>/business/addbusiness";  
 		$.ajax({
 	           type: 'POST',
 	           url: url,
 	           data: paramaters,
-	           success: function (result) {
+	           success: function (result) {        
+	        	   
+	        	   if (result>0) {
+						alert("操作成功");
 	        	   window.location.href = "<%=basePath%>/business/list";
-	        	   //alert(result.message);
-	             <%--   if (result.responseCode > 0) {
+					} else {
+						alert("操作失败");
+					}      
+	           }
+	       });	 	    
+  }
+    
+  //修改,保存商户
+function ModifyBusiness(){
+	var id= $('#txtBusinessIdM').val().trim();
+	var companyName= $('#txtCompanyNameM').val().trim();
+	var phoneNo= $('#txtPhoneNoM').val().trim();	
+    var loginName = $('#txtLoginNameM').val().trim();
+    var address= $('#txtAddressM').val().trim();
+    var cityName= $('#txtCityNameM').val().trim();
+    var webSite= $('#txtWebSiteM').val().trim();     
+    
+    var reg=/[\u4e00-\u9fa5]+/;   
+    
+    if(companyName.trim().length <=4 || companyName.trim().length>30){
+    	alert("商户名称必须在5-30个字符");
+    	return;
+    }
+    if (reg.test(loginName)){
+    	alert("登录名称不能为中文字符");
+    	return;
+    }
+    if(loginName.trim().length <6 || loginName.trim().length>20){
+    	alert("登录名称除中文外6-20位字符");
+    	return;
+    }       
+    
+    var paramaters = {
+    		"id": id,
+            "companyName": companyName,
+            "phoneNo": phoneNo,
+            "loginName": loginName,
+            "address": address,
+            "cityName": cityName,
+            "webSite": webSite            
+        };
+   var url = "<%=basePath%>/business/modifybusiness";  
+		$.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {        
+	        	   
+	        	   if (result>0) {
+						alert("操作成功");
 	                   window.location.href = "<%=basePath%>/business/list";
-	               } --%>
+					} else {
+						alert("操作失败");
+					}      
+	           }
+	       });	 	    
+  }
+	        	  
+//保存商户
+function AddBusinessDelta(){
+
+	var businessId= $('#txtBusinessIdD').val();	
+	var balance= $('#txtAmountD').val().trim();
+	var remark= $('#txtRemarkD').val().trim();	
+	
+    var reg=/^(-)?(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/;
+    if (!reg.test(balance)){
+    	alert("请输入正确的金额");
+    	return;
+	           }
+    if(balance<=0)
+    	{
+    	alert("充值金额必须大于0");
+    	return; 
+    	}
+   
+    var paramaters = {
+            businessId: businessId,
+            balance: balance,
+            remark:remark
+        };
+    
+        var url = "<%=basePath%>/business/addbusinessdelta";  	
+		$.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+						window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
 	        	  
 	           }
 	       });
-	});   	    
+   	    
 }
 
+    //上传图片
     function ajaxFileUpload()  
     {      	
      var typeValue=<%=UploadForm.Clienter.value() %>;

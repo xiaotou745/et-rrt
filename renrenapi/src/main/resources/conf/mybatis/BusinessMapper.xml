@@ -5,6 +5,10 @@
     Id, CompanyName, PhoneNo, PassWord, LoginName, Logo, Address, CityCode, CityName, 
     WebSite
   </sql>
+    <sql id="Column_List" >
+    b.Id, b.CompanyName, b.PhoneNo, b.PassWord, b.LoginName, b.Logo, b.Address, b.CityCode, b.CityName, 
+    b.WebSite,bb.Balance
+  </sql>
   <select id="selectById" resultType="com.renrentui.renrenentity.Business"
    parameterType="java.lang.Long" >
     select 
@@ -16,29 +20,30 @@
 
 		1=1		
 		<if test="companyName != null and companyName!=''">
-			and companyName like ''%${companyName}%''		
+			and b.companyName like ''%${companyName}%''		
 		</if>		
 		<if test="phoneNo != null and phoneNo!=''">
-			and phoneNo=''${phoneNo}''
+			and b.phoneNo=''${phoneNo}''
 		</if>
 		<if test="loginName != null and loginName!=''">
-			and loginName=''${loginName}''
+			and b.loginName=''${loginName}''
 		</if>
 	    <if test="cityName != null and cityName!=''">
-			and cityName=''${cityName}''
+			and b.cityName=''${cityName}''
 		</if>
 	
 	</sql>
   
-  	<select id="getBusinessList" resultType="com.renrentui.renrenentity.Business"
+  	<select id="getBusinessList" resultType="com.renrentui.renrenentity.domain.BusinessModel"
 		parameterType="com.renrentui.renrenentity.req.PagedBusinessReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' Id DESC ',
+		' b.Id DESC ',
 		'
-		<include refid="Base_Column_List" />
+		<include refid="Column_List" />
 		',
-		'business  WITH (NOLOCK)',
+		'dbo.business b with (nolock)
+         left join dbo.BusinessBalance bb with (nolock) on b.Id=bb.businessId  ',
 		'
 		<include refid="getBusinessListWhere" />
 		',
@@ -134,17 +139,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Business" >
     update Business
     <set >
-      <if test="companyname != null" >
-        CompanyName = #{companyname,jdbcType=NVARCHAR},
+      <if test="companyName != null" >
+        CompanyName = #{companyName,jdbcType=NVARCHAR},
       </if>
-      <if test="phoneno != null" >
-        PhoneNo = #{phoneno,jdbcType=VARCHAR},
+      <if test="phoneNo != null" >
+        PhoneNo = #{phoneNo,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        PassWord = #{password,jdbcType=VARCHAR},
+      <if test="passWord != null" >
+        PassWord = #{passWord,jdbcType=VARCHAR},
       </if>
-      <if test="loginname != null" >
-        LoginName = #{loginname,jdbcType=VARCHAR},
+      <if test="loginName != null" >
+        LoginName = #{loginName,jdbcType=VARCHAR},
       </if>
       <if test="logo != null" >
         Logo = #{logo,jdbcType=NVARCHAR},
@@ -152,14 +157,14 @@
       <if test="address != null" >
         Address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="citycode != null" >
-        CityCode = #{citycode,jdbcType=INTEGER},
+      <if test="cityCode != null" >
+        CityCode = #{cityCode,jdbcType=INTEGER},
       </if>
-      <if test="cityname != null" >
-        CityName = #{cityname,jdbcType=NVARCHAR},
+      <if test="cityName != null" >
+        CityName = #{cityName,jdbcType=NVARCHAR},
       </if>
-      <if test="website != null" >
-        WebSite = #{website,jdbcType=VARCHAR},
+      <if test="webSite != null" >
+        WebSite = #{webSite,jdbcType=VARCHAR},
       </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}

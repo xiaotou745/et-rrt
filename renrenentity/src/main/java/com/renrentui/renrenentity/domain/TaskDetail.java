@@ -34,6 +34,13 @@ public class TaskDetail {
 	private String logo;
 	private String companySummary;
 	private int auditCycle;
+	private int taskCycle;
+	public int getTaskCycle() {
+		return taskCycle;
+	}
+	public void setTaskCycle(int taskCycle) {
+		this.taskCycle = taskCycle;
+	}
 	public int getAuditCycle() {
 		return auditCycle;
 	}

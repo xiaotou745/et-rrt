@@ -203,7 +203,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label"></label>
 								<div class="col-sm-2">
-								<input id="file1" type="file" name="file1">
+								<input id="file1" type="file" name="file1" >
 									<button type="button" class="btn btn-w-m btn-primary" id="uploadfile"
 										style="margin-left: 3px; height: 30px;">上传</button>
 								</div>
