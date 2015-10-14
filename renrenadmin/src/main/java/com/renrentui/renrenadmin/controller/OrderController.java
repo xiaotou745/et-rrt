@@ -23,6 +23,8 @@ import com.renrentui.renrenapi.service.inter.IOrderService;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.OrderChildInfoModel;
+import com.renrentui.renrenentity.req.CancelOrderReq;
+import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
@@ -77,6 +79,20 @@ public class OrderController {
 	public int orderAudit(HttpServletRequest request,OrderAuditReq req) {
 		req.setAuditName(UserContext.getCurrentContext(request).getUserName());
 		return orderService.orderAudit( req);
+	}
+	
+	/**
+	 * 取消订单 
+	 * @author 茹化肖
+	 * @Date 2015年9月30日 15:35:12
+	 * @param search 查询条件实体
+	 * @return	
+	 */	
+	@RequestMapping("cancelorder")
+	@ResponseBody
+	public int cancelOrder(HttpServletRequest request,CancelTaskReq req) {
+		req.setRemark(UserContext.getCurrentContext(request).getUserName());
+		return orderService.cancelOrder(req);
 	}
 	
 	/**

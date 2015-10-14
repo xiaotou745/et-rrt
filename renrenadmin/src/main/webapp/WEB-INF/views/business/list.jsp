@@ -7,7 +7,8 @@
  <%@page import="com.renrentui.renrencore.enums.UploadForm"%> 
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
-String UploadPath= PropertyUtils.getProperty("ImageServicePath");
+String UploadUrl= PropertyUtils.getProperty("UploadUrl");
+
 %>   
 <style type="text/css">
 #map_contain {
@@ -121,10 +122,17 @@ width: 100%;
 			                <label >站&nbsp;&nbsp;点：</label> 
 			                    <input  name="txtWebSiteA" id="txtWebSiteA" type="text">
 			            </div> 
+			            <div>
+			               <label >图片预览：</label> 
+			               <input  name="txtImgShowA" id="txtImgShowA" type=hidden>
+			            <img id="imgShowA" src="" width="200px" height="200px" />
+			            </div>
 			        </fieldset>
-				</div>
+				</div>			
+				
+				
 				<div style="margin-left:30px">
-		<div id="fileQueue" style="height:80px"></div>
+		        <div id="fileQueue" style="height:80px"></div>
 	        	<input type="file" name="uploadify" id="uploadify" />
 		        <p>
 		        <a href="javascript:jQuery('#uploadify').uploadifyUpload()">文件上传</a>&nbsp;
@@ -175,11 +183,9 @@ width: 100%;
 					</fieldset>
 				</div>
 				<div class="modal-footer">
-	<!--   <form name="form_uploadImg" action="" method="POST">   -->
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button" id="txtbusinessDelta" onclick="AddBusinessDelta()">确认</button>
-					 </form>   -->
-
+					
 			 
 				</div>
 			</small>
@@ -229,13 +235,26 @@ width: 100%;
 			                <label >站&nbsp;&nbsp;点：</label> 
 			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
 			            </div> 
+			             <div>
+			               <label >图片预览：</label> 
+			               <input  name="txtImgShowM" id="txtImgShowM" type=hidden>
+			            <img id="imgShowM" src="" width="200px" height="200px" />
+			            </div>
 			        </fieldset>			
-			
 				</div>
-				<div class="modal-footer">
+				<div style="margin-left:30px">
+		        <div id="fileQueueM" style="height:80px"></div>
+	        	<input type="file" name="uploadifyM" id="uploadifyM" />
+		        <p>
+		        <a href="javascript:jQuery('uploadifyM').uploadifyUpload()">文件上传</a>&nbsp;
+		        <a href="javascript:jQuery('uploadifyM').uploadifyClearQueue()">取消所有上传</a>
+		        </p>
+			      <div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="ModifyBusiness()">保存</button>
 				</div> 
+				</div>		
+
 			</small>
 		</div>  
 	</div>
@@ -275,7 +294,7 @@ $(document).ready(function() {
     $("#uploadify").uploadify({
      	'buttonImg':'../js/jquery.uploadify-v2.1.0/selectFile.gif',
         'uploader':'../js/jquery.uploadify-v2.1.0/uploadify.swf',
-        'script':'http://192.168.1.38/Upload/UploadImg?uploadFrom=1',//后台处理的请求
+        'script':'<%=UploadUrl%>/Upload/UploadImg?uploadFrom=1',//后台处理的请求
         'cancelImg':'../js/jquery.uploadify-v2.1.0/cancel.png',
         'folder':'uploads',//您想将文件保存到的路径
         'queueID':'fileQueue',//与下面的id对应
@@ -292,7 +311,14 @@ $(document).ready(function() {
         'fileSizeLimit' : '2MB',
         onComplete: function (event, queueId, fileObj, response, data) {
             var jsonstr = JSON.parse(response);
-             alert("上传成功，地址："+jsonstr.Result.FileUrl);
+            $("#imgShowA").attr("src",jsonstr.Result.FileUrl);           
+            $('#txtImgShowA').val(jsonstr.Result.RelativePath)            
+            
+            
+           // document.getElementById(randimg).src="jsonstr.Result.FileUrl";
+            // alert("上传成功，地址："+jsonstr.Result.FileUrl);
+            
+            
 //              {"Status":1,"Message":"成功","Result":{"FileUrl":
 //             	 "http://192.168.1.38:8999/Business/2015/10/13/23/49452547d2.jpg",
 //             	 "RelativePath":"Business/2015/10/13/23/49452547d2.jpg",
@@ -303,21 +329,23 @@ $(document).ready(function() {
 });
 
 function AddShow(){
+	$("#imgShowA").attr("src","");
     $('#addBusiness').modal('show');
 //     $('#uploadify').uploadify('settings','buttonImg','../js/jquery.uploadify-v2.1.0/selectFile.gif');
 }
 
 //添加,保存商户
-function AddBusiness(){
+function AddBusiness(){	
+	
 	var companyName= $('#txtCompanyNameA').val().trim();
 	var phoneNo= $('#txtPhoneNoA').val().trim();	
     var loginName = $('#txtLoginNameA').val().trim();
     var address= $('#txtAddressA').val().trim();
     var cityName= $('#txtCityNameA').val().trim();
     var webSite= $('#txtWebSiteA').val().trim();
-    var logo= $('#txtshowBusiImage').val().trim();    
-    var reg=/[\u4e00-\u9fa5]+/;   
-    
+    var logo= $('#txtImgShowA').val().trim();        
+        
+    var reg=/[\u4e00-\u9fa5]+/;       
     if(companyName.trim().length <=4 || companyName.trim().length>30){
     	alert("商户名称必须在5-30个字符");
     	return;
@@ -408,7 +436,7 @@ function ModifyBusiness(){
 	       });	 	    
   }
 	        	  
-//保存商户
+//商户充值
 function AddBusinessDelta(){
 
 	var businessId= $('#txtBusinessIdD').val();	
@@ -443,14 +471,13 @@ function AddBusinessDelta(){
 						window.location.href = "<%=basePath%>/business/list";
 					} else {
 						alert("操作失败");
-					}      
-	        	  
+					}      	        	  
 	           }
 	       });
    	    
 }
 
-    //上传图片
+<%--     //上传图片
     function ajaxFileUpload()  
     {      	
      var typeValue=<%=UploadForm.Clienter.value() %>;
@@ -476,5 +503,5 @@ function AddBusinessDelta(){
     }  
   }  
 );  
-    } 
+    }  --%>
 </script>

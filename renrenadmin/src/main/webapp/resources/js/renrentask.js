@@ -56,6 +56,7 @@ function appendAttachRow(fileinfo){
 		$("#attachmentfiles").val(oldAttach+";"+fileinfo);
 	}
 };
+var deleteFiles="";
 function deleterow(delobj){
 	var trs=$("#uploadfiletable tr");
 	var oldRowNum=trs.length-1;
@@ -72,6 +73,12 @@ function deleterow(delobj){
 			}else{
 				newFiles+=(";"+files[i]);	
 			}
+		}else{
+			if(deleteFiles==""){
+				deleteFiles=files[i];
+			}else{
+				deleteFiles+=(";"+files[i]);	
+			}
 		}
 	}
 	$("#attachmentfiles").val(newFiles);
@@ -84,6 +91,7 @@ function deleterow(delobj){
 		 }
 	}
 };
+
 function provinceChange(){  
     try{  
         var pro=$(this).val();  
@@ -150,7 +158,7 @@ function chanageSelectAll(){
 	}
 };
 
-function validPage(){
+function validPage(checkBalance){
 	var hasempty=false;
 	$("select").each(function(index,e){
 		if($(e).val()==""||$(e).val()==null){
@@ -253,11 +261,13 @@ function validPage(){
 //		alert("城市不是全部城市时,请至少选择一个区域");
 //		return;
 //	}
-	var totalFee=parseFloat($("#amount").val())*parseFloat($("#taskTotalCount").val());
-	var balance=parseFloat($("#businessBalance").html().replace("元",""));
-	if(balance<totalFee){
-		alert("当前商户账户余额不足，不能新建任务");
-		return false;
+	if(checkBalance){
+		var totalFee=parseFloat($("#amount").val())*parseFloat($("#taskTotalCount").val());
+		var balance=parseFloat($("#businessBalance").html().replace("元",""));
+		if(balance<totalFee){
+			alert("当前商户账户余额不足，不能新建任务");
+			return false;
+		}
 	}
 	return true;
 };

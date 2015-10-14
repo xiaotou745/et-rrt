@@ -83,6 +83,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
            url: url,
            data: paramaters,
            success: function (result) {
+        	   if()
         	   window.location.href = "<%=basePath%>/clienterwithdraw/list";
               /*  if (result.IsSuccess) {
                    alert(result.Message);
