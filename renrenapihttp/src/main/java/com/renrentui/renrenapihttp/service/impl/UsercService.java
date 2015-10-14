@@ -27,6 +27,7 @@ import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
+import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
@@ -275,7 +276,9 @@ public class UsercService implements IUsercService {
 		resp.setPhoneNo(clienterModel.getPhoneNo());
 		resp.setHeadImage(clienterModel.getHeadImage());
 		//全路径
-		String fullHeadImage= PropertyUtils.getProperty("ImgShowUrl")+clienterModel.getHeadImage();
+		String fullHeadImage="";
+		if(!StringUtils.isEmpty(clienterModel.getHeadImage()))
+				 fullHeadImage= PropertyUtils.getProperty("ImgShowUrl")+clienterModel.getHeadImage();
 		resp.setFullHeadImage(fullHeadImage);
 		
 		resp.setCityCode(clienterModel.getCityCode());
