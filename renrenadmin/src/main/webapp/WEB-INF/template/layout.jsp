@@ -31,6 +31,12 @@
 <script src="<%=basePath%>/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="<%=basePath%>/My97DatePicker/WdatePicker.js"></script>
 <script src="<%=basePath%>/js/ajaxfileupload.js"></script>
+
+<link href="<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.css" rel="stylesheet" />
+<link href="<%=basePath%>/js/jquery.uploadify-v2.1.0/example/css/default.css" rel="stylesheet" />
+<script src="<%=basePath%>/js/jquery.uploadify-v2.1.0/swfobject.js"></script> 
+<script src="<%=basePath%>/js/jquery.uploadify-v2.1.0/jquery.uploadify.v2.1.0.min.js"></script> 
+
 <!-- Flot -->
 <%-- <script src="<%=basePath%>/js/plugins/flot/jquery.flot.js"></script>
 <script src="<%=basePath%>/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
