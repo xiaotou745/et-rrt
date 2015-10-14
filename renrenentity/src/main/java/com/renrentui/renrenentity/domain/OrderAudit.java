@@ -90,6 +90,9 @@ public class OrderAudit {
 	public double getAmount() {
 		return amount;
 	}
+	public String getAmountStr() {
+		return ParseHelper.digitsNum(amount, 2);
+	}
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
