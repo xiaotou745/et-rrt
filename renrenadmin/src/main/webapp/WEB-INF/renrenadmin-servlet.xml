@@ -20,7 +20,7 @@
 	<!-- <import resource="classpath:conf/core/devtest-context.xml" /> -->
 	<!-- <import resource="file:D:/conf/dev-context.xml" /> -->
 	<context:component-scan base-package="com.renrentui.renrenadmin.*" />
-	<mvc:annotation-driven />
+<mvc:annotation-driven /> 
 	<mvc:resources mapping="/**" location="/resources/" />
 	<mvc:interceptors>
  		<bean class="com.renrentui.renrenadmin.common.GlobalLogInteceptor">

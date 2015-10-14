@@ -71,7 +71,8 @@ width: 100%;
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>		
 							<button type="button" class="btn btn-w-m btn-primary" 
-							style="margin-left:3px;" data-toggle="modal" data-target="#myModal" onclick="AddShow()" id="btnAdd">添加商户</button>			 
+							style="margin-left:3px;" data-toggle="modal" data-target="#myModal" onclick="AddShow()" id="btnAdd">添加商户</button>
+											 
 					</div>
 			</div>
 			</form>
@@ -132,11 +133,11 @@ width: 100%;
 				
 				
 				<div style="margin-left:30px">
-		        <div id="fileQueue" style="height:80px"></div>
-	        	<input type="file" name="uploadify" id="uploadify" />
+		        <div id="fileQueueA" style="height:80px"></div>
+	        	<input type="file" name="uploadifyA" id="uploadifyA" />
 		        <p>
-		        <a href="javascript:jQuery('#uploadify').uploadifyUpload()">文件上传</a>&nbsp;
-		        <a href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消所有上传</a>
+		        <a href="javascript:jQuery('#uploadifyA').uploadifyUpload()">文件上传</a>&nbsp;
+		        <a href="javascript:jQuery('#uploadifyA').uploadifyClearQueue()">取消所有上传</a>
 		        </p>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
@@ -147,6 +148,72 @@ width: 100%;
 		</div>  
 	</div>
 </div>
+
+<div tabindex="-1" class="modal inmodal" id="modifyBusiness"
+	role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">修改商户</h4> 
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+			            <br>
+			             <div class="control-group">
+			                <label >商户名称：</label> 
+			                    <input  name="txtCompanyNameM" id="txtCompanyNameM" type="text">			                    
+							<input name="txtBusinessIdM" id="txtBusinessIdM" type="hidden">
+			            </div>
+			            <div class="control-group">
+			                <label>电话号码：</label> 
+			                <input  name="txtPhoneNoM" id="txtPhoneNoM" type="text">					               
+			            </div>
+			            <div class="control-group">
+			                <label >登录名称：</label> 
+			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >地&nbsp;&nbsp;址：</label> 
+			                    <input  name="txtAddressM" id="txtAddressM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >所属城市：</label> 
+			                    <input  name="txtCityNameM" id="txtCityNameM" type="text">
+			            </div> 
+			             <div class="control-group">
+			                <label >站&nbsp;&nbsp;点：</label> 
+			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
+			            </div> 
+			            <div>
+			               <label >图片预览：</label> 
+			               <input  name="txtImgShowM" id="txtImgShowM" type=hidden>
+			            <img id="imgShowM" src="" width="200px" height="200px" />
+			            </div>
+			        </fieldset>
+				</div>			
+				
+				
+				<div style="margin-left:30px">
+		        <div id="fileQueueM" style="height:80px"></div>
+	        	<input type="file" name="uploadifyM" id="uploadifyM" />
+		        <p>
+		        <a href="javascript:jQuery('#uploadifyM').uploadifyUpload()">文件上传</a>&nbsp;
+		        <a href="javascript:jQuery('#uploadifyM').uploadifyClearQueue()">取消所有上传</a>
+		        </p>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="ModifyBusiness()">保存</button>
+				</div> 
+				</div>
+			</small>
+		</div>  
+	</div>
+</div>
+
 <div tabindex="-1" class="modal inmodal" id="businessDeltaShow"
 	role="dialog" aria-hidden="true" style="display: none;">		
 	<div class="modal-dialog">
@@ -195,70 +262,6 @@ width: 100%;
 	<small class="font-bold"> </small>
 
 </div>
-
-<div tabindex="-1" class="modal inmodal" id="modifyBusiness"
-	role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
-		<div class="modal-content animated bounceInRight">
-			<div class="modal-header">
-				<button class="close" type="button" data-dismiss="modal">
-					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
-				</button>
-				<h4 class="modal-title">修改商户</h4> 				
-			</div>
-			<small class="font-bold">
-				<div class="modal-body">
-					<fieldset>
-			            <br>
-			             <div class="control-group">
-			                <label >商户名称：</label> 
-			                    <input  name="txtCompanyNameM" id="txtCompanyNameM" type="text">			                    
-							<input name="txtBusinessIdM" id="txtBusinessIdM" type="hidden">
-			            </div>
-			            <div class="control-group">
-			                <label>电话号码：</label> 
-			                <input  name="txtPhoneNoM" id="txtPhoneNoM" type="text">					               
-			            </div>
-			            <div class="control-group">
-			                <label >登录名称：</label> 
-			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
-			            </div> 
-			            <div class="control-group">
-			                <label >地&nbsp;&nbsp;址：</label> 
-			                    <input  name="txtAddressM" id="txtAddressM" type="text">
-			            </div> 
-			            <div class="control-group">
-			                <label >所属城市：</label> 
-			                    <input  name="txtCityNameM" id="txtCityNameM" type="text">
-			            </div> 
-			             <div class="control-group">
-			                <label >站&nbsp;&nbsp;点：</label> 
-			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
-			            </div> 
-			             <div>
-			               <label >图片预览：</label> 
-			               <input  name="txtImgShowM" id="txtImgShowM" type=hidden>
-			            <img id="imgShowM" src="" width="200px" height="200px" />
-			            </div>
-			        </fieldset>			
-				</div>
-				<div style="margin-left:30px">
-		        <div id="fileQueueM" style="height:80px"></div>
-	        	<input type="file" name="uploadifyM" id="uploadifyM" />
-		        <p>
-		        <a href="javascript:jQuery('uploadifyM').uploadifyUpload()">文件上传</a>&nbsp;
-		        <a href="javascript:jQuery('uploadifyM').uploadifyClearQueue()">取消所有上传</a>
-		        </p>
-			      <div class="modal-footer">
-					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="ModifyBusiness()">保存</button>
-				</div> 
-				</div>		
-
-			</small>
-		</div>  
-	</div>
-</div>
 <script>
 var jss={ 
 		search:function(currentPage){	
@@ -290,14 +293,16 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+
+
 $(document).ready(function() {
-    $("#uploadify").uploadify({
-     	'buttonImg':'../js/jquery.uploadify-v2.1.0/selectFile.gif',
-        'uploader':'../js/jquery.uploadify-v2.1.0/uploadify.swf',
+    $("#uploadifyA").uploadify({
+     	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
+        'uploader':'<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.swf',
         'script':'<%=UploadUrl%>/Upload/UploadImg?uploadFrom=1',//后台处理的请求
-        'cancelImg':'../js/jquery.uploadify-v2.1.0/cancel.png',
+        'cancelImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/cancel.png',
         'folder':'uploads',//您想将文件保存到的路径
-        'queueID':'fileQueue',//与下面的id对应
+        'queueID':'fileQueueA',//与下面的id对应
         'queueSizeLimit':1,
         'wmode':'transparent',
         'fileDesc':'图片文件',    
@@ -312,9 +317,10 @@ $(document).ready(function() {
         onComplete: function (event, queueId, fileObj, response, data) {
             var jsonstr = JSON.parse(response);
             $("#imgShowA").attr("src",jsonstr.Result.FileUrl);           
-            $('#txtImgShowA').val(jsonstr.Result.RelativePath)            
-            
-            
+            $('#txtImgShowA').val(jsonstr.Result.RelativePath)   
+         /*    $("#imgShowM").attr("src",jsonstr.Result.FileUrl);           
+            $('#txtImgShowM').val(jsonstr.Result.RelativePath)      */       
+
            // document.getElementById(randimg).src="jsonstr.Result.FileUrl";
             // alert("上传成功，地址："+jsonstr.Result.FileUrl);
             
@@ -324,6 +330,32 @@ $(document).ready(function() {
 //             	 "RelativePath":"Business/2015/10/13/23/49452547d2.jpg",
 //             	 "OriginalName":"Chrysanthemum.jpg","ModifyOriginalName":
 //             		 "49452547d2_0_0.jpg"}}
+        }
+    });
+    
+    $("#uploadifyM").uploadify({
+     	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
+        'uploader':'<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.swf',
+        'script':'<%=UploadUrl%>/Upload/UploadImg?uploadFrom=1',//后台处理的请求
+        'cancelImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/cancel.png',
+        'folder':'uploads',//您想将文件保存到的路径
+        'queueID':'fileQueueM',//与下面的id对应
+        'queueSizeLimit':1,
+        'wmode':'transparent',
+        'fileDesc':'图片文件',    
+    	'fileExt':'*.jpg;*.png', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
+       	'auto':false,
+        'multi':false,
+        'simUploadLimit':1,
+        'maxQueueSize': 1,
+        'successTimeout':600,
+         'buttonText':"BROWSER",
+        'fileSizeLimit' : '2MB',
+        onComplete: function (event, queueId, fileObj, response, data) {
+            var jsonstr = JSON.parse(response);
+          $("#imgShowM").attr("src",jsonstr.Result.FileUrl);           
+            $('#txtImgShowM').val(jsonstr.Result.RelativePath)           
+
         }
     });
 });
@@ -368,7 +400,7 @@ function AddBusiness(){
             "webSite": webSite,
             "logo": logo 
         };
-   var url = "<%=basePath%>/business/addbusiness";  
+   var url = "<%=basePath%>"+"/business/addbusiness";  
 		$.ajax({
 	           type: 'POST',
 	           url: url,
@@ -386,7 +418,7 @@ function AddBusiness(){
   }
     
   //修改,保存商户
-function ModifyBusiness(){
+function ModifyBusiness(){	  
 	var id= $('#txtBusinessIdM').val().trim();
 	var companyName= $('#txtCompanyNameM').val().trim();
 	var phoneNo= $('#txtPhoneNoM').val().trim();	
@@ -394,8 +426,9 @@ function ModifyBusiness(){
     var address= $('#txtAddressM').val().trim();
     var cityName= $('#txtCityNameM').val().trim();
     var webSite= $('#txtWebSiteM').val().trim();     
+    var logo= $('#txtImgShowM').val().trim();        
     
-    var reg=/[\u4e00-\u9fa5]+/;   
+    var reg=/[\u4e00-\u9fa5]+/;       
     
     if(companyName.trim().length <=4 || companyName.trim().length>30){
     	alert("商户名称必须在5-30个字符");
@@ -417,7 +450,8 @@ function ModifyBusiness(){
             "loginName": loginName,
             "address": address,
             "cityName": cityName,
-            "webSite": webSite            
+            "webSite": webSite,
+            "logo": logo
         };
    var url = "<%=basePath%>/business/modifybusiness";  
 		$.ajax({
