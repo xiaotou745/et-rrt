@@ -10,3 +10,15 @@ E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\Newtonsoft.Json.xml
 E:\Code\Eds.Upload\Eds.Upload\Eds.Model\obj\Release\Eds.Model.csprojResolveAssemblyReference.cache
 E:\Code\Eds.Upload\Eds.Upload\Eds.Model\obj\Release\Eds.Model.dll
 E:\Code\Eds.Upload\Eds.Upload\Eds.Model\obj\Release\Eds.Model.pdb
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\Eds.Model.dll
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\Eds.Model.pdb
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\Eds.Core.dll
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\ICSharpCode.SharpZipLib.dll
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\NLog.dll
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\Newtonsoft.Json.dll
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\Eds.Core.pdb
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\NLog.xml
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\bin\Release\Newtonsoft.Json.xml
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\obj\Release\Eds.Model.csprojResolveAssemblyReference.cache
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\obj\Release\Eds.Model.dll
+G:\project\e代送众包版\renrenditui\Eds.Upload\Eds.Model\obj\Release\Eds.Model.pdb

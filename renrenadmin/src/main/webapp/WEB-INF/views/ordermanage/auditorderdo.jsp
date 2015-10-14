@@ -47,7 +47,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getTaskStatus()%></td>	
 			<td><%=data.get(i).getAvailableCount()%></td>
 			<td><%=data.get(i).getCompCount()%></td>	
-			<td><%=data.get(i).getAmount()%></td>
+			<td><%=data.get(i).getAmountStr()%></td>
 			<td><%=data.get(i).getFinishTime()%></td>	
 			<td><%=data.get(i).getAuditTime()%></td>	
 <%-- 			<td><%=data.get(i).getTimeAfter()%></td> --%>
@@ -114,6 +114,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        success: function (result) {   	
 		        	if(result=='1'||result==1){
 		        		alert('操作成功!')
+		        		jss.search(1);
 		        		}
 		        }
 		    });
@@ -154,6 +155,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        success: function (result) {   	
 		        	if(result=='200'||result==200)
 		        	{
+		        		alert('取消成功!')
 		        		jss.search(1);
 		        	}
 		        	else
