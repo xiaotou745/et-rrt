@@ -167,5 +167,25 @@ List<Business> businessData = (List<Business>) request.getAttribute("businessDat
 				window.location.href = window.location.href;
 			}
 		});
+	};
+	function settlementtask(taskId){
+		if (!confirm("确定要将为该任务结账吗？")){
+			return;
+		}
+		var paramaters={"taskId":taskId};
+		var url = "<%=basePath%>/templatemanage/settlementtask";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				if (result > 0) {
+					alert("操作成功");
+				} else {
+					alert("操作失败:数据异常，请重试");
+				}
+				window.location.href = window.location.href;
+			}
+		});
 	}
 </script>

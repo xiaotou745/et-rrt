@@ -13,6 +13,7 @@ import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.service.inter.IOrderService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.OrderLog;
 import com.renrentui.renrenentity.common.PagedResponse;
@@ -152,7 +153,7 @@ public class OrderService implements IOrderService{
 		sBuilder.append(" border: solid #000 1px;}");
 		sBuilder.append(" </style>");
 		//拼接内容
-		if(model==null)
+		if(model==null||model.getList()==null)
 		{
 			sBuilder.append("<h3>该订单没有合同信息</h3>");
 		}
@@ -170,7 +171,7 @@ public class OrderService implements IOrderService{
 				sBuilder.append("<td>"+model.getList().get(i).getTitle()+"</td>");
 				if(model.getList().get(i).getControlType().equals("FileUpload"))
 				{
-					sBuilder.append("<td><img src=\""+model.getList().get(i).getControlValue()+"\"/></td>");
+					sBuilder.append("<td><img src=\""+PropertyUtils.getProperty("ImgShowUrl")+model.getList().get(i).getControlValue()+"\"/></td>");
 					
 				}
 				else{
