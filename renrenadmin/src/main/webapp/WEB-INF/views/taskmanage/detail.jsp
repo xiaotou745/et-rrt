@@ -234,7 +234,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 					</tbody>
 				</table>
 			</div>
-		<div class="row">
+		<div class="row" id="uploadDiv">
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-3">
@@ -414,15 +414,15 @@ function lockpage(){
 		$("textarea").each(function(index,e){
 			 e.disabled = true;
 		});
-	    $("input[type='file']").each(function (i, each) {
-	        each.disabled = true;
-	    });
 	    $("select").each(function (i, each) {
 	        each.disabled = true;
 	    });
 	    $("button").each(function (i, each) {
 	        each.disabled = true;
 	    });
+	    $("#uploadDiv").hide();
+	    $('#uploadfiletable tr').find('td:eq(2)').hide();
+	    $('#uploadfiletable tr').find('th:eq(2)').hide();
 	}
 }
 function initRegion(){
@@ -472,7 +472,6 @@ var oldTotalFee=0;
 var oldBusinessId="";
 function initFunction(){
 	initRegion();
-	$("#uploadfile").on("click",uploadfile);
 	$("#businessId").on("change",businessChange);
 	$("#businessId").change();
 	lockpage();
