@@ -62,6 +62,9 @@
 			<%} 
 			if(data.get(i).getStatus()==TaskStatus.Audited.value()){%>
 			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',4,1,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">终止</a>
+			<%}
+		    if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()||data.get(i).getStatus()==TaskStatus.Reject.value()){%>
+			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',5,<%=data.get(i).getStatus() %>,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">取消</a>
 			<%}%>
 			</td>
 		</tr>

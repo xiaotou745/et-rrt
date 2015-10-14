@@ -46,4 +46,5 @@ public interface IRenRenTaskDao {
 	 * @date 20151009
 	 */
 	public void outTimeCanelTask();
+	public List<RenRenTask> getListByTemplateId(Long templateId); 
 }
