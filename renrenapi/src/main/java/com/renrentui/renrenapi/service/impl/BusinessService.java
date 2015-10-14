@@ -19,9 +19,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
+
+
+
+
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
+import com.renrentui.renrenapi.dao.inter.IBusinessRechargeDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
@@ -29,7 +35,10 @@ import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrencore.enums.BBalanceRecordType;
+import com.renrentui.renrencore.enums.BusinessRechargePayStatus;
+import com.renrentui.renrencore.enums.BusinessRechargePayType;
 import com.renrentui.renrencore.security.MD5Util;
+import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.BusinessModel;
@@ -37,6 +46,7 @@ import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.BusinessBalanceRecord;
+import com.renrentui.renrenentity.BusinessRecharge;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
@@ -58,6 +68,10 @@ public class BusinessService implements IBusinessService {
 
 	@Autowired
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
+	
+	@Autowired
+	private IBusinessRechargeDao businessRechargeDao;	        
+	
 
 	@Override
 	public PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req) {
@@ -153,8 +167,22 @@ public class BusinessService implements IBusinessService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int addBalance(BusinessBalanceReq req,String userName)
 	{
+		//更新商户余额
 		int bbId= businessBalanceDao.updateBalanceByBusinessId(req);
 		
+		//商户充值表
+		BusinessRecharge brModel=new BusinessRecharge();
+		brModel.setBusinessId(req.getBusinessId());
+		brModel.setPayType(BusinessRechargePayType.Backstage.value());	
+		String no=OrderNoHelper.generateOrderCode(req.getBusinessId());
+		brModel.setOrderNo(no);				
+		brModel.setPayAmount(req.getBalance());
+		brModel.setPayStatus(BusinessRechargePayStatus.Paid.value());		
+		brModel.setPayBy(userName);
+		brModel.setOriginalOrderNo("");	
+		int breId=businessRechargeDao.insert(brModel);
+		
+		//余额流水
 		BusinessBalanceRecord businessBalanceRecordModel=new BusinessBalanceRecord();
 		businessBalanceRecordModel.setBusinessId(req.getBusinessId());
 		businessBalanceRecordModel.setAmount(req.getBalance());
@@ -166,8 +194,10 @@ public class BusinessService implements IBusinessService {
 		businessBalanceRecordModel.setRemark(req.getRemark());		
 		int bbrId= businessBalanceRecordDao.insert(businessBalanceRecordModel);
 		
-		if(bbId>0 && bbId>0 )
-		return 1;
+		if(bbId>0 &&breId>0 && bbId>0 )
+		{
+			return 1;
+		}
 		else
 		{
 			Error error=new Error("商户充值失败");
