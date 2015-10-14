@@ -3,6 +3,7 @@ package com.renrentui.renrenentity.domain;
 import java.util.ArrayList;
 
 import com.renrentui.renrencore.enums.PaymentMethodType;
+import com.renrentui.renrencore.util.PropertyUtils;
 
 /**
  * 任务详情实体 
@@ -61,7 +62,7 @@ public class TaskDetail {
 		this.companySummary = companySummary;
 	}
 	public String getLogo() {
-		return logo;
+		return  PropertyUtils.getProperty("ImgShowUrl")+logo;
 	}
 	public void setLogo(String logo) {
 		this.logo = logo;

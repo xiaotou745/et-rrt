@@ -1,7 +1,9 @@
 package com.renrentui.renrenapi.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.management.RuntimeErrorException;
 
@@ -110,7 +112,7 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 	 * @Des 审核通过
 	 * @Author 胡灵波
 	 * @Date 2015年9月28日 16:58:06
-	 * @param req
+	 * @param 当前只传提现单Id
 	 * @return
 	 */
 	@Override
@@ -118,6 +120,7 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 	public	int AuditPass(ClienterWithdrawForm record) 
 	{		
 		long id=record.getId();//提现单Id
+		
 		ClienterBalanceRecord cbrModel= clienterBalanceRecordDao.selectByOrderId(id);
 		if(cbrModel.getStatus()!=2) return 0;	
 		
@@ -131,6 +134,14 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 		cbrModelU.setOrderId(cbrModel.getOrderId());
 		cbrModelU.setStatus((short)CBalanceRecordStatus.Success.value());//交易成功
 		int cbrId= clienterBalanceRecordDao.updateStatusByOrderId(cbrModelU);
+		
+		
+		//ClienterWithdrawForm currRecord= clienterWithdrawFormDao.selectById(id);
+/*		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("amount", currRecord.getAmount());
+		params.put("clienterId", currRecord.getClienterId());		
+		//更新累积提现
+		clienterBalanceDao.updateHadWithdrawByClienterId(params);*/
 		
 		if(cwfId>0 && cbrId>0 )
 			return 1;
