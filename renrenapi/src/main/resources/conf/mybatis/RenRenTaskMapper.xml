@@ -99,7 +99,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 			and a.pusher like ''%${pusher}%''
 		</if>	
 		<if test="businessId != null and businessId>0">
-			and a.businessId=''${businessId}''
+			and a.businessId=${businessId}
 		</if>
 		<if test="createName != null and createName!=''">
 			and a.createName like ''%${createName}%''
@@ -117,13 +117,13 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 			and ''${endTime} 23:59:59''>=a.beginTime
 		</if>
 	    <if test="status != null and status>-1">
-			and a.status=''${status}''
+			and a.status=${status}
 		</if>
 	    <if test="snapshotTemplateId != null and snapshotTemplateId>0">
-			and a.SnapshotTemplateId=''${snapshotTemplateId}''
+			and a.SnapshotTemplateId=${snapshotTemplateId}
 		</if>
 	    <if test="paymentMethod != null and paymentMethod>0">
-			and a.paymentMethod=''${paymentMethod}''
+			and a.paymentMethod=${paymentMethod}
 		</if>
 	</sql>
   
@@ -132,13 +132,20 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		' a.Id DESC ',
-		'a.*,b.templateName,c.CompanyName as businessName, ,
+		'a.*,b.templateName,c.CompanyName as businessName, 
         CASE when o.TaskAudi is not null then 1
-             else 0',
-		'RenRenTask a  WITH (NOLOCK) join TemplateSnapshot b  WITH (NOLOCK) on a.snapshotTemplateId=b.id 
-		join Business c  WITH (NOLOCK) on a.businessId=c.id
-		   left  join ( select distinct TaskId as TaskAudi from   dbo.[Order] (nolock) where  AuditStatus <![CDATA[<]]>> 2 and OrderStatus = 1
-                   ) as o on a.Id = o.TaskAudi ',
+             else 0 end  as canSettlement 
+        ',
+		'RenRenTask a with ( nolock )
+        join TemplateSnapshot b with ( nolock ) on a.snapshotTemplateId = b.id
+        join Business c with ( nolock ) on a.businessId = c.id
+        left  join ( select distinct
+                            TaskId as TaskAudi
+                     from   [Order] (nolock) 
+                     where  AuditStatus != 2
+                            and OrderStatus = 1
+                   ) as o on a.Id = o.TaskAudi  
+        ',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />
 		',
