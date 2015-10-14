@@ -15,7 +15,7 @@
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
-String UploadPath= PropertyUtils.getProperty("ImageServicePath");
+String UploadPath= PropertyUtils.getProperty("UploadUrl");
 RenRenTaskDetail taskInfo = (RenRenTaskDetail) request.getAttribute("taskInfo");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 String templatelist = (String) request.getAttribute("templatelist");
@@ -484,18 +484,15 @@ function realDeleteFiles(){
 		var tempFiles=deleteFiles.split(";");
 		for(var i=0;i<tempFiles.length;i++){
 			var s=tempFiles[i].split("#");
-			 $.ajax({  
-			        url:"<%=UploadPath%>/upload/deletefile?fileName=1"+s[1],  
-			        dataType:'jsonp',  
-			        data:'',  
-			        jsonp:'callback',  
-			        success:function(result) {  
-						//aaa({"Status":1})
-			            var jsonstr = JSON.parse(response);
-			            alert(jsonstr.Status);
-			        },  
-			        timeout:3000  
-			    });  
+			var url = "<%=UploadPath%>/upload/deletefile?fileName="+s[1];
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : "",
+				success : function(result) {
+		            //alert(result.Status);
+				}
+		});
 		}
 	}
 }

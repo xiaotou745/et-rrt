@@ -72,7 +72,7 @@ WHERE rrt.id=${taskId}
 SELECT TOP 1
 CASE WHEN rrt.AvailableCount>0 THEN 1 ELSE 0 END AS BlanceCan,--1 任务剩余量足够领取
 CASE WHEN rrt.[Status]=1 AND rrt.EndTime>GETDATE() THEN 1 ELSE 0 END AS EndTimeCan,--1 任务尚未关闭
-CASE WHEN o.clienterid IS NULL THEN 1 ELSE 0 END AS OrderCan,--1 可以领取
+CASE WHEN (o.clienterid IS NULL) AND 3>(SELECT COUNT(1) FROM  dbo.[Order] WHERE ClienterId=${userId} AND OrderStatus=0) THEN 1 ELSE 0 END AS OrderCan,--1 可以领取
 TaskCycle,
 rrt.Amount
 FROM dbo.RenRenTask AS rrt
