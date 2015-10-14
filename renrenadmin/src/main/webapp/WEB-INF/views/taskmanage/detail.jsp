@@ -13,6 +13,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
+<%@page import="com.renrentui.renrenadmin.common.UserContext"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 String UploadPath= PropertyUtils.getProperty("UploadUrl");
@@ -355,13 +356,18 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 <!-- 				</div> -->
 <!-- 			</div> -->
 		</fieldset>
-		<div class="row">
+		<%
+		boolean uPDATE_TASK=UserContext.getCurrentContext(request).isHasAuthByCode("UPDATE_TASK");
+		if(uPDATE_TASK){%>
+			<div class="row">
 			<div class="col-lg-4">
 				<button type="button"  class="btn btn-w-m btn-primary" id="save" onclick="savetask()"
 					style="margin-left: 3px; height: 30px;">保存</button>
 
 			</div>
 		</div>
+		<%}%>
+		
 	</form>
 
 	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> 

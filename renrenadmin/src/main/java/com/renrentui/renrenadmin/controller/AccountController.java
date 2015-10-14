@@ -123,7 +123,7 @@ public class AccountController {
 		boolean isLogin = LoginUtil.checkIsLogin(request,response);
 		// 如果已登录,直接返回已登录
 		if (isLogin) {
-			response.sendRedirect(basePath+"/account/list");
+			response.sendRedirect(basePath+"/ordermanage/auditorder");
 			return;
 		}
 
@@ -165,7 +165,7 @@ public class AccountController {
 		loginUser.setUserName(account.getUserName());
 		CookieUtils.setCookie(request,response,LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
 				true);
-		response.sendRedirect(basePath+"/account/list");
+		response.sendRedirect(basePath+"/ordermanage/auditorder");
 	}
 	
 	/**
