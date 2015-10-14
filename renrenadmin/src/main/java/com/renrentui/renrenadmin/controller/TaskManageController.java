@@ -274,4 +274,18 @@ public class TaskManageController {
 		}
 		return "0.00";
 	}
+	/**
+	 * 任务结账
+	 * @param request
+	 * @param taskId
+	 * @author hailongzhao
+	 * @date 20151014
+	 * @return
+	 */
+	@RequestMapping("settlementtask")
+	@ResponseBody
+	public int settlementTask(HttpServletRequest request,Long taskId){
+		UserContext context=UserContext.getCurrentContext(request);
+		return renRenTaskService.settlementTask(taskId, context.getUserName());
+	}
 }
