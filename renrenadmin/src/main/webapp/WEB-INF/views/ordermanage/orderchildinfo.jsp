@@ -13,12 +13,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 
 		<%
 			OrderChildInfoModel view = (OrderChildInfoModel)request.getAttribute("listData");
-			if(view==null)
+			if(view==null||view.getList()==null)
 			{
 				%>
-				<script type="text/javascript">
-				alert('找不到当前合同的合同信息!');
-				</script>
+			<h1>找不到当前订单的合同信息</h1>
 				<%}
 			else
 			{
@@ -44,7 +42,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 							<td><%=view.getList().get(i).getTitle()%></td>
 							<%if(view.getList().get(i).getControlType().equals("FileUpload"))
 							{%>
-							<td><img alt="" src="<%=view.getList().get(i).getControlValue()%>"></td>
+							<td><img alt="" src="<%=PropertyUtils.getProperty("ImgShowUrl")+view.getList().get(i).getControlValue()%>"></td>
 							<%}
 							else{%>
 							<td><%=view.getList().get(i).getControlValue()%></td>
