@@ -20,13 +20,28 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 	 *      注：此处用写串
 	 * @Author 胡灵波
 	 * @Date 2015年9月30日 15:02:48
-	 * @param req
+	 * @param Id
 	 * @return
 	 */
 	@Override
 	public ClienterBalance selectByPrimaryKey(Long id) {		
 		return getMasterSqlSessionUtil().selectOne(
 				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.selectByPrimaryKey", id);	
+       
+	}
+	
+	/**
+	 * @Des 获取用户金额 
+	 *      注：此处用写串
+	 * @Author 胡灵波
+	 * @Date 2015年9月30日 15:02:48
+	 * @param 推广员Id
+	 * @return
+	 */
+	@Override
+	public ClienterBalance selectByClienterId(Long clienterId) {		
+		return getMasterSqlSessionUtil().selectOne(
+				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.selectByClienterId", clienterId);	
        
 	}
 	
@@ -62,8 +77,6 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-
 
 	@Override
 	public int updateByPrimaryKeySelective(ClienterBalance record) {

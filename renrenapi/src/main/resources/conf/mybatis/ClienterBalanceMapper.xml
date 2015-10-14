@@ -17,6 +17,12 @@
     from ClienterBalance
     where Id = #{id,jdbcType=BIGINT}
   </select>
+    <select id="selectByClienterId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterBalance
+    where clienterId = #{clienterId,jdbcType=BIGINT}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from ClienterBalance
     where Id = #{id,jdbcType=BIGINT}
