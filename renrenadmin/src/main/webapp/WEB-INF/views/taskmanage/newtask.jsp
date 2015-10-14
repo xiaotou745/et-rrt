@@ -189,7 +189,8 @@ String city_region = (String) request.getAttribute("city_region");
 						<tr>
 							<th width="5%">序号</th>
 							<th>文件名称</th>
-							<th>操作</th>
+							<th>预览</th>
+							<th>删除</th>
 						</tr>
 					</thead>
 					<tbody>

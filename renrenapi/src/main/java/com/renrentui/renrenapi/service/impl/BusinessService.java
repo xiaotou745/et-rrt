@@ -24,9 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
+import com.renrentui.renrenapi.dao.inter.IBusinessLogDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessRechargeDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
@@ -46,6 +49,7 @@ import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.BusinessBalanceRecord;
+import com.renrentui.renrenentity.BusinessLog;
 import com.renrentui.renrenentity.BusinessRecharge;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
@@ -72,6 +76,8 @@ public class BusinessService implements IBusinessService {
 	@Autowired
 	private IBusinessRechargeDao businessRechargeDao;	        
 	
+	@Autowired
+	private IBusinessLogDao businessLogDao;	
 
 	@Override
 	public PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req) {
@@ -115,18 +121,27 @@ public class BusinessService implements IBusinessService {
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int add(Business record) {
-
+        
+		//添加商户表
 		String password = MD5Util.MD5("111111");// 默认值
 		record.setPassWord(password);
 		record.setCityCode(0);// 临时
 		int bId = businessDao.insert(record);
 
+		//添加商户金额表
 		BusinessBalance businessBalanceModel = new BusinessBalance();
 		businessBalanceModel.setBusinessId(record.getId());
 		businessBalanceModel.setBalance(0.0);
 		int bbId = businessBalanceDao.insert(businessBalanceModel);
+		
+		//商户操作日志
+		BusinessLog blModel=new BusinessLog();
+		blModel.setBusinessId(record.getId());
+		blModel.setOptName("系统后台");;
+		blModel.setRemark("添加商户");
+		int blId=businessLogDao.insert(blModel);		
 
-		if (bId > 0 && bbId > 0)
+		if (bId > 0 && bbId > 0 && blId>0)
 			return 1;
 		else {
 			Error error = new Error("添加商户错误");
@@ -143,11 +158,18 @@ public class BusinessService implements IBusinessService {
 	 * @return 
 	 */
 	@Override	
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int modify(Business record) {		
 	
 		int bId= businessDao.updateByPrimaryKeySelective(record);		
 
-		if(bId>0 )
+		//商户操作日志
+		BusinessLog blModel=new BusinessLog();
+		blModel.setBusinessId(record.getId());
+		blModel.setOptName("系统后台");;
+		blModel.setRemark("修改商户");
+		int blId=businessLogDao.insert(blModel);	
+		if(bId>0 && blId > 0 )
 			return 1;
 		else
 		{
