@@ -108,7 +108,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 		if(detail==null)//没有找到任务信息
 			return null;
 		//控件列表
-	    detail.setControlInfo(templateDetailDao.getTemplateList(detail.getTemplateId()));
+	    detail.setControlInfo(templateDetailDao.getTemplateList(detail.getTemplateId(),req.getOrderId()));
 		return detail;
 	}
 	/**
@@ -394,9 +394,11 @@ public class RenRenTaskService implements IRenRenTaskService{
 			detail.setCityRelationList(relations);
 			TemplateSnapshot snapshot=templateSnapshotDao.detailById(model.getSnapshotTemplateId());
 			if (snapshot==null) {
-				throw new RuntimeException("没有找到任务的模板快照数据");
+				detail.setTemplateId(-1l);
+				//throw new RuntimeException("没有找到任务的模板快照数据");
+			}else{
+			   detail.setTemplateId(snapshot.getTemplateId());
 			}
-			detail.setTemplateId(snapshot.getTemplateId());
 		}
 		return detail;
 	}

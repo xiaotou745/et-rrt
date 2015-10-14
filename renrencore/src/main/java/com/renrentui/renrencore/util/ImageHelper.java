@@ -45,8 +45,7 @@ public class ImageHelper {
             DiskFileItemFactory dff = new DiskFileItemFactory();              
             dff.setSizeThreshold(1024000);  
             ServletFileUpload sfu = new ServletFileUpload(dff);  
-            FileItemIterator fii = sfu.getItemIterator(request);              
-        
+            FileItemIterator fii = sfu.getItemIterator(request); 
             while(fii.hasNext()){  
             	FileItemStream fis = fii.next();    
                 if(!fis.isFormField() && fis.getName().length()>0){  

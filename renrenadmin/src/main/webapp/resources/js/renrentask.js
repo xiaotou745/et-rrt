@@ -206,9 +206,12 @@ function validPage(){
 	      $('#beginDate').val("");
 	      return false;
 	  }
+
 	var pagestart=new Date(startDate);
+	var pageComapreDate=pagestart.getFullYear()+""+(pagestart.getMonth()+1)+""+pagestart.getDate();
 	var myDate = new Date();
-	if(pagestart<myDate){
+	var nowdate=myDate.getFullYear()+""+(myDate.getMonth()+1)+""+myDate.getDate();
+	if(pageComapreDate<nowdate){
 		alert("开始日期必须大于等于今天");
 		return;
 	}

@@ -4,12 +4,11 @@
 <%@page import="com.renrentui.renrenentity.RoleInfo"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
- <%@page import="com.renrentui.renrencore.enums.UploadForm"%>
+ <%@page import="com.renrentui.renrencore.enums.UploadForm"%> 
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 String UploadPath= PropertyUtils.getProperty("ImageServicePath");
-%>
-
+%>   
 <style type="text/css">
 #map_contain {
     height: 90%;
@@ -91,14 +90,14 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<h4 class="modal-title">添加商户</h4> 				
+				<h4 class="modal-title">添加商户</h4> 
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
 					<fieldset>
 			            <br>
 			             <div class="control-group">
-			                <label >公司名称：</label> 
+			                <label >商户名称：</label> 
 			                    <input  name="txtCompanyNameA" id="txtCompanyNameA" type="text">			                    
 
 			            </div>
@@ -123,18 +122,19 @@ width: 100%;
 			                    <input  name="txtWebSiteA" id="txtWebSiteA" type="text">
 			            </div> 
 			        </fieldset>
-			        <fieldset>			        			        
-		<img id="showBusiImage" src="" width="200px" height="200px" />		
-		<input  name="txtshowBusiImage" id="txtshowBusiImage" type="hidden">
-					 <input id="uploadFileInput" type="file" size="45" name="uploadFileInput" class="input" />  
- <input type="button" id="buttonUpload" onclick="return ajaxFileUpload();" value="上传图片"/>  
-			        </fieldset>
-			
 				</div>
+				<div style="margin-left:30px">
+		<div id="fileQueue" style="height:80px"></div>
+	        	<input type="file" name="uploadify" id="uploadify" />
+		        <p>
+		        <a href="javascript:jQuery('#uploadify').uploadifyUpload()">文件上传</a>&nbsp;
+		        <a href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消所有上传</a>
+		        </p>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
 					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="AddBusiness()">保存</button>
 				</div> 
+				</div>
 			</small>
 		</div>  
 	</div>
@@ -156,7 +156,7 @@ width: 100%;
 						  <div class="control-group">
 		                <label>商户名称：</label>
 		                <input name="txtCompanyNameD" id="txtCompanyNameD" disabled="disabled" type="text">
-		                <input name="txtIdD" id="txtIdD" type="hidden">
+		                <input name="txtBusinessIdD" id="txtBusinessIdD" type="hidden">
 		            	</div>
 			            <div class="control-group">
 			                <label>商户电话：</label>
@@ -164,19 +164,23 @@ width: 100%;
 			            </div>
 			            <div class="control-group">
 			                <label>充值金额：</label>
-			                <input name="txtAmountD" id="txtAmountD" type="text">元
+			                <input name="txtAmountD" id="txtAmountD" text="0" type="text">元
 			            </div>
 			            <div class="control-group">
 			                <label>备&nbsp;&nbsp;注：</label>
 			                <div class="controls">
-			                    <textarea cols="45" rows="5" id="txtRemarkD	"></textarea>
+			                    <textarea cols="45" rows="5" id="txtRemarkD"></textarea>
 			                </div>
 			            </div>
 					</fieldset>
 				</div>
-				<div class="modal-footer">				   
+				<div class="modal-footer">
+	<!--   <form name="form_uploadImg" action="" method="POST">   -->
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id="txtbusinessDelta"  onclick="AddBusinessDelta()">确认</button>				
+					<button class="btn btn-primary" type="button" id="txtbusinessDelta" onclick="AddBusinessDelta()">确认</button>
+					 </form>   -->
+
+			 
 				</div>
 			</small>
 		</div>
@@ -186,9 +190,58 @@ width: 100%;
 
 </div>
 
+<div tabindex="-1" class="modal inmodal" id="modifyBusiness"
+	role="dialog" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">修改商户</h4> 				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					<fieldset>
+			            <br>
+			             <div class="control-group">
+			                <label >商户名称：</label> 
+			                    <input  name="txtCompanyNameM" id="txtCompanyNameM" type="text">			                    
+							<input name="txtBusinessIdM" id="txtBusinessIdM" type="hidden">
+			            </div>
+			            <div class="control-group">
+			                <label>电话号码：</label> 
+			                <input  name="txtPhoneNoM" id="txtPhoneNoM" type="text">					               
+			            </div>
+			            <div class="control-group">
+			                <label >登录名称：</label> 
+			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >地&nbsp;&nbsp;址：</label> 
+			                    <input  name="txtAddressM" id="txtAddressM" type="text">
+			            </div> 
+			            <div class="control-group">
+			                <label >所属城市：</label> 
+			                    <input  name="txtCityNameM" id="txtCityNameM" type="text">
+			            </div> 
+			             <div class="control-group">
+			                <label >站&nbsp;&nbsp;点：</label> 
+			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
+			            </div> 
+			        </fieldset>			
+			
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id=btnModifyGroupBusiness onclick="ModifyBusiness()">保存</button>
+				</div> 
+			</small>
+		</div>  
+	</div>
+</div>
 <script>
-
-var jss={
+var jss={ 
 		search:function(currentPage){	
 			 var companyName = $("#txtCompanyName").val();				   
 			 var phoneNo = $("#txtPhoneNo").val();
@@ -218,13 +271,44 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+$(document).ready(function() {
+    $("#uploadify").uploadify({
+     	'buttonImg':'../js/jquery.uploadify-v2.1.0/selectFile.gif',
+        'uploader':'../js/jquery.uploadify-v2.1.0/uploadify.swf',
+        'script':'http://192.168.1.38/Upload/UploadImg?uploadFrom=1',//后台处理的请求
+        'cancelImg':'../js/jquery.uploadify-v2.1.0/cancel.png',
+        'folder':'uploads',//您想将文件保存到的路径
+        'queueID':'fileQueue',//与下面的id对应
+        'queueSizeLimit':1,
+        'wmode':'transparent',
+        'fileDesc':'图片文件',    
+    	'fileExt':'*.jpg;*.png', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
+       	'auto':false,
+        'multi':false,
+        'simUploadLimit':1,
+        'maxQueueSize': 1,
+        'successTimeout':600,
+         'buttonText':"BROWSER",
+        'fileSizeLimit' : '2MB',
+        onComplete: function (event, queueId, fileObj, response, data) {
+            var jsonstr = JSON.parse(response);
+             alert("上传成功，地址："+jsonstr.Result.FileUrl);
+//              {"Status":1,"Message":"成功","Result":{"FileUrl":
+//             	 "http://192.168.1.38:8999/Business/2015/10/13/23/49452547d2.jpg",
+//             	 "RelativePath":"Business/2015/10/13/23/49452547d2.jpg",
+//             	 "OriginalName":"Chrysanthemum.jpg","ModifyOriginalName":
+//             		 "49452547d2_0_0.jpg"}}
+        }
+    });
+});
 
-//添加商户
 function AddShow(){
     $('#addBusiness').modal('show');
+//     $('#uploadify').uploadify('settings','buttonImg','../js/jquery.uploadify-v2.1.0/selectFile.gif');
 }
-//保存商户
-function AddBusiness(){	
+
+//添加,保存商户
+function AddBusiness(){
 	var companyName= $('#txtCompanyNameA').val().trim();
 	var phoneNo= $('#txtPhoneNoA').val().trim();	
     var loginName = $('#txtLoginNameA').val().trim();
@@ -235,7 +319,58 @@ function AddBusiness(){
     var reg=/[\u4e00-\u9fa5]+/;   
     
     if(companyName.trim().length <=4 || companyName.trim().length>30){
-    	alert("公司名称必须在5-30个字符");
+    	alert("商户名称必须在5-30个字符");
+    	return;
+    }
+    if (reg.test(loginName)){
+    	alert("登录名称不能为中文字符");
+    	return;
+    }
+    if(loginName.trim().length <6 || loginName.trim().length>20){
+    	alert("登录名称除中文外6-20位字符");
+    	return;
+    }   
+    
+    var paramaters = {
+            "companyName": companyName,
+            "phoneNo": phoneNo,
+            "loginName": loginName,
+            "address": address,
+            "cityName": cityName,
+            "webSite": webSite,
+            "logo": logo 
+        };
+   var url = "<%=basePath%>/business/addbusiness";  
+		$.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {        
+	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+	        	   window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
+	           }
+	       });	 	    
+  }
+    
+  //修改,保存商户
+function ModifyBusiness(){
+	var id= $('#txtBusinessIdM').val().trim();
+	var companyName= $('#txtCompanyNameM').val().trim();
+	var phoneNo= $('#txtPhoneNoM').val().trim();	
+    var loginName = $('#txtLoginNameM').val().trim();
+    var address= $('#txtAddressM').val().trim();
+    var cityName= $('#txtCityNameM').val().trim();
+    var webSite= $('#txtWebSiteM').val().trim();     
+    
+    var reg=/[\u4e00-\u9fa5]+/;   
+    
+    if(companyName.trim().length <=4 || companyName.trim().length>30){
+    	alert("商户名称必须在5-30个字符");
     	return;
     }
     if (reg.test(loginName)){
@@ -248,41 +383,81 @@ function AddBusiness(){
     }       
     
     var paramaters = {
+    		"id": id,
             "companyName": companyName,
             "phoneNo": phoneNo,
             "loginName": loginName,
             "address": address,
             "cityName": cityName,
-            "webSite": webSite,
-            "logo": logo 
+            "webSite": webSite            
         };
-   var url = "<%=basePath%>/business/addbusiness";   
+   var url = "<%=basePath%>/business/modifybusiness";  
 		$.ajax({
 	           type: 'POST',
 	           url: url,
 	           data: paramaters,
-	           success: function (result) {
-	        	   if(result>0)
-	        		{
-	        		    alert("操作成功");
-	        	   		window.location.href = "<%=basePath%>/business/list";	     
-	        		}
-	        	   else
-	        		   {
-	        		   alert("操作失败");
-	        		   }
+	           success: function (result) {        
+	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+	                   window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
+	           }
+	       });	 	    
+  }
+	        	  
+//保存商户
+function AddBusinessDelta(){
+
+	var businessId= $('#txtBusinessIdD').val();	
+	var balance= $('#txtAmountD').val().trim();
+	var remark= $('#txtRemarkD').val().trim();	
+	
+    var reg=/^(-)?(([1-9]{1}\d*)|([0]{1}))(\.(\d){1,2})?$/;
+    if (!reg.test(balance)){
+    	alert("请输入正确的金额");
+    	return;
+	           }
+    if(balance<=0)
+    	{
+    	alert("充值金额必须大于0");
+    	return; 
+    	}
+   
+    var paramaters = {
+            businessId: businessId,
+            balance: balance,
+            remark:remark
+        };
+    
+        var url = "<%=basePath%>/business/addbusinessdelta";  	
+		$.ajax({
+	           type: 'POST',
+	           url: url,
+	           data: paramaters,
+	           success: function (result) {	        	   
+	        	   if (result>0) {
+						alert("操作成功");
+						window.location.href = "<%=basePath%>/business/list";
+					} else {
+						alert("操作失败");
+					}      
 	        	  
 	           }
-	       });		    
+	       });
+   	    
 }
 
-     function ajaxFileUpload()  
-     {      	
-     	var typeValue=<%=UploadForm.Business.value() %>;
-	 	$.ajaxFileUpload({      
-    	url:'<%=basePath %>/FileUpload?type='+typeValue,         
-    	secureuri:false,  
-    	fileElementId:'uploadFileInput',                         //文件选择框的id属性  
+    //上传图片
+    function ajaxFileUpload()  
+    {      	
+     var typeValue=<%=UploadForm.Clienter.value() %>;
+	$.ajaxFileUpload({      
+    //url:'http://192.168.1.38/upload/uploadimg?uploadFrom=1',  
+    secureuri:false,  
+    fileElementId:'uploadFileInput',                         //文件选择框的id属性  
     //dataType: 'json',                                     //服务器返回的格式，可以是json  	
     success: function (data, status)             //相当于java中try语句块的用法  
     {     
@@ -302,56 +477,4 @@ function AddBusiness(){
   }  
 );  
     } 
-
-   //商户充值
-     function AddBusinessDelta(){
-     	
-     	var businessId= $('#txtBusinessIdD').val();	
-     	var balance= $('#txtAmountD').val().trim();	
-        
-         var paramaters = {
-                 businessId: businessId,
-                 balance: balance                   
-             };
-         
-             var url = "<%=basePath%>/business/addbusinessdelta";  	
-     		$.ajax({
-     	           type: 'POST',
-     	           url: url,
-     	           data: paramaters,
-     	           success: function (result) {
-     	        	  if(result>0)
-  	        		 {
-  	        		    alert("操作成功");
-     	        	   window.location.href = "<%=basePath%>/business/list";
-  	        		 }
-     	        	else
-					{
-     	        		 alert("操作失败");
-					}            		  
-     	           }
-     	       });
-        	    
-     }
-    
-/*   function ajaxFileUpload()  
-  {	   
-      $.ajaxFileUpload({  
-          url:'http://localhost/api/Upload/UploadImg?UploadFrom=1',  
-          secureuri:false,  
-          fileElementId:'uploadFileInput',//file标签的id  
-          //dataType: 'json',//返回数据的类型                
-          type: 'POST',
-          success: function (data, status) {      
-        	  alert(data);
-          },  
-          error: function (data, status, e) {  
-              alert(e);  
-          }            
-        
-      });        
- 
-  } */
-
-
 </script>

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenentity.domain.ControlInfo;
@@ -37,10 +38,11 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 	 * 
 	 */
 	@Override
-	public ArrayList<ControlInfo> getTemplateList(Long templateId) {
+	public ArrayList<ControlInfo> getTemplateList(Long templateId,Long orderId) {
 		String statement = "com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.getTemplateList";
 		HashMap<String, Object> map=new HashMap<String, Object>();
 		map.put("templateId", templateId);
+		map.put("orderId", orderId);
 		ArrayList<ControlInfo> res = (ArrayList) getReadOnlySqlSessionUtil().selectList(statement, map);
 		return res;
 	}

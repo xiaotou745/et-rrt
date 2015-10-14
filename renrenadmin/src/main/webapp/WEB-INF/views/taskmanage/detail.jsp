@@ -73,7 +73,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 										id="auditCycle" />
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
-	  							   小时
+	  							   天
 								</div>
 							</div>
 						</div>
@@ -131,7 +131,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 							<div class="form-group">
 								<label class="col-sm-4 control-label">单次佣金: </label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="amount" value="<%=taskInfo.getTaskInfo().getAmount().toString() %>"
+									<input type="text" class="form-control" name="amount" value="<%=ParseHelper.digitsNum(taskInfo.getTaskInfo().getAmount(),2) %>"
 										id="amount" />
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
@@ -288,9 +288,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 							<div class="form-group">
 								<label class="col-sm-4 control-label">合同模板: </label>
 								<div class="col-sm-8">
-								<div id="templateDiv">
 								<select id="snapshotTemplateId" name="snapshotTemplateId"  class='form-control m-b'></select>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -370,7 +368,26 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 </div>
 
 <script>
-
+function lockpage(){
+	var canedit="<%=(detailStatus==TaskStatus.WaitAudit||detailStatus==TaskStatus.Reject)%>";
+	if(canedit!="true"){
+	    $("input[type='text']").each(function (i, each) {
+	        each.disabled = true;
+	    });
+		$("textarea").each(function(index,e){
+			 e.disabled = true;
+		});
+	    $("input[type='file']").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	    $("select").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	    $("button").each(function (i, each) {
+	        each.disabled = true;
+	    });
+	}
+}
 function initRegion(){
 	var regionList="<%=oldRegionCode%>";
 	if(regionList!=""&&regionList!="-1"){
@@ -443,6 +460,7 @@ function initFunction(){
 	$("#uploadfile").on("click",uploadfile);
 	$("#businessId").on("change",businessChange);
 	$("#businessId").change();
+	lockpage();
 }
 function savetask(){
 	if(!validPage()){

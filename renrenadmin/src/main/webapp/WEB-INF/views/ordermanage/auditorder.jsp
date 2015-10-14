@@ -32,7 +32,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">地推员名称:</label>
 							<div class="col-sm-8">						
-								<input type="text" class="form-control" name="businessId"  id="businessId" />
+								<input type="text" class="form-control" name="clienterName"  id="clienterName" />
 							</div>
 						</div>
 					</div>
@@ -57,7 +57,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">审核状态</label>
 							<div class="col-sm-8">
-								<select id="auditStatus">
+								<select id="auditStatus" class="form-control m-b">
 								<option value=-1>全部</option>
 								<option value=0>待审核</option>
 								<option value=2>审核通过</option>
@@ -114,13 +114,13 @@ width: 100%;
 
 var jss={
 		search:function(currentPage){	
-			 var businessId = $("#businessId").val();				   
+			 var clienterName = $("#clienterName").val();				   
 			 var orderId = $("#orderId").val();
 			 var companyName = $("#companyName").val();
 			 var auditStatus = $("#auditStatus").val();
 			 var paramaters = { 
 					 "currentPage":currentPage,					 
-					 "businessId":businessId,
+					 "clienterName":clienterName,
 					 "orderId":orderId,
 					 "companyName":companyName,
 					 "auditStatus":auditStatus,

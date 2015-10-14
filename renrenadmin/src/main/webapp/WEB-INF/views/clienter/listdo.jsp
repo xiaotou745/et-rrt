@@ -23,10 +23,8 @@
 						<th width="%5">余额</th>
 						<th width="%5">可提现</th>
 						<th width="%5">已提现</th>
-						<th width="%5">审核状态</th>
 						<th width="%5">操作时间</th>
 						<th width="%5">操作人</th>
-						<th width="%5">操作</th>	
 				</tr>
 			</thead>
 			<tbody>                           
@@ -36,19 +34,11 @@
 			    <td><%=i+1 %></td>
                 <td><%=list.get(i).getClienterName() %></td>
                 <td><%=list.get(i).getPhoneNo() %></td>
-                <td><%=list.get(i).getBalance() %></td>
-                <td><%=list.get(i).getWithdraw() %></td>
-                <td><%=list.get(i).getHadWithdraw() %></td>
-                <td><%=ClienterStatus.getEnum(list.get(i).getStatus()).desc() %></td>
+                <td><%=ParseHelper.digitsNum( list.get(i).getBalance(), 2)%></td>
+                <td><%=ParseHelper.digitsNum(list.get(i).getWithdraw(), 2)%></td>
+                <td><%=ParseHelper.digitsNum(list.get(i).getHadWithdraw(), 2)%></td>
                 <td><%=ParseHelper.ToDateString(list.get(i).getLastOptTime())%></td>
                 <td><%=list.get(i).getLastOptName() %></td>
-                <td>
-                	<%if(list.get(i).getStatus()==1){%>
-					<a href="javascript:editClienterStatus(<%=list.get(i).getId()%>,2,<%=list.get(i).getStatus()%>)">审核拒绝</a>
-					<%}else{%> 
-					<a href="javascript:editClienterStatus(<%=list.get(i).getId()%>,1,<%=list.get(i).getStatus()%>)">审核通过</a>
-					<%}%>
-				</td>				
 			</tr>
 		 <%}%> 	 	
 			</tbody>

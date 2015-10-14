@@ -53,7 +53,7 @@
 			<td><%=data.get(i).getTemplateName()%></td>
 			<td><%=data.get(i).getTaskTotalCount()%></td>			
 			<td><%=data.get(i).getAvailableCount()%></td>
-			<td><%=data.get(i).getAmount()%></td>
+			<td><%=ParseHelper.digitsNum(data.get(i).getAmount(),2)%></td>
 			<td><%=TaskStatus.getEnum(data.get(i).getStatus()).desc()%></td>
 			<td>
 			<% if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()){%>

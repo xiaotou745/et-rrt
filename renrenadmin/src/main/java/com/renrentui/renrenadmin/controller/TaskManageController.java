@@ -265,11 +265,11 @@ public class TaskManageController {
 	}
 	@RequestMapping("getbusinessbanlance")
 	@ResponseBody
-	public double getBusinessBanlance(Long businessId){
+	public String getBusinessBanlance(Long businessId){
 		BusinessBalance balance= businessBalanceService.selectById(businessId);
 		if (balance!=null) {
-			return balance.getBalance();
+			return ParseHelper.digitsNum(balance.getBalance(),2);
 		}
-		return 0;
+		return "0.00";
 	}
 }
