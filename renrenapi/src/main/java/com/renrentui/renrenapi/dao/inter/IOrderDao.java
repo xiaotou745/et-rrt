@@ -53,5 +53,6 @@ public interface IOrderDao {
 	OrderChildInfoModel getOrderInfo(OrderChildReq req);
 	
 	ArrayList<OrderChildModel> getOrderChildList(OrderChildReq req);
+	public Double getOrderTotalAmount(Long taskId);
 
 }

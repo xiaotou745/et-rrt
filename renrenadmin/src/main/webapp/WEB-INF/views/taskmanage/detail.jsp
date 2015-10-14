@@ -230,7 +230,9 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 						<tr>
 						<td><%=(i+1) %></td>
 						<td><%=taskInfo.getAttachmentsList().get(i).getAttachmentName() %></td>
-						<td><a href="javascript:void(0)" onclick="deleterow(this)">删除</a></td>
+						<td><a href="javascript:void(0)" onclick="deleterow(this)">删除</a>
+						&nbsp;&nbsp;&nbsp;<a target="_blank" href='<%=UploadPath+"/"+taskInfo.getAttachmentsList().get(i).getAttachUrl() %>'>预览</a>
+						</td>
 					</tr>
 					<%}%>
 					</tbody>
@@ -392,7 +394,7 @@ $(document).ready(function() {
         onComplete: function (event, queueId, fileObj, response, data) {
             var jsonstr = JSON.parse(response);
              if(jsonstr.Status==1){
-            	 var fileinfo=jsonstr.Result.OriginalName+"#"+jsonstr.Result.RelativePath;
+            	 var fileinfo=jsonstr.Result.OriginalName+"#"+jsonstr.Result.RelativePath+"#"+jsonstr.Result.FileUrl;
             	 appendAttachRow(fileinfo);
              }else{
             	 alert("上传失败");

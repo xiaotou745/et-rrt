@@ -24,7 +24,11 @@ public enum TaskStatus {
 	/**
 	 * 取消
 	 */
-	Cancel(5, "取消");
+	Cancel(5, "取消"),
+	/**
+	 * 已结算
+	 */
+	HasSettlement(6, "已结算");
 
 	private int value = 0;
 	private String desc;

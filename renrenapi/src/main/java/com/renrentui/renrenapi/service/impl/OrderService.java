@@ -217,4 +217,8 @@ public class OrderService implements IOrderService{
 			throw new RuntimeErrorException(error);
 		}
 	}
+	@Override
+	public Double getOrderTotalAmount(Long taskId) {
+		return orderDao.getOrderTotalAmount(taskId);
+	}
 }

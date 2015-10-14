@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.renrentui.renrenapi.dao.impl.RenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IAttachmentDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
@@ -395,6 +394,8 @@ public class RenRenTaskService implements IRenRenTaskService{
 			Double totalFee=oldTaskModel.getAmount()*oldTaskModel.getTaskTotalCount();
 			updateBusinessBalance(req.getReocrdId(),oldTaskModel.getBusinessId(),totalFee,
 					oldBalance.getBalance(),BBalanceRecordType.CancelTask,req.getUserName());
+		}else if(status==TaskStatus.HasSettlement){
+			opType=TaskOpType.SettlementTask;
 		}
 
 
@@ -737,19 +738,34 @@ public class RenRenTaskService implements IRenRenTaskService{
 	public int settlementTask(Long taskId, String userName) {
 		RenRenTask taskModel=renRenTaskDao.selectById(taskId);
 		if (taskModel==null||
-				(taskModel.getStatus()!=TaskStatus.Audited.value()&&
-						taskModel.getStatus()!=TaskStatus.Expired.value()&&
-						taskModel.getStatus()!=TaskStatus.Stop.value())) {
+				(taskModel.getStatus()!=TaskStatus.Expired.value()&&
+						taskModel.getStatus()!=TaskStatus.Stop.value()||
+						taskModel.getStatus().equals(TaskStatus.HasSettlement.value()))) {
 				return -1;
 			}
+		Double realFee=orderDao.getOrderTotalAmount(taskId);
+		if (realFee.equals(0d)) {
+			return -1;
+		}
 		BusinessBalance oldBusinessBalance=businessBalanceDao.selectByBusinessId(taskModel.getBusinessId());
 		if (oldBusinessBalance==null) {
 			throw new RuntimeException("没有找到id="+taskModel.getBusinessId()+"的商户的余额信息");
 		}
 		Double totalFee=taskModel.getAmount()*taskModel.getTaskTotalCount();
-		Double realFee=0d;
-		updateBusinessBalance(taskId,taskModel.getBusinessId(),totalFee-realFee,
-				oldBusinessBalance.getBalance(),BBalanceRecordType.TaskSettlement,userName);
-		return 0;
+		Double difFee=totalFee-realFee;
+		if (difFee.compareTo(0d)<0) {
+			throw new RuntimeException("id为"+taskId+"的任务的共给地推员的佣金大于了任务总佣金");
+		}
+		if (difFee.compareTo(0d)>0) {
+			updateBusinessBalance(taskId,taskModel.getBusinessId(),difFee,
+					oldBusinessBalance.getBalance(),BBalanceRecordType.TaskSettlement,userName);
+		}
+		UpdateStatusReq statusReq =new UpdateStatusReq();
+		statusReq.setOldStatus(taskModel.getStatus());
+		statusReq.setReocrdId(taskId);
+		statusReq.setStatus(TaskStatus.HasSettlement.value());
+		statusReq.setUserName(userName);
+		setTaskStatus(statusReq);
+		return 1;
 	}
 }

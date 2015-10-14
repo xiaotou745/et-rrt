@@ -4,6 +4,7 @@ package com.renrentui.renrenapi.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -155,6 +156,11 @@ public class OrderDao extends DaoBase implements IOrderDao{
 			return (ArrayList<OrderChildModel>)list;
 		}
 		return null;
+	}
+
+	@Override
+	public Double getOrderTotalAmount(Long taskId) {
+		return getReadOnlySqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderTotalAmount",taskId);
 	}
 	
 	

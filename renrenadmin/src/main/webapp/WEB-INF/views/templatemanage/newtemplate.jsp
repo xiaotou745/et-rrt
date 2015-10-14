@@ -56,7 +56,7 @@ List<Business> businessData = (List<Business>) request.getAttribute("businessDat
 						<th width="5%">续号</th>
 						<th>控件类型</th>
 						<th>说明文本（必须唯一）</th>
-						<th>名称（英文，必须唯一）</th>
+<!-- 						<th>名称（英文，必须唯一）</th> -->
 						<th>默认值（可空）</th>
 						<th>操作</th>
 					</tr>
@@ -66,7 +66,7 @@ List<Business> businessData = (List<Business>) request.getAttribute("businessDat
 						<td>1</td>
 						<td>文本框</td>
 						<td><input type="text" class="form-control" placeholder="年龄" value="" id="title1" /></td>
-						<td><input type="text" class="form-control" placeholder="age" value="" id="name1" /></td>
+<!-- 						<td><input type="text" class="form-control" placeholder="age" value="" id="name1" /></td> -->
 						<td><input type="text" class="form-control" placeholder="18" value="" id="defaultvalue1" /></td>
 						<td></td>
 					</tr>

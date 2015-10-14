@@ -16,7 +16,7 @@ function addrow(){
 	row.append("<td>"+newRowNum+"</td>");
 	row.append("<td>文本框</td>");
 	row.append("<td><input type='text' class='form-control' placeholder='性别' value='' name='title"+newRowNum+"' id='title"+newRowNum+"' /></td>");
-	row.append("<td><input type='text' class='form-control' placeholder='sex' value='' name='name"+newRowNum+"' id='name"+newRowNum+"' /></td>");
+	//row.append("<td><input type='text' class='form-control' placeholder='sex' value='' name='name"+newRowNum+"' id='name"+newRowNum+"' /></td>");
 	row.append("<td><input type='text' class='form-control' placeholder='女' value='' name='defaultvalue"+newRowNum+"' id='defaultvalue"+newRowNum+"' /></td>");
 	row.append("<td><a href='javascript:void(0)' onclick='deleterow(this)'>删除</a></td>");
 	$("#templatetable").append(row);
@@ -28,7 +28,7 @@ function addImgRow(){
 	row.append("<td>"+newRowNum+"</td>");
 	row.append("<td>图片上传</td>");
 	row.append("<td><input type='text' placeholder='身份证正面照片' class='form-control' value='' name='title"+newRowNum+"' id='title"+newRowNum+"' /></td>");
-	row.append("<td><input type='text' placeholder='face_pic' class='form-control' value='' name='name"+newRowNum+"' id='name"+newRowNum+"' /></td>");
+	//row.append("<td><input type='text' placeholder='face_pic' class='form-control' value='' name='name"+newRowNum+"' id='name"+newRowNum+"' /></td>");
 	row.append("<td></td>");
 	row.append("<td><a href='javascript:void(0)' onclick='deleterow(this)'>删除</a></td>");
 	$("#templatetable").append(row);
@@ -89,25 +89,28 @@ function validPage(){
 		    	 childparamaters+=("title="+$(e).val()+";");
 	    	 }else if(e.id.indexOf("defaultvalue")>=0){
 	    		 childparamaters+=("defaultvalue="+$(e).val()+";");
-	    	 }else{
-	    		 childparamaters+=("name="+$(e).val()+";");
 	    	 }
+//	    	 else{
+//	    		 childparamaters+=("name=key"+rownum+";");
+//	    	 }
 	    	 if($(e).val()==""){
 	    		 if(e.id.indexOf("defaultvalue")<0){
 			    	 if(e.id.indexOf("title")>=0){
 			    		 alert("第"+rownum+"行说明文本不能为空");
-			    	 }else{
-			    		 alert("第"+rownum+"行名称不能为空");
 			    	 }
+//			    	 else{
+//			    		 alert("第"+rownum+"行名称不能为空");
+//			    	 }
 			    	 haserror=true;
 			    	 return false;
 		    	 }
 	    	 }else if($(e).val().length>200){
 		    	 if(e.id.indexOf("title")>=0){
 		    		 alert("第"+rownum+"行说明文本不能超过200个字符");
-		    	 }else{
-		    		 alert("第"+rownum+"行名称不能超过200个字符");
 		    	 }
+//		    	 else{
+//		    		 alert("第"+rownum+"行名称不能超过200个字符");
+//		    	 }
 		    	 haserror=true;
 		    	 return false;
 	    	 }
@@ -132,21 +135,21 @@ function validPage(){
     if(haserror){
     	return "";
     }
-	var inputNames=$("input[id^='name']");
-	inputNames.each(function(index,e){
-		inputNames.each(function(index2,e2){
-			if($(e).val()==$(e2).val()&&index!=index2){
-				 alert("第"+(index+1)+"行的名称不能和第"+(index2+1)+"的名称一致");
-				 haserror=true;
-		    	 return false;
-			}
-		});
-	     if(haserror){
-	    	 return false;
-	     }
-	});
-    if(haserror){
-    	return "";
-    }	
+//	var inputNames=$("input[id^='name']");
+//	inputNames.each(function(index,e){
+//		inputNames.each(function(index2,e2){
+//			if($(e).val()==$(e2).val()&&index!=index2){
+//				 alert("第"+(index+1)+"行的名称不能和第"+(index2+1)+"的名称一致");
+//				 haserror=true;
+//		    	 return false;
+//			}
+//		});
+//	     if(haserror){
+//	    	 return false;
+//	     }
+//	});
+//    if(haserror){
+//    	return "";
+//    }	
     return childparamaters;
 };

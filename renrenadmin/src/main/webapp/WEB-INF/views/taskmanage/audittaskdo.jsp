@@ -65,12 +65,10 @@
 			<%}
 		    if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()||data.get(i).getStatus()==TaskStatus.Reject.value()){%>
 			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',5,<%=data.get(i).getStatus() %>,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">取消</a>
-			<%}	%>
-		    <% if(data.get(i).getStatus()==TaskStatus.Expired.value()||data.get(i).getStatus()==TaskStatus.Stop.value()&&data.get(i).getCanSettlement()==1){
-			%>
-				 结算
-				<%}
-			%>
+			<%}	
+			if(data.get(i).getCanSettlement().equals(1)){%>
+					<a href="javascript:settlementtask('<%=data.get(i).getId()%>')">结算</a>
+				<%}%>
 			</td>
 		</tr>
 		<%
