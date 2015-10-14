@@ -51,9 +51,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<%if(data.get(i).getStatus()==0) {%>
 			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>')" >审核通过 </a>
 			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>')" >审核拒绝</a>			
-			<%}else{ %>
-	
-			<%} %>
+			<%} %>			
 			
 			</td>				
 			
@@ -83,8 +81,13 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
            url: url,
            data: paramaters,
            success: function (result) {
-        	   if()
-        	   window.location.href = "<%=basePath%>/clienterwithdraw/list";
+        	   if (result>0) {
+					alert("操作成功");
+					window.location.href = "<%=basePath%>/clienterwithdraw/list";
+				} else {
+					alert("操作失败");
+				}  
+
               /*  if (result.IsSuccess) {
                    alert(result.Message);
                    window.location.href = "/clienterwithdraw/ClienterWithdraw";
@@ -110,7 +113,13 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
               url: url,
               data: paramaters,
               success: function (result) {
-           	   window.location.href = "<%=basePath%>/clienterwithdraw/list";   
+           	   
+        	   if (result>0) {
+					alert("操作成功");
+					window.location.href = "<%=basePath%>/clienterwithdraw/list";
+				} else {
+					alert("操作失败");
+				}  
               }
           });
     }

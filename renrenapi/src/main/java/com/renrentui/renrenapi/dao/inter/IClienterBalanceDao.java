@@ -1,6 +1,9 @@
 package com.renrentui.renrenapi.dao.inter;
 
+import java.util.Map;
+
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 
 public interface IClienterBalanceDao {
@@ -32,6 +35,14 @@ public interface IClienterBalanceDao {
 	* @Return
 	*/
     int updateMoneyByKey(ClienterBalanceReq record);
+    
+	/**
+	* @Des 递推员累积提现金额
+	* @Author 胡灵波
+	* @Date 2015年10月14日 19:33:09
+	* @Return
+	*/
+    int  updateHadWithdrawByClienterId(Map<String, Object> params);
 	
     int deleteByPrimaryKey(Long id);
 
