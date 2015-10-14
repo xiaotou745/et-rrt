@@ -214,17 +214,21 @@ function validPage(checkBalance){
 	      $('#beginDate').val("");
 	      return false;
 	  }
-
-	var pagestart=new Date(startDate);
-	var pageComapreDate=pagestart.getFullYear()+""+(pagestart.getMonth()+1)+""+pagestart.getDate();
-	var myDate = new Date();
-	var nowdate=myDate.getFullYear()+""+(myDate.getMonth()+1)+""+myDate.getDate();
-	if(pageComapreDate<nowdate){
-		alert("开始日期必须大于等于今天");
-		return;
-	}
-
-  $("input[type='text']").each(function(index,e){
+		var pagestart=new Date(startDate);
+		var pageStartDate=pagestart.getFullYear()+""+(pagestart.getMonth()+1)+""+pagestart.getDate();
+		var myDate = new Date();
+		var nowdate=myDate.getFullYear()+""+(myDate.getMonth()+1)+""+myDate.getDate();
+		if(parseInt(pageStartDate)<parseInt(nowdate)){
+			alert("开始日期必须大于等于今天");
+			return;
+		}
+		var pageEnd=new Date(endDate);
+		var pageEndDate=pageEnd.getFullYear()+""+(pageEnd.getMonth()+1)+""+pageEnd.getDate();
+		if(parseInt(pageEndDate)<=parseInt(nowdate)){
+			alert("结束日期必须大于今天");
+			return;
+		}
+	$("input[type='text']").each(function(index,e){
 		  if(e.id=="auditCycle"||e.id=="taskTotalCount"||e.id=="amount"||e.id=="taskCycle"){
 				if(isNaN($(e).val())){
 				 	alert($(this).parent().prev().html().replace(": ","")+"必须为数字");

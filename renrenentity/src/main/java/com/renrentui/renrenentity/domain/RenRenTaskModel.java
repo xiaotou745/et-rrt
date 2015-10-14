@@ -17,4 +17,19 @@ public class RenRenTaskModel extends RenRenTask{
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
 	}
+	private  int CanSettlement;
+	  /**
+	   *  是否可以结算 1 可以 0 不可以 
+	   * @return
+	   */
+		public int getCanSettlement() {
+			return CanSettlement;
+		}
+	/**
+	 * 是否可以结算 1 可以 0 不可以 
+	 * @param canSettlement
+	 */
+		public void setCanSettlement(int canSettlement) {
+			CanSettlement = canSettlement;
+		}
 }
