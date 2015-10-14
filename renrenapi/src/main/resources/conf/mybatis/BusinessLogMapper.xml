@@ -22,10 +22,10 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.BusinessLog" >
-    insert into BusinessLog (Id, BusinessId, CreateTime, 
+    insert into BusinessLog (BusinessId,  
       OptName, Remark)
-    values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=BIGINT}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{optname,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR})
+    values ( #{businessId,jdbcType=BIGINT}, 
+      #{optName,jdbcType=NVARCHAR}, #{remark,jdbcType=NVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.BusinessLog" >
     insert into BusinessLog
