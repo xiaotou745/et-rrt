@@ -72,7 +72,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			%>
 			<%
 			//已经完成 但是审核未通过, 都是可以取消订单的
-			if(!data.get(i).getFinishTime().equals("")&&(data.get(i).getOrderStatusCode()!=2))
+			if((!data.get(i).getFinishTime().equals(""))
+					&&(data.get(i).getAuditStatusCode()!=2)
+					&&(data.get(i).getOrderStatusCode()!=2)
+					&&(data.get(i).getOrderStatusCode()!=3))
 			{
 			%>
 			<a href="javascript:void(0)"  onclick="CancelOrder(<%=data.get(i).getOrderId()%>,<%=data.get(i).getClienterId()%>)">取消订单</a>
