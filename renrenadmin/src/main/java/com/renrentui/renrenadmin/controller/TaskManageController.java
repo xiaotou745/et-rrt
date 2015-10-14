@@ -132,12 +132,6 @@ public class TaskManageController {
 		}
 		return listnew;
 	}
-	@RequestMapping("uploadfile")
-	@ResponseBody
-	public String upLoadFile(HttpServletRequest request,@RequestParam MultipartFile file1){
-		String saveName=ParseHelper.ToDateString(new Date());
-		return file1.getOriginalFilename()+"#"+saveName;
-	}
 	@RequestMapping("savetask")
 	@ResponseBody
 	public int saveTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {

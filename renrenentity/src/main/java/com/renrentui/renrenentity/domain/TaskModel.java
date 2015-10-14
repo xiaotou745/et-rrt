@@ -22,9 +22,9 @@ public class TaskModel implements Serializable {
 	
 	private int status;
 	private int auditStatus;
-	private Date beginTime;
+	private String beginTime;
 	
-	private Date endTime;
+	private String endTime;
 	
 	private int paymentMethod;
 	
@@ -34,19 +34,19 @@ public class TaskModel implements Serializable {
 	/*
 	 * 领取任务的时间
 	 */
-	private Date receivedTime;
+	private String receivedTime;
 	
-	private Date auditTime;
+	private String auditTime;
 	
-	private Date finishTime;
+	private String finishTime;
 	
 	private Integer waitAuditCount;
 	
-	public Date getAuditTime() {
+	public String getAuditTime() {
 		return auditTime;
 	}
 
-	public void setAuditTime(Date auditTime) {
+	public void setAuditTime(String auditTime) {
 		this.auditTime = auditTime;
 	}
 
@@ -114,18 +114,18 @@ public class TaskModel implements Serializable {
 		this.status = status;
 	}
 
-	public Date getBeginTime() {
+	public String getBeginTime() {
 		return beginTime;
 	}
 
-	public void setBeginTime(Date beginTime) {
+	public void setBeginTime(String beginTime) {
 		this.beginTime = beginTime;
 	} 
-	public Date getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
 
@@ -152,19 +152,19 @@ public class TaskModel implements Serializable {
 		this.taskCycle = taskCycle;
 	}
 
-	public Date getReceivedTime() {
+	public String getReceivedTime() {
 		return receivedTime;
 	}
 
-	public void setReceivedTime(Date receivedTime) {
+	public void setReceivedTime(String receivedTime) {
 		this.receivedTime = receivedTime;
 	}
 
-	public Date getFinishTime() {
+	public String getFinishTime() {
 		return finishTime;
 	}
 
-	public void setFinishTime(Date finishTime) {
+	public void setFinishTime(String finishTime) {
 		this.finishTime = finishTime;
 	}
 
