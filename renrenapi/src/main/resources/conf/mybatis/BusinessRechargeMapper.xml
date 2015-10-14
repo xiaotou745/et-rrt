@@ -26,22 +26,19 @@
     where Id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.renrentui.renrenentity.BusinessRecharge" >
-    insert into BusinessRecharge (Id, BusinessId, PayType, 
+    insert into BusinessRecharge (BusinessId, PayType, 
       OrderNo, PayAmount, PayStatus, 
-      PayBy, PayTime, OriginalOrderNo
+      PayBy,  OriginalOrderNo
       )
-    values (#{id,jdbcType=BIGINT}, #{businessid,jdbcType=BIGINT}, #{paytype,jdbcType=INTEGER}, 
-      #{orderno,jdbcType=VARCHAR}, #{payamount,jdbcType=DECIMAL}, #{paystatus,jdbcType=INTEGER}, 
-      #{payby,jdbcType=NVARCHAR}, #{paytime,jdbcType=TIMESTAMP}, #{originalorderno,jdbcType=VARCHAR}
+    values ( #{businessId,jdbcType=BIGINT}, #{payType,jdbcType=INTEGER}, 
+      #{orderNo,jdbcType=VARCHAR}, #{payAmount,jdbcType=DECIMAL}, #{payStatus,jdbcType=INTEGER}, 
+      #{payBy,jdbcType=NVARCHAR}, #{originalOrderNo,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.BusinessRecharge" >
     insert into BusinessRecharge
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        Id,
-      </if>
-      <if test="businessid != null" >
+    <trim prefix="(" suffix=")" suffixOverrides="," >    
+      <if test="businessId != null" >
         BusinessId,
       </if>
       <if test="paytype != null" >
@@ -66,33 +63,30 @@
         OriginalOrderNo,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
+    <trim prefix="values (" suffix=")" suffixOverrides="," >   
+      <if test="businessId != null" >
+        #{businessId,jdbcType=BIGINT},
       </if>
-      <if test="businessid != null" >
-        #{businessid,jdbcType=BIGINT},
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
       </if>
-      <if test="paytype != null" >
-        #{paytype,jdbcType=INTEGER},
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
       </if>
-      <if test="orderno != null" >
-        #{orderno,jdbcType=VARCHAR},
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
       </if>
-      <if test="payamount != null" >
-        #{payamount,jdbcType=DECIMAL},
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=INTEGER},
       </if>
-      <if test="paystatus != null" >
-        #{paystatus,jdbcType=INTEGER},
+      <if test="payBy != null" >
+        #{payBy,jdbcType=NVARCHAR},
       </if>
-      <if test="payby != null" >
-        #{payby,jdbcType=NVARCHAR},
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="paytime != null" >
-        #{paytime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="originalorderno != null" >
-        #{originalorderno,jdbcType=VARCHAR},
+      <if test="originalOrderNo != null" >
+        #{originalOrderNo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

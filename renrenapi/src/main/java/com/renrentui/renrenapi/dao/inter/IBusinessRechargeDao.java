@@ -2,7 +2,7 @@ package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.BusinessRecharge;
 
-public interface IBusinessRechargDao {
+public interface IBusinessRechargeDao {
     int deleteByPrimaryKey(Long id);
 
     int insert(BusinessRecharge record);
