@@ -17,6 +17,8 @@
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 String UploadPath= PropertyUtils.getProperty("UploadUrl");
+String ImgShowUrl= PropertyUtils.getProperty("ImgShowUrl");
+
 boolean uPDATE_TASK=UserContext.getCurrentContext(request).isHasAuthByCode("UPDATE_TASK");
 RenRenTaskDetail taskInfo = (RenRenTaskDetail) request.getAttribute("taskInfo");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
@@ -222,7 +224,8 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 						<tr>
 							<th width="5%">序号</th>
 							<th>文件名称</th>
-							<th>操作</th>
+							<th>预览</th>
+							<th>删除</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -230,9 +233,8 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 						<tr>
 						<td><%=(i+1) %></td>
 						<td><%=taskInfo.getAttachmentsList().get(i).getAttachmentName() %></td>
-						<td><a href="javascript:void(0)" onclick="deleterow(this)">删除</a>
-						&nbsp;&nbsp;&nbsp;<a target="_blank" href='<%=UploadPath+"/"+taskInfo.getAttachmentsList().get(i).getAttachUrl() %>'>预览</a>
-						</td>
+						<td><a target="_blank" href='<%=ImgShowUrl+taskInfo.getAttachmentsList().get(i).getAttachUrl() %>'>预览</a></td>
+						<td><a href="javascript:void(0)" onclick="deleterow(this)">删除</a></td>
 					</tr>
 					<%}%>
 					</tbody>
@@ -425,8 +427,8 @@ function lockpage(){
 	        each.disabled = true;
 	    });
 	    $("#uploadDiv").hide();
-	    $('#uploadfiletable tr').find('td:eq(2)').hide();
-	    $('#uploadfiletable tr').find('th:eq(2)').hide();
+	    $('#uploadfiletable tr').find('td:eq(3)').hide();
+	    $('#uploadfiletable tr').find('th:eq(3)').hide();
 	}
 }
 function initRegion(){
