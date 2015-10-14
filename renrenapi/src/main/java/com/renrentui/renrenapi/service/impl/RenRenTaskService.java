@@ -151,6 +151,11 @@ public class RenRenTaskService implements IRenRenTaskService{
 			 model.setCode(GetTaskCode.TaskHad);
 			 return model;
 		}
+		if(detail.getCountCan()==0)
+		{
+			 model.setCode(GetTaskCode.TaskMore);
+			 return model;
+		}
 		//领取任务 插入订单
 		String orderNoString=OrderNoHelper.generateOrderCode(req.getUserId());//生成订单号
 		Order order=new Order();

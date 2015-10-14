@@ -15,6 +15,13 @@ public class TaskDetail {
 	{
 		this.controlInfo=new ArrayList<ControlInfo>();
 	}
+	private int waitCount;
+	public int getWaitCount() {
+		return waitCount;
+	}
+	public void setWaitCount(int waitCount) {
+		this.waitCount = waitCount;
+	}
 	private Long id;
 	private String taskTitle;
 	private String taskNotice;
