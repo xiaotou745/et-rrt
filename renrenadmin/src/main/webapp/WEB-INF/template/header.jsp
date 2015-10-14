@@ -14,7 +14,7 @@
             <span class="m-r-sm text-muted welcome-message">欢迎您使用人人地推管理系统.</span>
         </li>
         <li>
-            <a href="<%=basePath %>/account/logoff">
+            <a id="loginofbtn" href="<%=basePath %>/account/logoff">
                 <i class="fa fa-sign-out"></i> 注销
             </a>
         </li>

@@ -107,6 +107,9 @@
     });
     
 	$(document).ready(function() {
+		//当用户注销后，到登录页面，点击了浏览器的返回按钮时，
+		//由于浏览器的缓存，会显示一个复合页面：登录后的页面嵌套了一个登录页面
+		//因此，当这种情况时，页面定位到登录页面
 		if($("#rememberMe").length>0){
 			window.location.href ='<%=basePath%>';
 		}
