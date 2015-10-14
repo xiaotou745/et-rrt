@@ -48,7 +48,7 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">登陆名称:</label>
+							<label class="col-sm-4 control-label">登录账号:</label>
 							<div class="col-sm-8">
 								
 								<input type="text" class="form-control" name="txtLoginName"  id="txtLoginName" />
@@ -57,7 +57,7 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">所在城市</label>
+							<label class="col-sm-4 control-label">所属城市</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" name="txtCityName"  id="txtCityName" />
 							</div>
@@ -69,10 +69,11 @@ width: 100%;
 			    <div class="row">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>		
+							style="margin-left: 3px;">查询</button>		
+							
 							<button type="button" class="btn btn-w-m btn-primary" 
-							style="margin-left:3px;" data-toggle="modal" data-target="#myModal" onclick="AddShow()" id="btnAdd">添加商户</button>
-											 
+							style="margin-left:3px;"  onclick="AddShow()" id="btnAdd">添加商户</button>									
+								 
 					</div>
 			</div>
 			</form>
@@ -112,7 +113,7 @@ width: 100%;
 			                    <input name="txtLoginNameA" id="txtLoginNameA" type="text">
 			            </div> 
 			            <div class="control-group">
-			                <label >地&nbsp;&nbsp;址：</label> 
+			                <label >所属地址：</label> 
 			                    <input  name="txtAddressA" id="txtAddressA" type="text">
 			            </div> 
 			            <div class="control-group">
@@ -120,7 +121,7 @@ width: 100%;
 			                    <input  name="txtCityNameA" id="txtCityNameA" type="text">
 			            </div> 
 			             <div class="control-group">
-			                <label >站&nbsp;&nbsp;点：</label> 
+			                <label >站点名称：</label> 
 			                    <input  name="txtWebSiteA" id="txtWebSiteA" type="text">
 			            </div> 
 			            <div>
@@ -177,7 +178,7 @@ width: 100%;
 			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
 			            </div> 
 			            <div class="control-group">
-			                <label >地&nbsp;&nbsp;址：</label> 
+			                <label >所属地址：</label> 
 			                    <input  name="txtAddressM" id="txtAddressM" type="text">
 			            </div> 
 			            <div class="control-group">
@@ -185,7 +186,7 @@ width: 100%;
 			                    <input  name="txtCityNameM" id="txtCityNameM" type="text">
 			            </div> 
 			             <div class="control-group">
-			                <label >站&nbsp;&nbsp;点：</label> 
+			                <label >站点名称：</label> 
 			                    <input  name="txtWebSiteM" id="txtWebSiteM" type="text">
 			            </div> 
 			            <div>
@@ -439,7 +440,7 @@ function ModifyBusiness(){
     	return;
     }
     if(loginName.trim().length <6 || loginName.trim().length>20){
-    	alert("登录名称除中文外6-20位字符");
+    	alert("登录账号为6-20位非中文字符");
     	return;
     }       
     
