@@ -174,7 +174,7 @@ width: 100%;
 			                <input  name="txtPhoneNoM" id="txtPhoneNoM" type="text">					               
 			            </div>
 			            <div class="control-group">
-			                <label >登录名称：</label> 
+			                <label >登录账号：</label> 
 			                    <input name="txtLoginNameM" id="txtLoginNameM" type="text">
 			            </div> 
 			            <div class="control-group">
@@ -388,7 +388,7 @@ function AddBusiness(){
     	return;
     }
     if(loginName.trim().length <6 || loginName.trim().length>20){
-    	alert("登录名称除中文外6-20位字符");
+    	alert("登录账号为6-20位非中文字符");
     	return;
     }   
     
@@ -483,9 +483,9 @@ function AddBusinessDelta(){
     	alert("请输入正确的金额");
     	return;
 	           }
-    if(balance<=0)
+    if(balance<1 || balance>1000000)
     	{
-    	alert("充值金额必须大于0");
+    	alert("充值金额有误，请输入正确金额1-1000000");
     	return; 
     	}
    
