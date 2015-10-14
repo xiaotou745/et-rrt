@@ -253,6 +253,12 @@ function validPage(){
 //		alert("城市不是全部城市时,请至少选择一个区域");
 //		return;
 //	}
+	var totalFee=parseFloat($("#amount").val())*parseFloat($("#taskTotalCount").val());
+	var balance=parseFloat($("#businessBalance").html().replace("元",""));
+	if(balance<totalFee){
+		alert("当前商户账户余额不足，不能新建任务");
+		return false;
+	}
 	return true;
 };
 function initSelectTemplate(templateList,selectedTemplateId){
@@ -267,9 +273,9 @@ function initSelectTemplate(templateList,selectedTemplateId){
         	tmpkeyvalue=tmpTemplate[1].split(";");  
             for(j=0;j<tmpkeyvalue.length;j++){  
             	tmpOption=tmpkeyvalue[j].split("|");
-            	if(tmpOption[0]==selectedTemplateId&&selectedTemplateId!=null&&selectedTemplateId!=""){
+            	if(tmpOption[0]==selectedTemplateId){//修改任务时，不管当前任务的模板的状态是有效还是无效，都应该显示这个模板
             		 $("#snapshotTemplateId").append("<option selected='selected' value='"+tmpOption[0]+"'>"+tmpOption[1]+"</option>");     
-            	}else{
+            	}else if(tmpOption[2]=="1"){//只显示当前商家有效的模板
             		 $("#snapshotTemplateId").append("<option value='"+tmpOption[0]+"'>"+tmpOption[1]+"</option>");     	
             	}
             }

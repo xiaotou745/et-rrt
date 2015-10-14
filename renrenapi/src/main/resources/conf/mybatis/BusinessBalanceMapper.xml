@@ -4,11 +4,11 @@
   <sql id="Base_Column_List" >
     Id, BusinessId, Balance
   </sql>
-  <select id="selectByPrimaryKey" resultType="com.renrentui.renrenentity.BusinessBalance" parameterType="java.lang.Long" >
+  <select id="selectByBusinessId" resultType="com.renrentui.renrenentity.BusinessBalance" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from BusinessBalance
-    where Id = #{id,jdbcType=BIGINT}
+    where businessId = #{businessId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from BusinessBalance
@@ -63,7 +63,7 @@
       Balance = #{balance,jdbcType=DECIMAL}
     where Id = #{id,jdbcType=BIGINT}
   </update>
-    <update id="updateByBusinessId" parameterType="com.renrentui.renrenentity.BusinessBalance" >
+    <update id="updateByBusinessId" parameterType="com.renrentui.renrenentity.req.BusinessBalanceReq" >
        update BusinessBalance
     set  Balance =Balance+ #{balance,jdbcType=DECIMAL}
     where BusinessId = #{businessId,jdbcType=BIGINT}
