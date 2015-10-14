@@ -67,7 +67,7 @@ public class MenuInfo  implements Serializable{
 	}
 
 	public String getAuthCode() {
-		return authCode;
+		return "UPDATE_TASK";
 	}
 
 	public void setAuthCode(String authCode) {
