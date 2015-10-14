@@ -136,7 +136,7 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 			return 1;
 		else
 		{
-			Error error=new Error("提现成功");
+			Error error=new Error("审核通过");
 			throw new RuntimeErrorException(error);
 		}			
 		
@@ -165,8 +165,7 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 		ClienterBalanceRecord cbrModelU= new ClienterBalanceRecord();
 		cbrModelU.setOrderId(cbrModel.getOrderId());
 		cbrModelU.setStatus((short)CBalanceRecordStatus.Success.value());//交易成功
-		int cbrId= clienterBalanceRecordDao.updateStatusByOrderId(cbrModelU);
-		
+		int cbrId= clienterBalanceRecordDao.updateStatusByOrderId(cbrModelU);		
 		
 		//更新用户余额，可提现余额
 		ClienterBalanceReq cBReq=new ClienterBalanceReq();
@@ -178,17 +177,22 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 	    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(cbrModel.getClienterId());
 		clienterBalanceRecordModel.setAmount(-cbrModel.getAmount());		
-		clienterBalanceRecordModel.setRecordType((short)3);		
-		clienterBalanceRecordModel.setOptName("admin");
-		clienterBalanceRecordModel.setOrderId((long)101);
-		clienterBalanceRecordModel.setRelationNo("001");
+		clienterBalanceRecordModel.setRecordType((short)CBalanceRecordType.DenialOf.value());//		
+		clienterBalanceRecordModel.setOptName(record.getAuditName());//
+		clienterBalanceRecordModel.setOrderId((long)cbrModel.getOrderId());//
+		clienterBalanceRecordModel.setRelationNo(cbrModel.getRelationNo());//
 		clienterBalanceRecordModel.setRemark("申请拒绝");
-		clienterBalanceRecordModel.setStatus((short)1);	
+		clienterBalanceRecordModel.setStatus((short)CBalanceRecordStatus.Success.value());	
 		int cbrIdInsert=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);			
 	
-
+		if(cwfId>0 && cbrId>0 &&  cbId>0 && cbrIdInsert>0)
+			return 1;
+		else
+		{
+			Error error=new Error("审核拒绝");
+			throw new RuntimeErrorException(error);
+		}			
 		
-		return 1;
 	}
 	@Override
 	public	PagedResponse<ClienterWithdrawFormDM> getList(PagedClienterWithdrawFormReq req)
