@@ -13,8 +13,18 @@ public class GetUserCResp {
     private String phoneNo;
 
     private String headImage;
+    
+    private String fullHeadImage;
 
-    private String cityName;
+    public String getFullHeadImage() {
+		return fullHeadImage;
+	}
+
+	public void setFullHeadImage(String fullHeadImage) {
+		this.fullHeadImage = fullHeadImage;
+	}
+
+	private String cityName;
 
     private Integer cityCode;
 
