@@ -9,6 +9,7 @@
 
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
+String ImgShowUrl= PropertyUtils.getProperty("ImgShowUrl");
 %>
 
 <table
@@ -45,7 +46,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getBalance()%></td>
 			<td>
 			<a href="javascript:void(0)"  onclick="BusinessDelta('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>')" >充值 </a>
-			<a href="javascript:void(0)"  onclick="BusinessModify('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>', '<%=data.get(i).getLoginName() %>', '<%=data.get(i).getAddress() %>', '<%=data.get(i).getCityName() %>', '<%=data.get(i).getWebSite() %>')" >修改 </a>
+			<a href="javascript:void(0)"  onclick="BusinessModify('<%=data.get(i).getId() %>','<%=data.get(i).getCompanyName() %>', '<%=data.get(i).getPhoneNo() %>', '<%=data.get(i).getLoginName() %>', '<%=data.get(i).getAddress() %>', '<%=data.get(i).getCityName() %>', '<%=data.get(i).getWebSite() %>', '<%=data.get(i).getLogo() %>')" >修改 </a>
 			</td>				
 			
 						
@@ -72,22 +73,29 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	   $('#businessDeltaShow').modal('show');	   	   
    }
    //商户修改
-   function BusinessModify(id, name, phone,loginName,address,cityName,webSite) {
+   function BusinessModify(id, name, phone,loginName,address,cityName,webSite,logo) {
 	   $('#txtBusinessIdM').val(0);
 	   $('#txtCompanyNameM').val('');	   
 	   $('#txtPhoneNoM').val('');	   
 	   $('#txtLoginNameM').val('');
 	   $('#txtAddressM').val('');
 	   $('#txtCityNameM').val('');
-	   $('#txtWebSiteM').val('');	    
-
+	   $('#txtWebSiteM').val('');
+	    $('#txtImgShowM').val('');
+	   $("#imgShowM").attr("src","");  
+	   
 	   $('#txtBusinessIdM').val(id);
 	   $('#txtCompanyNameM').val(name);	   
 	   $('#txtPhoneNoM').val(phone);	   
 	    $('#txtLoginNameM').val(loginName);
 	   $('#txtAddressM').val(address);
 	   $('#txtCityNameM').val(cityName);
-	   $('#txtWebSiteM').val(webSite);	 	   
+	   $('#txtWebSiteM').val(webSite);	 	
+	   $('#txtImgShowM').val(logo);	
+	   
+	    var logoUrl="<%=ImgShowUrl%>"+logo ;
+	   //alert(logoUrl);
+	   $("#imgShowM").attr("src","<%=ImgShowUrl%>logo"); 
 
 	   $('#modifyBusiness').modal('show');	   	   
    }
