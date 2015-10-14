@@ -114,6 +114,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        success: function (result) {   	
 		        	if(result=='1'||result==1){
 		        		alert('操作成功!')
+		        		jss.search(1);
 		        		}
 		        }
 		    });
@@ -154,6 +155,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        success: function (result) {   	
 		        	if(result=='200'||result==200)
 		        	{
+		        		alert('取消成功!')
 		        		jss.search(1);
 		        	}
 		        	else
