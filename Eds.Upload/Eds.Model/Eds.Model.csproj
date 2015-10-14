@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F81B79F1-2B9E-4992-BE52-38E87D197A1C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eds.Model</RootNamespace>
+    <AssemblyName>Eds.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\ApiVersionStatisticModel.cs" />
+    <Compile Include="Common\AppVerionModel.cs" />
+    <Compile Include="Common\DealResultInfo.cs" />
+    <Compile Include="Common\GlobalConfig.cs" />
+    <Compile Include="Common\HomeCountTitleModel.cs" />
+    <Compile Include="Common\HttpModel.cs" />
+    <Compile Include="Common\ImageCommon.cs" />
+    <Compile Include="Common\JPushModel.cs" />
+    <Compile Include="Common\ListParaBase.cs" />
+    <Compile Include="Common\Location.cs" />
+    <Compile Include="Common\PagedList.cs" />
+    <Compile Include="Common\PaginResult.cs" />
+    <Compile Include="Common\ParaModel.cs" />
+    <Compile Include="Common\ResultInfo.cs" />
+    <Compile Include="Common\ResultModel.cs" />
+    <Compile Include="Common\ResultModelServicePhone.cs" />
+    <Compile Include="Common\TestUserModel.cs" />
+    <Compile Include="Common\TokenModel.cs" />
+    <Compile Include="Common\VersionCheckModel.cs" />
+    <Compile Include="DataModel\Account\AccountLoginLogModel.cs" />
+    <Compile Include="DataModel\Authority\account.cs" />
+    <Compile Include="DataModel\Authority\accountauthority.cs" />
+    <Compile Include="DataModel\Authority\AccountCityRelation.cs" />
+    <Compile Include="DataModel\Authority\AccountDcRelation.cs" />
+    <Compile Include="DataModel\Authority\AccountModel.cs" />
+    <Compile Include="DataModel\Authority\authority.cs" />
+    <Compile Include="DataModel\Authority\AuthorityAccountMenuSet.cs" />
+    <Compile Include="DataModel\Authority\AuthorityDepartmentModel.cs" />
+    <Compile Include="DataModel\Authority\AuthorityMenuModel.cs" />
+    <Compile Include="DataModel\Authority\AuthorityRoleMentMenuSet.cs" />
+    <Compile Include="DataModel\Authority\AuthorityRoleModel.cs" />
+    <Compile Include="DataModel\Business\BusiForgetPwdInfoModel.cs" />
+    <Compile Include="DataModel\Business\BusiLoginResultModel.cs" />
+    <Compile Include="DataModel\Business\BusiModifyPwdResultModel.cs" />
+    <Compile Include="DataModel\Business\BusiModifyResultModelDM.cs" />
+    <Compile Include="DataModel\Business\Business.cs" />
+    <Compile Include="DataModel\Business\BusinessClienterRelation.cs" />
+    <Compile Include="DataModel\Business\BusinessCommissionDM.cs" />
+    <Compile Include="DataModel\Business\BusinessExpressRelation.cs" />
+    <Compile Include="DataModel\Business\BusinessGroupLogModel.cs" />
+    <Compile Include="DataModel\Business\BusinessGroupModel.cs" />
+    <Compile Include="DataModel\Business\BusinessOptionLog.cs" />
+    <Compile Include="DataModel\Business\BusinessPicModel.cs" />
+    <Compile Include="DataModel\Business\BusinessRechargeDetail.cs" />
+    <Compile Include="DataModel\Business\BusinessRechargeModel.cs" />
+    <Compile Include="DataModel\Business\BusinessThirdRelationModel.cs" />
+    <Compile Include="DataModel\Business\BusiRegisterResultModel.cs" />
+    <Compile Include="DataModel\Business\BusListResultModel.cs" />
+    <Compile Include="DataModel\Business\ClienterBindOptionLog.cs" />
+    <Compile Include="DataModel\Business\GroupBusinessModel.cs" />
+    <Compile Include="DataModel\Clienter\CilenterPushDateModel.cs" />
+    <Compile Include="DataModel\Clienter\Clienter.cs" />
+    <Compile Include="DataModel\Clienter\ClienterCrossShopLogModel.cs" />
+    <Compile Include="DataModel\Clienter\ClienterListModel.cs" />
+    <Compile Include="DataModel\Clienter\ClienterLocation.cs" />
+    <Compile Include="DataModel\Clienter\ClienterLoginResultModel.cs" />
+    <Compile Include="DataModel\Clienter\ClienterModifyPwdResultModel.cs" />
+    <Compile Include="DataModel\Clienter\ClienterOptionLog.cs" />
+    <Compile Include="DataModel\Clienter\ClienterPicModel.cs" />
+    <Compile Include="DataModel\Clienter\CrossShopStatisticLogModel.cs" />
+    <Compile Include="DataModel\Clienter\ForgetPwdInfoModel.cs" />
+    <Compile Include="DataModel\Clienter\ModifyPwdInfoModel.cs" />
+    <Compile Include="DataModel\Clienter\MyBalanceResultModel.cs" />
+    <Compile Include="DataModel\Common\ExportSqlManage.cs" />
+    <Compile Include="DataModel\Complain\ComplainModel.cs" />
+    <Compile Include="DataModel\DeliveryCompany\DeliveryCompanyModel.cs" />
+    <Compile Include="DataModel\Finance\Bank.cs" />
+    <Compile Include="DataModel\Finance\BusinessBalanceRecord.cs" />
+    <Compile Include="DataModel\Finance\BusinessFinanceAccount.cs" />
+    <Compile Include="DataModel\Finance\BusinessWithdrawForm.cs" />
+    <Compile Include="DataModel\Finance\BusinessWithdrawLog.cs" />
+    <Compile Include="DataModel\Finance\ClienterAllowWithdrawRecord.cs" />
+    <Compile Include="DataModel\Finance\ClienterBalanceRecord.cs" />
+    <Compile Include="DataModel\Finance\ClienterFinanceAccount.cs" />
+    <Compile Include="DataModel\Finance\ClienterWithdrawForm.cs" />
+    <Compile Include="DataModel\Finance\ClienterWithdrawLog.cs" />
+    <Compile Include="DataModel\Finance\ImprestBalanceRecord.cs" />
+    <Compile Include="DataModel\Finance\ImprestClienterCheck.cs" />
+    <Compile Include="DataModel\Finance\ImprestRecharge.cs" />
+    <Compile Include="DataModel\Finance\ImprestWithdrawModel.cs" />
+    <Compile Include="DataModel\Group\GroupApiConfig.cs" />
+    <Compile Include="DataModel\Group\GroupModel.cs" />
+    <Compile Include="DataModel\Message\BusinessMessage.cs" />
+    <Compile Include="DataModel\Message\ClienterMessage.cs" />
+    <Compile Include="DataModel\Message\MessageModel.cs" />
+    <Compile Include="DataModel\Order\order.cs" />
+    <Compile Include="DataModel\Order\OrderChild.cs" />
+    <Compile Include="DataModel\Order\OrderChildFinishModel.cs" />
+    <Compile Include="DataModel\Order\OrderChildPayModel.cs" />
+    <Compile Include="DataModel\Order\OrderCommission.cs" />
+    <Compile Include="DataModel\Order\OrderCountModel.cs" />
+    <Compile Include="DataModel\Order\OrderDetail.cs" />
+    <Compile Include="DataModel\Order\OrderDetailModel.cs" />
+    <Compile Include="DataModel\Order\OrderListModel.cs" />
+    <Compile Include="DataModel\Order\OrderMapDetail.cs" />
+    <Compile Include="DataModel\Order\OrderOther.cs" />
+    <Compile Include="DataModel\Order\OrderPushRecord.cs" />
+    <Compile Include="DataModel\Order\OrderSubsidiesLog.cs" />
+    <Compile Include="DataModel\Order\OverTimeOrderModel.cs" />
+    <Compile Include="DataModel\Order\PayStatusModel.cs" />
+    <Compile Include="DataModel\Order\ReceviceAddress.cs" />
+    <Compile Include="DataModel\Strategy\StrategyModel.cs" />
+    <Compile Include="DataModel\Subsidy\CrossShopModel.cs" />
+    <Compile Include="DataModel\Subsidy\subsidy.cs" />
+    <Compile Include="DataModel\Tag\TagModel.cs" />
+    <Compile Include="DataModel\Tag\TagRelation.cs" />
+    <Compile Include="DataModel\User\UserOptRecord.cs" />
+    <Compile Include="DataModel\YeePay\YeePayRunningAccountModel.cs" />
+    <Compile Include="DomainModel\Area\AreaModel.cs" />
+    <Compile Include="DomainModel\Area\AreaModelList.cs" />
+    <Compile Include="DomainModel\Area\DMAreaCodeInfo.cs" />
+    <Compile Include="DomainModel\Authority\AccountCityRelationModel.cs" />
+    <Compile Include="DomainModel\Authority\AccountDCRelationModel.cs" />
+    <Compile Include="DomainModel\Authority\AuthorityManage.cs" />
+    <Compile Include="DomainModel\Authority\BusinessLoginLogDM.cs" />
+    <Compile Include="DomainModel\Authority\ClienterLoginLogDM.cs" />
+    <Compile Include="DomainModel\Business\BCRelationGetByClienterIdDM.cs" />
+    <Compile Include="DomainModel\Business\BusiGetOrderModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessAuditModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessBindClienterDM.cs" />
+    <Compile Include="DomainModel\Business\BusinessClienterRelationModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessCommissionExcel.cs" />
+    <Compile Include="DomainModel\Business\BusinessCommissionModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessDetailModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessDM.cs" />
+    <Compile Include="DomainModel\Business\BusinessesDistributionModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessExpressRelationModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessManage.cs" />
+    <Compile Include="DomainModel\Business\BusinessModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessRechargeResultModel.cs" />
+    <Compile Include="DomainModel\Business\BusinessWithdrawExcel.cs" />
+    <Compile Include="DomainModel\Business\BusiOrderCountResultModel.cs" />
+    <Compile Include="DomainModel\Business\BusiOrderSqlModel.cs" />
+    <Compile Include="DomainModel\Business\ClienterBindOptionLogModel.cs" />
+    <Compile Include="DomainModel\Clienter\ClienterDetailModel.cs" />
+    <Compile Include="DomainModel\Clienter\ClienterDM.cs" />
+    <Compile Include="DomainModel\Clienter\ClienterManage.cs" />
+    <Compile Include="DomainModel\Clienter\ClienterModel.cs" />
+    <Compile Include="DomainModel\Clienter\ClienterRecordsModel.cs" />
+    <Compile Include="DomainModel\Clienter\ClienterUpdateModel.cs" />
+    <Compile Include="DomainModel\Clienter\ClienterWithdrawExcel.cs" />
+    <Compile Include="DomainModel\Clienter\ClientOrderModel.cs" />
+    <Compile Include="DomainModel\Clienter\ClientOrderResultModel.cs" />
+    <Compile Include="DomainModel\Common\APPVersionModel.cs" />
+    <Compile Include="DomainModel\Complain\ComplainDomain.cs" />
+    <Compile Include="DomainModel\DeliveryCompany\BatchImportClienterExcelDM.cs" />
+    <Compile Include="DomainModel\DeliveryCompany\ClienterOrderExcel.cs" />
+    <Compile Include="DomainModel\DeliveryCompany\CompanyModel.cs" />
+    <Compile Include="DomainModel\DeliveryCompany\CompanyModelList.cs" />
+    <Compile Include="DomainModel\DeliveryCompany\DeliveryCompanyResultModel.cs" />
+    <Compile Include="DomainModel\Finance\BusinessBalanceRecordModel.cs" />
+    <Compile Include="DomainModel\Finance\BusinessFinanceAccountModel.cs" />
+    <Compile Include="DomainModel\Finance\BusinessWithdrawFormModel.cs" />
+    <Compile Include="DomainModel\Finance\BusinessWithdrawLogModel.cs" />
+    <Compile Include="DomainModel\Finance\ClienterBalanceRecordModel.cs" />
+    <Compile Include="DomainModel\Finance\ClienterFinanceAccountModel.cs" />
+    <Compile Include="DomainModel\Finance\ClienterWithdrawFormModel.cs" />
+    <Compile Include="DomainModel\Finance\ClienterWithdrawLogModel.cs" />
+    <Compile Include="DomainModel\Finance\FinanceRecordsDM.cs" />
+    <Compile Include="DomainModel\Finance\FinanceRecordsDMList.cs" />
+    <Compile Include="DomainModel\Finance\ImprestPaymentExcel.cs" />
+    <Compile Include="DomainModel\Finance\ImprestRechargeExcel.cs" />
+    <Compile Include="DomainModel\GlobalConfig\GlobalConfigModel.cs" />
+    <Compile Include="DomainModel\GlobalConfig\GlobalConfigTimeSubsidies.cs" />
+    <Compile Include="DomainModel\Group\GroupApiConfigModel.cs" />
+    <Compile Include="DomainModel\Message\ListBDM.cs" />
+    <Compile Include="DomainModel\Message\ListCDM.cs" />
+    <Compile Include="DomainModel\Message\MessageModelDM.cs" />
+    <Compile Include="DomainModel\Message\ReadBDM.cs" />
+    <Compile Include="DomainModel\Message\ReadCDM.cs" />
+    <Compile Include="DomainModel\Order\CancelOrderModel.cs" />
+    <Compile Include="DomainModel\Order\ConsigneeAddressBDM.cs" />
+    <Compile Include="DomainModel\Order\DistributionAnalyzeResult.cs" />
+    <Compile Include="DomainModel\Order\GetJobCDM.cs" />
+    <Compile Include="DomainModel\Order\GetJobCDMRedis.cs" />
+    <Compile Include="DomainModel\Order\NewPostPublishOrderResultModel.cs" />
+    <Compile Include="DomainModel\Order\NonJoinWithdrawModel.cs" />
+    <Compile Include="DomainModel\Order\OrderAuditExcel.cs" />
+    <Compile Include="DomainModel\Order\OrderAuditStatisticalModel.cs" />
+    <Compile Include="DomainModel\Order\OrderAutoAdjustModel.cs" />
+    <Compile Include="DomainModel\Order\OrderChildForTicket.cs" />
+    <Compile Include="DomainModel\Order\OrderDetailDM_OpenApi.cs" />
+    <Compile Include="DomainModel\Order\OrderDM.cs" />
+    <Compile Include="DomainModel\Order\OrderExcel.cs" />
+    <Compile Include="DomainModel\Order\OrderManage.cs" />
+    <Compile Include="DomainModel\Order\RushOrderModel.cs" />
+    <Compile Include="DomainModel\Statistics\ActiveBusinessClienterInfo.cs" />
+    <Compile Include="DomainModel\Statistics\ActiveUserInfo.cs" />
+    <Compile Include="DomainModel\Statistics\ActiveUserQuery.cs" />
+    <Compile Include="DomainModel\Statistics\AppActiveInfo.cs" />
+    <Compile Include="DomainModel\Statistics\BusinessBalanceInfo.cs" />
+    <Compile Include="DomainModel\Statistics\BussinessBalanceQuery.cs" />
+    <Compile Include="DomainModel\Statistics\JieDanTimeInfo.cs" />
+    <Compile Include="DomainModel\Statistics\OrderCompleteTimeSpanInfo.cs" />
+    <Compile Include="DomainModel\Statistics\RecommendDataModel.cs" />
+    <Compile Include="DomainModel\Statistics\RecommendQuery.cs" />
+    <Compile Include="DomainModel\Statistics\TaskStatisticsPerHourInfo.cs" />
+    <Compile Include="DomainModel\Subsidy\GrabOrderModel.cs" />
+    <Compile Include="DomainModel\Subsidy\HomeCountCriteria.cs" />
+    <Compile Include="DomainModel\Subsidy\ShortMessageModel.cs" />
+    <Compile Include="DomainModel\Subsidy\SubsidyManage.cs" />
+    <Compile Include="DomainModel\Subsidy\SubsidyResultModel.cs" />
+    <Compile Include="DomainModel\WithdrawRecordsModel.cs" />
+    <Compile Include="ParameterModel\AliPay\NotifyModel.cs" />
+    <Compile Include="ParameterModel\AliPay\PayModel.cs" />
+    <Compile Include="ParameterModel\Area\ParaAreaNameInfo.cs" />
+    <Compile Include="ParameterModel\Authority\AccountCriteria.cs" />
+    <Compile Include="ParameterModel\Authority\AuthorityListPMcs.cs" />
+    <Compile Include="ParameterModel\Authority\AuthoritySearchCriteria.cs" />
+    <Compile Include="ParameterModel\Authority\LoginModel.cs" />
+    <Compile Include="ParameterModel\Business\BCRelationGetByClienterIdPM.cs" />
+    <Compile Include="ParameterModel\Business\BusiAddAddressInfoModel.cs" />
+    <Compile Include="ParameterModel\Business\BusiAddAddressResultModel.cs" />
+    <Compile Include="ParameterModel\Business\BusiDistribInfoPM.cs" />
+    <Compile Include="ParameterModel\Business\BusiDistribSubsidyResultModel.cs" />
+    <Compile Include="ParameterModel\Business\BusinessClienterRelationPM.cs" />
+    <Compile Include="ParameterModel\Business\BusinessCommissionSearchCriteria.cs" />
+    <Compile Include="ParameterModel\Business\BusinessMoneyPM.cs" />
+    <Compile Include="ParameterModel\Business\BusinessPushLocaltionPM.cs" />
+    <Compile Include="ParameterModel\Business\BusinessRechargeModel.cs" />
+    <Compile Include="ParameterModel\Business\BusinessRegisterModel.cs" />
+    <Compile Include="ParameterModel\Business\BusinessSearchCriteria.cs" />
+    <Compile Include="ParameterModel\Business\BusiOrderInfoModel.cs" />
+    <Compile Include="ParameterModel\Business\BussinessPM.cs" />
+    <Compile Include="ParameterModel\Business\BussinessRecordsPM.cs" />
+    <Compile Include="ParameterModel\Business\BussinessStatusModel.cs" />
+    <Compile Include="ParameterModel\Business\BussOrderParaModelApp.cs" />
+    <Compile Include="ParameterModel\Business\ClienterPushLocaltionPM.cs" />
+    <Compile Include="ParameterModel\Business\GroupBusinessPM.cs" />
+    <Compile Include="ParameterModel\Business\LocalClienterModel.cs" />
+    <Compile Include="ParameterModel\Business\LocalClienterParameter.cs" />
+    <Compile Include="ParameterModel\Business\LoginModel.cs" />
+    <Compile Include="ParameterModel\Business\NewBusiRegisterResultModel.cs" />
+    <Compile Include="ParameterModel\Business\NewRegisterInfoModel.cs" />
+    <Compile Include="ParameterModel\Business\OrderCancelModel.cs" />
+    <Compile Include="ParameterModel\Business\OrderCancelResultModel.cs" />
+    <Compile Include="ParameterModel\Business\OrderChlidPM.cs" />
+    <Compile Include="ParameterModel\Business\RegisterInfoModel.cs" />
+    <Compile Include="ParameterModel\Business\UpdateBusinessInfoBPM.cs" />
+    <Compile Include="ParameterModel\Clienter\ChangeWorkStatusPM.cs" />
+    <Compile Include="ParameterModel\Clienter\ClienterMoneyPM.cs" />
+    <Compile Include="ParameterModel\Clienter\ClienterPM.cs" />
+    <Compile Include="ParameterModel\Clienter\ClienterReceivePushModel.cs" />
+    <Compile Include="ParameterModel\Clienter\ClienterRecordsPM.cs" />
+    <Compile Include="ParameterModel\Clienter\ClienterSearchCriteria.cs" />
+    <Compile Include="ParameterModel\Clienter\ClienterStatusModel.cs" />
+    <Compile Include="ParameterModel\Clienter\ClientOrderInfoModel.cs" />
+    <Compile Include="ParameterModel\Clienter\ClientRegisterInfoModel.cs" />
+    <Compile Include="ParameterModel\Clienter\CustomerIconUploader.cs" />
+    <Compile Include="ParameterModel\Clienter\LoginModel.cs" />
+    <Compile Include="ParameterModel\Clienter\RushOrderResultModel.cs" />
+    <Compile Include="ParameterModel\Clienter\UploadIconModel.cs" />
+    <Compile Include="ParameterModel\Clienter\UploadReceiptModel.cs" />
+    <Compile Include="ParameterModel\Clienter\UploadReceiptResultModel.cs" />
+    <Compile Include="ParameterModel\Common\APPVersionSerchCriteria.cs" />
+    <Compile Include="ParameterModel\Common\DataManageSearchCriteria.cs" />
+    <Compile Include="ParameterModel\Common\OpenCitySearchCriteria.cs" />
+    <Compile Include="ParameterModel\Common\ParamModel.cs" />
+    <Compile Include="ParameterModel\Complain\ComplainCriteria.cs" />
+    <Compile Include="ParameterModel\Complain\ComplainParameter.cs" />
+    <Compile Include="ParameterModel\Complain\ComplainPM.cs" />
+    <Compile Include="ParameterModel\DeliveryCompany\DeliveryCompanyCriteria.cs" />
+    <Compile Include="ParameterModel\DeliveryCompany\DoBatchImportClienterPM.cs" />
+    <Compile Include="ParameterModel\Finance\BankCriteria.cs" />
+    <Compile Include="ParameterModel\Finance\BankProvinceCityPM.cs" />
+    <Compile Include="ParameterModel\Finance\BusinessBalanceRecordPM.cs" />
+    <Compile Include="ParameterModel\Finance\BusinessBalanceRecordSerchCriteria.cs" />
+    <Compile Include="ParameterModel\Finance\BusinessWithdrawSearchCriteria.cs" />
+    <Compile Include="ParameterModel\Finance\CardBindBPM.cs" />
+    <Compile Include="ParameterModel\Finance\CardBindCPM.cs" />
+    <Compile Include="ParameterModel\Finance\CardBindPM.cs" />
+    <Compile Include="ParameterModel\Finance\CardModifyBPM.cs" />
+    <Compile Include="ParameterModel\Finance\CardModifyCPM.cs" />
+    <Compile Include="ParameterModel\Finance\CardModifyPM.cs" />
+    <Compile Include="ParameterModel\Finance\ClienterAllowWithdrawRecordPM.cs" />
+    <Compile Include="ParameterModel\Finance\ClienterBalanceRecordPm.cs" />
+    <Compile Include="ParameterModel\Finance\ClienterBalanceRecordSerchCriteria.cs" />
+    <Compile Include="ParameterModel\Finance\ClienterFinanceAccountPM.cs" />
+    <Compile Include="ParameterModel\Finance\ClienterWithdrawFormPM.cs" />
+    <Compile Include="ParameterModel\Finance\ClienterWithdrawLogPM.cs" />
+    <Compile Include="ParameterModel\Finance\ClienterWithdrawSearchCriteria.cs" />
+    <Compile Include="ParameterModel\Finance\ImprestBalanceRecordSearchCriteria.cs" />
+    <Compile Include="ParameterModel\Finance\ImprestPayoutModel.cs" />
+    <Compile Include="ParameterModel\Finance\UpdateForWithdrawPM.cs" />
+    <Compile Include="ParameterModel\Finance\WithdrawBBackPM.cs" />
+    <Compile Include="ParameterModel\Finance\WithdrawBPM.cs" />
+    <Compile Include="ParameterModel\Finance\WithdrawCPM.cs" />
+    <Compile Include="ParameterModel\Finance\WithdrawCriteria.cs" />
+    <Compile Include="ParameterModel\Finance\WithdrawPM.cs" />
+    <Compile Include="ParameterModel\Group\GetJobCPM.cs" />
+    <Compile Include="ParameterModel\Group\GroupListModel.cs" />
+    <Compile Include="ParameterModel\Group\GroupParaModel.cs" />
+    <Compile Include="ParameterModel\Message\ListBPM.cs" />
+    <Compile Include="ParameterModel\Message\ListCPM.cs" />
+    <Compile Include="ParameterModel\Message\ReadBPM.cs" />
+    <Compile Include="ParameterModel\Message\ReadCPM.cs" />
+    <Compile Include="ParameterModel\Message\WebListSearch.cs" />
+    <Compile Include="ParameterModel\Order\AsyncStatusPM_OpenApi.cs" />
+    <Compile Include="ParameterModel\Order\BusiOrderResultModel.cs" />
+    <Compile Include="ParameterModel\Order\CancelOrderBPM.cs" />
+    <Compile Include="ParameterModel\Order\ChangeStatusPM_OpenApi.cs" />
+    <Compile Include="ParameterModel\Order\ConsigneeAddressBPM.cs" />
+    <Compile Include="ParameterModel\Order\CreatePM_OpenApi.cs" />
+    <Compile Include="ParameterModel\Order\GetJobCPM.cs" />
+    <Compile Include="ParameterModel\Order\GetStatusPM_OpenApi.cs" />
+    <Compile Include="ParameterModel\Order\NewAddressPM.cs" />
+    <Compile Include="ParameterModel\Order\NewPostPublishOrderModel.cs" />
+    <Compile Include="ParameterModel\Order\OrderCancelReasonsModel.cs" />
+    <Compile Include="ParameterModel\Order\OrderChildModel.cs" />
+    <Compile Include="ParameterModel\Order\OrderChildPM.cs" />
+    <Compile Include="ParameterModel\Order\OrderCompleteModel.cs" />
+    <Compile Include="ParameterModel\Order\OrderDetailPM_OpenApi.cs" />
+    <Compile Include="ParameterModel\Order\OrderDistributionAnalyze.cs" />
+    <Compile Include="ParameterModel\Order\OrderOptionModel.cs" />
+    <Compile Include="ParameterModel\Order\OrderOtherPM.cs" />
+    <Compile Include="ParameterModel\Order\OrderPM.cs" />
+    <Compile Include="ParameterModel\Order\OrderReceiveModel.cs" />
+    <Compile Include="ParameterModel\Order\OrderRecordsLog.cs" />
+    <Compile Include="ParameterModel\Order\OrderSearchCriteria.cs" />
+    <Compile Include="ParameterModel\Order\OverTimeOrderPM.cs" />
+    <Compile Include="ParameterModel\Order\PullOrderInfoPM_OpenApi.cs" />
+    <Compile Include="ParameterModel\Order\RemoveAddressBPM.cs" />
+    <Compile Include="ParameterModel\Order\UserStatusModel.cs" />
+    <Compile Include="ParameterModel\Sms\SmsParaModel.cs" />
+    <Compile Include="ParameterModel\Subsidy\CrossShopListModel.cs" />
+    <Compile Include="ParameterModel\Subsidy\SubsidyModel.cs" />
+    <Compile Include="ParameterModel\User\UserOptRecordPara.cs" />
+    <Compile Include="ParameterModel\WtihdrawRecords\IncomeModel.cs" />
+    <Compile Include="ParameterModel\WtihdrawRecords\MyIncomeSearchCriteria.cs" />
+    <Compile Include="ParameterModel\WtihdrawRecords\WithdrawRecordsModel.cs" />
+    <Compile Include="ParameterModel\YeePay\YeePayRunningCriteria.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Eds.Core\Eds.Core.csproj">
+      <Project>{C13C623D-0CB7-4C81-818F-9F4E7EFF4C0B}</Project>
+      <Name>Eds.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

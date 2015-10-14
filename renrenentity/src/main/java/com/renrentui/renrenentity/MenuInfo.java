@@ -14,6 +14,7 @@ public class MenuInfo  implements Serializable{
     private String url;
 
     private Boolean isButton;
+    private String authCode;
 
     public Integer getId() {
         return id;
@@ -63,6 +64,14 @@ public class MenuInfo  implements Serializable{
 
 	public void setIsButton(Boolean isButton) {
 		this.isButton = isButton;
+	}
+
+	public String getAuthCode() {
+		return authCode;
+	}
+
+	public void setAuthCode(String authCode) {
+		this.authCode = authCode;
 	}
 
     

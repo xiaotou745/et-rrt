@@ -40,7 +40,19 @@ public class MenuInfoService implements IMenuInfoService {
 
 		return false;
 	}
+	@Override
+	public boolean checkHasAuthByCode(int userID,String authCode) {
+		List<MenuInfo> data=dao.getMenuListByUserID(userID);
+		if (data!=null&&data.size()>0) {
+			for (MenuInfo menuEntity : data) {
+				if (authCode.equals(menuEntity.getAuthCode())) {
+					return true;
+				}
+			}
+		}
 
+		return false;
+	}
 	@Override
 	public List<MenuEntity> getAuthSettingList(int userID) {
 		return dao.getAuthSettingList(userID);

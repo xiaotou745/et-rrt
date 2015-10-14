@@ -10,6 +10,7 @@
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
+String UploadPath= PropertyUtils.getProperty("UploadUrl");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 String templatelist = (String) request.getAttribute("templatelist");
 List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");
@@ -204,7 +205,7 @@ String city_region = (String) request.getAttribute("city_region");
 	        	<input type="file" name="uploadify" id="uploadify" />
 		        <p>
 		        <a href="javascript:jQuery('#uploadify').uploadifyUpload()">文件上传</a>&nbsp;
-		        <a href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消所有上传</a>
+		        <a href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消上传</a>
 		        </p>
 							</div>
 						</div>
@@ -332,10 +333,10 @@ String city_region = (String) request.getAttribute("city_region");
 <script>  
   $(document).ready(function() {
 	    $("#uploadify").uploadify({
-	     	'buttonImg':'../js/jquery.uploadify-v2.1.0/selectFile.gif',
-	        'uploader':'../js/jquery.uploadify-v2.1.0/uploadify.swf',
-	        'script':'http://192.168.1.38/Upload/UploadFile?uploadFrom=1',//后台处理的请求
-	        'cancelImg':'../js/jquery.uploadify-v2.1.0/cancel.png',
+	     	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
+	        'uploader':'<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.swf',
+	        'script':'<%=UploadPath%>/Upload/UploadFile?uploadFrom=1',//后台处理的请求
+	        'cancelImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/cancel.png',
 	        'folder':'uploads',//您想将文件保存到的路径
 	        'queueID':'fileQueue',//与下面的id对应
 	        'queueSizeLimit':1,
@@ -351,7 +352,13 @@ String city_region = (String) request.getAttribute("city_region");
 	        'fileSizeLimit' : '2MB',
 	        onComplete: function (event, queueId, fileObj, response, data) {
 	            var jsonstr = JSON.parse(response);
-	             alert("上传成功，地址："+jsonstr.Result.FileUrl);
+	             if(jsonstr.Status==1){
+	            	 var fileinfo=jsonstr.Result.OriginalName+"#"+jsonstr.Result.RelativePath;
+	            	 appendAttachRow(fileinfo);
+	             }else{
+	            	 alert("上传失败");
+	             }
+	            
 //	              {"Status":1,"Message":"成功","Result":{"FileUrl":
 //	             	 "http://192.168.1.38:8999/Business/2015/10/13/23/49452547d2.jpg",
 //	             	 "RelativePath":"Business/2015/10/13/23/49452547d2.jpg",
@@ -382,8 +389,25 @@ function initFunction(){
 	$("#businessId").on("change",businessChange);
 	$("#businessId").change();
 }
+function realDeleteFiles(){
+	if(deleteFiles!=""){
+		var tempFiles=deleteFiles.split(";");
+		for(var i=0;i<tempFiles.length;i++){
+			var s=tempFiles[i].split("#");
+			var url = "<%=UploadPath%>/upload/deletefile?fileName="+s[1];
+			$.ajax({
+					type : 'POST',
+					url : url,
+					data : "",
+					success : function(result) {
+			            //alert(result.Status);
+					}
+			});
+		}
+	}
+}
 function savetask(){
-	if(!validPage()){
+	if(!validPage(true)){
 		return;
 	}
 	var paramaters=$("#searchForm").serialize();
@@ -394,6 +418,7 @@ function savetask(){
 					data : paramaters,
 					success : function(result) {
 						if (result > 0) {
+							realDeleteFiles();
 							alert("操作成功");
 							window.location.href = window.location.href;
 						} else {

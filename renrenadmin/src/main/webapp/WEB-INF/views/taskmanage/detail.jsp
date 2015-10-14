@@ -13,8 +13,11 @@
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
+<%@page import="com.renrentui.renrenadmin.common.UserContext"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
+String UploadPath= PropertyUtils.getProperty("UploadUrl");
+boolean uPDATE_TASK=UserContext.getCurrentContext(request).isHasAuthByCode("UPDATE_TASK");
 RenRenTaskDetail taskInfo = (RenRenTaskDetail) request.getAttribute("taskInfo");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 String templatelist = (String) request.getAttribute("templatelist");
@@ -33,7 +36,7 @@ for (TaskCityRelation cityRelation : taskInfo.getCityRelationList()) {
 String oldAttachmentFiles="";
 String temp="";
 for (Attachment attach : taskInfo.getAttachmentsList()) {
-	temp=attach.getAttachmentName()+"#"+attach.getAttachUrl().substring(attach.getAttachUrl().lastIndexOf("/")+1);
+	temp=attach.getAttachmentName()+"#"+attach.getAttachUrl();
 	if(oldAttachmentFiles==""){
 		oldAttachmentFiles=temp;
 	}else{
@@ -233,17 +236,17 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 					</tbody>
 				</table>
 			</div>
-			<div class="row">
+		<div class="row" id="uploadDiv">
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-3">
-							<div class="form-group">
-								<label class="col-sm-4 control-label"></label>
-								<div class="col-sm-2">
-								<input id="file1" type="file" name="file1">
-									<button type="button" class="btn btn-w-m btn-primary" id="uploadfile"
-										style="margin-left: 3px; height: 30px;">上传</button>
-								</div>
+							<div class="form-group"> 
+							<div id="fileQueue" style="height:80px"></div>
+	        	<input type="file" name="uploadify" id="uploadify" />
+		        <p>
+		        <a href="javascript:jQuery('#uploadify').uploadifyUpload()">文件上传</a>&nbsp;
+		        <a href="javascript:jQuery('#uploadify').uploadifyClearQueue()">取消上传</a>
+		        </p>
 							</div>
 						</div>
 					</div>
@@ -354,11 +357,10 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 <!-- 				</div> -->
 <!-- 			</div> -->
 		</fieldset>
-		<div class="row">
+			<div class="row">
 			<div class="col-lg-4">
 				<button type="button"  class="btn btn-w-m btn-primary" id="save" onclick="savetask()"
 					style="margin-left: 3px; height: 30px;">保存</button>
-
 			</div>
 		</div>
 	</form>
@@ -368,24 +370,61 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 </div>
 
 <script>
+$(document).ready(function() {
+    $("#uploadify").uploadify({
+     	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
+        'uploader':'<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.swf',
+        'script':'<%=UploadPath%>/Upload/UploadFile?uploadFrom=1',//后台处理的请求
+        'cancelImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/cancel.png',
+        'folder':'uploads',//您想将文件保存到的路径
+        'queueID':'fileQueue',//与下面的id对应
+        'queueSizeLimit':1,
+        'wmode':'transparent',
+        'fileDesc':'文件',    
+    	'fileExt':'*.*', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
+       	'auto':false,
+        'multi':false,
+        'simUploadLimit':1,
+        'maxQueueSize': 1,
+        'successTimeout':600,
+         'buttonText':"BROWSER",
+        'fileSizeLimit' : '2MB',
+        onComplete: function (event, queueId, fileObj, response, data) {
+            var jsonstr = JSON.parse(response);
+             if(jsonstr.Status==1){
+            	 var fileinfo=jsonstr.Result.OriginalName+"#"+jsonstr.Result.RelativePath;
+            	 appendAttachRow(fileinfo);
+             }else{
+            	 alert("上传失败");
+             }
+            
+//              {"Status":1,"Message":"成功","Result":{"FileUrl":
+//             	 "http://192.168.1.38:8999/Business/2015/10/13/23/49452547d2.jpg",
+//             	 "RelativePath":"Business/2015/10/13/23/49452547d2.jpg",
+//             	 "OriginalName":"Chrysanthemum.jpg","ModifyOriginalName":
+//             		 "49452547d2_0_0.jpg"}}
+        }
+    });
+});
 function lockpage(){
+	var hasAuth="<%=uPDATE_TASK%>";
 	var canedit="<%=(detailStatus==TaskStatus.WaitAudit||detailStatus==TaskStatus.Reject)%>";
-	if(canedit!="true"){
+	if(canedit!="true"||hasAuth!="true"){
 	    $("input[type='text']").each(function (i, each) {
 	        each.disabled = true;
 	    });
 		$("textarea").each(function(index,e){
 			 e.disabled = true;
 		});
-	    $("input[type='file']").each(function (i, each) {
-	        each.disabled = true;
-	    });
 	    $("select").each(function (i, each) {
 	        each.disabled = true;
 	    });
 	    $("button").each(function (i, each) {
 	        each.disabled = true;
 	    });
+	    $("#uploadDiv").hide();
+	    $('#uploadfiletable tr').find('td:eq(2)').hide();
+	    $('#uploadfiletable tr').find('th:eq(2)').hide();
 	}
 }
 function initRegion(){
@@ -416,30 +455,6 @@ function initRegion(){
 	}
 }
 
-function uploadfile(){
-	if ($("#file1").val().length <= 0) {
-      alert("请选择文件！");
-      return;
-  }
-  var url = "<%=basePath%>/taskmanage/uploadfile";
-  
-  $.ajaxFileUpload({
-      type: 'POST',
-      secureuri: false, //一般设置为false
-      fileElementId: 'file1', //文件上传空间的id属性  <input type="file" id="file" name="file" />
-      url: url,
-      data: "", //此参数非常严谨，写错一个引号都不行
-      dataType: "HTML", //此参数非常严谨，写错一个引号都不行
-      success: function (data, status) {
-      	appendAttachRow(data);
-      },
-      error:function(errordata){
-      	alert(errordata);
-      }
-  });
-	
-};
-
 function businessChange(){  
 	var templateList="<%=templatelist%>";
 	var selectedTemplateId="<%=taskInfo.getTemplateId()%>";
@@ -455,16 +470,49 @@ function businessChange(){
 		}
 	});
 };
+var oldTotalFee=0;
+var oldBusinessId="";
 function initFunction(){
 	initRegion();
-	$("#uploadfile").on("click",uploadfile);
 	$("#businessId").on("change",businessChange);
 	$("#businessId").change();
 	lockpage();
+	oldBusinessId=$("#businessId").val();
+	oldTotalFee=parseFloat($("#amount").val())*parseFloat($("#taskTotalCount").val());
+}
+function realDeleteFiles(){
+	if(deleteFiles!=""){
+		var tempFiles=deleteFiles.split(";");
+		for(var i=0;i<tempFiles.length;i++){
+			var s=tempFiles[i].split("#");
+			var url = "<%=UploadPath%>/upload/deletefile?fileName="+s[1];
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : "",
+				success : function(result) {
+		            //alert(result.Status);
+				}
+		});
+		}
+	}
 }
 function savetask(){
-	if(!validPage()){
+	if(!validPage(false)){
 		return;
+	}
+	var totalFee=parseFloat($("#amount").val())*parseFloat($("#taskTotalCount").val());
+	var balance=parseFloat($("#businessBalance").html().replace("元",""));
+	if($("#businessId").val()==oldBusinessId){
+		if(totalFee>oldTotalFee&&totalFee-oldTotalFee>balance){
+			alert("当前商户账户余额不足，不能保存任务");
+			return false;
+		}
+	}else{
+		if(balance<totalFee){
+			alert("当前商户账户余额不足，不能保存任务");
+			return false;
+		}
 	}
 	var paramaters=$("#searchForm").serialize();
 		var url = "<%=basePath%>/taskmanage/updatetask";
@@ -474,6 +522,7 @@ function savetask(){
 					data : paramaters,
 					success : function(result) {
 						if (result > 0) {
+							realDeleteFiles();
 							alert("操作成功");
 							window.location.href = window.location.href;
 						} else {

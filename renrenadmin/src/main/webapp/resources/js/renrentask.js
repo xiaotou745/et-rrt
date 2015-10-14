@@ -56,6 +56,7 @@ function appendAttachRow(fileinfo){
 		$("#attachmentfiles").val(oldAttach+";"+fileinfo);
 	}
 };
+var deleteFiles="";
 function deleterow(delobj){
 	var trs=$("#uploadfiletable tr");
 	var oldRowNum=trs.length-1;
@@ -72,6 +73,12 @@ function deleterow(delobj){
 			}else{
 				newFiles+=(";"+files[i]);	
 			}
+		}else{
+			if(deleteFiles==""){
+				deleteFiles=files[i];
+			}else{
+				deleteFiles+=(";"+files[i]);	
+			}
 		}
 	}
 	$("#attachmentfiles").val(newFiles);
@@ -84,6 +91,7 @@ function deleterow(delobj){
 		 }
 	}
 };
+
 function provinceChange(){  
     try{  
         var pro=$(this).val();  
@@ -150,7 +158,7 @@ function chanageSelectAll(){
 	}
 };
 
-function validPage(){
+function validPage(checkBalance){
 	var hasempty=false;
 	$("select").each(function(index,e){
 		if($(e).val()==""||$(e).val()==null){
@@ -206,17 +214,21 @@ function validPage(){
 	      $('#beginDate').val("");
 	      return false;
 	  }
-
-	var pagestart=new Date(startDate);
-	var pageComapreDate=pagestart.getFullYear()+""+(pagestart.getMonth()+1)+""+pagestart.getDate();
-	var myDate = new Date();
-	var nowdate=myDate.getFullYear()+""+(myDate.getMonth()+1)+""+myDate.getDate();
-	if(pageComapreDate<nowdate){
-		alert("开始日期必须大于等于今天");
-		return;
-	}
-
-  $("input[type='text']").each(function(index,e){
+		var pagestart=new Date(startDate);
+		var pageStartDate=pagestart.getFullYear()+""+(pagestart.getMonth()+1)+""+pagestart.getDate();
+		var myDate = new Date();
+		var nowdate=myDate.getFullYear()+""+(myDate.getMonth()+1)+""+myDate.getDate();
+		if(parseInt(pageStartDate)<parseInt(nowdate)){
+			alert("开始日期必须大于等于今天");
+			return;
+		}
+		var pageEnd=new Date(endDate);
+		var pageEndDate=pageEnd.getFullYear()+""+(pageEnd.getMonth()+1)+""+pageEnd.getDate();
+		if(parseInt(pageEndDate)<=parseInt(nowdate)){
+			alert("结束日期必须大于今天");
+			return;
+		}
+	$("input[type='text']").each(function(index,e){
 		  if(e.id=="auditCycle"||e.id=="taskTotalCount"||e.id=="amount"||e.id=="taskCycle"){
 				if(isNaN($(e).val())){
 				 	alert($(this).parent().prev().html().replace(": ","")+"必须为数字");
@@ -253,11 +265,13 @@ function validPage(){
 //		alert("城市不是全部城市时,请至少选择一个区域");
 //		return;
 //	}
-	var totalFee=parseFloat($("#amount").val())*parseFloat($("#taskTotalCount").val());
-	var balance=parseFloat($("#businessBalance").html().replace("元",""));
-	if(balance<totalFee){
-		alert("当前商户账户余额不足，不能新建任务");
-		return false;
+	if(checkBalance){
+		var totalFee=parseFloat($("#amount").val())*parseFloat($("#taskTotalCount").val());
+		var balance=parseFloat($("#businessBalance").html().replace("元",""));
+		if(balance<totalFee){
+			alert("当前商户账户余额不足，不能新建任务");
+			return false;
+		}
 	}
 	return true;
 };

@@ -24,6 +24,7 @@ public interface IMenuInfoService {
  * @return
  */
 	public boolean checkHasAuth(int userID,int menuID) ;
+	public boolean checkHasAuthByCode(int userID,String authCode);
 	/**
 	 * 修改权限时，获取给定用户的权限列表（包括没有权限的menu）
 	 * @author hailongzhao

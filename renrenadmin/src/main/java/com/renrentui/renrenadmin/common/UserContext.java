@@ -35,7 +35,9 @@ public class UserContext {
 	public boolean isHasAuth(int menuID) {
 		return authorityMenuClassService.checkHasAuth(account.getId(), menuID);
 	}
-
+	public boolean isHasAuthByCode(String authCode) {
+		return authorityMenuClassService.checkHasAuthByCode(account.getId(), authCode);
+	}
 	public int getId() {
 		return account.getId();
 	}
