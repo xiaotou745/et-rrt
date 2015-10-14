@@ -17,6 +17,7 @@
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 String UploadPath= PropertyUtils.getProperty("UploadUrl");
+boolean uPDATE_TASK=UserContext.getCurrentContext(request).isHasAuthByCode("UPDATE_TASK");
 RenRenTaskDetail taskInfo = (RenRenTaskDetail) request.getAttribute("taskInfo");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 String templatelist = (String) request.getAttribute("templatelist");
@@ -356,18 +357,12 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 <!-- 				</div> -->
 <!-- 			</div> -->
 		</fieldset>
-		<%
-		boolean uPDATE_TASK=UserContext.getCurrentContext(request).isHasAuthByCode("UPDATE_TASK");
-		if(uPDATE_TASK){%>
 			<div class="row">
 			<div class="col-lg-4">
 				<button type="button"  class="btn btn-w-m btn-primary" id="save" onclick="savetask()"
 					style="margin-left: 3px; height: 30px;">保存</button>
-
 			</div>
 		</div>
-		<%}%>
-		
 	</form>
 
 	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> 
@@ -412,8 +407,9 @@ $(document).ready(function() {
     });
 });
 function lockpage(){
+	var hasAuth="<%=uPDATE_TASK%>";
 	var canedit="<%=(detailStatus==TaskStatus.WaitAudit||detailStatus==TaskStatus.Reject)%>";
-	if(canedit!="true"){
+	if(canedit!="true"||hasAuth!="true"){
 	    $("input[type='text']").each(function (i, each) {
 	        each.disabled = true;
 	    });
