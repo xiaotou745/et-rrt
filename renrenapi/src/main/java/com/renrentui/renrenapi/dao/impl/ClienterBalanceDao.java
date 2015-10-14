@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 
 
@@ -58,7 +59,19 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 				.update("com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.updateMoneyByKey",
 						record);	
 	}
-	
+	/**
+	* @Des 更新累积提现
+	* @Author 胡灵波
+	* @Date 2015年10月14日 19:34:59
+	* @Return
+	*/
+	@Override
+	public int  updateHadWithdrawByClienterId(Map<String, Object> params)
+	{
+		return getMasterSqlSessionUtil()
+				.update("com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.updateHadWithdrawByClienterId",
+						params);	
+	}
 	
 	@Override
 	public int deleteByPrimaryKey(Long id) {

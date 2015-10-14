@@ -1,4 +1,7 @@
 package com.renrentui.renrenentity.domain;
+
+import com.renrentui.renrencore.util.PropertyUtils;
+
 /**
  * 任务详情==模板 ==模板控件实体类
  * @author ofmyi_000
@@ -8,6 +11,10 @@ public class ControlInfo {
 
 	private String hadValue;
 	public String getHadValue() {
+		if(!this.hadValue.equals("")&&this.controlType.equals("FileUpload"))
+		{
+			return PropertyUtils.getProperty("ImgShowUrl")+hadValue;
+		}
 		return hadValue;
 	}
 	public void setHadValue(String hadValue) {

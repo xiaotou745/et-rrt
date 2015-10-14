@@ -14,6 +14,7 @@ public enum GetTaskCode {
 	TaskExpire(1143, "任务过期或不存在"),
 	TaskHad(1144, "该任务已领取且尚未完成"),
 	TaskNoBlance(1145, "任务余量不足"),
+	TaskMore(1147, "您当前任务完成的任务够多了,先完成一些吧"),
 	Fail(1146, "系统错误");
 	private int value = 0;
 	private String desc;

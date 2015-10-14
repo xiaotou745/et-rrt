@@ -188,6 +188,7 @@ public class ClienterService implements IClienterService{
 		clienter.setClienterName(req.getUserName());
 		clienter.setLastOptName(req.getUserId()+"");
 		clienter.setLastOptTime(new Date());
+		clienter.setHeadImage(req.getHeadImage());
 		return clienterDao.updateByPrimaryKeySelective(clienter);
 	}
 

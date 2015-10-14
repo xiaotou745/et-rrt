@@ -46,6 +46,16 @@
     from ClienterWithdrawForm
     where Id = #{id,jdbcType=BIGINT}
   </select>
+    
+    <select id="selectById" resultType="com.renrentui.renrenentity.ClienterWithdrawForm"
+   parameterType="java.lang.Long" >
+    select 
+    Id, ClienterId, Amount, WithdrawNo, WithType, AccountInfo, TrueName, Status, CreateTime, 
+    AuditTime, AuditName
+    from ClienterWithdrawForm
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  
     	<select id="getList" resultType="com.renrentui.renrenentity.domain.ClienterWithdrawFormDM"
 		parameterType="com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq"
 		statementType="CALLABLE">

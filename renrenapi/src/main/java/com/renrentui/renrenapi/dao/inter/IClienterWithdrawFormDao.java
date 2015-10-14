@@ -13,6 +13,8 @@ public interface IClienterWithdrawFormDao {
     int insertSelective(ClienterWithdrawForm record);
 
     ClienterWithdrawForm selectByPrimaryKey(Long id);
+    
+    ClienterWithdrawForm selectById(Long id);
 
     int updateByPrimaryKeySelective(ClienterWithdrawForm record);
 

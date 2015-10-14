@@ -3,6 +3,7 @@ package com.renrentui.renrenentity.domain;
 import java.util.ArrayList;
 
 import com.renrentui.renrencore.enums.PaymentMethodType;
+import com.renrentui.renrencore.util.PropertyUtils;
 
 /**
  * 任务详情实体 
@@ -14,6 +15,13 @@ public class TaskDetail {
 	public TaskDetail()
 	{
 		this.controlInfo=new ArrayList<ControlInfo>();
+	}
+	private int waitCount;
+	public int getWaitCount() {
+		return waitCount;
+	}
+	public void setWaitCount(int waitCount) {
+		this.waitCount = waitCount;
 	}
 	private Long id;
 	private String taskTitle;
@@ -54,7 +62,7 @@ public class TaskDetail {
 		this.companySummary = companySummary;
 	}
 	public String getLogo() {
-		return logo;
+		return  PropertyUtils.getProperty("ImgShowUrl")+logo;
 	}
 	public void setLogo(String logo) {
 		this.logo = logo;

@@ -10,6 +10,13 @@ public class ModifyUserCReq {
 	private String userName;
 	private  Short sex;
 	private  Integer age;
+	private String headImage;
+	public String getHeadImage() {
+		return headImage;
+	}
+	public void setHeadImage(String headImage) {
+		this.headImage = headImage;
+	}
 	/**
 	 * 用户ID
 	 * @return

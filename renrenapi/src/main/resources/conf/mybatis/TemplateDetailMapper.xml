@@ -35,7 +35,7 @@
         OrderNum
 FROM    dbo.TemplateDetailSnapshot  AS td ( NOLOCK )
         LEFT JOIN dbo.TemplateControl AS tc ( NOLOCK ) ON td.ControlId = tc.id
-        LEFT JOIN dbo.OrderChild AS oc(NOLOCK) ON oc.TemplateSnapshotId=td.SnapshotTemplateId AND oc.OrderId=#{orderId,jdbcType=BIGINT} AND oc.ControlName=td.Title
+        LEFT JOIN dbo.OrderChild AS oc(NOLOCK) ON oc.TemplateSnapshotId=td.SnapshotTemplateId AND oc.OrderId=#{orderId,jdbcType=BIGINT} AND oc.ControlName=td.Name
 WHERE   td.SnapshotTemplateId = #{templateId,jdbcType=INTEGER}
 ORDER BY OrderNum ASC
   </select>
