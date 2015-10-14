@@ -24,7 +24,11 @@ public enum TaskOpType {
 	/**
 	 * 修改任务
 	 */
-	Modify(5, "修改任务");
+	Modify(5, "修改任务"),
+	/**
+	 * 取消任务
+	 */
+	CancelTask(6, "取消任务");
 
 	private int value = 0;
 	private String desc;

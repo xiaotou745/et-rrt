@@ -38,8 +38,8 @@ public class BusinessBalanceService implements IBusinessBalanceService{
 	}
 
 	@Override
-	public BusinessBalance selectById(Long businessId) {
-		return businessBalanceDao.selectByPrimaryKey(businessId);
+	public BusinessBalance selectByBusinessId(Long businessId) {
+		return businessBalanceDao.selectByBusinessId(businessId);
 	}		
 	
 }

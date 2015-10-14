@@ -1,8 +1,12 @@
 package com.renrentui.renrenapi.service.inter;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.OrderChildInfoModel;
+import com.renrentui.renrenentity.req.CancelOrderReq;
+import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
@@ -28,5 +32,6 @@ public interface IOrderService {
 	public OrderChildInfoModel getOrderChildInfo(OrderChildReq req);
 	
 	public String downLoadOrderInfo(OrderChildReq req);
+	public int cancelOrder(CancelTaskReq req);
 
 }

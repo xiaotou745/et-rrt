@@ -36,9 +36,9 @@ public class BusinessBalanceDao extends DaoBase implements IBusinessBalanceDao{
 	}
 
 	@Override
-	public BusinessBalance selectByPrimaryKey(Long id) {
+	public BusinessBalance selectByBusinessId(Long businessId) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao.selectByPrimaryKey", id);
+				"com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao.selectByBusinessId", businessId);
 	}
 
 	@Override

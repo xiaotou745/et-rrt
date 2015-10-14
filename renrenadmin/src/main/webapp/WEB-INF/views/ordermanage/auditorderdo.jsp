@@ -70,8 +70,15 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<%	
 			}
 			%>
-			
-			
+			<%
+			//已经完成 但是审核未通过, 都是可以取消订单的
+			if(!data.get(i).getFinishTime().equals("")&&(data.get(i).getOrderStatusCode()!=2))
+			{
+			%>
+			<a href="javascript:void(0)"  onclick="CancelOrder(<%=data.get(i).getOrderId()%>,<%=data.get(i).getClienterId()%>)">取消订单</a>
+			<%	
+			}
+			%>
 			</td>						
 		</tr>
 		<%
@@ -126,6 +133,30 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        	$('#filename').val('123.html');
 		        	$('#alertbox').modal('show'); 
 		        	
+		        }
+		    });
+	   
+   }
+   //取消订单
+   function CancelOrder(orderId,userId){
+	   if(!confirm("确定取消该订单吗?")){
+		   return false;
+		   }
+	   var paramaters = {"orderId":orderId,"userId":userId};
+		   var url = "<%=basePath%>/ordermanage/cancelorder";
+		   $.ajax({
+		        type: 'POST',
+		        url: url,
+		        data: paramaters,
+		        success: function (result) {   	
+		        	if(result=='200'||result==200)
+		        	{
+		        		jss.search(1);
+		        	}
+		        	else
+		        		{
+		        		alert('取消任务失败!');
+		        		}
 		        }
 		    });
 	   

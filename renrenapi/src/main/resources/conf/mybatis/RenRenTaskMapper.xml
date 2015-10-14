@@ -179,7 +179,7 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
         b.logo ,
         o.Id orderId
 from    dbo.RenRenTask rt ( nolock )
-left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  ${userId}
+left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  ${userId} and o.OrderStatus=0
 join dbo.Business b (nolock) on rt.BusinessId = b.Id 
 where o.ClienterId is null and rt.Status = 1 and getdate()>=rt.BeginTime and rt.EndTime>getdate()  
 and rt.AvailableCount>0
@@ -190,7 +190,7 @@ order by rt.Id asc;
   </select>   
    <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select count(1) from dbo.RenRenTask rt ( nolock )
-left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  ${userId}
+left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  ${userId} and o.OrderStatus=0
 where o.ClienterId is null  and rt.Status = 1 and getdate()>=rt.BeginTime and rt.EndTime>getdate() and rt.AvailableCount>0
  	<if test="nextId != 0" >
          and o.Id > ${nextId}
@@ -311,4 +311,7 @@ order by o.Id asc;
       CompanySummary= #{companySummary,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT} and (Status=0 or Status=2)
   </update>
+     <select id="getListByTemplateId" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
+   	select * from  dbo.RenRenTask with(nolock) where  SnapshotTemplateId = #{templateId,jdbcType=BIGINT} and (Status=0 or Status=2)
+  </select> 
 </mapper>

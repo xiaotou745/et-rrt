@@ -32,7 +32,7 @@
 	  </selectKey>
 	  Insert into TemplateSnapshot(TemplateId,BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, Status, 
     Remark) 
-      select #{templateId,jdbcType=BIGINT}, BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, Status, 
+      select #{templateId,jdbcType=BIGINT}, BusinessId, TemplateName, CreateName, CreateTime, LastOptName, LastOptTime, 1, 
     Remark from Template WHERE id=#{templateId,jdbcType=BIGINT}
   </insert>
 </mapper>
