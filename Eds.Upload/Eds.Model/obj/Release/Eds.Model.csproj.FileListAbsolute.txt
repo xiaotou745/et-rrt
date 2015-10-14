@@ -1,0 +1,12 @@
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\Eds.Model.dll
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\Eds.Model.pdb
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\Eds.Core.dll
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\ICSharpCode.SharpZipLib.dll
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\NLog.dll
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\Newtonsoft.Json.dll
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\Eds.Core.pdb
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\NLog.xml
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\bin\Release\Newtonsoft.Json.xml
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\obj\Release\Eds.Model.csprojResolveAssemblyReference.cache
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\obj\Release\Eds.Model.dll
+E:\Code\Eds.Upload\Eds.Upload\Eds.Model\obj\Release\Eds.Model.pdb
