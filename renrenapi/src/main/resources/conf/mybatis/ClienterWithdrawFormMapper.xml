@@ -48,7 +48,7 @@
   </select>
     
     <select id="selectById" resultType="com.renrentui.renrenentity.ClienterWithdrawForm"
-   parameterType="java.lang.Long" >
+   parameterType="java.lang.Integer" >
     select 
     Id, ClienterId, Amount, WithdrawNo, WithType, AccountInfo, TrueName, Status, CreateTime, 
     AuditTime, AuditName

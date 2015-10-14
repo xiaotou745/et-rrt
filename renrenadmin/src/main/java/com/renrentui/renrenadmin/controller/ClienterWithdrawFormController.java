@@ -99,10 +99,10 @@ public class ClienterWithdrawFormController {
 	 */	
 	@RequestMapping("auditpass")
 	@ResponseBody
-	public int auditpass(HttpServletRequest request,int  withwardId) {
+	public int auditpass(HttpServletRequest request,ClienterWithdrawForm record) {
 	
-		ClienterWithdrawForm record=new ClienterWithdrawForm();
-		record.setId((long)withwardId);
+		/*ClienterWithdrawForm record=new ClienterWithdrawForm();
+		record.setId((long)id);*/
 		
 		UserContext context=UserContext.getCurrentContext(request);
 		record.setAuditName(context.getUserName());

@@ -135,19 +135,17 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 		cbrModelU.setStatus((short)CBalanceRecordStatus.Success.value());//交易成功
 		int cbrId= clienterBalanceRecordDao.updateStatusByOrderId(cbrModelU);
 		
-		
-		//ClienterWithdrawForm currRecord= clienterWithdrawFormDao.selectById(id);
-/*		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("amount", currRecord.getAmount());
-		params.put("clienterId", currRecord.getClienterId());		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("amount", record.getAmount());
+		params.put("clienterId", record.getClienterId());		
 		//更新累积提现
-		clienterBalanceDao.updateHadWithdrawByClienterId(params);*/
+		int cbId=clienterBalanceDao.updateHadWithdrawByClienterId(params);
 		
-		if(cwfId>0 && cbrId>0 )
+		if(cwfId>0 && cbrId>0 && cbId>0)
 			return 1;
 		else
 		{
-			Error error=new Error("审核通过");
+			Error error=new Error("审核通过失败");
 			throw new RuntimeErrorException(error);
 		}			
 		
@@ -192,7 +190,7 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 		clienterBalanceRecordModel.setOptName(record.getAuditName());//
 		clienterBalanceRecordModel.setOrderId((long)cbrModel.getOrderId());//
 		clienterBalanceRecordModel.setRelationNo(cbrModel.getRelationNo());//
-		clienterBalanceRecordModel.setRemark("申请拒绝");
+		clienterBalanceRecordModel.setRemark("申请拒绝失败");
 		clienterBalanceRecordModel.setStatus((short)CBalanceRecordStatus.Success.value());	
 		int cbrIdInsert=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);			
 	

@@ -49,7 +49,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=ClienterWithdrawFormStatus.getEnum(data.get(i).getStatus()).desc()%></td>			
 			<td>
 			<%if(data.get(i).getStatus()==0) {%>
-			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>')" >审核通过 </a>
+			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>','<%=data.get(i).getClienterId() %>','<%=data.get(i).getAmount() %>')" >审核通过 </a>
 			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>')" >审核拒绝</a>			
 			<%} %>			
 			
@@ -68,12 +68,14 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 <script type="text/javascript">
  
    //审核通过
-   function WithdrawAuditPass(withwardId) {
+   function WithdrawAuditPass(id,clienterId,amount) {
        if (!window.confirm("确认要提交审核？")) {
            return;
        }
        var paramaters = {
-           "withwardId": withwardId           
+           "id": id,
+           "clienterId": clienterId, 
+           "amount": amount 
        };
        var url = "<%=basePath%>/clienterwithdraw/auditpass";
        $.ajax({
