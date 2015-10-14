@@ -155,4 +155,11 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.update",
 				record);
 	}
+
+	@Override
+	public List<RenRenTask> getListByTemplateId(Long templateId) {
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getListByTemplateId",
+				templateId);
+	}
 }

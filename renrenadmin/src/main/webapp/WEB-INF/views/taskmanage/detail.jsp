@@ -477,7 +477,7 @@ function savetask(){
 							alert("操作成功");
 							window.location.href = window.location.href;
 						} else {
-							alert("操作失败");
+							alert("操作失败:当前商户账户余额不足，不能保存任务");
 						}
 					}
 		});

@@ -135,67 +135,8 @@ public class ClienterService implements IClienterService{
 	@Override
 	public ClienterDetail getUserC(long userId) {
 		return clienterDao.getUserC(userId);
-	}
+	}	
 	
-	/**
-	 * @Des 用户提现 申请
-	 * @Author 胡灵波
-	 * @Date 2015年9月28日 16:58:06
-	 * @param req
-	 * @return
-	 */
-	@Override
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public WithdrawState WithdrawC(ClienterBalanceReq req)
-	{		
-		ClienterBalance clienterBalanceModel= clienterBalanceDao.selectByPrimaryKey(req.getUserId());
-
-		double amount=clienterBalanceModel.getWithdraw();
-		if(req.getAmount()>amount)
-		{	
-			return WithdrawState.MoneyError;
-		}		
-		
-	     //创建提现表
-		ClienterWithdrawForm clienterWithdrawFormModel=new ClienterWithdrawForm();
-		clienterWithdrawFormModel.setClienterId(req.getUserId());
-		clienterWithdrawFormModel.setAmount(req.getAmount());
-		String no=OrderNoHelper.generateOrderCode(req.getUserId());
-		clienterWithdrawFormModel.setWithdrawNo(no);
-		clienterWithdrawFormModel.setWithType((short)ClienterWithdrawFormWithType.Alipay.value());//支付宝
-		clienterWithdrawFormModel.setAccountInfo(req.getAccountInfo());
-		clienterWithdrawFormModel.setTrueName(req.getTrueName());
-		clienterWithdrawFormModel.setStatus((short)ClienterWithdrawFormStatus.UnAudit.value());//待审核				
-		int cwfId= clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
-		
-		ClienterBalanceReq cBReq=new ClienterBalanceReq();
-		cBReq.setUserId(req.getUserId());
-		cBReq.setAmount(-req.getAmount());
-		int cbId= clienterBalanceDao.updateMoneyByKey(cBReq);
-		
-	    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
-		clienterBalanceRecordModel.setClienterId(req.getUserId());
-		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));		
-		clienterBalanceRecordModel.setRecordType((short)CBalanceRecordType.ApplicationFor.value());//提现申请		
-		clienterBalanceRecordModel.setOptName(req.getTrueName());
-		clienterBalanceRecordModel.setOrderId((long)clienterWithdrawFormModel.getId());
-		clienterBalanceRecordModel.setRelationNo(no);
-		clienterBalanceRecordModel.setRemark("提现申请");
-		clienterBalanceRecordModel.setStatus((short)CBalanceRecordStatus.Trading.value());//交易中
-		int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);				
-		
-		if(cwfId>0&&cbId>0&&cbrId>0)
-		{
-			return WithdrawState.Success;
-		}
-		/*else
-		{
-			Error error=new Error("提现出错");
-			throw new RuntimeErrorException(error);
-		}	*/
-		
-		return WithdrawState.Failure;
-	}
 	/**
 	* @Des 获取地推员信息列表  
 	* @Author WangXuDan

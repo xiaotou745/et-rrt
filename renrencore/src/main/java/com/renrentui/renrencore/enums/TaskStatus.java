@@ -20,7 +20,11 @@ public enum TaskStatus {
 	/**
 	 * 终止
 	 */
-	Stop(4, "终止");
+	Stop(4, "终止"),
+	/**
+	 * 取消
+	 */
+	Cancel(5, "取消");
 
 	private int value = 0;
 	private String desc;

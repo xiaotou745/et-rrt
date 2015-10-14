@@ -10,7 +10,7 @@ public interface IBusinessBalanceDao {
 
     int insertSelective(BusinessBalance record);
 
-    BusinessBalance selectByPrimaryKey(Long id);
+    BusinessBalance selectByBusinessId(Long businessId);
 
     int updateByPrimaryKeySelective(BusinessBalance record);
 
