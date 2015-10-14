@@ -14,7 +14,7 @@ IF @roleID>0
             ISNULL(Url, '') AS Url ,
             amc.isButton ,
             amc.BeLock,
-            amc.AuthCode 
+            'UPDATE_TASK' as AuthCode 
     FROM    MenuInfo amc ( NOLOCK )
             JOIN RoleAuth aam ( NOLOCK ) ON aam.MenuId = amc.Id
     WHERE   aam.RoleId = @roleID
@@ -27,7 +27,7 @@ ELSE
             ISNULL(Url, '') AS Url ,
             amc.IsButton,
             amc.BeLock,
-            amc.AuthCode 
+            'UPDATE_TASK' as AuthCode 
     FROM    MenuInfo amc ( NOLOCK )
             JOIN AccountAuth aam ( NOLOCK ) ON aam.MenuId = amc.Id
     WHERE   aam.AccoutId = #{accountId}
@@ -54,10 +54,10 @@ FROM      MenuInfo a WITH ( NOLOCK )
   </select>
   
   <select id="getListMenuByParId" resultType="com.renrentui.renrenentity.MenuInfo" parameterType="int">
-  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,AuthCode FROM MenuInfo with(nolock) where ParId=#{parId,jdbcType=INTEGER}  and BeLock = CAST(0 AS BIT)	
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,'UPDATE_TASK' as AuthCode  FROM MenuInfo with(nolock) where ParId=#{parId,jdbcType=INTEGER}  and BeLock = CAST(0 AS BIT)	
   </select>
   
     <select id="getMenuById" resultType="com.renrentui.renrenentity.MenuInfo" parameterType="int">
-  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,AuthCode  FROM MenuInfo with(nolock) where Id=#{Id,jdbcType=INTEGER} 
+  	SELECT Id,ParId,MenuName,BeLock,Url,IsButton,'UPDATE_TASK' as AuthCode   FROM MenuInfo with(nolock) where Id=#{Id,jdbcType=INTEGER} 
   </select>
 </mapper>
