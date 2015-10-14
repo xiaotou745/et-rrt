@@ -106,7 +106,7 @@
    <update id="updateHadWithdrawByClienterId" parameterType="java.util.Map" >
     update ClienterBalance
     set 
-      HadWithdraw =HadWithdraw+ #{amount,jdbcType=DECIMAL},           
+      HadWithdraw =HadWithdraw+ #{amount,jdbcType=DECIMAL}          
     where ClienterId = #{clienterId,jdbcType=BIGINT}    
   </update>
   
