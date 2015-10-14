@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.dao.impl.RenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IAttachmentDao;
+import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
+import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
@@ -27,6 +29,7 @@ import com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
+import com.renrentui.renrencore.enums.BBalanceRecordType;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.PaymentMethodType;
@@ -39,6 +42,8 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.Business;
+import com.renrentui.renrenentity.BusinessBalance;
+import com.renrentui.renrenentity.BusinessBalanceRecord;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.OrderChild;
@@ -55,6 +60,7 @@ import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
@@ -95,6 +101,10 @@ public class RenRenTaskService implements IRenRenTaskService{
 	private IRenRenTaskLogDao renRenTaskLogDao;
 	@Autowired 
 	private IBusinessDao businessDao;
+	@Autowired
+	private IBusinessBalanceDao businessBalanceDao;
+	@Autowired
+	private IBusinessBalanceRecordDao businessBalanceRecordDao;
 
 	/**
 	 * 获取任务详情
@@ -285,6 +295,14 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int insert(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments) {
+		BusinessBalance oldBalance=businessBalanceDao.selectByBusinessId(record.getBusinessId());
+		if (oldBalance==null) {
+			throw new RuntimeException("没有找到id="+record.getBusinessId()+"的商户的余额信息");
+		}
+		Double totalFee=record.getAmount()*record.getTaskTotalCount();
+		if (totalFee.compareTo(oldBalance.getBalance())>0) {
+			return -1;
+		}
 		//一：将任务的模板的数据复制到模板快照表
 		TemplateSnapshotReq req=new TemplateSnapshotReq();
 		req.setTemplateId(record.getSnapshotTemplateId());
@@ -307,7 +325,10 @@ public class RenRenTaskService implements IRenRenTaskService{
 							}
 							attachmentDao.insertList(attachments);
 						}
-						//四：记录任务的操作日志
+						//四：扣除商家余额
+						updateBusinessBalance(record.getId(),record.getBusinessId(),(-1)*totalFee,
+								oldBalance.getBalance(),BBalanceRecordType.ReleaseTask,record.getCreateName());
+						//五：记录任务的操作日志
 						RenRenTaskLog logRecord=new RenRenTaskLog();
 						logRecord.setRenrenTaskId(record.getId());
 						logRecord.setOptName(record.getCreateName());
@@ -320,12 +341,33 @@ public class RenRenTaskService implements IRenRenTaskService{
 		}
 		return snapshotResult;
 	}
+	private void updateBusinessBalance(Long taskId,Long businessId,Double totalFee,
+			Double oldBalance,BBalanceRecordType recordType,String userName){
+		BusinessBalanceReq balanceReq=new BusinessBalanceReq();
+		balanceReq.setBusinessId(businessId);
+		balanceReq.setBalance(totalFee);
+		int balanceResult=businessBalanceDao.updateBalanceByBusinessId(balanceReq);
+		if (balanceResult==0) {
+			throw new RuntimeException(recordType.desc()+"更新商户余额失败");
+		}
+		BusinessBalanceRecord balanceRecord=new BusinessBalanceRecord();  
+		balanceRecord.setBusinessId(businessId);
+		balanceRecord.setAmount(totalFee);
+		balanceRecord.setAfterAmount(oldBalance+totalFee);
+		balanceRecord.setOptName(userName);
+		balanceRecord.setOrderId(taskId);
+		balanceRecord.setRelationNo(taskId.toString());
+		balanceRecord.setRecordType((short)recordType.value());
+		balanceRecord.setRemark(recordType.desc());
+		businessBalanceRecordDao.insert(balanceRecord);
+	}
 	@Override
 	public PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(
 			PagedRenRenTaskReq req) {
 		return renRenTaskDao.getPagedRenRenTaskList(req);
 	}
 	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int setTaskStatus(UpdateStatusReq req) {
 		int result= renRenTaskDao.setTaskStatus(req);
 		RenRenTaskLog logRecord=new RenRenTaskLog();
@@ -339,7 +381,19 @@ public class RenRenTaskService implements IRenRenTaskService{
 			opType=TaskOpType.Reject;
 		}else if (status==TaskStatus.Stop) {
 			opType=TaskOpType.Stop;
+		}else if(status==TaskStatus.Cancel){
+			opType=TaskOpType.CancelTask;
+			RenRenTask oldTaskModel=renRenTaskDao.selectById(req.getReocrdId());
+			BusinessBalance oldBalance=businessBalanceDao.selectByBusinessId(oldTaskModel.getBusinessId());
+			if (oldBalance==null) {
+				throw new RuntimeException("没有找到id="+oldTaskModel.getBusinessId()+"的商户的余额信息");
+			}
+			//取消任务时，给商户还钱
+			Double totalFee=oldTaskModel.getAmount()*oldTaskModel.getTaskTotalCount();
+			updateBusinessBalance(req.getReocrdId(),oldTaskModel.getBusinessId(),totalFee,
+					oldBalance.getBalance(),BBalanceRecordType.CancelTask,req.getUserName());
 		}
+
 
 		logRecord.setOptType((short)opType.value());
 		logRecord.setRemark(opType.desc());
@@ -422,19 +476,29 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int updateTask(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments){
-		RenRenTask model=renRenTaskDao.selectById(record.getId());
-		if (model==null||
-			(model.getStatus()!=TaskStatus.Reject.value()&&
-			   model.getStatus()!=TaskStatus.WaitAudit.value())) {
+		RenRenTask oldTaskModel=renRenTaskDao.selectById(record.getId());
+		if (oldTaskModel==null||
+			(oldTaskModel.getStatus()!=TaskStatus.Reject.value()&&
+			   oldTaskModel.getStatus()!=TaskStatus.WaitAudit.value())) {
+			return -1;
+		}
+		BusinessBalance oldBalance=businessBalanceDao.selectByBusinessId(record.getBusinessId());
+		if (oldBalance==null) {
+			throw new RuntimeException("没有找到id="+record.getBusinessId()+"的商户的余额信息");
+		}
+		Double totalFee=record.getAmount()*record.getTaskTotalCount();
+		if (totalFee.compareTo(oldBalance.getBalance())>0) {
 			return -1;
 		}
 		StringBuilder sbRemark=new StringBuilder();
 		
 		//如果任务的合同模板有变更，则重新生成模板的快照
-		String templateremark=updateTemplateSnapshot(record,model);
-		//如果任务的属性有变更，则更新db（在此之前必须先更新快照，否则模板id不对）
-		String taskRemark=getUpdateRemark(record,model);
-		if (taskRemark!=null&&!taskRemark.isEmpty()) {
+		Long oldTemplateId=record.getSnapshotTemplateId();
+		String templateremark=updateTemplateSnapshot(record,oldTaskModel);
+		//如果任务的属性或模板快照有变更，则更新db（在此之前必须先更新快照，否则模板id不对）
+		String taskRemark=getUpdateRemark(record,oldTaskModel);
+		if ((taskRemark!=null&&!taskRemark.isEmpty())||
+			!oldTemplateId.equals(record.getSnapshotTemplateId())) {
 			int result=renRenTaskDao.update(record);
 			if (result==0) {
 				throw new RuntimeException("更新任务基础信息时失败");
@@ -454,7 +518,20 @@ public class RenRenTaskService implements IRenRenTaskService{
 		if (regionRemark!=null&&!regionRemark.isEmpty()) {
 			sbRemark.append(regionRemark);
 		}
-		
+		//商家id发生了变更，则需要将钱返回给原来的商家
+		Double oldTotalFee=oldTaskModel.getAmount()*oldTaskModel.getTaskTotalCount();
+		if (!record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
+			BusinessBalance oldBusinessBalance=businessBalanceDao.selectByBusinessId(oldTaskModel.getBusinessId());
+			if (oldBusinessBalance==null) {
+				throw new RuntimeException("没有找到id="+oldTaskModel.getBusinessId()+"的商户的余额信息");
+			}
+			updateBusinessBalance(record.getId(),oldTaskModel.getBusinessId(),oldTotalFee,
+					oldBusinessBalance.getBalance(),BBalanceRecordType.CancelTask,record.getModifyName());
+		}else if(!oldTotalFee.equals(totalFee)){
+			//商家id没变，但是任务的费用发生了变化，则对商户多退少补
+			updateBusinessBalance(record.getId(),record.getBusinessId(),oldTotalFee-totalFee,
+						oldBalance.getBalance(),BBalanceRecordType.UpdateTask,record.getModifyName());
+		}
 		//记录操作日志
 		if (!sbRemark.toString().isEmpty()) {
 			RenRenTaskLog logRecord=new RenRenTaskLog();
@@ -637,5 +714,9 @@ public class RenRenTaskService implements IRenRenTaskService{
 			sb.append("关联商户从:"+oldBusiness.getCompanyName()+"改为了:"+nowBusiness.getCompanyName()+";");
 		}
 		return sb.toString();
+	}
+	@Override
+	public List<RenRenTask> getListByTemplateId(Long templateId) {
+		return renRenTaskDao.getListByTemplateId(templateId);
 	}
 }

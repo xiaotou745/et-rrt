@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
+import com.renrentui.renrenapi.dao.impl.RenRenTaskDao;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
+import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.enums.TemplateStatus;
@@ -40,6 +42,8 @@ public class TemplateController {
 	private ITemplateService templateService;
 	@Autowired
 	private IBusinessService businessService;
+	@Autowired
+	private IRenRenTaskService renRenTaskService;
 	@RequestMapping("newtemplate")
 	public ModelAndView newTemplate() {
 		ModelAndView model = new ModelAndView("adminView");
@@ -109,16 +113,34 @@ public class TemplateController {
 	}
 	@RequestMapping("updatetemplate")
 	@ResponseBody
-	public int updateTemplate(HttpServletRequest request,Long id,String tempName,String tempRemark,Long businessId,String child) {
+	public String updateTemplate(HttpServletRequest request,Long id,String tempName,String tempRemark,Long businessId,String child) {
 		if (tempName==null||tempName.isEmpty()||
 				tempRemark==null||tempRemark.isEmpty()||
 				businessId==null||businessId<=0||
 				child==null||child.isEmpty()) {
-				return -1;
+				return "-1";
 			}
 		TemplateModel model=getTemplateModel(request,id,tempName,tempRemark,businessId,child);
 		model.setCreateName("");
-		return templateService.update(model);
+		Integer result= templateService.update(model);
+		if (result>0) {
+			List<RenRenTask> taskList=renRenTaskService.getListByTemplateId(id);
+			if (taskList!=null&&taskList.size()>0) {
+				StringBuilder sb=new StringBuilder();
+				for (RenRenTask renRenTask : taskList) {
+					if (!sb.toString().isEmpty()) {
+						sb.append("\n");
+					}
+					sb.append(renRenTask.getId());
+					sb.append(";");
+					sb.append(renRenTask.getTaskTitle());
+					sb.append(";");
+					sb.append(renRenTask.getCreateName());
+				}
+				return sb.toString();
+			}
+		}
+		return result.toString();
 	}
 	private TemplateModel getTemplateModel(HttpServletRequest request,Long id,String tempName,String tempRemark,Long businessId,String child){
 		UserContext context = UserContext.getCurrentContext(request);

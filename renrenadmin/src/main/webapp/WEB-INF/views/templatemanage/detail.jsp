@@ -137,12 +137,17 @@ $("#save").click(function(){
 			url : url,
 			data : paramaters,
 			success : function(result) {
-				if (result > 0) {
+				if (result =="-1") {
+					alert("操作失败：数据异常");
+					return;
+				} else if(result=="0") {
+					alert("操作失败：请重试");
+				}else if(result=="1"){
 					alert("操作成功");
-					window.location.href = window.location.href;
-				} else {
-					alert("操作失败");
+				}else{
+					alert("由于更新了模板，以下任务的模板数据不是修改后的模板数据\n如果要将任务的模板数据更新为修改后的模板数据，请重新保存以下任务\n"+result);
 				}
+				window.location.href = window.location.href;
 			}
 		});
 	});
