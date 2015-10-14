@@ -187,6 +187,10 @@ public class TaskManageController {
 		}
 		return attachments;
 	}
+	/**
+	 * 审核任务 列表
+	 * @return
+	 */
 	@RequestMapping("audittask")
 	public ModelAndView audiTask() {
 		ModelAndView model = new ModelAndView("adminView");
@@ -201,6 +205,11 @@ public class TaskManageController {
 		model.addObject("templatelist", templatelist);
 		return model;
 	}
+	/**
+	 * 审核任务 列表  数据
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("audittaskdo")
 	public ModelAndView audiTaskDo(PagedRenRenTaskReq req) {
 		ModelAndView model = new ModelAndView("taskmanage/audittaskdo");
