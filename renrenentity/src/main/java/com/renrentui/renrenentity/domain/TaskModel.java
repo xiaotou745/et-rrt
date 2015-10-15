@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.renrentui.renrencore.enums.OrderStatus;
 import com.renrentui.renrencore.enums.PaymentMethodType;
+import com.renrentui.renrencore.util.PropertyUtils;
 
 public class TaskModel implements Serializable {
 	private long taskId;
@@ -138,6 +139,8 @@ public class TaskModel implements Serializable {
 	}
 
 	public String getLogo() {
+//		if(!this.logo.equals(""))
+//			return PropertyUtils.getProperty("ImgShowUrl")+this.logo;
 		return logo;
 	}
 

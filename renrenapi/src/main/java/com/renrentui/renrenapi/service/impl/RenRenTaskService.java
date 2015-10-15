@@ -114,6 +114,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 	public TaskDetail getTaskDetail(TaskDetailReq req) {
 		
 		TaskDetail detail=renRenTaskDao.getTaskDetail(req);//任务信息
+		detail.setOrderId(req.getOrderId());
 		if(detail==null)//没有找到任务信息
 			return null;
 		//控件列表
