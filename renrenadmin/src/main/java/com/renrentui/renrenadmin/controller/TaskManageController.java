@@ -69,8 +69,10 @@ public class TaskManageController {
 		model.addObject("provincelist", getOpenCityByJiBie(list,1));
 		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,2);
 		model.addObject("pro_city", getCityStr(citylistlist));
-		List<PublicProvinceCity> regionlist =getOpenCityByJiBie(list,3);
-		model.addObject("city_region", getCityStr(regionlist));
+//		List<PublicProvinceCity> regionlist =getOpenCityByJiBie(list,3);
+//		String city_region=getCityStr(regionlist);
+		String city_region="";
+		model.addObject("city_region", city_region);
 		return model;
 	}
 
