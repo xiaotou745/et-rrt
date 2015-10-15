@@ -128,24 +128,25 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">支付方式: </label>
-							<div class="col-sm-8">
-								<select id="paymentMethod" name="paymentMethod"
-									class="form-control m-b">
-									<option value="1">线下支付</option>
-									<!--<option value="2">线上支付</option> -->
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
 							<label class="col-sm-4 control-label">任务状态:</label>
 							<div class="col-sm-8">
 								<%=HtmlHelper.getSelect("status", EnumHelper.GetEnumItems(TaskStatus.class), "desc", "value",null,"-1","全部")%>
 							</div>
 						</div>
 					</div>
+					<input type="hidden" name="paymentMethod" id="paymentMethod" value="1" />
+<!-- 					<div class="col-lg-3"> -->
+<!-- 						<div class="form-group"> -->
+<!-- 							<label class="col-sm-4 control-label">支付方式: </label> -->
+<!-- 							<div class="col-sm-8"> -->
+<!-- 								<select id="paymentMethod" name="paymentMethod" -->
+<!-- 									class="form-control m-b"> -->
+<!-- 									<option value="1">线下支付</option> -->
+<!-- 									<option value="2">线上支付</option> -->
+<!-- 								</select> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 				</div>
 				<div class="row">
 					<div class="col-lg-3">

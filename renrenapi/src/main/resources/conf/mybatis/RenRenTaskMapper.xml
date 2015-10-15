@@ -121,8 +121,8 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 	    <if test="status != null and status>-1">
 			and a.status=${status}
 		</if>
-	    <if test="snapshotTemplateId != null and snapshotTemplateId>0">
-			and a.SnapshotTemplateId=${snapshotTemplateId}
+	    <if test="templateId != null and templateId>-1">
+			and b.templateId=${templateId}
 		</if>
 	    <if test="paymentMethod != null and paymentMethod>0">
 			and a.paymentMethod=${paymentMethod}

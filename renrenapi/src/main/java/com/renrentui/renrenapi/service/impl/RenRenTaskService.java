@@ -377,11 +377,15 @@ public class RenRenTaskService implements IRenRenTaskService{
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int setTaskStatus(UpdateStatusReq req) {
+		TaskStatus status=TaskStatus.getEnum(req.getStatus());
+		if (status==TaskStatus.WaitAudit||status==TaskStatus.Expired) {
+			throw new RuntimeException("不能手工将任务置为待审核或过期状态");
+		}
 		int result= renRenTaskDao.setTaskStatus(req);
 		RenRenTaskLog logRecord=new RenRenTaskLog();
 		logRecord.setRenrenTaskId(req.getReocrdId());
 		logRecord.setOptName(req.getUserName());
-		TaskStatus status=TaskStatus.getEnum(req.getStatus());
+
 		TaskOpType opType=TaskOpType.NewTask;
 		if (status==TaskStatus.Audited) {
 			opType=TaskOpType.Audited;
