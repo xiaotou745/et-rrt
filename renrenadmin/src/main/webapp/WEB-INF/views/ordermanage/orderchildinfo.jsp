@@ -42,7 +42,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 							<td><%=view.getList().get(i).getTitle()%></td>
 							<%if(view.getList().get(i).getControlType().equals("FileUpload"))
 							{%>
-							<td><img alt="" src="<%=PropertyUtils.getProperty("ImgShowUrl")+view.getList().get(i).getControlValue()%>"></td>
+							<td><img alt="" src="<%=view.getList().get(i).getControlValue().equals("")?"":PropertyUtils.getProperty("ImgShowUrl")+view.getList().get(i).getControlValue()%>"></td>
 							<%}
 							else{%>
 							<td><%=view.getList().get(i).getControlValue()%></td>
