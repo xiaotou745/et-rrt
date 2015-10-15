@@ -33,7 +33,8 @@ import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
-import com.renrentui.renrenentity.req.ClienterBalanceReq;import com.renrentui.renrenentity.req.FileUploadReq;
+import com.renrentui.renrenentity.req.ClienterBalanceReq;
+import com.renrentui.renrenentity.req.FileUploadReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
@@ -57,10 +58,10 @@ public class UsercService implements IUsercService {
 
 	@Autowired
 	IClienterService clienterService;
-	
+
 	@Autowired
-	private IClienterBalanceService clienterBalanceService;	
-	
+	private IClienterBalanceService clienterBalanceService;
+
 	@Autowired
 	private IClienterWithdrawFormService clienterWithdrawFormService;
 
@@ -83,9 +84,10 @@ public class UsercService implements IUsercService {
 		if (req.getVerifyCode() == null || req.getVerifyCode().equals(""))// 验证码为空
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value())
 					.setMsg(ForgotPwdCode.VerCodeNull.desc());
-		String key=RedissCacheKey.RR_Clienter_sendcode_forgetPassword+ req.getPhoneNo();//RedisKey
-		String redisValueString= redisService.get(key, String.class);
-		if (!req.getVerifyCode().equals(redisValueString))// 验证码不正确 
+		String key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
+				+ req.getPhoneNo();// RedisKey
+		String redisValueString = redisService.get(key, String.class);
+		if (!req.getVerifyCode().equals(redisValueString))// 验证码不正确
 			return resultModel.setCode(ForgotPwdCode.VerCodeError.value())
 					.setMsg(ForgotPwdCode.VerCodeError.desc());
 		if (clienterService.forgotPwdUserc(req))// 修改密码成功
@@ -114,28 +116,26 @@ public class UsercService implements IUsercService {
 
 	/**
 	 * 用户申请提现
+	 * 
 	 * @author 胡灵波
 	 * @date 2015年9月28日 11:30:15
 	 * @return
 	 */
-	@Override	
-	public HttpResultModel<Object> withdraw(ClienterBalanceReq req)
-	{
-		HttpResultModel<Object> resultModel=new HttpResultModel<Object>();
-		
-		if(req.getUserId()<1)
-		{
+	@Override
+	public HttpResultModel<Object> withdraw(ClienterBalanceReq req) {
+		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+
+		if (req.getUserId() < 1) {
 			resultModel.setCode(WithdrawState.Failure.value());
 			resultModel.setMsg(WithdrawState.Failure.desc());
 			return resultModel;
-		}		
-		if(req.getAmount()<10)
-		{
+		}
+		if (req.getAmount() < 10) {
 			resultModel.setCode(WithdrawState.ParaError.value());
 			resultModel.setMsg(WithdrawState.ParaError.desc());
 			return resultModel;
 		}
-		WithdrawState code=clienterWithdrawFormService.WithdrawC(req);		
+		WithdrawState code = clienterWithdrawFormService.WithdrawC(req);
 		resultModel.setCode(code.value());
 		resultModel.setMsg(code.desc());
 		return resultModel;
@@ -157,9 +157,10 @@ public class UsercService implements IUsercService {
 		if (req.getVerifyCode().equals(""))// 验证码不能为空
 			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
 					SignUpCode.VerCodeNull.desc());
-		
-		String key=RedissCacheKey.RR_Clienter_sendcode_register+ req.getPhoneNo();//注册key
-		String redisValueString= redisService.get(key, String.class);
+
+		String key = RedissCacheKey.RR_Clienter_sendcode_register
+				+ req.getPhoneNo();// 注册key
+		String redisValueString = redisService.get(key, String.class);
 		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
 			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
 					SignUpCode.VerCodeError.desc());
@@ -184,18 +185,22 @@ public class UsercService implements IUsercService {
 	 */
 	@Override
 	public HttpResultModel<Object> signin(SignInReq req) {
-		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
-		SignInResp signInResp=new SignInResp();
-		if(req.getPhoneNo().equals("")||req.getPassWord().equals(""))//手机号或密码为空
-			return  resultModel.setCode(SignInCode.PhoneOrPwdNull.value()).setMsg(SignInCode.PhoneOrPwdNull.desc());
-		if(!clienterService.isExistPhoneC(req.getPhoneNo()))//手机号未注册
-			return resultModel.setCode(SignInCode.PhoneUnRegistered.value()).setMsg(SignInCode.PhoneUnRegistered.desc());
-		Clienter clienterModel=clienterService.queryClienter(req);
-		if(clienterModel==null||clienterModel.getId()<=0)//手机号或密码错误
-			return resultModel.setCode(SignInCode.PhoneOrPwdError.value()).setMsg(SignInCode.PhoneOrPwdError.desc());
+		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+		SignInResp signInResp = new SignInResp();
+		if (req.getPhoneNo().equals("") || req.getPassWord().equals(""))// 手机号或密码为空
+			return resultModel.setCode(SignInCode.PhoneOrPwdNull.value())
+					.setMsg(SignInCode.PhoneOrPwdNull.desc());
+		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号未注册
+			return resultModel.setCode(SignInCode.PhoneUnRegistered.value())
+					.setMsg(SignInCode.PhoneUnRegistered.desc());
+		Clienter clienterModel = clienterService.queryClienter(req);
+		if (clienterModel == null || clienterModel.getId() <= 0)// 手机号或密码错误
+			return resultModel.setCode(SignInCode.PhoneOrPwdError.value())
+					.setMsg(SignInCode.PhoneOrPwdError.desc());
 		signInResp.setUserId(clienterModel.getId());
 		signInResp.setUserName(clienterModel.getClienterName());
-		return resultModel.setCode(SignInCode.Success.value()).setMsg(SignInCode.Success.desc()).setData(signInResp);
+		return resultModel.setCode(SignInCode.Success.value())
+				.setMsg(SignInCode.Success.desc()).setData(signInResp);
 	}
 
 	/**
@@ -210,37 +215,39 @@ public class UsercService implements IUsercService {
 		try {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
 			String key = "";
-			String phoneNo=req.getPhoneNo();
+			String phoneNo = req.getPhoneNo();
+			String Content = "欢迎您的使用，验证码：#验证码#，请妥善保管相关信息。若非您本人操作，请忽略。";
 			// 类型 1注册 2修改密码 3忘记密码
-			boolean checkPhoneNo=clienterService.isExistPhoneC(phoneNo);
-			if (req.getsType() == 1) {				// 注册
-				if(checkPhoneNo){				//手机号存在
-					return resultModel.setCode(SendSmsType.PhoneExists.value()).setMsg(
-							SendSmsType.PhoneExists.desc());//该手机号已经存在，不能注册
+			boolean checkPhoneNo = clienterService.isExistPhoneC(phoneNo);
+			if (req.getsType() == 1) { // 注册
+				if (checkPhoneNo) { // 手机号存在
+					return resultModel.setCode(SendSmsType.PhoneExists.value())
+							.setMsg(SendSmsType.PhoneExists.desc());// 该手机号已经存在，不能注册
 				}
-				key = RedissCacheKey.RR_Clienter_sendcode_register
-						+ phoneNo;
-			} 
-			else if(!checkPhoneNo){     //修改密码  忘记密码   手机号不存在
-				return resultModel.setCode(SendSmsType.PhoneNotExists.value()).setMsg(
-						SendSmsType.PhoneNotExists.desc());//该手机号不存在，不能修改或忘记密码
+				key = RedissCacheKey.RR_Clienter_sendcode_register + phoneNo;
+//				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于注册，如非本人操作，请不要理会";
+			} else if (!checkPhoneNo) { // 修改密码 忘记密码 手机号不存在
+				return resultModel.setCode(SendSmsType.PhoneNotExists.value())
+						.setMsg(SendSmsType.PhoneNotExists.desc());// 该手机号不存在，不能修改或忘记密码
 			}
 			if (req.getsType() == 2) {
 				// 修改密码
 				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
 						+ phoneNo;
+//				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
 			} else if (req.getsType() == 3) {
 				// 忘记密码
 				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
 						+ phoneNo;
+//				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于找回密码，如非本人操作，请不要理会";
 			}
 			if (key == "")
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
 						SendSmsType.Fail.desc());// 发送失败
-			String code = RandomCodeStrGenerator.generateCodeNum(6);//获取随机数
+			String code = RandomCodeStrGenerator.generateCodeNum(6);// 获取随机数
+			Content = Content.replace("#验证码#", code);
 			redisService.set(key, code, 60 * 5);
-			long resultValue = SmsUtils.sendSMS(phoneNo, "您的验证码为:"
-					+ code);
+			long resultValue = SmsUtils.sendSMS(phoneNo, Content);
 			if (resultValue <= 0) {
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
 						SendSmsType.Fail.desc());// 发送失败
@@ -256,31 +263,36 @@ public class UsercService implements IUsercService {
 		}
 		return null;
 	}
+
 	/**
-	* @Des 获取用户收入 
-	* @Author WangXuDan
-	* @Date 2015年9月28日17:31:59
-	* @Return
-	*/
+	 * @Des 获取用户收入
+	 * @Author WangXuDan
+	 * @Date 2015年9月28日17:31:59
+	 * @Return
+	 */
 	@Override
 	public HttpResultModel<Object> getuserc(GetUserCReq req) {
-		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
-		GetUserCResp resp=new GetUserCResp();
-		if(!clienterService.isExistUserC(req.getUserId()))//用户不存在
-			return  resultModel.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(MyIncomeCode.UserIdUnexist.desc());
-		ClienterDetail clienterModel=clienterService.getUserC(req.getUserId());
-		if(clienterModel==null||clienterModel.getId()<=0)//获取信息失败
-			return resultModel.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(MyIncomeCode.QueryIncomeError.desc());
+		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+		GetUserCResp resp = new GetUserCResp();
+		if (!clienterService.isExistUserC(req.getUserId()))// 用户不存在
+			return resultModel.setCode(MyIncomeCode.UserIdUnexist.value())
+					.setMsg(MyIncomeCode.UserIdUnexist.desc());
+		ClienterDetail clienterModel = clienterService
+				.getUserC(req.getUserId());
+		if (clienterModel == null || clienterModel.getId() <= 0)// 获取信息失败
+			return resultModel.setCode(MyIncomeCode.QueryIncomeError.value())
+					.setMsg(MyIncomeCode.QueryIncomeError.desc());
 		resp.setUserId(clienterModel.getId());
 		resp.setUserName(clienterModel.getClienterName());
 		resp.setPhoneNo(clienterModel.getPhoneNo());
 		resp.setHeadImage(clienterModel.getHeadImage());
-		//全路径
-		String fullHeadImage="";
-		if(!StringUtils.isEmpty(clienterModel.getHeadImage()))
-				 fullHeadImage= PropertyUtils.getProperty("ImgShowUrl")+clienterModel.getHeadImage();
+		// 全路径
+		String fullHeadImage = "";
+		if (!StringUtils.isEmpty(clienterModel.getHeadImage()))
+			fullHeadImage = PropertyUtils.getProperty("ImgShowUrl")
+					+ clienterModel.getHeadImage();
 		resp.setFullHeadImage(fullHeadImage);
-		
+
 		resp.setCityCode(clienterModel.getCityCode());
 		resp.setCityName(clienterModel.getCityName());
 		resp.setSex(clienterModel.getSex());
@@ -293,71 +305,64 @@ public class UsercService implements IUsercService {
 		resp.setChecking(clienterModel.getChecking());
 		resp.setWithdrawing(clienterModel.getWithdrawing());
 		resp.setTotalAmount(clienterModel.getTotalAmount());
-		return resultModel.setCode(MyIncomeCode.Success.value()).setMsg(MyIncomeCode.Success.desc()).setData(resp);
-		
+		return resultModel.setCode(MyIncomeCode.Success.value())
+				.setMsg(MyIncomeCode.Success.desc()).setData(resp);
+
 	}
-	
+
 	/**
-	* @Des  C端修改个人基础信息
-	* @Author CaoHeYang
-	* @Date 20151008
-	* @param req
-	* @Return
-	*/
+	 * @Des C端修改个人基础信息
+	 * @Author CaoHeYang
+	 * @Date 20151008
+	 * @param req
+	 * @Return
+	 */
 	@Override
 	public HttpResultModel<Object> modifyuserc(ModifyUserCReq req) {
-		HttpResultModel<Object> resultModel= new HttpResultModel<Object>();
-		if(req.getAge()==null||req.getAge()<=0)
-		{
-			return resultModel.setCode(ModifyUserCReturnCode.AgeError.value()).setMsg(ModifyUserCReturnCode.AgeError.desc());
+		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+		if (req.getAge() == null || req.getAge() <= 0) {
+			return resultModel.setCode(ModifyUserCReturnCode.AgeError.value())
+					.setMsg(ModifyUserCReturnCode.AgeError.desc());
 		}
-		if(req.getSex()==null||(req.getSex()!=1&&req.getSex()!=2))
-		{
-			return resultModel.setCode(ModifyUserCReturnCode.SexError.value()).setMsg(ModifyUserCReturnCode.SexError.desc());
+		if (req.getSex() == null || (req.getSex() != 1 && req.getSex() != 2)) {
+			return resultModel.setCode(ModifyUserCReturnCode.SexError.value())
+					.setMsg(ModifyUserCReturnCode.SexError.desc());
 		}
-		if(req.getUserName()==null||req.getUserName().isEmpty())
-		{
-			return resultModel.setCode(ModifyUserCReturnCode.UserNameError.value()).setMsg(ModifyUserCReturnCode.UserNameError.desc());
+		if (req.getUserName() == null || req.getUserName().isEmpty()) {
+			return resultModel.setCode(
+					ModifyUserCReturnCode.UserNameError.value()).setMsg(
+					ModifyUserCReturnCode.UserNameError.desc());
 		}
-		if(req.getUserId()==0||clienterService.modifyuserc(req)<=0)
-		{
-			return resultModel.setCode(ModifyUserCReturnCode.UserError.value()).setMsg(ModifyUserCReturnCode.UserError.desc());
+		if (req.getUserId() == 0 || clienterService.modifyuserc(req) <= 0) {
+			return resultModel.setCode(ModifyUserCReturnCode.UserError.value())
+					.setMsg(ModifyUserCReturnCode.UserError.desc());
 		}
-		return resultModel.setCode(ModifyUserCReturnCode.Success.value()).setMsg(ModifyUserCReturnCode.Success.desc());
+		return resultModel.setCode(ModifyUserCReturnCode.Success.value())
+				.setMsg(ModifyUserCReturnCode.Success.desc());
 	}
 
 	/**
 	 * 上传文件
+	 * 
 	 * @author 胡灵波
 	 * @date 2015年10月12日 15:58:42
 	 * @return
-	 *//*
-	@Override
-	public HttpResultModel<Object> FileUpload(FileUploadReq req) {
-		HttpResultModel<Object> resultModel=new HttpResultModel<Object>();       		
-		
-		byte [] bytes=req.getBytes();
-		String fileName=req.getFileName();
-		int uploadForm=req.getUploadForm();
-		
-		FileOutputStream fos = null;  
-		       try{  
-		            fos = new FileOutputStream("F:\\"+fileName);  
-		              
-		            //将字节数组bytes中的数据，写入文件输出流fos中  
-		            fos.write(bytes);  
-		            fos.flush();  
-		        }catch (Exception e){  
-		            e.printStackTrace();  		       
-		        }finally{  
-		            try {  
-		                fos.close();  
-		            } catch (IOException e) {  
-		                e.printStackTrace();  
-		            }     
-		        }  		        
-
-       return resultModel;
-	}*/
+	 */
+	/*
+	 * @Override public HttpResultModel<Object> FileUpload(FileUploadReq req) {
+	 * HttpResultModel<Object> resultModel=new HttpResultModel<Object>();
+	 * 
+	 * byte [] bytes=req.getBytes(); String fileName=req.getFileName(); int
+	 * uploadForm=req.getUploadForm();
+	 * 
+	 * FileOutputStream fos = null; try{ fos = new
+	 * FileOutputStream("F:\\"+fileName);
+	 * 
+	 * //将字节数组bytes中的数据，写入文件输出流fos中 fos.write(bytes); fos.flush(); }catch
+	 * (Exception e){ e.printStackTrace(); }finally{ try { fos.close(); } catch
+	 * (IOException e) { e.printStackTrace(); } }
+	 * 
+	 * return resultModel; }
+	 */
 
 }
