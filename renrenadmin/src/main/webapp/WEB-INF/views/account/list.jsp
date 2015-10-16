@@ -15,7 +15,7 @@ List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
 	<div class="row">
 	    <div class="col-lg-12">
 	        <div class="input-group" style="margin-bottom:5px;">
-	            <input type="text" placeholder="请输入登录名称" class="input-sm form-control" id="txtKeyword" style="width:250px;height:34px;" value=""/>
+	            <input type="text" placeholder="请输入真实姓名" class="input-sm form-control" id="txtKeyword" style="width:250px;height:34px;" value=""/>
 	            <button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left:3px;">查询</button>
 	            <button type="button" class="btn btn-w-m btn-primary" style="margin-left:3px;" data-toggle="modal" data-target="#myModal" id="addUser">添加用户</button>
 	        </div>
