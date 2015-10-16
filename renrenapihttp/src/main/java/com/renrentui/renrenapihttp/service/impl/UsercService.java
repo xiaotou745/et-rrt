@@ -216,7 +216,7 @@ public class UsercService implements IUsercService {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
 			String key = "";
 			String phoneNo = req.getPhoneNo();
-			String Content = "欢迎您的使用，验证码：#验证码#，请妥善保管相关信息。若非您本人操作，请忽略。";
+			String Content = "";// "欢迎您的使用，验证码：#验证码#，请妥善保管相关信息。若非您本人操作，请忽略。";
 			// 类型 1注册 2修改密码 3忘记密码
 			boolean checkPhoneNo = clienterService.isExistPhoneC(phoneNo);
 			if (req.getsType() == 1) { // 注册
@@ -225,7 +225,7 @@ public class UsercService implements IUsercService {
 							.setMsg(SendSmsType.PhoneExists.desc());// 该手机号已经存在，不能注册
 				}
 				key = RedissCacheKey.RR_Clienter_sendcode_register + phoneNo;
-//				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于注册，如非本人操作，请不要理会";
+				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于注册，如非本人操作，请不要理会";
 			} else if (!checkPhoneNo) { // 修改密码 忘记密码 手机号不存在
 				return resultModel.setCode(SendSmsType.PhoneNotExists.value())
 						.setMsg(SendSmsType.PhoneNotExists.desc());// 该手机号不存在，不能修改或忘记密码
@@ -234,12 +234,12 @@ public class UsercService implements IUsercService {
 				// 修改密码
 				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
 						+ phoneNo;
-//				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
+				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
 			} else if (req.getsType() == 3) {
 				// 忘记密码
 				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
 						+ phoneNo;
-//				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于找回密码，如非本人操作，请不要理会";
+				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于找回密码，如非本人操作，请不要理会";
 			}
 			if (key == "")
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
