@@ -9,7 +9,7 @@
 
 	<import resource="classpath:conf/core/dev-context.xml" />
 
-	<!-- mvn clean install -DskipTest=true -->
+	<!-- mvn clean install -DskipTests=true -->
 	<!-- OrderWindowService -->
 	<context:property-placeholder
 		ignore-resource-not-found="true" location="classpath*:constant.properties" />
