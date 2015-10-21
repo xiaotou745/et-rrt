@@ -4,7 +4,7 @@
 	<groupId>renrentui</groupId>
 	<artifactId>renrenservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<!-- <packaging>jar</packaging> -->
 	<name>renrenservice</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -190,8 +190,10 @@
 						<!-- <exclude>dataSource/sqlserver/*</exclude> -->
 						<!-- <exclude>constant.properties</exclude> -->
 						<exclude>assemblies/*</exclude>
+						<exclude>**/*Test.java</exclude>
 						<!--<exclude>com/*</exclude> -->
 					</excludes>
+					<!-- <include>**/*Tests.java</include> -->
 				</configuration>
 			</plugin>
 		</plugins>
