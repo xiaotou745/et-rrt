@@ -1,6 +1,6 @@
-[2015-10-14 20:44:19 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@735b478: startup date [Wed Oct 14 20:44:19 CST 2015]; root of context hierarchy
-[2015-10-14 20:44:19 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
-[2015-10-14 20:44:19 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
-[2015-10-14 20:44:20 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
-[2015-10-14 20:44:20 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
-[2015-10-14 20:44:20 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
+[2015-10-21 09:57:58 main] org.springframework.context.support.AbstractApplicationContext 510: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@735b478: startup date [Wed Oct 21 09:57:58 CST 2015]; root of context hierarchy
+[2015-10-21 09:57:58 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/dev-context.xml]
+[2015-10-21 09:57:58 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/spring-datasource.xml]
+[2015-10-21 09:57:58 main] org.springframework.beans.factory.xml.XmlBeanDefinitionReader 317: Loading XML bean definitions from class path resource [conf/core/core-context.xml]
+[2015-10-21 09:57:59 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-conf.properties]
+[2015-10-21 09:57:59 main] org.springframework.core.io.support.PropertiesLoaderSupport 172: Loading properties file from class path resource [conf/custom/dev-env.properties]
