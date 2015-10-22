@@ -20,6 +20,7 @@ import org.apache.cxf.transport.http.AbstractHTTPDestination;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+
 import com.renrentui.renrenapi.common.LogServiceBLL;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.SystemUtils;
@@ -100,16 +101,10 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			Method methodName = (Method) inMessage.get("org.apache.cxf.resource.method");
 	
 			HttpServletRequest request = (HttpServletRequest) inMessage.get(AbstractHTTPDestination.HTTP_REQUEST);// 这句可以获取到request
-			String ip = "";
-			if (request != null) {
-				ip = request.getRemoteAddr();
-			}
-			String appServerIP = "localhost";
+			String clientIp = SystemUtils.getClientIp(request);
+			
 			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
-			if (ipinfoList != null && ipinfoList.size() > 0) {
-				appServerIP = JsonUtil.obj2string(ipinfoList);
-			}
-	
+			String appServerIP = JsonUtil.obj2string(ipinfoList);
 	
 			Date endDate = new Date();
 			Date requestTime = (Date) exchange.get("requestTime");
@@ -120,7 +115,7 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			logEngity.setUserID(-1);
 			logEngity.setUserName("");
 			logEngity.setRequestType(0);
-			logEngity.setClientIp(ip);
+			logEngity.setClientIp(clientIp);
 			logEngity.setSourceSys("renrenapihttp");
 			logEngity.setRequestUrl(url);
 			logEngity.setParam(param);
