@@ -8,7 +8,7 @@
 <div class="row"  style="margin-top: 15px;margin-left: 5px;">
 	<div class="col-lg-2">
 		<div class="form-group">
-				<input id="txtClienterName" type="tel" name="txtClienterName" placeholder="地推员姓名" class="form-control"/>
+				<input id="txtClienterName" type="text" name="txtClienterName" placeholder="地推员姓名" class="form-control"/>
 		</div>
 	</div>
 <%-- 	<div class="col-lg-3">
@@ -24,7 +24,7 @@
 	<input type="hidden" name="clienterStatus" id="clienterStatus" value="1"/> 
 	<div class="col-lg-2">
 		<div class="form-group">
-				<input id="txtPhoneNo" type="tel" name="txtPhoneNo" placeholder="手机号" class="form-control"/>
+				<input id="txtPhoneNo" type="text" name="txtPhoneNo" placeholder="手机号" class="form-control"/>
 		</div>
 	</div>
 	<div class="col-lg-2">
