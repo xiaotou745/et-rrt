@@ -11,6 +11,9 @@ import org.apache.cxf.phase.Phase;
 
 
 
+
+
+
 import com.renrentui.renrencore.security.AES;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.PropertyUtils;
@@ -26,38 +29,39 @@ public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 	//解密数据
 	@Override
 	public void handleMessage(Message message) throws Fault {
-		String encryptMsg="";
-		String decryptMsg="";
-		logCustomerInfo(message,encryptMsg,decryptMsg);
-		InputStream mContentString = message.getContent(InputStream.class);
-		String inputMsg = StreamUtils.copyToStringNoclose(mContentString);
-		logCustomerInfo(message,inputMsg,decryptMsg);
-		
-		AesParameterReq req = JsonUtil.str2obj(inputMsg,AesParameterReq.class);
-		encryptMsg=req.getData();
-		decryptMsg=req.getData();
-		logCustomerInfo(message,encryptMsg,decryptMsg);
-		String interceptSwith =PropertyUtils.getProperty("InterceptSwith");//"1" 开启加密
-		if(interceptSwith.equals("1"))
-		{
-			System.out.println("已开启AES解密拦截器");
-			try {
-				decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(),"\n"));// AES解密
-				logCustomerInfo(message,encryptMsg,decryptMsg);
-				InputStream stream=StreamUtils.StringToInputStream(decryptMsg);
-				message.setContent(InputStream.class, stream);//回填流
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage());
+		String encryptMsg = "";
+		String decryptMsg = "";
+		try {
+			InputStream inputStream = message.getContent(InputStream.class);
+			String inputMsg = StreamUtils.copyToStringNoclose(inputStream);
+			String interceptSwith = PropertyUtils.getProperty("InterceptSwith");// "1"// 开启加密										
+			if (interceptSwith.equals("1")) {
+				System.out.println("已开启AES解密拦截器");
+				if (inputMsg.indexOf("data")<0) {
+					throw new RuntimeException("传递的入参是没有加密的字符串，但是apihttp项目开启了AES解密");
+				}
+				AesParameterReq req = JsonUtil.str2obj(inputMsg,AesParameterReq.class);
+				encryptMsg = req.getData();
+				decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));// AES解密
+			} else {
+				encryptMsg = inputMsg;
+				decryptMsg = inputMsg;
+				System.out.println("暂未开启AES解密拦截器");
+				if (inputMsg.indexOf("data")>0) {
+					throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
+				}
 			}
+			InputStream stream = StreamUtils.StringToInputStream(decryptMsg);
+			message.setContent(InputStream.class, stream);// 回填流
+		} catch (Exception e) {
+			logCustomerInfo(message, encryptMsg, decryptMsg);
+			throw new RuntimeException("处理入参时出错:"+e.getMessage());
 		}
-		else
-		{
-			System.out.println("暂未开启AES解密拦截器");
-		}
-		System.out.println("未解密的入参:"+encryptMsg);
-		System.out.println("解密后的入参:"+decryptMsg);
-		logCustomerInfo(message,encryptMsg,decryptMsg);
-		if (decryptMsg.indexOf("{")<0&&decryptMsg.indexOf("}")<0) {
+
+		System.out.println("未解密的入参:" + encryptMsg);
+		System.out.println("解密后的入参:" + decryptMsg);
+		logCustomerInfo(message, encryptMsg, decryptMsg);
+		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
 			throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
 		}
 	}
