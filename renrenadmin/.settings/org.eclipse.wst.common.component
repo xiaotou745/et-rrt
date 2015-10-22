@@ -3,13 +3,13 @@
 		<wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
 		<wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <dependent-module archiveName="renrenapi-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrenapi/renrenapi">
+        <dependent-module archiveName="renrenapi-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrenapi/renrenapi">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="renrencore-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrencore/renrencore">
+        <dependent-module archiveName="renrencore-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrencore/renrencore">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="renrenentity-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrenentity/renrenentity">
+        <dependent-module archiveName="renrenentity-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrenentity/renrenentity">
             <dependency-type>uses</dependency-type>
         </dependent-module>
 		<property name="java-output-path" value="/renrenadmin/target/classes"/>

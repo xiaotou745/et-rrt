@@ -4,7 +4,7 @@
 
   <groupId>renrentui</groupId>
   <artifactId>renrenentity</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>renrenentity</name>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>renrentui</groupId>
 			<artifactId>renrencore</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
   </dependencies>
   		<build>

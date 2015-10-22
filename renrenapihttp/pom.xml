@@ -4,7 +4,7 @@
 	<groupId>renrentui</groupId>
 	<artifactId>renrenapihttp</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>renrenapihttp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -60,12 +60,12 @@
 		<dependency>
 			<groupId>renrentui</groupId>
 			<artifactId>renrenentity</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>renrentui</groupId>
 			<artifactId>renrenapi</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
