@@ -5,17 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
-
-
-
-
-
 import com.renrentui.renrenapi.dao.inter.IAccountInfoDao;
 import com.renrentui.renrenapi.dao.inter.IRoleInfoDao;
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IRoleInfoService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.RoleInfo;

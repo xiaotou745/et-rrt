@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.dao.inter.IAccountAuthDao;
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IAccountAuthService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrenentity.AccountAuth;
 

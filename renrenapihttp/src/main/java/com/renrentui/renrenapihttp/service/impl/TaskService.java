@@ -5,18 +5,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
-import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
-import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskDomain;

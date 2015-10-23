@@ -2,17 +2,10 @@ package com.renrentui.renrenapi.service.impl;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.renrentui.renrenapi.dao.inter.IAccountAuthDao;
-import com.renrentui.renrenapi.service.inter.IAccountAuthService;
+
 import com.renrentui.renrenapi.service.inter.IFileUploadService;
-import com.renrentui.renrencore.cache.redis.RedisService;
-import com.renrentui.renrencore.consts.RedissCacheKey;
-import com.renrentui.renrenentity.AccountAuth;
 import com.renrentui.renrenentity.req.FileUploadReq;
 
 

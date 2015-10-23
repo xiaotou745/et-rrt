@@ -1,23 +1,20 @@
 package com.renrentui.renrenapihttp.service.impl;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.stereotype.Service;
 
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
-import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.ModifyUserCReturnCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
@@ -30,19 +27,15 @@ import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
-import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
-import com.renrentui.renrenentity.req.FileUploadReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
-import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.resp.GetUserCResp;
-import com.renrentui.renrenentity.resp.MyIncomeResp;
 import com.renrentui.renrenentity.resp.SignInResp;
 import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;

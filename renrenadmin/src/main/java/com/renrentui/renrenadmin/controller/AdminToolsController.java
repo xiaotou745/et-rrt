@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IAdminToolsService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 
 @Controller
 @RequestMapping("admintools")
