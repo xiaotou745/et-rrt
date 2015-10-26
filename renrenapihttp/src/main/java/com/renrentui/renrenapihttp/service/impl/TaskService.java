@@ -161,9 +161,19 @@ public class TaskService implements ITaskService{
 			{
 				req.setOrderStatus((short)2);				
 			}
-			if(req.getOrderType().equals(3))
+			if(req.getOrderType()==3)
 			{
 				req.setOrderStatus((short)2);//已失效	
+			}
+			if(req.getOrderType()==4) //当前任务审核中
+			{
+				req.setOrderStatus((short)1);
+				req.setAuditStatus((short)0);
+			}
+			if(req.getOrderType()==5)  //当前任务未通过
+			{
+				req.setOrderStatus((short)1);//
+				req.setAuditStatus((short)3);
 			}
 		}
 		

@@ -101,22 +101,5 @@ public class TaskReq {
 		this.cityName = cityName;
 	}
 	
-	 private int auditStatus;
-
-	 /**
-	  * 订单审核状态       当前任务 审核中  未通过 会用
-	  * @return
-	  */
-	public int getAuditStatus() {
-		return auditStatus;
-	}
-	
-	/**
-	 * 订单审核状态   当前任务 审核中  未通过 会用
-	 * @param auditStatus
-	 */
-	public void setAuditStatus(int auditStatus) {
-		this.auditStatus = auditStatus;
-	}
-	 
+ 
 }

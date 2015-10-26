@@ -292,11 +292,11 @@ and oo.AuditStatus = 0 AND oo.OrderStatus=1) WaitAuditCount
 from    dbo.[Order] o join dbo.RenRenTask rt on rt.Id = o.TaskId  and o.ClienterId = ${userId}
 		join dbo.Business b (nolock) on rt.BusinessId = b.Id 
 where  1=1
-   <if test="orderStatus != null" >
-        o.orderStatus = #{orderStatus,jdbcType=SMALLINT},
+      <if test="orderStatus != null" >
+       and   o.orderStatus = #{orderStatus,jdbcType=SMALLINT}
       </if>
      <if test="auditStatus != null" >
-        auditStatus = #{auditStatus,jdbcType=SMALLINT},
+        and  auditStatus = #{auditStatus,jdbcType=SMALLINT}
       </if>
 	  <if test="nextId != 0" >
          and o.Id > ${nextId}
@@ -306,8 +306,13 @@ order by o.Id asc;
     <!-- 我的任务  审核中  未通过 -->
   <select id="getSubmittedTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select count(1) from  dbo.[Order] o
-                join dbo.RenRenTask rt on rt.Id = o.TaskId and o.ClienterId =  ${userId} where  o.OrderStatus = 1 
-                 and auditStatus= ${auditStatus}
+                join dbo.RenRenTask rt on rt.Id = o.TaskId and o.ClienterId =  ${userId} where  1=1 
+      <if test="orderStatus != null" >
+        and  o.orderStatus = #{orderStatus,jdbcType=SMALLINT}  
+      </if>
+     <if test="auditStatus != null" >
+       and auditStatus = #{auditStatus,jdbcType=SMALLINT}
+      </if>
      <if test="nextId != 0" >
          and o.Id > ${nextId}
      </if>
