@@ -291,7 +291,13 @@ where o.ClienterId is not null and o.OrderStatus = 0
 and oo.AuditStatus = 0 AND oo.OrderStatus=1) WaitAuditCount 
 from    dbo.[Order] o join dbo.RenRenTask rt on rt.Id = o.TaskId  and o.ClienterId = ${userId}
 		join dbo.Business b (nolock) on rt.BusinessId = b.Id 
-where  o.OrderStatus = 1   and auditStatus= ${auditStatus} 
+where  1=1
+   <if test="orderStatus != null" >
+        o.orderStatus = #{orderStatus,jdbcType=SMALLINT},
+      </if>
+     <if test="auditStatus != null" >
+        auditStatus = #{auditStatus,jdbcType=SMALLINT},
+      </if>
 	  <if test="nextId != 0" >
          and o.Id > ${nextId}
      </if>

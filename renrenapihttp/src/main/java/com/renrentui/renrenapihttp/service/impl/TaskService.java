@@ -143,7 +143,30 @@ public class TaskService implements ITaskService{
 		if(req.getUserId()==0){
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
-		} 
+		}	
+			
+		if(req.getOrderType()==null ||req.getOrderType()<=0)
+		{
+			hrm.setCode(TaskCode.OrderType.value()).setMsg(TaskCode.OrderType.desc());			
+			return hrm;
+		}		
+		else
+		{
+			if(req.getOrderType().equals(1))//完成
+			{
+				req.setOrderStatus((short)1);
+				req.setAuditStatus((short)2);
+			}
+			if(req.getOrderType().equals(2))//已取消
+			{
+				req.setOrderStatus((short)2);				
+			}
+			if(req.getOrderType().equals(3))
+			{
+				req.setOrderStatus((short)2);//已失效	
+			}
+		}
+		
 		MyJobTaskDomain td =rrTaskServcie.getMyJobCount(req);
 		List<TaskModel> taskModelList= rrTaskServcie.getSubmittedTaskList(req);
 		int taskTotal = rrTaskServcie.getSubmittedTaskListTotal(req);
