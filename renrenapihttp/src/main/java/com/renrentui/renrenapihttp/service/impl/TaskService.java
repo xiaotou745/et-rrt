@@ -95,10 +95,6 @@ public class TaskService implements ITaskService{
 	public HttpResultModel<TaskDomain> getNewTaskList(TaskReq req) {
 		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
-		if(req.getUserId()==0){
-			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
-			return hrm;
-		} 
 		TaskDomain td = new TaskDomain();
 		List<TaskModel> taskModelList= rrTaskServcie.getNewTaskList(req);
 		int taskTotal = rrTaskServcie.getNewTaskTotal(req);
