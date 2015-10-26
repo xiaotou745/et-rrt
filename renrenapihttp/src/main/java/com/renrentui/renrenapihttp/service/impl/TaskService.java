@@ -16,6 +16,7 @@ import com.renrentui.renrencore.enums.TaskDetailCode;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskDomain;
+import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
@@ -112,14 +113,14 @@ public class TaskService implements ITaskService{
 	 * wangchao
 	 */
 	@Override
-	public HttpResultModel<TaskDomain> getMyReceivedTaskList(TaskReq req) {
-		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
+	public HttpResultModel<MyJobTaskDomain> getMyReceivedTaskList(TaskReq req) {
+		HttpResultModel<MyJobTaskDomain> hrm = new HttpResultModel<MyJobTaskDomain>();
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
 		if(req.getUserId()==0){
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
 		} 
-		TaskDomain td = new TaskDomain();
+		MyJobTaskDomain td =rrTaskServcie.getMyJobCount(req);
 		List<TaskModel> taskModelList= rrTaskServcie.getMyReceivedTaskList(req);
 		int taskTotal = rrTaskServcie.getMyReceivedTaskListTotal(req);
 		td.setContent(taskModelList);
@@ -136,14 +137,14 @@ public class TaskService implements ITaskService{
 	 * wangchao
 	 */
 	@Override
-	public HttpResultModel<TaskDomain> getSubmittedTaskList(TaskReq req) {
-		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
+	public HttpResultModel<MyJobTaskDomain> getSubmittedTaskList(TaskReq req) {
+		HttpResultModel<MyJobTaskDomain> hrm = new HttpResultModel<MyJobTaskDomain>();
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
 		if(req.getUserId()==0){
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
 		} 
-		TaskDomain td = new TaskDomain();
+		MyJobTaskDomain td =rrTaskServcie.getMyJobCount(req);
 		List<TaskModel> taskModelList= rrTaskServcie.getSubmittedTaskList(req);
 		int taskTotal = rrTaskServcie.getSubmittedTaskListTotal(req);
 		td.setContent(taskModelList);

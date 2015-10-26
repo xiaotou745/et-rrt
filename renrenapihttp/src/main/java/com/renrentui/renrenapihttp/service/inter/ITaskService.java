@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
+import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskDomain;
 import com.renrentui.renrenentity.req.CancelTaskReq;
@@ -77,7 +78,7 @@ public interface ITaskService {
 	 */
 	@POST
 	@Path("/getmyreceivedtasklist")
-	public HttpResultModel<TaskDomain> getMyReceivedTaskList(TaskReq req);
+	public HttpResultModel<MyJobTaskDomain> getMyReceivedTaskList(TaskReq req);
 	
 	
 	/*
@@ -86,6 +87,6 @@ public interface ITaskService {
 	 */
 	@POST
 	@Path("/getsubmittedtasklist")
-	public HttpResultModel<TaskDomain> getSubmittedTaskList(TaskReq req);
+	public HttpResultModel<MyJobTaskDomain> getSubmittedTaskList(TaskReq req);
 	
 }

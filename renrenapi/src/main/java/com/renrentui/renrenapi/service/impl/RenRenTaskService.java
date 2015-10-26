@@ -54,6 +54,7 @@ import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateSnapshot;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
+import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
@@ -430,6 +431,7 @@ public class RenRenTaskService implements IRenRenTaskService{
 	public int getMyReceivedTaskListTotal(TaskReq req) {
 		return renRenTaskDao.getMyReceivedTaskListTotal(req);
 	}
+	
 	@Override
 	public List<TaskModel> getSubmittedTaskList(TaskReq req) {
 		return renRenTaskDao.getSubmittedTaskList(req);
@@ -438,7 +440,15 @@ public class RenRenTaskService implements IRenRenTaskService{
 	public int getSubmittedTaskListTotal(TaskReq req) {
 		return renRenTaskDao.getSubmittedTaskListTotal(req);
 	}
-
+	/**
+	 * 统计我的任务列表   已领取 审核中 未通过 -的数量信息  add by caoheyang  20151026
+	 * @param req
+	 * @return
+	 */
+	public  MyJobTaskDomain getMyJobCount(TaskReq req){
+		return renRenTaskDao.getMyJobCount(req);
+	}
+	
 	/**
 	 * 超时取消任务服务
 	 * 
