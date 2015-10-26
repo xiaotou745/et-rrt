@@ -144,7 +144,7 @@ public class TaskService implements ITaskService{
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
 		}	
-			
+		MyJobTaskDomain td =new MyJobTaskDomain();
 		if(req.getOrderType()==null ||req.getOrderType()<=0)
 		{
 			hrm.setCode(TaskCode.OrderType.value()).setMsg(TaskCode.OrderType.desc());			
@@ -152,12 +152,12 @@ public class TaskService implements ITaskService{
 		}		
 		else
 		{
-			if(req.getOrderType().equals(1))//完成
+			if(req.getOrderType()==1)//完成
 			{
 				req.setOrderStatus((short)1);
 				req.setAuditStatus((short)2);
 			}
-			if(req.getOrderType().equals(2))//已取消
+			if(req.getOrderType()==2)//已取消
 			{
 				req.setOrderStatus((short)2);				
 			}
@@ -169,15 +169,16 @@ public class TaskService implements ITaskService{
 			{
 				req.setOrderStatus((short)1);
 				req.setAuditStatus((short)0);
+				rrTaskServcie.getMyJobCount(req);
 			}
 			if(req.getOrderType()==5)  //当前任务未通过
 			{
 				req.setOrderStatus((short)1);//
 				req.setAuditStatus((short)3);
+				rrTaskServcie.getMyJobCount(req);
 			}
 		}
 		
-		MyJobTaskDomain td =rrTaskServcie.getMyJobCount(req);
 		List<TaskModel> taskModelList= rrTaskServcie.getSubmittedTaskList(req);
 		int taskTotal = rrTaskServcie.getSubmittedTaskListTotal(req);
 		td.setContent(taskModelList);
