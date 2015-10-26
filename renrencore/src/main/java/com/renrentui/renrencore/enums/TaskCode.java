@@ -6,7 +6,8 @@ public enum TaskCode {
 	 */
 	Success(200, "success"),
 	GetTaskFail(1101, "获取任务失败"),
-	UserIdErr(1102, "用户ID错误"),  
+	UserIdErr(1102, "用户ID错误"),
+	OrderType(1103, "任务类型不能为空"),  
 	Fail(1146, "系统错误");
 	private int value = 0;
 	private String desc;
