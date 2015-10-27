@@ -40,8 +40,9 @@ public class TaskService implements ITaskService{
 	public HttpResultModel<TaskDetail> taskDeatil(TaskDetailReq req) {
 		if(req.getTaskId()<=0)//任务ID
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.TaskIdErr.value()).setMsg(TaskDetailCode.TaskIdErr.desc());
-		if(req.getUserId()<=0)//用户ID
-			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.UserIdErr.value()).setMsg(TaskDetailCode.UserIdErr.desc());
+	//胡灵波 注释 2015年10月27日 10:32:17	
+	/*	if(req.getUserId()<=0)//用户ID
+			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.UserIdErr.value()).setMsg(TaskDetailCode.UserIdErr.desc());*/
 		TaskDetail detail= rrTaskServcie.getTaskDetail(req);
 		if(detail==null)
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.Fail.value()).setMsg(TaskDetailCode.Fail.desc());
