@@ -163,7 +163,7 @@ public class TaskService implements ITaskService{
 			}
 			if(req.getOrderType()==3)
 			{
-				req.setOrderStatus((short)2);//已失效	
+				req.setOrderStatus((short)3);//已失效	
 			}
 			if(req.getOrderType()==4) //当前任务审核中
 			{
