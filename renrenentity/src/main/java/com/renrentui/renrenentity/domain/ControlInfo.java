@@ -20,6 +20,14 @@ public class ControlInfo {
 	public void setHadValue(String hadValue) {
 		this.hadValue = hadValue;
 	}
+	private String controlValue;
+	
+	public String getControlValue() {
+		return controlValue;
+	}
+	public void setControlValue(String controlValue) {
+		this.controlValue = controlValue;
+	}
 	private String controlType;
 	private String title;
 	private String name;
