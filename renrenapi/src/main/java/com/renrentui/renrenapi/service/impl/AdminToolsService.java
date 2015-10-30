@@ -6,8 +6,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IAdminToolsService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 
 @Service
 public class AdminToolsService implements IAdminToolsService {

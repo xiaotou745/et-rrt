@@ -4,8 +4,10 @@ import java.lang.reflect.Field;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+//import com.renrentui.renrenapi.activemq.ActiveMqService;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrencore.util.SystemUtils;
@@ -14,6 +16,8 @@ import com.renrentui.renrenentity.domain.ActionLog;
 @Component
 public class LogServiceBLL {
 
+//	@Autowired
+//	private ActiveMqService activeMqService;
 	private static Logger renrenAdminLogger = Logger.getLogger("renrenAdminLogger");
 	private static Logger renrenApiHttpLogger = Logger.getLogger("renrenApiHttpLogger");
 	private static Field[] fields = ActionLog.class.getDeclaredFields();
@@ -33,6 +37,7 @@ public class LogServiceBLL {
 			}
 			//initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
+			//activeMqService.asynSendMessage(jsonMsg);
 			switch (logEngity.getSourceSys()) {
 			case "renrenadmin":
 				renrenAdminLogger.info(jsonMsg);

@@ -184,31 +184,47 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
         rt.TaskTitle TaskName ,
         rt.Amount ,
         rt.AvailableCount ,
-        case  when o.OrderStatus is null then -1 else o.OrderStatus end [Status],
-        o.AuditStatus ,
+        <if test="userId != 0" >
+            case  when o.OrderStatus is null then -1 else o.OrderStatus end [Status],
+            o.Id orderId,
+            o.AuditStatus, 
+        </if> 
         isnull(rt.BeginTime,'') BeginTime,
         isnull(rt.EndTime,'') EndTime,
         rt.PaymentMethod,
-        b.logo ,
-        o.Id orderId
+        b.logo 
 from    dbo.RenRenTask rt ( nolock )
-left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  ${userId} and o.OrderStatus=0
+   	<if test="userId != 0" >
+   		left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  ${userId} and o.OrderStatus=0  
+   	</if> 
 join dbo.Business b (nolock) on rt.BusinessId = b.Id 
-where o.ClienterId is null and rt.Status = 1 and getdate()>=rt.BeginTime and rt.EndTime>getdate()  
+where    1=1
+   	<if test="userId != 0" >
+   	   and   o.ClienterId is null
+   	</if> 
+and rt.Status = 1 and getdate()>=rt.BeginTime and rt.EndTime>getdate()  
 and rt.AvailableCount>0
 	  <if test="nextId != 0" >
          and rt.Id > ${nextId}
      </if>
 order by rt.Id asc;
   </select>   
+  
    <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select count(1) from dbo.RenRenTask rt ( nolock )
-left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  ${userId} and o.OrderStatus=0
-where o.ClienterId is null  and rt.Status = 1 and getdate()>=rt.BeginTime and rt.EndTime>getdate() and rt.AvailableCount>0
+<if test="userId != 0" >
+    left join  dbo.[Order] o(nolock) on rt.Id  = o.TaskId and o.ClienterId =  ${userId} and o.OrderStatus=0 
+ </if>  
+where  1=1
+<if test="userId != 0" >
+and   o.ClienterId is null 
+</if>  
+ and rt.Status = 1 and getdate()>=rt.BeginTime and rt.EndTime>getdate() and rt.AvailableCount>0
  	<if test="nextId != 0" >
          and o.Id > ${nextId}
      </if>
   </select> 
+  <!--  我的任务  已领取 -->
   <select id="getMyReceivedTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select 
    	<if test="itemsCount != 0" >
@@ -241,6 +257,7 @@ where o.ClienterId is not null and o.OrderStatus = 0
      </if>
 order by o.Id asc;
   </select>   
+    <!--  我的任务  已领取 -->
    <select id="getMyReceivedTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select count(1) from dbo.RenRenTask rt ( nolock )
         left join dbo.[Order] o ( nolock ) on rt.Id = o.TaskId and o.ClienterId = ${userId} 
@@ -249,7 +266,7 @@ where o.ClienterId is not null and o.OrderStatus = 0
          and o.Id > ${nextId}
      </if>
   </select> 
-  
+  <!-- 我的任务  审核中  未通过 -->
    <select id="getSubmittedTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select 
    	<if test="itemsCount != 0" >
@@ -274,15 +291,28 @@ where o.ClienterId is not null and o.OrderStatus = 0
 and oo.AuditStatus = 0 AND oo.OrderStatus=1) WaitAuditCount 
 from    dbo.[Order] o join dbo.RenRenTask rt on rt.Id = o.TaskId  and o.ClienterId = ${userId}
 		join dbo.Business b (nolock) on rt.BusinessId = b.Id 
-where  o.OrderStatus = 1 
+where  1=1 
+      <if test="orderStatus != null" >
+       and   o.orderStatus = #{orderStatus,jdbcType=SMALLINT}
+      </if>
+     <if test="auditStatus != null" >
+        and  auditStatus = #{auditStatus,jdbcType=SMALLINT}
+      </if>
 	  <if test="nextId != 0" >
          and o.Id > ${nextId}
      </if>
 order by o.Id asc;
   </select>   
-   <select id="getSubmittedTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+    <!-- 我的任务  审核中  未通过 -->
+  <select id="getSubmittedTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select count(1) from  dbo.[Order] o
-                join dbo.RenRenTask rt on rt.Id = o.TaskId and o.ClienterId =  ${userId} where  o.OrderStatus = 1 
+                join dbo.RenRenTask rt on rt.Id = o.TaskId and o.ClienterId =  ${userId} where  1=1 
+      <if test="orderStatus != null" >
+        and  o.orderStatus = #{orderStatus,jdbcType=SMALLINT}  
+      </if>
+     <if test="auditStatus != null" >
+       and auditStatus = #{auditStatus,jdbcType=SMALLINT}
+      </if>
      <if test="nextId != 0" >
          and o.Id > ${nextId}
      </if>
@@ -330,4 +360,23 @@ order by o.Id asc;
   ON a.SnapshotTemplateId=b.id  
   where  b.TemplateId = #{templateId,jdbcType=BIGINT} and (a.Status=0 or a.Status=2)
   </select> 
+ 
+  <!-- 统计我的任务列表   已领取 审核中 未通过 -的数量信息  add by caoheyang  20151026-->
+   <select id="getMyJobCount" resultType="com.renrentui.renrenentity.domain.MyJobTaskDomain" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   select   ISNULL(SUM(CASE when OrderStatus = 0
+                                 and AuditStatus = 0 then 1
+                            else 0
+                       end), 0) ReceivedCount ,
+            ISNULL(SUM(CASE when OrderStatus = 1
+                                 and AuditStatus = 0 then 1
+                            else 0
+                       end), 0) PassCount ,
+            ISNULL(SUM(CASE when OrderStatus = 1
+                                 and AuditStatus = 3 then 1
+                            else 0
+                       end), 0) NoPassCount
+   from     dbo.[Order] o
+            join dbo.RenRenTask rt on rt.Id = o.TaskId where  o.ClienterId =  ${userId} 
+  </select> 
+  
 </mapper>

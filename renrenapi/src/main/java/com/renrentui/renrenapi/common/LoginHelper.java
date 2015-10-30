@@ -2,12 +2,10 @@ package com.renrentui.renrenapi.common;
 
 import java.util.UUID;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.renrentui.renrencore.cache.redis.RedisService;
-import com.renrentui.renrencore.consts.GlobalSettings;
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrencore.util.CookieUtils;
 import com.renrentui.renrencore.util.SpringBeanHelper;
 

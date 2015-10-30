@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.dao.inter.IAccountInfoDao;
 import com.renrentui.renrenapi.dao.inter.IRoleAuthDao;
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IRoleAuthService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.RoleAuth;

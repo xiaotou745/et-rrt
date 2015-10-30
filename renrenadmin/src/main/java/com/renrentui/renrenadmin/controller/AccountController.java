@@ -1,12 +1,10 @@
 package com.renrentui.renrenadmin.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,18 +19,17 @@ import org.springframework.web.servlet.ModelAndView;
 import com.renrentui.renrenadmin.common.LoginUtil;
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.common.LoginHelper;
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IAccountAuthService;
 import com.renrentui.renrenapi.service.inter.IAccountInfoService;
 import com.renrentui.renrenapi.service.inter.IMenuInfoService;
 import com.renrentui.renrenapi.service.inter.IRoleInfoService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrencore.util.CookieUtils;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.AccountInfo;
-import com.renrentui.renrenentity.MenuInfo;
 import com.renrentui.renrenentity.RoleInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.SimpleUserInfoModel;

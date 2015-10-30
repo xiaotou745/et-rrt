@@ -5,38 +5,45 @@
 <%@page import="com.renrentui.renrencore.util.EnumHelper"%>
 <%@page import="com.renrentui.renrencore.enums.ClienterStatus"%>
 <%String basePath =PropertyUtils.getProperty("java.renrenadmin.url");%>
-<div class="row"  style="margin-top: 15px;margin-left: 5px;">
-	<div class="col-lg-2">
-		<div class="form-group">
-				<input id="txtClienterName" type="tel" name="txtClienterName" placeholder="地推员姓名" class="form-control"/>
-		</div>
-	</div>
-<%-- 	<div class="col-lg-3">
-		<div class="form-group">
-			<div class="col-sm-5" style="line-height:30px;font-size:14px;">
-		     	审核状态:
-		    </div>
-			<div class="col-sm-7">
-				<%=HtmlHelper.getSelect("clienterStatus", EnumHelper.GetEnumItems(ClienterStatus.class),"desc", "value", null, "-1", "全部")%>
-			</div>
-		</div>
-	</div> --%>
-	<input type="hidden" name="clienterStatus" id="clienterStatus" value="1"/> 
-	<div class="col-lg-2">
-		<div class="form-group">
-				<input id="txtPhoneNo" type="tel" name="txtPhoneNo" placeholder="手机号" class="form-control"/>
-		</div>
-	</div>
-	<div class="col-lg-2">
-		<input type="submit" value="查询" class="btn btn-w-m btn-primary" id="btnSearch" />
-	</div>		
-</div>
+<div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 
-<div class="row">
-	<div class="col-lg-12">
-		<div class="ibox-content" id="content"></div>
+	<div class="row">
+		<div class="col-lg-12">
+		<input type="hidden" name="clienterStatus" id="clienterStatus" value="1"/> 
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">地推员名称:</label>
+							<div class="col-sm-8">						
+								<input id="txtClienterName" type="text" name="txtClienterName" placeholder="地推员姓名" class="form-control"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">手机号:</label>
+							<div class="col-sm-8">								
+								<input id="txtPhoneNo" type="text" name="txtPhoneNo" placeholder="手机号" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			    <div class="row">
+						<div class="col-lg-3">
+						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+							style="margin-left: 3px;height:30px;">查询</button>			 
+					</div>
+			</div>
+
+		</div>
 	</div>
-</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="ibox-content" id="content"></div>
+		</div>
+	</div>
+</div> 
+
 
 <script>
 	var jss={

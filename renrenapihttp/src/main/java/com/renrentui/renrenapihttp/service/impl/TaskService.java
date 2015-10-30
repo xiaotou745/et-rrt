@@ -5,21 +5,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
-import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
-import com.renrentui.renrencore.cache.redis.RedisService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
-import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskDomain;
+import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
@@ -43,8 +40,9 @@ public class TaskService implements ITaskService{
 	public HttpResultModel<TaskDetail> taskDeatil(TaskDetailReq req) {
 		if(req.getTaskId()<=0)//任务ID
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.TaskIdErr.value()).setMsg(TaskDetailCode.TaskIdErr.desc());
-		if(req.getUserId()<=0)//用户ID
-			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.UserIdErr.value()).setMsg(TaskDetailCode.UserIdErr.desc());
+	//胡灵波 注释 2015年10月27日 10:32:17	
+	/*	if(req.getUserId()<=0)//用户ID
+			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.UserIdErr.value()).setMsg(TaskDetailCode.UserIdErr.desc());*/
 		TaskDetail detail= rrTaskServcie.getTaskDetail(req);
 		if(detail==null)
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.Fail.value()).setMsg(TaskDetailCode.Fail.desc());
@@ -99,10 +97,6 @@ public class TaskService implements ITaskService{
 	public HttpResultModel<TaskDomain> getNewTaskList(TaskReq req) {
 		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
-		if(req.getUserId()==0){
-			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
-			return hrm;
-		} 
 		TaskDomain td = new TaskDomain();
 		List<TaskModel> taskModelList= rrTaskServcie.getNewTaskList(req);
 		int taskTotal = rrTaskServcie.getNewTaskTotal(req);
@@ -120,14 +114,14 @@ public class TaskService implements ITaskService{
 	 * wangchao
 	 */
 	@Override
-	public HttpResultModel<TaskDomain> getMyReceivedTaskList(TaskReq req) {
-		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
+	public HttpResultModel<MyJobTaskDomain> getMyReceivedTaskList(TaskReq req) {
+		HttpResultModel<MyJobTaskDomain> hrm = new HttpResultModel<MyJobTaskDomain>();
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
 		if(req.getUserId()==0){
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
 		} 
-		TaskDomain td = new TaskDomain();
+		MyJobTaskDomain td =rrTaskServcie.getMyJobCount(req);
 		List<TaskModel> taskModelList= rrTaskServcie.getMyReceivedTaskList(req);
 		int taskTotal = rrTaskServcie.getMyReceivedTaskListTotal(req);
 		td.setContent(taskModelList);
@@ -144,14 +138,48 @@ public class TaskService implements ITaskService{
 	 * wangchao
 	 */
 	@Override
-	public HttpResultModel<TaskDomain> getSubmittedTaskList(TaskReq req) {
-		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
+	public HttpResultModel<MyJobTaskDomain> getSubmittedTaskList(TaskReq req) {
+		HttpResultModel<MyJobTaskDomain> hrm = new HttpResultModel<MyJobTaskDomain>();
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
 		if(req.getUserId()==0){
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
-		} 
-		TaskDomain td = new TaskDomain();
+		}	
+		MyJobTaskDomain td =new MyJobTaskDomain();
+		if(req.getOrderType()==null ||req.getOrderType()<=0)
+		{
+			hrm.setCode(TaskCode.OrderType.value()).setMsg(TaskCode.OrderType.desc());			
+			return hrm;
+		}		
+		else
+		{
+			if(req.getOrderType()==1)//完成
+			{
+				req.setOrderStatus((short)1);
+				req.setAuditStatus((short)2);
+			}
+			if(req.getOrderType()==2)//已取消
+			{
+				req.setOrderStatus((short)2);				
+			}
+			if(req.getOrderType()==3)
+			{
+				req.setOrderStatus((short)3);//已失效	
+			}
+			if(req.getOrderType()==4) //当前任务审核中
+			{
+				req.setOrderStatus((short)1);
+				req.setAuditStatus((short)0);
+				rrTaskServcie.getMyJobCount(req);
+			}
+			if(req.getOrderType()==5)  //当前任务未通过
+			{
+				req.setOrderStatus((short)1);//
+				req.setAuditStatus((short)3);
+				rrTaskServcie.getMyJobCount(req);
+			}
+		}
+		
 		List<TaskModel> taskModelList= rrTaskServcie.getSubmittedTaskList(req);
 		int taskTotal = rrTaskServcie.getSubmittedTaskListTotal(req);
 		td.setContent(taskModelList);

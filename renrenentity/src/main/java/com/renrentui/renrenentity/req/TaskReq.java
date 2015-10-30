@@ -13,7 +13,37 @@ public class TaskReq {
 	
 	private String cityCode;
 	
-	private String cityName;
+	private String cityName;	
+	
+	private Short orderType;
+	
+    public Short getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(Short orderType) {
+		this.orderType = orderType;
+	}
+
+	public Short getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(Short orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public Short getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(Short auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	private Short orderStatus;
+
+    private Short auditStatus;
 
 	public int getUserId() {
 		return userId;
@@ -70,4 +100,6 @@ public class TaskReq {
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
 	}
+	
+ 
 }

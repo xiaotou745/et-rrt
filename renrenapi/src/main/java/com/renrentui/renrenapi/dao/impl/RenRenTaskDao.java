@@ -10,6 +10,7 @@ import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
+import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
@@ -137,6 +138,16 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	public int getSubmittedTaskListTotal(TaskReq req) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getSubmittedTaskListTotal";
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
+		return taskTotal;
+	}
+	
+	/**
+	 * 统计我的任务列表   已领取 审核中 未通过 -的数量信息  add by caoheyang  20151026
+	 */
+	@Override
+	public MyJobTaskDomain getMyJobCount(TaskReq req) {
+		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getMyJobCount";
+		MyJobTaskDomain taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
 	}
 	

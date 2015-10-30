@@ -1,22 +1,13 @@
 package com.renrentui.renrenapi.dao.impl;
 
-
 import java.util.List;
-
-
-
-
-
-
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IMenuInfoDao;
-import com.renrentui.renrencore.cache.redis.RedisService;
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrenentity.MenuInfo;
 import com.renrentui.renrenentity.domain.MenuEntity;
