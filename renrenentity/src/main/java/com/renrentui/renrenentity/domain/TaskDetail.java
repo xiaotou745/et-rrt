@@ -43,6 +43,13 @@ public class TaskDetail {
 	private String companySummary;
 	private int auditCycle;
 	private int taskCycle;
+	private String receivedTime;
+	public String getReceivedTime() {
+		return receivedTime;
+	}
+	public void setReceivedTime(String receivedTime) {
+		this.receivedTime = receivedTime;
+	}
 	public int getTaskCycle() {
 		return taskCycle;
 	}
