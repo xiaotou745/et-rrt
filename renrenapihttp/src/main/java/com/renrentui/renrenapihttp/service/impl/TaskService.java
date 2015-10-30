@@ -153,30 +153,29 @@ public class TaskService implements ITaskService{
 		}		
 		else
 		{
-			if(req.getOrderType()==1)//完成
-			{
-				req.setOrderStatus((short)1);
-				req.setAuditStatus((short)2);
-			}
-			if(req.getOrderType()==2)//已取消
-			{
-				req.setOrderStatus((short)2);				
-			}
-			if(req.getOrderType()==3)
-			{
-				req.setOrderStatus((short)3);//已失效	
-			}
-			if(req.getOrderType()==4) //当前任务审核中
-			{
-				req.setOrderStatus((short)1);
-				req.setAuditStatus((short)0);
-				rrTaskServcie.getMyJobCount(req);
-			}
-			if(req.getOrderType()==5)  //当前任务未通过
-			{
-				req.setOrderStatus((short)1);//
-				req.setAuditStatus((short)3);
-				rrTaskServcie.getMyJobCount(req);
+			switch (req.getOrderType()) {
+				case 1://完成
+					req.setOrderStatus((short)1);
+					req.setAuditStatus((short)2);
+					break;
+				case 2://已取消
+					req.setOrderStatus((short)2);				
+					break;
+				case 3://已失效	
+					req.setOrderStatus((short)3);
+					break;
+				case 4://当前任务审核中
+					req.setOrderStatus((short)1);
+					req.setAuditStatus((short)0);
+					td=rrTaskServcie.getMyJobCount(req);
+					break;
+				case 5: //当前任务未通过
+					req.setOrderStatus((short)1);//
+					req.setAuditStatus((short)3);
+					td=rrTaskServcie.getMyJobCount(req);
+					break;
+				default:
+					break;
 			}
 		}
 		
