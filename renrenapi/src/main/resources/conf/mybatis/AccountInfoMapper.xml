@@ -41,7 +41,7 @@
   <sql id="queryWhere">
 		1=1
 		<if test="keyword != null and keyword!=''">
-			and UserName like ''%${keyword}%''
+			and (UserName like ''%${keyword}%'' or loginName like ''%${keyword}%'')
 		</if>
 	</sql> 
 <select id="query" resultType="com.renrentui.renrenentity.AccountInfo" parameterType="com.renrentui.renrenentity.req.PagedAccountInfoReq" statementType="CALLABLE">

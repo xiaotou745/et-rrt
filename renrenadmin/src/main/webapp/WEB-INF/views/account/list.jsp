@@ -10,16 +10,30 @@
 List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
-<div class="wrapper wrapper-content animated fadeInRight">
-
+<div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 	<div class="row">
-	    <div class="col-lg-12">
-	        <div class="input-group" style="margin-bottom:5px;">
-	            <input type="text" placeholder="请输入真实姓名" class="input-sm form-control" id="txtKeyword" style="width:250px;height:34px;" value=""/>
-	            <button type="button" class="btn btn-w-m btn-primary" id=btnSearch style="margin-left:3px;">查询</button>
-	            <button type="button" class="btn btn-w-m btn-primary" style="margin-left:3px;" data-toggle="modal" data-target="#myModal" id="addUser">添加用户</button>
-	        </div>
-	    </div>
+		<div class="col-lg-12">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="form-group">
+						<label class="col-sm-5 control-label">姓名或登录名:</label>
+						<div class="col-sm-7">
+							<input type="text" placeholder="请输入姓名或登录名" class="form-control"
+								id="txtKeyword" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3">
+					<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
+						style="margin-left: 3px;">查询</button>
+					<button type="button" class="btn btn-w-m btn-primary"
+						style="margin-left: 3px;" data-toggle="modal"
+						data-target="#myModal" id="addUser">添加用户</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
  

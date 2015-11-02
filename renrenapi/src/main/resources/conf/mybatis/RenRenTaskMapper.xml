@@ -58,6 +58,7 @@ SELECT TOP 1 rrt.id ,
         CASE WHEN o.ClienterId >0 THEN 1 ELSE 0 END AS IsHad,--1已经领取 0  没有领取
         ISNULL(o.id,0) AS orderId,
         b.Logo,
+        o.CreateTime as ReceivedTime,
         rrt.CompanySummary,
         rrt.AuditCycle,
         rrt.TaskCycle,
@@ -66,7 +67,8 @@ FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 LEFT JOIN dbo.Business AS b (NOLOCK) ON b.Id = rrt.BusinessId
 LEFT JOIN dbo.TemplateSnapshot AS t (NOLOCK) ON t.id=rrt.SnapshotTemplateId AND t.BusinessId = rrt.BusinessId
 LEFT JOIN dbo.[Order] AS o (NOLOCK) ON rrt.id=o.TaskId AND o.ClienterId=${userId} AND o.OrderStatus=0
-WHERE rrt.id=${taskId}
+WHERE rrt.id=${taskId} 
+order by rrt.id desc
   </select>
   <!-- 验证任务是否可以领取 2015年9月29日17:13:19 茹化肖 -->
  <select id="checkTask" resultType="com.renrentui.renrenentity.domain.CheckTask" parameterType="com.renrentui.renrenentity.req.TaskDetailReq" >

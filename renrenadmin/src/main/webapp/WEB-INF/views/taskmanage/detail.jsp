@@ -245,7 +245,7 @@ TaskStatus detailStatus=TaskStatus.getEnum(taskInfo.getTaskInfo().getStatus());
 					<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group"> 
-							<div id="fileQueue" style="height:80px"></div>
+							<div id="fileQueue" style="height:60px;width:355px;"></div>
 	        	<input type="file" name="uploadify" id="uploadify" />
 		        <p>
 		        <a href="javascript:jQuery('#uploadify').uploadifyUpload()">文件上传</a>&nbsp;
