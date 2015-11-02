@@ -438,9 +438,9 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
 		List<TaskModel> list = renRenTaskDao.getNewTaskList(req);
-		list.stream().forEach(
-				t -> t.setLogo(PropertyUtils.getProperty("ImgShowUrl")
-						+ t.getLogo()));
+//		list.stream().forEach(
+//				t -> t.setLogo(PropertyUtils.getProperty("ImgShowUrl")
+//						+ t.getLogo()));
 		return list;
 	}
 
