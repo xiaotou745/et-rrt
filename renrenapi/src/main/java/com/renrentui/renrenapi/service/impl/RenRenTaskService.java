@@ -204,14 +204,14 @@ public class RenRenTaskService implements IRenRenTaskService {
 		CheckCancelOrder check = orderDao.checkCancelOrder(req);
 		if (check == null)// 订单不存在
 			return CancelTaskCode.OrderNull;
-		if (check.getCancelCan() == 0)// 订单不能取消
-		{
+		// if (check.getCancelCan() == 0)// 订单不能取消  //窦海超 去掉了判断订单进行中-未完成不能取消状态
+		// {
 			if (check.getIsCancle() == 1)// 订单已经取消
 				return CancelTaskCode.TaskIsCancel;
 			if (check.getIsComplete() == 1)// 订单已经完成不能取消
 				return CancelTaskCode.TaskComplete;
-			return CancelTaskCode.CantCancel;// 订单不可取消
-		}
+//			return CancelTaskCode.CantCancel;// 订单不可取消
+//		}
 
 		int res = orderDao.cancelOrder(req);// 取消订单
 
