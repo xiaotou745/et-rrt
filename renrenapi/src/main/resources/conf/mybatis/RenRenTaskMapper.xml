@@ -222,7 +222,7 @@ where  1=1
 and   o.ClienterId is null 
 </if>  
  and rt.Status = 1 and getdate()>=rt.BeginTime and rt.EndTime>getdate() and rt.AvailableCount>0
- 	<if test="nextId != 0" >
+ 	<if test="userId != 0 and nextId != 0" >
          and o.Id > ${nextId}
      </if>
   </select> 
