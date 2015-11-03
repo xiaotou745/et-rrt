@@ -289,7 +289,8 @@ where o.ClienterId is not null and o.OrderStatus = 0
                 isnull(o.FinishTime,'') FinishTime,
                 o.Id myReceivedTaskId,
                 o.Id orderId,isnull(o.AuditTime,'') AuditTime,
-                (SELECT count(1) FROM dbo.[Order] oo where oo.TaskId = rt.id
+                (case when rt.EndTime>getdate() and rt.TaskTotalCount>0 and  o.OrderStatus!=0 then 1 else 0 end) IsAgainPickUp,
+                (SELECT count(1) FROM dbo.[Order] oo(nolock) where oo.TaskId = rt.id
 and oo.AuditStatus = 0 AND oo.OrderStatus=1) WaitAuditCount 
 from    dbo.[Order] o join dbo.RenRenTask rt on rt.Id = o.TaskId  and o.ClienterId = ${userId}
 		join dbo.Business b (nolock) on rt.BusinessId = b.Id 

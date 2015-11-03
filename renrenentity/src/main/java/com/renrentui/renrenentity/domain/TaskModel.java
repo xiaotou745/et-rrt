@@ -46,6 +46,15 @@ public class TaskModel implements Serializable {
 	public String getAuditTime() {
 		return auditTime;
 	}
+	private int isAgainPickUp;
+
+	public int getIsAgainPickUp() {
+		return isAgainPickUp;
+	}
+
+	public void setIsAgainPickUp(int isAgainPickUp) {
+		this.isAgainPickUp = isAgainPickUp;
+	}
 
 	public void setAuditTime(String auditTime) {
 		this.auditTime = auditTime;
