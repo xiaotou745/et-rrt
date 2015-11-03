@@ -148,7 +148,7 @@ public class TaskModel implements Serializable {
 	}
 
 	public String getLogo() {
-		if(!this.logo.equals(""))
+		if(this.logo!=null&&!this.logo.equals(""))
 			return PropertyUtils.getProperty("ImgShowUrl")+this.logo;
 		return logo;
 	}
