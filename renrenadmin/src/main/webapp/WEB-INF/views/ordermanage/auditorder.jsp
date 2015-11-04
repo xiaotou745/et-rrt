@@ -38,9 +38,9 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">订单编号:</label>
+							<label class="col-sm-4 control-label">订单号:</label>
 							<div class="col-sm-8">								
-								<input type="text" class="form-control" name="orderId"  id="orderId" />
+								<input type="text" class="form-control" name="orderNo"  id="orderNo" />
 							</div>
 						</div>
 					</div>
@@ -115,13 +115,13 @@ width: 100%;
 var jss={
 		search:function(currentPage){	
 			 var clienterName = $("#clienterName").val();				   
-			 var orderId = $("#orderId").val();
+			 var orderNo = $("#orderNo").val();
 			 var companyName = $("#companyName").val();
 			 var auditStatus = $("#auditStatus").val();
 			 var paramaters = { 
 					 "currentPage":currentPage,					 
 					 "clienterName":clienterName,
-					 "orderId":orderId,
+					 "orderNo":orderNo,
 					 "companyName":companyName,
 					 "auditStatus":auditStatus,
 					 m:Math.round()
