@@ -17,6 +17,16 @@ public class ClienterDetail extends Clienter {
     
     private Double totalAmount;
 
+    private String fullHeadImage;
+    
+	public String getFullHeadImage() {
+		return fullHeadImage;
+	}
+
+	public void setFullHeadImage(String fullHeadImage) {
+		this.fullHeadImage = fullHeadImage;
+	}
+
 	public Double getBalance() {
 		return balance;
 	}

@@ -7,6 +7,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
+import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.FileUploadReq;
@@ -16,6 +17,7 @@ import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.resp.GetUserCResp;
 
 
 
@@ -90,7 +92,7 @@ public interface IUsercService {
 	*/
 	@POST
 	@Path("/getuserc")
-	public HttpResultModel<Object> getuserc(GetUserCReq req);
+	public HttpResultModel<GetUserCResp> getuserc(GetUserCReq req);
 	
 	/**
 	* @Des  C端修改个人基础信息

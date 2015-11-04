@@ -1,6 +1,5 @@
 package com.renrentui.renrenapihttp.service.impl;
 
-
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 
@@ -28,6 +27,7 @@ import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
@@ -150,7 +150,7 @@ public class UsercService implements IUsercService {
 		if (req.getVerifyCode().equals(""))// 验证码不能为空
 			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
 					SignUpCode.VerCodeNull.desc());
-		if (req.getName()==null) {
+		if (req.getName() == null) {
 			req.setName("");
 		}
 		String key = RedissCacheKey.RR_Clienter_sendcode_register
@@ -266,17 +266,21 @@ public class UsercService implements IUsercService {
 	 * @Return
 	 */
 	@Override
-	public HttpResultModel<Object> getuserc(GetUserCReq req) {
-		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+	public HttpResultModel<GetUserCResp> getuserc(GetUserCReq req) {
+		HttpResultModel<GetUserCResp> hrm = new HttpResultModel<GetUserCResp>();
 		GetUserCResp resp = new GetUserCResp();
 		if (!clienterService.isExistUserC(req.getUserId()))// 用户不存在
-			return resultModel.setCode(MyIncomeCode.UserIdUnexist.value())
-					.setMsg(MyIncomeCode.UserIdUnexist.desc());
+			return hrm.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(
+					MyIncomeCode.UserIdUnexist.desc());
 		ClienterDetail clienterModel = clienterService
 				.getUserC(req.getUserId());
 		if (clienterModel == null || clienterModel.getId() <= 0)// 获取信息失败
-			return resultModel.setCode(MyIncomeCode.QueryIncomeError.value())
-					.setMsg(MyIncomeCode.QueryIncomeError.desc());
+			return hrm.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(
+					MyIncomeCode.QueryIncomeError.desc());
+
+		// 这里写的很恶心啊，本来是想改的，但是app端已经开始调和接口了，没法改列属性，由于本次上线急，暂时不改，
+		// 改的时候要和APP把属性从新更新，全啊以数据库列为准
+
 		resp.setUserId(clienterModel.getId());
 		resp.setUserName(clienterModel.getClienterName());
 		resp.setPhoneNo(clienterModel.getPhoneNo());
@@ -300,7 +304,7 @@ public class UsercService implements IUsercService {
 		resp.setChecking(clienterModel.getChecking());
 		resp.setWithdrawing(clienterModel.getWithdrawing());
 		resp.setTotalAmount(clienterModel.getTotalAmount());
-		return resultModel.setCode(MyIncomeCode.Success.value())
+		return hrm.setCode(MyIncomeCode.Success.value())
 				.setMsg(MyIncomeCode.Success.desc()).setData(resp);
 
 	}
