@@ -46,7 +46,7 @@ public interface IClienterBalanceDao {
 	
     int deleteByPrimaryKey(Long id);
 
-    int insert(ClienterBalance record);
+    int insert(Long clienterid);
 
     int insertSelective(ClienterBalance record);    
 

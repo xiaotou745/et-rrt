@@ -5,6 +5,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.StringUtils;
 
@@ -28,7 +29,9 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
 		String param = "";
 		String msg = ex.getMessage();
 		String stackTrace = StringUtils.getStackTrace(ex);
-
+    	if (ex instanceof TransactionalRuntimeException) {
+    		stackTrace = "";
+		}
 		/*
 		 * 全局LogInteceptor中统一记录方法调用的actionlog和异常信息
 		 * */

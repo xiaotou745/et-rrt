@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrenapi.dao.inter.IAttachmentDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
@@ -300,10 +301,9 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int insert(RenRenTask record, List<Integer> regionCodes,
 			List<Attachment> attachments) {
-		BusinessBalance oldBalance = businessBalanceDao
-				.selectByBusinessId(record.getBusinessId());
+		BusinessBalance oldBalance = businessBalanceDao.selectByBusinessId(record.getBusinessId());
 		if (oldBalance == null) {
-			throw new RuntimeException("没有找到id=" + record.getBusinessId()
+			throw new TransactionalRuntimeException("没有找到id=" + record.getBusinessId()
 					+ "的商户的余额信息");
 		}
 		Double totalFee = record.getAmount() * record.getTaskTotalCount();
@@ -366,7 +366,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 		int balanceResult = businessBalanceDao
 				.updateBalanceByBusinessId(balanceReq);
 		if (balanceResult == 0) {
-			throw new RuntimeException(recordType.desc() + "更新商户余额失败");
+			throw new TransactionalRuntimeException(recordType.desc() + "更新商户余额失败");
 		}
 		BusinessBalanceRecord balanceRecord = new BusinessBalanceRecord();
 		balanceRecord.setBusinessId(businessId);
@@ -394,7 +394,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	public int setTaskStatus(UpdateStatusReq req) {
 		TaskStatus status = TaskStatus.getEnum(req.getStatus());
 		if (status == TaskStatus.WaitAudit || status == TaskStatus.Expired) {
-			throw new RuntimeException("不能手工将任务置为待审核或过期状态");
+			throw new TransactionalRuntimeException("不能手工将任务置为待审核或过期状态");
 		}
 		int result = renRenTaskDao.setTaskStatus(req);
 		RenRenTaskLog logRecord = new RenRenTaskLog();
@@ -415,7 +415,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 			BusinessBalance oldBalance = businessBalanceDao
 					.selectByBusinessId(oldTaskModel.getBusinessId());
 			if (oldBalance == null) {
-				throw new RuntimeException("没有找到id="
+				throw new TransactionalRuntimeException("没有找到id="
 						+ oldTaskModel.getBusinessId() + "的商户的余额信息");
 			}
 			// 取消任务时，给商户还钱
@@ -510,7 +510,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 					.getSnapshotTemplateId());
 			if (snapshot == null) {
 				detail.setTemplateId(-1l);
-				// throw new RuntimeException("没有找到任务的模板快照数据");
+				// throw new TransactionalRuntimeException("没有找到任务的模板快照数据");
 			} else {
 				detail.setTemplateId(snapshot.getTemplateId());
 			}
@@ -551,7 +551,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 		BusinessBalance nowBalance = businessBalanceDao
 				.selectByBusinessId(record.getBusinessId());
 		if (nowBalance == null) {
-			throw new RuntimeException("没有找到id=" + record.getBusinessId()
+			throw new TransactionalRuntimeException("没有找到id=" + record.getBusinessId()
 					+ "的商户的余额信息");
 		}
 		Double oldTotalFee = oldTaskModel.getAmount()
@@ -585,7 +585,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 						oldTaskModel.getSnapshotTemplateId())) {
 			int result = renRenTaskDao.update(record);
 			if (result == 0) {
-				throw new RuntimeException("更新任务基础信息时失败");
+				throw new TransactionalRuntimeException("更新任务基础信息时失败");
 			}
 			sbRemark.append(taskRemark);
 		}
@@ -607,7 +607,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 			BusinessBalance oldBalance = businessBalanceDao
 					.selectByBusinessId(oldTaskModel.getBusinessId());
 			if (oldBalance == null) {
-				throw new RuntimeException("没有找到id="
+				throw new TransactionalRuntimeException("没有找到id="
 						+ oldTaskModel.getBusinessId() + "的商户的余额信息");
 			}
 			updateBusinessBalance(record.getId(), oldTaskModel.getBusinessId(),
@@ -750,12 +750,12 @@ public class RenRenTaskService implements IRenRenTaskService {
 			req.setTemplateId(newTemplateId);
 			int snapshotResult = templateSnapshotDao.copySnapshot(req);
 			if (snapshotResult == 0) {
-				throw new RuntimeException("生成任务的模板快照失败");
+				throw new TransactionalRuntimeException("生成任务的模板快照失败");
 			}
 			int detailSnapshotResult = templateDetailSnapshotDao.copySnapshot(
 					req.getTemplateId(), req.getTemplateSnapshotId());
 			if (detailSnapshotResult == 0) {
-				throw new RuntimeException("生成任务的模板详情快照失败");
+				throw new TransactionalRuntimeException("生成任务的模板详情快照失败");
 			}
 			// 重新生成了模板的快照数据之后，才删除原来的模板快照数据
 			templateSnapshotDao
@@ -873,13 +873,13 @@ public class RenRenTaskService implements IRenRenTaskService {
 		BusinessBalance oldBusinessBalance = businessBalanceDao
 				.selectByBusinessId(taskModel.getBusinessId());
 		if (oldBusinessBalance == null) {
-			throw new RuntimeException("没有找到id=" + taskModel.getBusinessId()
+			throw new TransactionalRuntimeException("没有找到id=" + taskModel.getBusinessId()
 					+ "的商户的余额信息");
 		}
 		Double totalFee = taskModel.getAmount() * taskModel.getTaskTotalCount();
 		Double difFee = totalFee - realFee;
 		if (difFee.compareTo(0d) < 0) {
-			throw new RuntimeException("id为" + taskId + "的任务的共给地推员的佣金大于了任务总佣金");
+			throw new TransactionalRuntimeException("id为" + taskId + "的任务的共给地推员的佣金大于了任务总佣金");
 		}
 		if (difFee.compareTo(0d) > 0) {
 			updateBusinessBalance(taskId, taskModel.getBusinessId(), difFee,
