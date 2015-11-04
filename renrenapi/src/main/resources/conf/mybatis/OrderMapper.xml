@@ -251,8 +251,8 @@ WHERE   id = ${orderId}
   
    <sql id="getOrderAuditListWhere">
 		1=1			
-		<if test="orderId != null and orderId!=0">
-			 AND o.id=${orderId}
+		<if test="orderNo != null and orderNo!=''">
+			 AND o.orderNo=''${orderNo}''
 		</if>
 	    <if test="auditStatus != -1">
 			AND o.AuditStatus=${auditStatus}

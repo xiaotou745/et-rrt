@@ -9,13 +9,6 @@ import com.renrentui.renrenentity.common.PagedRequestBase;
  *
  */
 public class PagedAuditorderReq extends PagedRequestBase{
-
-	public Long getOrderId() {
-		return orderId;
-	}
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
-	}
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -29,7 +22,7 @@ public class PagedAuditorderReq extends PagedRequestBase{
 	public void setClienterName(String clienterName) {
 		this.clienterName = clienterName;
 	}
-	private Long orderId;
+	private String orderNo;
 	private String companyName;
 	
 	private int auditStatus;
@@ -39,5 +32,11 @@ public class PagedAuditorderReq extends PagedRequestBase{
 	}
 	public void setAuditStatus(int auditStatus) {
 		this.auditStatus = auditStatus;
+	}
+	public String getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 }

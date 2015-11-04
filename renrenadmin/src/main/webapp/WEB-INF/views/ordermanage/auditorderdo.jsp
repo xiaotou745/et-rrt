@@ -16,7 +16,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr class="tdbg">
-			<th width="%5">订单编号</th>
+			<th width="%5">编号</th>
+			<th width="%5">订单号</th>
 			<th >地推员</th>
 			<th >公司名称</th>
 			<th >任务名称</th>
@@ -41,6 +42,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		%>
 		<tr>
 			<td><%=data.get(i).getOrderId()%></td>
+			<td><%=data.get(i).getOrderNo()%></td>
 			<td><%=data.get(i).getClienterName()%></td>	
 			<td><%=data.get(i).getCompanyName()%></td>
 			<td><%=data.get(i).getTaskTitle()%></td>	

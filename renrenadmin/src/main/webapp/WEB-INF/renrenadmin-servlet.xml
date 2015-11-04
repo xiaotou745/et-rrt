@@ -33,7 +33,7 @@
 			</bean>
 			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
                 <property name="objectMapper">  
-                    	<bean id="jacksonMapper" class="com.edaisong.core.util.ExtandObjectMapper"/>
+                    	<bean id="jacksonMapper" class="com.renrentui.renrencore.util.ExtandObjectMapper"/>
                 </property>  
             </bean>  
 		</mvc:message-converters>
