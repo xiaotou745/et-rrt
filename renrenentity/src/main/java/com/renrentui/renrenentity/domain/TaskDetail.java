@@ -44,6 +44,13 @@ public class TaskDetail {
 	private int auditCycle;
 	private int taskCycle;
 	private String receivedTime;
+	private int isAgainPickUp;
+	public int getIsAgainPickUp() {
+		return isAgainPickUp;
+	}
+	public void setIsAgainPickUp(int isAgainPickUp) {
+		this.isAgainPickUp = isAgainPickUp;
+	}
 	public String getReceivedTime() {
 		return receivedTime;
 	}

@@ -204,14 +204,14 @@ public class RenRenTaskService implements IRenRenTaskService {
 		CheckCancelOrder check = orderDao.checkCancelOrder(req);
 		if (check == null)// 订单不存在
 			return CancelTaskCode.OrderNull;
-		// if (check.getCancelCan() == 0)// 订单不能取消  //窦海超 去掉了判断订单进行中-未完成不能取消状态
+		// if (check.getCancelCan() == 0)// 订单不能取消 //窦海超 去掉了判断订单进行中-未完成不能取消状态
 		// {
-			if (check.getIsCancle() == 1)// 订单已经取消
-				return CancelTaskCode.TaskIsCancel;
-			if (check.getIsComplete() == 1)// 订单已经完成不能取消
-				return CancelTaskCode.TaskComplete;
-//			return CancelTaskCode.CantCancel;// 订单不可取消
-//		}
+		if (check.getIsCancle() == 1)// 订单已经取消
+			return CancelTaskCode.TaskIsCancel;
+		// if (check.getIsComplete() == 1)// 订单已经完成不能取消
+		// return CancelTaskCode.TaskComplete;
+		// return CancelTaskCode.CantCancel;// 订单不可取消
+		// }
 
 		int res = orderDao.cancelOrder(req);// 取消订单
 
@@ -438,9 +438,9 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
 		List<TaskModel> list = renRenTaskDao.getNewTaskList(req);
-//		list.stream().forEach(
-//				t -> t.setLogo(PropertyUtils.getProperty("ImgShowUrl")
-//						+ t.getLogo()));
+		// list.stream().forEach(
+		// t -> t.setLogo(PropertyUtils.getProperty("ImgShowUrl")
+		// + t.getLogo()));
 		return list;
 	}
 
@@ -458,13 +458,13 @@ public class RenRenTaskService implements IRenRenTaskService {
 	public int getMyReceivedTaskListTotal(TaskReq req) {
 		return renRenTaskDao.getMyReceivedTaskListTotal(req);
 	}
-	
+
 	@Override
 	public List<TaskModel> getSubmittedTaskList(TaskReq req) {
-		//这里判断逻辑，是否可以继续领取任务
-		//1、如果任务结束时间大于当前时间
-		//2、剩余任务量大于0
-		//3、如果当前任务未接单
+		// 这里判断逻辑，是否可以继续领取任务
+		// 1、如果任务结束时间大于当前时间
+		// 2、剩余任务量大于0
+		// 3、如果当前任务未接单
 		return renRenTaskDao.getSubmittedTaskList(req);
 	}
 
@@ -472,15 +472,17 @@ public class RenRenTaskService implements IRenRenTaskService {
 	public int getSubmittedTaskListTotal(TaskReq req) {
 		return renRenTaskDao.getSubmittedTaskListTotal(req);
 	}
+
 	/**
-	 * 统计我的任务列表   已领取 审核中 未通过 -的数量信息  add by caoheyang  20151026
+	 * 统计我的任务列表 已领取 审核中 未通过 -的数量信息 add by caoheyang 20151026
+	 * 
 	 * @param req
 	 * @return
 	 */
-	public  MyJobTaskDomain getMyJobCount(TaskReq req){
+	public MyJobTaskDomain getMyJobCount(TaskReq req) {
 		return renRenTaskDao.getMyJobCount(req);
 	}
-	
+
 	/**
 	 * 超时取消任务服务
 	 * 
