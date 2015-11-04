@@ -43,6 +43,14 @@ public class TaskModel implements Serializable {
 	
 	private Integer waitAuditCount;
 	
+	public String getCancelTime() {
+		return cancelTime;
+	}
+
+	public void setCancelTime(String cancelTime) {
+		this.cancelTime = cancelTime;
+	}
+	private String cancelTime;
 	public String getAuditTime() {
 		return auditTime;
 	}
