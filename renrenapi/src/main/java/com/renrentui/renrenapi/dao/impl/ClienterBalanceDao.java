@@ -80,9 +80,9 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 	}
 
 	@Override
-	public int insert(ClienterBalance record) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insert(Long clienterid) {
+		return  getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.insert",
+				clienterid);
 	}
 
 	@Override

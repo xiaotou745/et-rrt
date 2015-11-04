@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
@@ -139,55 +140,56 @@ public class TaskService implements ITaskService{
 	 */
 	@Override
 	public HttpResultModel<MyJobTaskDomain> getSubmittedTaskList(TaskReq req) {
-		HttpResultModel<MyJobTaskDomain> hrm = new HttpResultModel<MyJobTaskDomain>();
-		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
-		if(req.getUserId()==0){
-			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
-			return hrm;
-		}	
-		MyJobTaskDomain td =new MyJobTaskDomain();
-		if(req.getOrderType()==null ||req.getOrderType()<=0)
-		{
-			hrm.setCode(TaskCode.OrderType.value()).setMsg(TaskCode.OrderType.desc());			
-			return hrm;
-		}		
-		else
-		{
-			switch (req.getOrderType()) {
-				case 1://完成
-					req.setOrderStatus((short)1);
-					req.setAuditStatus((short)2);
-					break;
-				case 2://已取消
-					req.setOrderStatus((short)2);				
-					break;
-				case 3://已失效	
-					req.setOrderStatus((short)3);
-					break;
-				case 4://当前任务审核中
-					req.setOrderStatus((short)1);
-					req.setAuditStatus((short)0);
-					td=rrTaskServcie.getMyJobCount(req);
-					break;
-				case 5: //当前任务未通过
-					req.setOrderStatus((short)1);//
-					req.setAuditStatus((short)3);
-					td=rrTaskServcie.getMyJobCount(req);
-					break;
-				default:
-					break;
-			}
-		}
-		
-		List<TaskModel> taskModelList= rrTaskServcie.getSubmittedTaskList(req);
-		int taskTotal = rrTaskServcie.getSubmittedTaskListTotal(req);
-		td.setContent(taskModelList);
-		td.setCount(taskModelList.size());
-		if(taskModelList!=null && taskModelList.size()>0){
-			td.setNextId(taskModelList.get(taskModelList.size()-1).getOrderId());
-		}
-		td.setTotal(taskTotal);
-		hrm.setData(td); 
-		return hrm;
+		throw new TransactionalRuntimeException("ddddd");
+//		HttpResultModel<MyJobTaskDomain> hrm = new HttpResultModel<MyJobTaskDomain>();
+//		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+//		if(req.getUserId()==0){
+//			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
+//			return hrm;
+//		}	
+//		MyJobTaskDomain td =new MyJobTaskDomain();
+//		if(req.getOrderType()==null ||req.getOrderType()<=0)
+//		{
+//			hrm.setCode(TaskCode.OrderType.value()).setMsg(TaskCode.OrderType.desc());			
+//			return hrm;
+//		}		
+//		else
+//		{
+//			switch (req.getOrderType()) {
+//				case 1://完成
+//					req.setOrderStatus((short)1);
+//					req.setAuditStatus((short)2);
+//					break;
+//				case 2://已取消
+//					req.setOrderStatus((short)2);				
+//					break;
+//				case 3://已失效	
+//					req.setOrderStatus((short)3);
+//					break;
+//				case 4://当前任务审核中
+//					req.setOrderStatus((short)1);
+//					req.setAuditStatus((short)0);
+//					td=rrTaskServcie.getMyJobCount(req);
+//					break;
+//				case 5: //当前任务未通过
+//					req.setOrderStatus((short)1);//
+//					req.setAuditStatus((short)3);
+//					td=rrTaskServcie.getMyJobCount(req);
+//					break;
+//				default:
+//					break;
+//			}
+//		}
+//		
+//		List<TaskModel> taskModelList= rrTaskServcie.getSubmittedTaskList(req);
+//		int taskTotal = rrTaskServcie.getSubmittedTaskListTotal(req);
+//		td.setContent(taskModelList);
+//		td.setCount(taskModelList.size());
+//		if(taskModelList!=null && taskModelList.size()>0){
+//			td.setNextId(taskModelList.get(taskModelList.size()-1).getOrderId());
+//		}
+//		td.setTotal(taskTotal);
+//		hrm.setData(td); 
+//		return hrm;
 	}
 }

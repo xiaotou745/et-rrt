@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.common.DaoBase;
+import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
@@ -129,19 +130,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public long signup(SignUpReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.insert";
-		long res = getMasterSqlSessionUtil().insert(statement, req);
-		long id= req.getId();
-		if(id>0){
-		String inserBalanceString = "com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.insert";
-		int bResult= getMasterSqlSessionUtil().insert(inserBalanceString, id);
-		if(bResult<=0){
-			throw new RuntimeException("添加新用户余额记录失败");
-		}
-		}else {
-			throw new RuntimeException("添加新用户失败");
-		}
-		return id;
+		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IClienterDao.insert", req);
 	}
 	/**
 	* @Des 根据用户Id判断是否存在  

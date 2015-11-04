@@ -11,6 +11,7 @@ import java.lang.Math.*;
 import javax.management.RuntimeErrorException;
 
 import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
@@ -106,7 +107,16 @@ public class ClienterService implements IClienterService {
 	 */
 	@Override
 	public long signup(SignUpReq req) {
-		return clienterDao.signup(req);
+		clienterDao.signup(req);
+		long id = req.getId();
+		if (id > 0) {
+			if (clienterBalanceDao.insert(id) <= 0) {
+				throw new TransactionalRuntimeException("添加新用户余额记录失败");
+			}
+		} else {
+			throw new TransactionalRuntimeException("添加新用户失败");
+		}
+		return id;
 	}
 
 	/**
