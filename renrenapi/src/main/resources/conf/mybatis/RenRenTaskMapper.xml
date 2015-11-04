@@ -271,6 +271,7 @@ where o.ClienterId is not null and o.OrderStatus = 0
   </select> 
   <!-- 我的任务  审核中  未通过 -->
    <select id="getSubmittedTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   
    	select 
    	<if test="itemsCount != 0" >
    		top  ${itemsCount} 
@@ -290,7 +291,11 @@ where o.ClienterId is not null and o.OrderStatus = 0
                 isnull(o.FinishTime,'') FinishTime,
                 o.Id myReceivedTaskId,
                 o.Id orderId,isnull(o.AuditTime,'') AuditTime,
-                (case when rt.EndTime>getdate() and rt.AvailableCount>0 and  o.OrderStatus!=0 then 1 else 0 end) IsAgainPickUp,
+                o.CancelTime,
+                o.DealLineTime,
+                (case when rt.EndTime>getdate() and rt.AvailableCount>0  and o.OrderStatus!=0 and o.TaskId not in (
+					 select TaskId from dbo.[Order](nolock) where ClienterId=${userId} and OrderStatus=0
+                ) then 1 else 0 end) IsAgainPickUp,
                 (SELECT count(1) FROM dbo.[Order] oo(nolock) where oo.TaskId = rt.id
 and oo.AuditStatus = 0 AND oo.OrderStatus=1) WaitAuditCount 
 from    dbo.[Order] o join dbo.RenRenTask rt on rt.Id = o.TaskId  and o.ClienterId = ${userId}

@@ -9,43 +9,65 @@ import com.renrentui.renrencore.util.PropertyUtils;
 
 public class TaskModel implements Serializable {
 	private long taskId;
-	
+
 	private long myReceivedTaskId;
 	private String taskGeneralInfo;
 	private long orderId;
 	private String pusher;
-	
+
 	private String taskName;
-	
+
 	private double amount;
-	
+
 	private int availableCount;
-	
+
 	private int status;
 	private int auditStatus;
 	private String beginTime;
-	
+
 	private String endTime;
-	
+
 	private int paymentMethod;
-	
+
 	private String logo;
-	
+
 	private Double taskCycle;
 	/*
 	 * 领取任务的时间
 	 */
 	private String receivedTime;
-	
+
 	private String auditTime;
-	
+
 	private String finishTime;
-	
+
+	// 订单失效时间
+	private String dealLineTime;
+
 	private Integer waitAuditCount;
-	
+
+	public String getDealLineTime() {
+		return dealLineTime;
+	}
+
+	public void setDealLineTime(String dealLineTime) {
+		this.dealLineTime = dealLineTime;
+	}
+
+	public String getCancelTime() {
+		return cancelTime;
+	}
+
+	public void setCancelTime(String cancelTime) {
+		this.cancelTime = cancelTime;
+	}
+
+	private String cancelTime;
+
 	public String getAuditTime() {
 		return auditTime;
 	}
+
 	private int isAgainPickUp;
 
 	public int getIsAgainPickUp() {
@@ -67,7 +89,7 @@ public class TaskModel implements Serializable {
 	public void setTaskId(long taskId) {
 		this.taskId = taskId;
 	}
-	
+
 	public long getMyReceivedTaskId() {
 		return myReceivedTaskId;
 	}
@@ -130,7 +152,8 @@ public class TaskModel implements Serializable {
 
 	public void setBeginTime(String beginTime) {
 		this.beginTime = beginTime;
-	} 
+	}
+
 	public String getEndTime() {
 		return endTime;
 	}
@@ -148,14 +171,15 @@ public class TaskModel implements Serializable {
 	}
 
 	public String getLogo() {
-		if(this.logo!=null&&!this.logo.equals(""))
-			return PropertyUtils.getProperty("ImgShowUrl")+this.logo;
+		if (this.logo != null && !this.logo.equals(""))
+			return PropertyUtils.getProperty("ImgShowUrl") + this.logo;
 		return logo;
 	}
 
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
+
 	public Double getTaskCycle() {
 		return taskCycle;
 	}
@@ -202,5 +226,5 @@ public class TaskModel implements Serializable {
 
 	public void setOrderId(long orderId) {
 		this.orderId = orderId;
-	} 
+	}
 }
