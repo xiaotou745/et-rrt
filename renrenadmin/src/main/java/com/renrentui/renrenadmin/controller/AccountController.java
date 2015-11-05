@@ -24,6 +24,7 @@ import com.renrentui.renrenapi.service.inter.IAccountAuthService;
 import com.renrentui.renrenapi.service.inter.IAccountInfoService;
 import com.renrentui.renrenapi.service.inter.IMenuInfoService;
 import com.renrentui.renrenapi.service.inter.IRoleInfoService;
+import com.renrentui.renrencore.security.AES;
 import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrencore.util.CookieUtils;
 import com.renrentui.renrencore.util.JsonUtil;
@@ -160,7 +161,8 @@ public class AccountController {
 		loginUser.setPassword("");
 		loginUser.setRoleId(account.getRoleId());
 		loginUser.setUserName(account.getUserName());
-		CookieUtils.setCookie(request,response,LoginUtil.LOGIN_COOKIE_NAME, JsonUtil.obj2string(loginUser), cookieMaxAge,
+		String encyCookie=AES.aesEncrypt(JsonUtil.obj2string(loginUser));
+		CookieUtils.setCookie(request,response,LoginUtil.LOGIN_COOKIE_NAME, encyCookie, cookieMaxAge,
 				true);
 		response.sendRedirect(basePath+"/ordermanage/auditorder");
 	}
