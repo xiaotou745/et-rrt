@@ -51,15 +51,17 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 		return true;
 	}
 	private boolean needCheckPageAuth(HttpServletRequest request){
-		//如果当前请求是从ajax中来的，或当前请求的页面为订单列表或验证码页面，则不进行权限判断
-		String requestType = request.getHeader("X-Requested-With"); 
-		if (!(requestType!=null&&requestType.equals("XMLHttpRequest"))&&
-			!request.getServletPath().equals("/account/code")&&
-			!request.getServletPath().equals("/ordermanage/auditorder")&&
-			!request.getServletPath().equals("/account/logoff")) {
-			return false;
-			
-		}
 		return false;
+		//需要处理类似/order/detail这种页面。需要设置按钮的url
+		//如果当前请求是从ajax中来的，或当前请求的页面为订单列表或验证码页面，则不进行权限判断
+//		String requestType = request.getHeader("X-Requested-With"); 
+//		if (!(requestType!=null&&requestType.equals("XMLHttpRequest"))&&
+//			!request.getServletPath().equals("/account/code")&&
+//			!request.getServletPath().equals("/ordermanage/auditorder")&&
+//			!request.getServletPath().equals("/account/logoff")) {
+//			return true;
+//			
+//		}
+//		return false;
 	}
 }

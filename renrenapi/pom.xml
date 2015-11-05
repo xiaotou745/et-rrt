@@ -15,16 +15,6 @@
 		<jackson.version>2.5.0</jackson.version>
 	</properties>
 	<dependencies>
-		<!-- <dependency> -->
-		<!-- <groupId>mysql</groupId> -->
-		<!-- <artifactId>mysql-connector-java</artifactId> -->
-		<!-- <version>5.1.21</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.mybatis.generator</groupId> -->
-		<!-- <artifactId>mybatis-generator-core</artifactId> -->
-		<!-- <version>1.3.1</version> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -63,12 +53,6 @@
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version>
 		</dependency>
-		<!-- org.springframework.jdbc.datasource.DriverManagerDataSource -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.microsoft.sqlserver</groupId> -->
-		<!-- <artifactId>sqljdbc4</artifactId> -->
-		<!-- <version>4.0</version> -->
-		<!-- </dependency> -->
 		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -118,7 +102,7 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-<dependency>
+		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 			<version>2.6.0</version>
