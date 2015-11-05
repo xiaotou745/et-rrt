@@ -97,7 +97,8 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> modifyPwd(ModifyPwdReq req) {
 		HttpResultModel<Object> model = new HttpResultModel<Object>();
-		if (clienterService.isRightPwd(req.getUserId(), req.getNewPwd()))// 验证旧密码是否正确
+		Boolean yzStatus=clienterService.isRightPwd(req.getUserId(), req.getOldPwd());
+		if (!yzStatus)// 验证旧密码是否正确
 			return model.setCode(ModifyPwdCode.OldPwdError.value()).setMsg(
 					ModifyPwdCode.OldPwdError.desc());
 		if (clienterService.modifyPwdUserc(req))

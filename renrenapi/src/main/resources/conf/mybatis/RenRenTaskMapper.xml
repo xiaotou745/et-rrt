@@ -62,7 +62,11 @@ SELECT TOP 1 rrt.id ,
         rrt.CompanySummary,
         rrt.AuditCycle,
         rrt.TaskCycle,
-        (case when rrt.EndTime>getdate() and rrt.AvailableCount>0 and  o.OrderStatus!=0 then 1 else 0 end) IsAgainPickUp,
+        (case when rrt.EndTime>getdate() and rrt.AvailableCount>0 and rrt.Status=1 and 
+			rrt.Id not in (
+					 select TaskId from dbo.[Order](nolock) where ClienterId=${userId} and OrderStatus=0
+                )
+		 then 1 else 0 end) IsAgainPickUp,
         (SELECT COUNT(o2.id) FROM  dbo.[Order] AS o2(NOLOCK) WHERE o2.OrderStatus=1 AND o2.AuditStatus=0 AND o2.TaskId=rrt.id) as WaitCount
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 LEFT JOIN dbo.Business AS b (NOLOCK) ON b.Id = rrt.BusinessId
@@ -293,7 +297,8 @@ where o.ClienterId is not null and o.OrderStatus = 0
                 o.Id orderId,isnull(o.AuditTime,'') AuditTime,
                 o.CancelTime,
                 o.DealLineTime,
-                (case when rt.EndTime>getdate() and rt.AvailableCount>0  and o.OrderStatus!=0 and o.TaskId not in (
+                b.logo,
+                (case when rt.EndTime>getdate() and rt.AvailableCount>0 and rt.Status=1 and rt.Id not in (
 					 select TaskId from dbo.[Order](nolock) where ClienterId=${userId} and OrderStatus=0
                 ) then 1 else 0 end) IsAgainPickUp,
                 (SELECT count(1) FROM dbo.[Order] oo(nolock) where oo.TaskId = rt.id

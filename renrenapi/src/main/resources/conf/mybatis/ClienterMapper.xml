@@ -283,7 +283,7 @@
 		      ,ISNULL(cb.HadWithdraw,0) HadWithdraw
 		      ,ISNULL((SELECT SUM(o.Amount) FROM dbo.[Order] o WITH(NOLOCK) WHERE o.OrderStatus=1 AND o.AuditStatus=0 AND ClienterId=#{userId}),0)  checking
 		      ,ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) Withdrawing
-		      ,ISNULL(cb.Balance,0)+ISNULL(cb.Withdraw,0) +ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) TotalAmount
+		      ,ISNULL(cb.Balance,0)+ISNULL(cb.HadWithdraw,0) +ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) TotalAmount
     FROM  dbo.Clienter c WITH(NOLOCK)
   	JOIN  dbo.ClienterBalance cb WITH(NOLOCK) ON c.Id=cb.ClienterId
 	WHERE c.Id=#{userId}
