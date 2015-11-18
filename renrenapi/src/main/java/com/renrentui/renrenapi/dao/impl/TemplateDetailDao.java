@@ -19,7 +19,11 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 		return getMasterSqlSessionUtil().delete(
 				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.deleteByTemplateId", templateId);
 	}
-
+	/**
+	 * 插入一个模板详情
+	 * 茹化肖
+	 * 2015年11月16日15:57:40
+	 */
 	@Override
 	public int insert(TemplateDetail record) {
 		return getMasterSqlSessionUtil().insert(

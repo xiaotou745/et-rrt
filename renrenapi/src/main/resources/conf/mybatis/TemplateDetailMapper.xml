@@ -8,13 +8,24 @@
     delete from TemplateDetail
     where TemplateId = #{templateId,jdbcType=BIGINT}
   </delete>
+  <!-- 插入一个模板详情 茹化肖 -->
   <insert id="insert" parameterType="com.renrentui.renrenentity.TemplateDetail" >
-    insert into TemplateDetail (templateId,ControlId, OrderNum, 
-      Name, Title, DefaultValue, 
-      ControlData)
-    values (#{item.templateId,jdbcType=BIGINT},#{controlId,jdbcType=BIGINT}, #{orderNum,jdbcType=INTEGER}, 
-      #{name,jdbcType=NVARCHAR}, #{title,jdbcType=NVARCHAR}, #{defaultValue,jdbcType=NVARCHAR}, 
-      #{controlData,jdbcType=NVARCHAR})
+    insert into TemplateDetail (
+    TemplateGroupId,
+    ControlId,
+    OrderNum, 
+    Name,
+    Title,
+    DefaultValue, 
+    ControlData)
+    values (
+    #{templateGroupId,jdbcType=BIGINT},
+    #{controlId,jdbcType=BIGINT},
+    #{orderNum,jdbcType=INTEGER}, 
+    #{name,jdbcType=NVARCHAR},
+    #{title,jdbcType=NVARCHAR},
+    #{defaultValue,jdbcType=NVARCHAR}, 
+    #{controlData,jdbcType=NVARCHAR})
   </insert>
   <update id="insertList" parameterType="java.util.List">
 		<foreach collection="list" item="item" index="index" >

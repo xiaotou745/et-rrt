@@ -47,7 +47,16 @@ public class RenRenTask {
     private String taskNote;
     private Long targetPeople;
     private String companySummary;
-    public Integer getAuditCycle() {
+    private String hotLine;
+    public String getHotLine() {
+		return hotLine;
+	}
+
+	public void setHotLine(String hotLine) {
+		this.hotLine = hotLine;
+	}
+
+	public Integer getAuditCycle() {
 		return auditCycle;
 	}
 

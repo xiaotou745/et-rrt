@@ -26,6 +26,7 @@ import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.enums.TemplateStatus;
+import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.Attachment;
@@ -37,8 +38,10 @@ import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
+import com.renrentui.renrenentity.req.AesParameterReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
+import com.renrentui.renrenentity.req.SaveTaskReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
 
 
@@ -55,6 +58,14 @@ public class TaskManageController {
 	private IRenRenTaskService renRenTaskService;
 	@Autowired
 	private IBusinessBalanceService businessBalanceService;
+	
+	/**
+	 * 新建任务页面
+	 * 茹化肖
+	 * 2015年11月16日16:26:53
+	 * 
+	 * @return
+	 */
 	@RequestMapping("newtask")
 	public ModelAndView newTask() {
 		ModelAndView model = new ModelAndView("adminView");
@@ -66,8 +77,8 @@ public class TaskManageController {
 		model.addObject("templatelist", getTemplateList());
 		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
 		
-		model.addObject("provincelist", getOpenCityByJiBie(list,1));
-		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,2);
+		model.addObject("provincelist", getOpenCityByJiBie(list,2));
+		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,3);
 		model.addObject("pro_city", getCityStr(citylistlist));
 //		List<PublicProvinceCity> regionlist =getOpenCityByJiBie(list,3);
 //		String city_region=getCityStr(regionlist);
@@ -134,37 +145,43 @@ public class TaskManageController {
 		}
 		return listnew;
 	}
+	/**
+	 * 新建任务
+	 * 茹化肖
+	 * 2015年11月16日11:13:58
+	 * @param request
+	 * @param req
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
 	@RequestMapping("savetask")
 	@ResponseBody
-	public int saveTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
-		taskItem.setPusher("");
+	public int saveTask(HttpServletRequest request,AesParameterReq asreq) {
+		
+		SaveTaskReq req=JsonUtil.str2obj(asreq.getData(),SaveTaskReq.class);
+		RenRenTask taskItem=req.getRenRenTask();
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
-		taskItem.setEndTime(ParseHelper.ToDate(endDate));
-		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
 		UserContext context=UserContext.getCurrentContext(request);
 		taskItem.setCreateName(context.getUserName());
 		taskItem.setModifyName(context.getUserName());
-		List<Integer> regionCodes=getRegionCodeList(request);
-		List<Attachment> attachments=getAttachList(request);
+		List<Integer> regionCodes=getRegionCodeList(request,req);//获取城市信息
+		List<Attachment> attachments=null;//TODO 暂时将附件去掉
 		
-		return renRenTaskService.insert(taskItem, regionCodes,attachments);
+		return renRenTaskService.insert(req, regionCodes,attachments);
 	}
-	private List<Integer> getRegionCodeList(HttpServletRequest request){
+	/**
+	 * 组建任务区域
+	 * @param request
+	 * @return
+	 */
+	private List<Integer> getRegionCodeList(HttpServletRequest req,SaveTaskReq request){
 		List<Integer> regionCodes=new ArrayList<>();
-		Integer provinceCode=ParseHelper.ToInt(request.getParameter("provinceCode"),0);
+		Integer provinceCode=ParseHelper.ToInt(request.getProvinceCode(),0);
 		if (provinceCode>-1) {
-			Integer cityCode=ParseHelper.ToInt(request.getParameter("cityCode"),0);
+			Integer cityCode=ParseHelper.ToInt(request.getCityCode(),0);
 			if (cityCode>-1) {
 				regionCodes.add(cityCode);
-//				String name="";
-//				Enumeration pNames=request.getParameterNames();
-//				while(pNames.hasMoreElements()){    
-//				    name=(String)pNames.nextElement();  
-//					if (name.indexOf("regionCode")==0) {
-//						regionCodes.add(ParseHelper.ToInt(request.getParameter(name),0));
-//					}
-//				}
 			}else {
 				regionCodes.add(provinceCode);
 			}
@@ -262,7 +279,7 @@ public class TaskManageController {
 		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
 		UserContext context=UserContext.getCurrentContext(request);
 		taskItem.setModifyName(context.getUserName());
-		List<Integer> regionCodes=getRegionCodeList(request);
+		List<Integer> regionCodes=getRegionCodeList(request,null);
 		List<Attachment> attachments=getAttachList(request);
 		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
 	}

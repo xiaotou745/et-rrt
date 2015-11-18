@@ -12,33 +12,42 @@
     from RenRenTask
     where Id = #{id,jdbcType=BIGINT}
   </select>
-
+  <!--添加一个任务 茹化肖 2015年11月16日13:45:54 -->
   <insert id="insert" parameterType="com.renrentui.renrenentity.RenRenTask" >
     	  <selectKey resultType="java.lang.Long" keyProperty="id"
 				order="AFTER">
 				select @@IDENTITY as id
 	  </selectKey>
-    insert into RenRenTask (TaskTitle, TaskNotice, 
-      TaskGeneralInfo, BusinessId, Pusher, 
-      CreateName, CreateTime, ModifyName, 
-      ModifyTime, BeginTime, EndTime, 
-      TaskCycle, AvailableCount, Amount, 
-      status, TaskTotalCount, SnapshotTemplateId, 
-      Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary)
-    values (#{taskTitle,jdbcType=NVARCHAR}, #{taskNotice,jdbcType=NVARCHAR}, 
-      #{taskGeneralInfo,jdbcType=NVARCHAR}, #{businessId,jdbcType=BIGINT}, 
+    insert into RenRenTask (
+	  TaskTitle,
+      TaskGeneralInfo,
+      BusinessId, 
+      Pusher, 
+      CreateName, 
+      CreateTime,
+      ModifyName, 
+      ModifyTime, 
+      BeginTime,
+      EndTime, 
+      Amount, 
+      status, 
+      AuditCycle,
+      HotLine)
+    values (
+      #{taskTitle,jdbcType=NVARCHAR},
+      #{taskGeneralInfo,jdbcType=NVARCHAR},
+      #{businessId,jdbcType=BIGINT}, 
       #{pusher,jdbcType=NVARCHAR}, 
-      #{createName,jdbcType=NVARCHAR}, getdate(),
-       #{modifyName,jdbcType=NVARCHAR}, getdate(),
+      #{createName,jdbcType=NVARCHAR},
+       getdate(),
+       #{modifyName,jdbcType=NVARCHAR},
+        getdate(),
       #{beginTime,jdbcType=TIMESTAMP},
        #{endTime,jdbcType=TIMESTAMP}, 
-      #{taskCycle,jdbcType=BIGINT}, #{availableCount,jdbcType=INTEGER}, 
       #{amount,jdbcType=DECIMAL}, 
-      #{status,jdbcType=INTEGER}, #{taskTotalCount,jdbcType=INTEGER},
-       #{snapshotTemplateId,jdbcType=BIGINT}, 
-      #{link,jdbcType=NVARCHAR}, #{paymentMethod,jdbcType=SMALLINT},
-      #{auditCycle,jdbcType=BIGINT}, #{taskNote,jdbcType=NVARCHAR},
-      #{targetPeople,jdbcType=BIGINT}, #{companySummary,jdbcType=NVARCHAR})
+      #{status,jdbcType=INTEGER},
+      #{auditCycle,jdbcType=BIGINT}, 
+      #{hotLine,jdbcType=NVARCHAR})
   </insert>
   <!-- 获取任务详情接口  2015年9月29日13:18:05茹化肖  -->
    <select id="getTaskDetail" resultType="com.renrentui.renrenentity.domain.TaskDetail" parameterType="com.renrentui.renrenentity.req.TaskDetailReq" >
@@ -392,5 +401,35 @@ order by o.Id asc;
    from     dbo.[Order] o
             join dbo.RenRenTask rt on rt.Id = o.TaskId where  o.ClienterId =  ${userId} 
   </select> 
-  
+  <!-- 添加任务的步骤信息 茹化肖 2015年11月16日15:30:04 -->
+  <insert id="insertTaskSetp" parameterType="com.renrentui.renrenentity.domain.TaskSetp">
+  INSERT INTO dbo.TaskSetp
+  (TaskId,
+   LinkTitle,
+   SortNo,
+   SetpType,
+   [Content])
+   values (
+   ${taskId},
+   '${linkTitle}',
+   ${sortNo} ,
+   ${setpType},
+   '${content}')
+  </insert>
+    <!-- 添加任务的模板组信息 茹化肖 2015年11月16日15:30:04 -->
+  <insert id="insertTemplateGrpup" parameterType="com.renrentui.renrenentity.domain.TemplateGroup">
+  		<selectKey resultType="java.lang.Long" keyProperty="id"
+				order="AFTER">
+				select @@IDENTITY as id
+	    </selectKey>
+INSERT INTO dbo.TemplateGroup
+        ( TaskId ,
+          GroupType ,
+          Title
+        )
+VALUES  ( ${taskId} , 
+          ${groupType} , 
+          '${title}' 
+        )
+  </insert>
 </mapper>

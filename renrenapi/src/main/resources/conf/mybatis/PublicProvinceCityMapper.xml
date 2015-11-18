@@ -39,5 +39,6 @@
     <select id="getAllOpenCity"  resultType="com.renrentui.renrenentity.PublicProvinceCity" >
 	select  * 
 	from    dbo.PublicProvinceCity a ( nolock )
+	where ispublic=1  AND a.Jibie=2 OR Jibie=3
   </select>
 </mapper>

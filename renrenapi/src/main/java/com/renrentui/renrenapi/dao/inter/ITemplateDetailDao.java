@@ -10,7 +10,13 @@ import com.renrentui.renrenentity.TemplateDetail;
 
 public interface ITemplateDetailDao {
     int deleteByTemplateId(Long templateId);
-
+    /**
+     * 插入一个模板详情
+     * 茹化肖
+     * 2015年11月16日16:09:02
+     * @param record
+     * @return
+     */
     int insert(TemplateDetail record);
     int insertList(List<TemplateDetail> recordList);
     /**
