@@ -2,6 +2,7 @@ package com.renrentui.renrenapihttp.common;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrencore.util.StringUtils;
 
@@ -21,7 +22,8 @@ public class GlobalExceptionHandler implements ExceptionMapper {
 	@Override
     public Response toResponse(Throwable ex) {
     	HttpResultModel<String> rep=new HttpResultModel<String>();
-    	if (ex instanceof TransactionalRuntimeException) {
+    	if (ex instanceof TransactionalRuntimeException||
+        	ex instanceof InvalidFormatException) {
 	        rep.setCode(HttpReturnRnums.ParaError.value());
 	        rep.setMsg(HttpReturnRnums.ParaError.desc());
 	        rep.setData(ex.getMessage());
