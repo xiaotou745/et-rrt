@@ -32,7 +32,8 @@
       Amount, 
       status, 
       AuditCycle,
-      HotLine)
+      HotLine,
+      TaskType)
     values (
       #{taskTitle,jdbcType=NVARCHAR},
       #{taskGeneralInfo,jdbcType=NVARCHAR},
@@ -47,7 +48,8 @@
       #{amount,jdbcType=DECIMAL}, 
       #{status,jdbcType=INTEGER},
       #{auditCycle,jdbcType=BIGINT}, 
-      #{hotLine,jdbcType=NVARCHAR})
+      #{hotLine,jdbcType=NVARCHAR},
+       #{taskType,jdbcType=INTEGER})
   </insert>
   <!-- 获取任务详情接口  2015年9月29日13:18:05茹化肖  -->
    <select id="getTaskDetail" resultType="com.renrentui.renrenentity.domain.TaskDetail" parameterType="com.renrentui.renrenentity.req.TaskDetailReq" >

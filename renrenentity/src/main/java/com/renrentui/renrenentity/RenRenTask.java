@@ -48,7 +48,16 @@ public class RenRenTask {
     private Long targetPeople;
     private String companySummary;
     private String hotLine;
-    public String getHotLine() {
+    private Integer taskType;
+    public Integer getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(Integer taskType) {
+		this.taskType = taskType;
+	}
+
+	public String getHotLine() {
 		return hotLine;
 	}
 

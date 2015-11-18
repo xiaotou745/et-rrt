@@ -107,6 +107,17 @@ String city_region = (String) request.getAttribute("city_region");
 									<input type="text" class="form-control" name="hotline" id="hotline" />
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">任务类型: </label>
+								<div class="col-sm-8">
+									<input id="rTaskType1" name="rTaskType" type="radio" value="1" > 
+									<label>签约任务</label>
+									<input id="rTaskType2" name="rTaskType" type="radio" value="2" > 
+									<label>分享任务</label>
+									<input id="rTaskType3" name="rTaskType" type="radio" value="3" > 
+									<label>下载任务</label>
+								</div>
+							</div>
 						</div>
 						</div>
 				</div>
@@ -447,6 +458,7 @@ function createTaskPar(){
 	task.status=0;
 	task.auditCycle=$('#auditCycle').val();
 	task.hotLine=$('#hotline').val();
+	task.taskType=$('input[name="rTaskType"]:checked').val();
 	return task;
 }
 //创建任务步骤表数据
