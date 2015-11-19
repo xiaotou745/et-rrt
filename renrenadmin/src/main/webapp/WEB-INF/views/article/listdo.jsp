@@ -36,7 +36,8 @@
 			<td><a target="_balnk" href="<%=basePath%>/article/detail?id=<%=list.get(i).getId()%>"><%=list.get(i).getTitle()%></a></td>
 			<td><%=ParseHelper.ToDateString(list.get(i).getCreateDate())%></td>
 			<td><%=list.get(i).getId()%></td>
-			<td><a href="javascript:void(0)" onclick="delArticle(<%=list.get(i).getId()%>)">删除</a></td>
+			<td><a href="javascript:void(0)" onclick="delArticle(<%=list.get(i).getId()%>)">删除</a>
+			<a href="<%=basePath%>/article/new?id=<%=list.get(i).getId()%>">编辑</a></td>
 		</tr>
 		<%
 			}

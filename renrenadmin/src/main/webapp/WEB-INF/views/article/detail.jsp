@@ -9,5 +9,5 @@
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 Article data = (Article) request.getAttribute("detail");
 %>
-<div style="text-align:center;margin-left:auto; margin-right:auto;" ><%=data.getTitle() %></div>
-<div><%=data.getContent() %></div>
+<div style="text-align:center;margin-left:auto; margin-right:auto;" ><h2><%=data.getTitle() %><h2></div>
+<div ><%=data.getContent() %></div>

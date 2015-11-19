@@ -30,8 +30,14 @@ public class ArticleController {
 	 * @return
 	 */
 	@RequestMapping("new")
-	public ModelAndView newArticle() {
+	public ModelAndView newArticle(Long id) {
 		ModelAndView view = new ModelAndView("adminView");
+		Article article=null;
+		if(id!=null&&id!=0)
+		{
+			article=articleService.getDetail(id);
+		}
+		view.addObject("article", article);
 		view.addObject("subtitle", "文章管理");
 		view.addObject("currenttitle", "新建文章");
 		view.addObject("viewPath", "article/new");

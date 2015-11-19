@@ -1,8 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="com.renrentui.renrenentity.domain.Article"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 String ImgShowUrl= PropertyUtils.getProperty("ImgShowUrl");
+String titleString="";
+String contentString="";
+Integer Id=null;
+Article art=(Article)request.getAttribute("article");
+if(art!=null)
+{
+	titleString=art.getTitle();
+	contentString=art.getContent();
+	Id=art.getId();
+}
 %>
 <script src="<%=basePath%>/js/bootstrap-treeview.js"></script>
 <link rel="stylesheet" href="<%=basePath%>/kindeditor-4.1.10/themes/default/default.css" />
@@ -10,8 +21,11 @@ String ImgShowUrl= PropertyUtils.getProperty("ImgShowUrl");
 <script charset="utf-8" src="<%=basePath%>/kindeditor-4.1.10/kindeditor.js"></script>
 <script charset="utf-8" src="<%=basePath%>/kindeditor-4.1.10/lang/zh_CN.js"></script>
 <script charset="utf-8" src="<%=basePath%>/kindeditor-4.1.10/plugins/code/prettify.js"></script>
+<div id="noshow" style="dispaly:none">
+<%=contentString%>
+</div>
 <script>
-
+$('#noshow').hide();
 KindEditor.ready(function(K) {
 	
 var editor1 = K.create('textarea[name="content"]', {
@@ -50,10 +64,11 @@ self.sync();
 
 prettyPrint();
 window.editor=editor1;
+$(document.getElementsByTagName("iframe")[0].contentWindow.document).find('body').html($('#noshow').html());
 });
 
 </script>
-<span>文章标题：</span><input class="form-control" type="text" name="title" id="title">
+<span>文章标题：</span><input class="form-control" type="text" name="title" id="title" value="<%=titleString%>">
 <br />
 <span>内容：</span>
 <textarea name="content" cols="100" rows="8" id="content"></textarea><br />
@@ -95,13 +110,17 @@ $('#save').click(function(){
 	var url="<%=basePath%>/article/savearticle";
 	par={
 			"title":$('#title').val(),
-			"content":$('#content').val()
+			"content":$('#content').val(),
+			"id":<%=Id%>
 	}
 	$.post(url,par,function(data){
-			if(data>0)
-				alert('保存文章成功');
+			if(data>0){
+			alert('保存文章成功');
+			window.location.href="<%=basePath%>/article/list";	
+			}
 			else
 				alert('保存文章失败');
 	});
 });
+
 </script>

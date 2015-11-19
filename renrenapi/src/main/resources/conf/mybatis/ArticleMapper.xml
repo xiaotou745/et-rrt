@@ -15,6 +15,15 @@ VALUES  ( '${title}' ,
           '${updateName}' 
         )
 </insert>
+
+<insert id="updateArticle" parameterType="com.renrentui.renrenentity.domain.Article">
+UPDATE  dbo.Article
+SET     Title = '${title}' ,
+        Content = '${content}' ,
+        UpdateName = '${updateName}' ,
+        UpdateDate = GETDATE()
+WHERE   Id =${id}
+</insert>
 <!-- 分页列表 茹化肖 2015年11月18日17:02:10 -->
 <select id="querList" resultType="com.renrentui.renrenentity.domain.Article"  parameterType="com.renrentui.renrenentity.req.PagedArticleReq" statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(

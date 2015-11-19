@@ -17,7 +17,11 @@ public class ArticleDao extends DaoBase  implements IArticleDao {
 	 */
 	@Override
 	public int saveArticle(Article req) {
-		 return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IArticleDao.saveArticle", req);
+		if(req.getId()==null)
+		{
+			 return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IArticleDao.saveArticle", req);	
+		}
+		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IArticleDao.updateArticle", req);
 	}
 	/**
 	 * 异步分页列表
