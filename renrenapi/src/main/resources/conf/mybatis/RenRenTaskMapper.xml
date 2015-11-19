@@ -439,4 +439,8 @@ ELSE
 	END
   
   </select>
+  <!-- 提交一次资料将完成次数加1 茹化肖2015年11月20日00:16:42 -->
+  <update id="addClienterCompleteCount" parameterType="java.lang.Long">
+  UPDATE ClienterTask SET CompleteNum=(CompleteNum+1) WHERE id=#{ctId,jdbcType=BIGINT}
+  </update>
 </mapper>

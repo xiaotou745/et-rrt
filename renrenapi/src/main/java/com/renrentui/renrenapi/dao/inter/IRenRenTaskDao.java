@@ -88,4 +88,10 @@ public interface IRenRenTaskDao {
 	 * @return
 	 */
 	int insertClienterTask(ClienterTask task);
+	/**
+	 * 提交资料将完成数量加1
+	 * @param ctId
+	 * @return
+	 */
+	int addClienterCompleteCount(Long ctId);
 }

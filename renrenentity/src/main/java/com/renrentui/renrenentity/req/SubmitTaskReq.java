@@ -11,13 +11,13 @@ import com.renrentui.renrenentity.domain.SubmitValue;
  */
 public class SubmitTaskReq {
 	private Long userId;
-	private Long orderId;
-	private Long templateId;
-	public Long getTemplateId() {
-		return templateId;
+	private Long taskId;
+	private Long ctId;
+	public Long getCtId() {
+		return ctId;
 	}
-	public void setTemplateId(Long templateId) {
-		this.templateId = templateId;
+	public void setCtId(Long ctId) {
+		this.ctId = ctId;
 	}
 	private ArrayList<SubmitValue> valueInfo;
 	public Long getUserId() {
@@ -26,16 +26,16 @@ public class SubmitTaskReq {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
-	public Long getOrderId() {
-		return orderId;
-	}
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
-	}
 	public ArrayList<SubmitValue> getValueInfo() {
 		return valueInfo;
 	}
 	public void setValueInfo(ArrayList<SubmitValue> valueInfo) {
 		this.valueInfo = valueInfo;
+	}
+	public Long getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
 	}
 }

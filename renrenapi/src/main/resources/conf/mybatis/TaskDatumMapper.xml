@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.ITaskDatumDao" >
+<!-- 插入任务数据表  茹化肖 2015年11月19日23:28:56-->
+<insert id="insertTaskDatum"  parameterType="com.renrentui.renrenentity.domain.TaskDatum">
+ <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+select @@IDENTITY as id
+ </selectKey>
+INSERT INTO dbo.TaskDatum
+        ( CtId ,
+          ClienterId ,
+          TaskId 
+
+        )
+VALUES  ( ${ctId} , 
+          ${clienterId} , 
+          ${taskId}
+        )	
+</insert>
+<!-- 插入任务详细资料数据 茹化肖 2015年11月19日23:41:17 -->
+<insert id="insertTaskDatumChild" parameterType="com.renrentui.renrenentity.domain.TaskDatumChild">
+ <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+select @@IDENTITY as id
+ </selectKey>
+ INSERT INTO dbo.TaskDatumChild
+        ( TaskDatumId ,
+          ControlName ,
+          ControlValue ,
+          IsEnable
+        )
+VALUES  ( ${taskDatumId} , 
+          '${controlName}' , 
+          '${controlValue}' , 
+          1 
+        )
+</insert>
+</mapper>

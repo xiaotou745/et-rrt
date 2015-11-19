@@ -209,4 +209,15 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	public int insertClienterTask(ClienterTask task) {
 		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insertClienterTask", task);
 	}
+	/**
+	 * 提交一次资料就讲完成次数加1
+	 * 2015年11月20日00:14:19
+	 * 茹化肖
+	 */
+	@Override
+	public int addClienterCompleteCount(Long ctId) {
+		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.addClienterCompleteCount", ctId);
+	}
+	
+	
 }

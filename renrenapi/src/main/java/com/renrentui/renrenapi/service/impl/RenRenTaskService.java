@@ -27,6 +27,7 @@ import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
 import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
+import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
 import com.renrentui.renrenapi.dao.inter.ITaskSetpDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
@@ -67,6 +68,8 @@ import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
+import com.renrentui.renrenentity.domain.TaskDatum;
+import com.renrentui.renrenentity.domain.TaskDatumChild;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
@@ -124,6 +127,9 @@ public class RenRenTaskService implements IRenRenTaskService {
 	
 	@Autowired
 	private ITaskSetpDao taskSetpDao;
+	
+	@Autowired
+	private ITaskDatumDao taskDatumDao;
 
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:00:35
@@ -253,63 +259,82 @@ public class RenRenTaskService implements IRenRenTaskService {
 	 * 提交任务 茹化肖 2015年10月8日13:37:08
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public SubmitTaskCode submitTask(SubmitTaskReq req) {
-		CheckSubmitTask check = orderDao.checkOrderSubmit(req);
-		int deleInt = 0;
-		if (check == null)
-			return SubmitTaskCode.CantSubmit;
-		if (check.getSubmitCan() == 0)// 订单不可提交
-		{
-			if (check.getIsCancel() == 1)// 订单已经取消
-				return SubmitTaskCode.OrderCancel;
-			if (check.getTaskClosed() == 1)// 任务已关闭 且不是修改后提交
-				return SubmitTaskCode.TaskClosed;
-			if (check.getReSubmit() == 1)// 任务已经提交待审核 不可重复提交
-				return SubmitTaskCode.ReSubmit;
-			return SubmitTaskCode.CantSubmit;
-		}
-		OrderLog orderLog = new OrderLog();
-		orderLog.setOrderNo("");
-		orderLog.setOrderId(req.getOrderId());
-		orderLog.setOptType(Short.valueOf("2"));
-		orderLog.setOptName("地推员:" + req.getUserId());
-		orderLog.setRemark("地推员:" + req.getUserId() + "提交订单ID:"
-				+ req.getOrderId());
-		if (check.getSubmitCan() == 1 && check.getIsAgainSubmit() == 1) {
-			// 再次提交合同信息..删除之前提交的合同
-			deleInt = orderChildDaoDao.deleteOrderChild(req.getOrderId());
-			if (deleInt <= 0) {
-				// 清除旧数据失败
-				Error error = new Error("清除旧合同信息错误");
-				throw new RuntimeErrorException(error);
-			}
-			orderLog.setOptType(Short.valueOf("3"));
-			orderLog.setRemark("地推员:" + req.getUserId() + "审核拒绝后再次提交订单ID:"
-					+ req.getOrderId());
-		}
-		// 更新订单状态00
-		int resSubmit = orderDao.submitOrder(req);
-		// 插入订单操作记录
-		int orderlogres = orderLogDao.addOrderLog(orderLog);// 记录订单操作日志
-		// 插入子订单信息
-		int childres = 0;
+		//1.插入TaskDatum 任务资料表
+		TaskDatum taskDatum=new TaskDatum();
+		taskDatum.setCtId(req.getCtId());
+		taskDatum.setClienterId(req.getUserId());
+		taskDatum.setTaskId(req.getTaskId());
+		taskDatumDao.insertTaskDatum(taskDatum);
+		//2.插入合同详细数据
 		for (int i = 0; i < req.getValueInfo().size(); i++) {
-			OrderChild child = new OrderChild();
-			child.setOrderId(req.getOrderId());
+			TaskDatumChild child=new TaskDatumChild();
+			child.setTaskDatumId(taskDatum.getId());
 			child.setControlName(req.getValueInfo().get(i).getControlName());
 			child.setControlValue(req.getValueInfo().get(i).getControlValue());
-			child.setTemplateSnapshotId(req.getTemplateId());
-			childres += orderChildDaoDao.insert(child);
+			taskDatumDao.insertTaskDatumChild(child);
 		}
-		if (resSubmit > 0 && orderlogres > 0
-				&& (childres == req.getValueInfo().size())) {
-			// 返回订单提交成功
-			return SubmitTaskCode.Success;
-		} else {
-			// 提交合同失败
-			Error error = new Error("提交合同信息失败");
-			throw new RuntimeErrorException(error);
-		}
+		renRenTaskDao.addClienterCompleteCount(req.getCtId());
+		return SubmitTaskCode.Success;
+		
+		
+//		CheckSubmitTask check = orderDao.checkOrderSubmit(req);
+//		int deleInt = 0;
+//		if (check == null)
+//			return SubmitTaskCode.CantSubmit;
+//		if (check.getSubmitCan() == 0)// 订单不可提交
+//		{
+//			if (check.getIsCancel() == 1)// 订单已经取消
+//				return SubmitTaskCode.OrderCancel;
+//			if (check.getTaskClosed() == 1)// 任务已关闭 且不是修改后提交
+//				return SubmitTaskCode.TaskClosed;
+//			if (check.getReSubmit() == 1)// 任务已经提交待审核 不可重复提交
+//				return SubmitTaskCode.ReSubmit;
+//			return SubmitTaskCode.CantSubmit;
+//		}
+//		OrderLog orderLog = new OrderLog();
+//		orderLog.setOrderNo("");
+//		orderLog.setOrderId(req.getOrderId());
+//		orderLog.setOptType(Short.valueOf("2"));
+//		orderLog.setOptName("地推员:" + req.getUserId());
+//		orderLog.setRemark("地推员:" + req.getUserId() + "提交订单ID:"
+//				+ req.getOrderId());
+//		if (check.getSubmitCan() == 1 && check.getIsAgainSubmit() == 1) {
+//			// 再次提交合同信息..删除之前提交的合同
+//			deleInt = orderChildDaoDao.deleteOrderChild(req.getOrderId());
+//			if (deleInt <= 0) {
+//				// 清除旧数据失败
+//				Error error = new Error("清除旧合同信息错误");
+//				throw new RuntimeErrorException(error);
+//			}
+//			orderLog.setOptType(Short.valueOf("3"));
+//			orderLog.setRemark("地推员:" + req.getUserId() + "审核拒绝后再次提交订单ID:"
+//					+ req.getOrderId());
+//		}
+//		// 更新订单状态00
+//		int resSubmit = orderDao.submitOrder(req);
+//		// 插入订单操作记录
+//		int orderlogres = orderLogDao.addOrderLog(orderLog);// 记录订单操作日志
+//		// 插入子订单信息
+//		int childres = 0;
+//		for (int i = 0; i < req.getValueInfo().size(); i++) {
+//			OrderChild child = new OrderChild();
+//			child.setOrderId(req.getOrderId());
+//			child.setControlName(req.getValueInfo().get(i).getControlName());
+//			child.setControlValue(req.getValueInfo().get(i).getControlValue());
+//			child.setTemplateSnapshotId(req.getTemplateId());
+//			childres += orderChildDaoDao.insert(child);
+//		}
+//		if (resSubmit > 0 && orderlogres > 0
+//				&& (childres == req.getValueInfo().size())) {
+//			// 返回订单提交成功
+//			return SubmitTaskCode.Success;
+//		} else {
+//			// 提交合同失败
+//			Error error = new Error("提交合同信息失败");
+//			throw new RuntimeErrorException(error);
+//		}
 	}
 	/**
 	 * 保存任务
