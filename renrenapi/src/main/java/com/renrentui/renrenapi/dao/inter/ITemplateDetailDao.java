@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.renrentui.renrenentity.domain.ControlInfo;
+import com.renrentui.renrenentity.domain.TemCorModel;
 import com.renrentui.renrenentity.domain.TemplateModel;
 import com.renrentui.renrenentity.req.TemplateSnapshotReq;
 import com.renrentui.renrenentity.TemplateDetail;
@@ -26,5 +27,12 @@ public interface ITemplateDetailDao {
      */
     ArrayList<ControlInfo> getTemplateList(Long templateId,Long orderId);
 	public List<TemplateDetail> listByTemplateId(Long templateId) ;
+	/**
+	 * 获取模板控件信息
+	 * 茹化肖
+	 * @param taskId
+	 * @return
+	 */
+	List<TemCorModel> getTemCorModelsByTaskId(Long taskId);
 
 }

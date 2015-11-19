@@ -5,46 +5,25 @@ package com.renrentui.renrenentity.domain;
  *
  */
 public class CheckTask {
-private int blanceCan;
-private int endTimeCan;
-private int orderCan;
-private double taskCycle;
-private double amount;
-private int countCan;
-public int getCountCan() {
-	return countCan;
+private Long businessId;
+private Double amount;
+private Integer taskType;
+public Long getBusinessId() {
+	return businessId;
 }
-public void setCountCan(int countCan) {
-	this.countCan = countCan;
+public void setBusinessId(Long businessId) {
+	this.businessId = businessId;
 }
-public double getAmount() {
+public Double getAmount() {
 	return amount;
 }
-public void setAmount(double amount) {
+public void setAmount(Double amount) {
 	this.amount = amount;
 }
-public double getTaskCycle() {
-	return taskCycle;
+public Integer getTaskType() {
+	return taskType;
 }
-public void setTaskCycle(double taskCycle) {
-	this.taskCycle = taskCycle;
-}
-public int getBlanceCan() {
-	return blanceCan;
-}
-public void setBlanceCan(int blanceCan) {
-	this.blanceCan = blanceCan;
-}
-public int getEndTimeCan() {
-	return endTimeCan;
-}
-public void setEndTimeCan(int endTimeCan) {
-	this.endTimeCan = endTimeCan;
-}
-public int getOrderCan() {
-	return orderCan;
-}
-public void setOrderCan(int orderCan) {
-	this.orderCan = orderCan;
+public void setTaskType(Integer taskType) {
+	this.taskType = taskType;
 }
 }

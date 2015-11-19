@@ -19,6 +19,7 @@ import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskDomain;
 import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
@@ -41,9 +42,6 @@ public class TaskService implements ITaskService{
 	public HttpResultModel<TaskDetail> taskDeatil(TaskDetailReq req) {
 		if(req.getTaskId()<=0)//任务ID
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.TaskIdErr.value()).setMsg(TaskDetailCode.TaskIdErr.desc());
-	//胡灵波 注释 2015年10月27日 10:32:17	
-	/*	if(req.getUserId()<=0)//用户ID
-			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.UserIdErr.value()).setMsg(TaskDetailCode.UserIdErr.desc());*/
 		TaskDetail detail= rrTaskServcie.getTaskDetail(req);
 		if(detail==null)
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.Fail.value()).setMsg(TaskDetailCode.Fail.desc());
@@ -190,5 +188,18 @@ public class TaskService implements ITaskService{
 		td.setTotal(taskTotal);
 		hrm.setData(td); 
 		return hrm;
+	}
+	/**
+	 * 提交资料的详情接口
+	 * 茹化肖
+	 * 2015年11月19日15:41:43
+	 * V1.0.2
+	 */
+	@Override
+	public HttpResultModel<TemplateInfo> templateDeatil(TaskDetailReq req) {
+		TemplateInfo detail= rrTaskServcie.getTemplateDetail(req);
+		if(detail==null)
+			return new HttpResultModel<TemplateInfo>().setData(detail).setCode(TaskDetailCode.Fail.value()).setMsg(TaskDetailCode.Fail.desc())  ;
+		return new HttpResultModel<TemplateInfo>().setData(detail).setCode(TaskDetailCode.Success.value()).setMsg(TaskDetailCode.Success.desc()) ;
 	}
 }

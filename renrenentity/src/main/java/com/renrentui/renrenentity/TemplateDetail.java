@@ -16,8 +16,17 @@ public class TemplateDetail {
     private Integer orderNum;
 
     private String name;
+    private String controlType;
 
-    private String title;
+    public String getControlType() {
+		return controlType;
+	}
+
+	public void setControlType(String controlType) {
+		this.controlType = controlType;
+	}
+
+	private String title;
 
     private String defaultValue;
 

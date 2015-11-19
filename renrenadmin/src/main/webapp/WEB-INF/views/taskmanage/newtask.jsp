@@ -389,7 +389,7 @@ String city_region = (String) request.getAttribute("city_region");
   function addImgControl(obj){
 	  var div=$(obj).parent().find('.imgGroup');
 	  //console.log(div);
-	  var item='<div class="imgitem">图片说明:<input type="text"></div>';
+	  var item='<div class="imgitem">图片说明:<input type="text" class="cltitle"></div>';
 	  div.append(item);
   }
   //删除图片控件

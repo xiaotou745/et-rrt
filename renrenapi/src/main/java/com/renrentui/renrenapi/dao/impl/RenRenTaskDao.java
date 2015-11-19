@@ -10,6 +10,7 @@ import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
+import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -197,5 +198,15 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	@Override
 	public int insertTemplateGrpup(TemplateGroup group) {
 		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insertTemplateGrpup", group);
+	}
+	/**
+	 * 插入领取任务关系数据
+	 * 2015年11月19日14:29:56
+	 * 茹化肖
+	 * V1.0.2
+	 */
+	@Override
+	public int insertClienterTask(ClienterTask task) {
+		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insertClienterTask", task);
 	}
 }

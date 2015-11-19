@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.management.RuntimeErrorException;
 
 import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +62,7 @@ import com.renrentui.renrenentity.TemplateDetail;
 import com.renrentui.renrenentity.TemplateSnapshot;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
+import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
@@ -66,7 +70,9 @@ import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
+import com.renrentui.renrenentity.domain.TemCorModel;
 import com.renrentui.renrenentity.domain.TemplateGroup;
+import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
@@ -76,6 +82,7 @@ import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 import com.renrentui.renrenentity.req.TemplateSnapshotReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
+import com.sun.mail.handlers.message_rfc822;
 
 @Service
 public class RenRenTaskService implements IRenRenTaskService {
@@ -142,67 +149,65 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public OrderRetrunModel getTask(TaskDetailReq req) {
 		OrderRetrunModel model = new OrderRetrunModel();
-		CheckTask detail = renRenTaskDao.checkTask(req);// 获取任务相关数据
+		//获取任务相关数据
+		CheckTask detail = renRenTaskDao.checkTask(req);
 		if (detail == null)// 没有查询到任务相关信息
-		{
-			model.setCode(GetTaskCode.Fail);
-			return model;
-		}
-		if (detail.getBlanceCan() == 0)// 任务余量不足领取
-		{
-			model.setCode(GetTaskCode.TaskNoBlance);
-			return model;
-		}
-		if (detail.getEndTimeCan() == 0)// 任务过期关闭
 		{
 			model.setCode(GetTaskCode.TaskExpire);
 			return model;
 		}
-		if (detail.getOrderCan() == 0)// 有未完成的任务
+		//插入关系数据
+		ClienterTask cTask=new ClienterTask();
+		cTask.setAmount(detail.getAmount());
+		cTask.setBusinessId(detail.getBusinessId());
+		cTask.setClienterId(req.getUserId());
+		cTask.setTaskId(req.getTaskId());
+		cTask.setTaskType(detail.getTaskType());
+		int res =renRenTaskDao.insertClienterTask(cTask);
+		if(res==1)//成功插入
 		{
-			model.setCode(GetTaskCode.TaskHad);
-			return model;
-		}
-		if (detail.getCountCan() == 0) {
-			model.setCode(GetTaskCode.TaskMore);
-			return model;
-		}
-		// 领取任务 插入订单
-		String orderNoString = OrderNoHelper.generateOrderCode(req.getUserId());// 生成订单号
-		Order order = new Order();
-		order.setOrderNo(orderNoString);
-		order.setClienterId(req.getUserId());
-		order.setTaskId(req.getTaskId());
-		order.setAmount(detail.getAmount());
-		Date dealLineDate = ParseHelper.plusDate(new Date(), 3,
-				(int) detail.getTaskCycle());
-		System.out.println(dealLineDate);
-		order.setDeadlineTime(dealLineDate);
-		int res = orderDao.addOrder(order);// 添加订单信息
-		int rescut = renRenTaskDao.cutTaskAvailableCount(req.getTaskId());// 扣减任务量
-
-		ClienterLog log = new ClienterLog();
-		log.setClienterId(req.getUserId());
-		log.setOptName("地推员ID");
-		log.setRemark("地推员:" + req.getUserId() + "领取任务:" + req.getTaskId()
-				+ "订单号:" + orderNoString);
-		int reslog = clienterLogDao.addClienterLog(log);// 记录C端日志
-
-		OrderLog orderLog = new OrderLog();
-		orderLog.setOrderNo(orderNoString);
-		orderLog.setOrderId(order.getId());
-		orderLog.setOptType(Short.valueOf("1"));
-		orderLog.setOptName("地推员:" + req.getUserId());
-		orderLog.setRemark("地推员:" + req.getUserId() + "抢单:" + orderNoString);
-		int orderlogres = orderLogDao.addOrderLog(orderLog);// 记录订单操作日志
-		if (res > 0 && rescut > 0 && reslog > 0 && orderlogres > 0) {
-			model.setOrderId(order.getId());
 			model.setCode(GetTaskCode.Success);
-			return model;
-		} else {
-			Error error = new Error("添加订单错误");
-			throw new RuntimeErrorException(error);
 		}
+		else {//该任务已经存在
+			model.setCode(GetTaskCode.TaskHad);
+		}
+		return model;
+//		// 领取任务 插入订单
+//		String orderNoString = OrderNoHelper.generateOrderCode(req.getUserId());// 生成订单号
+//		Order order = new Order();
+//		order.setOrderNo(orderNoString);
+//		order.setClienterId(req.getUserId());
+//		order.setTaskId(req.getTaskId());
+//		order.setAmount(detail.getAmount());
+//		Date dealLineDate = ParseHelper.plusDate(new Date(), 3,
+//				(int) detail.getTaskCycle());
+//		System.out.println(dealLineDate);
+//		order.setDeadlineTime(dealLineDate);
+//		int res = orderDao.addOrder(order);// 添加订单信息
+//		int rescut = renRenTaskDao.cutTaskAvailableCount(req.getTaskId());// 扣减任务量
+//
+//		ClienterLog log = new ClienterLog();
+//		log.setClienterId(req.getUserId());
+//		log.setOptName("地推员ID");
+//		log.setRemark("地推员:" + req.getUserId() + "领取任务:" + req.getTaskId()
+//				+ "订单号:" + orderNoString);
+//		int reslog = clienterLogDao.addClienterLog(log);// 记录C端日志
+//
+//		OrderLog orderLog = new OrderLog();
+//		orderLog.setOrderNo(orderNoString);
+//		orderLog.setOrderId(order.getId());
+//		orderLog.setOptType(Short.valueOf("1"));
+//		orderLog.setOptName("地推员:" + req.getUserId());
+//		orderLog.setRemark("地推员:" + req.getUserId() + "抢单:" + orderNoString);
+//		int orderlogres = orderLogDao.addOrderLog(orderLog);// 记录订单操作日志
+//		if (res > 0 && rescut > 0 && reslog > 0 && orderlogres > 0) {
+//			model.setOrderId(order.getId());
+//			model.setCode(GetTaskCode.Success);
+//			return model;
+//		} else {
+//			Error error = new Error("添加订单错误");
+//			throw new RuntimeErrorException(error);
+//		}
 	}
 
 	/**
@@ -333,7 +338,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	    	group.setTaskId(task.getId());//设置任务ID
 	    	renRenTaskDao.insertTemplateGrpup(group);
 	    	//4.插入每个模板组下面的模板详情
-	    	ArrayList<TemplateDetail> detaillist= group.getTemplateList();
+	    	List<TemplateDetail> detaillist= group.getTemplateList();
 	    	for (int j = 0; j < detaillist.size(); j++) {
 	    		TemplateDetail detail=detaillist.get(j);
 	    		detail.setTemplateGroupId(group.getId());
@@ -955,5 +960,48 @@ public class RenRenTaskService implements IRenRenTaskService {
 		statusReq.setUserName(userName);
 		setTaskStatus(statusReq);
 		return 1;
+	}
+	/**
+	 * 提交资料前获取模板信息
+	 * 茹化肖
+	 * 2015年11月19日15:57:38
+	 */
+	@Override
+	public TemplateInfo getTemplateDetail(TaskDetailReq req) {
+		TemplateInfo templateInfo =new TemplateInfo();
+		//获取任务信息
+		RenRenTask task=renRenTaskDao.getTaskDetail(req);
+		templateInfo.setTask(task);
+		//获取模板信息
+		List<TemCorModel> corList= templateDetailDao.getTemCorModelsByTaskId(req.getTaskId());
+		//构建控件组
+		List<TemplateGroup> groups=new ArrayList<TemplateGroup>(); 
+		List<Long> groupIdList =corList.stream().map(t->t.getGroupId()).distinct().collect(Collectors.toList());
+		for (Long groupid : groupIdList) {
+			//构建控件模板
+			List<TemplateDetail> childList =corList.stream().filter(t->t.getGroupId().equals(groupid)).map(m->{
+				
+				TemplateDetail ab=	new TemplateDetail();
+				ab.setTitle(m.getControlTitle());
+				ab.setName(m.getName());
+				ab.setOrderNum(m.getOrderNum());
+				ab.setDefaultValue(m.getDefaultValue());
+				ab.setControlData(m.getControlData());
+				ab.setControlType(m.getControlType());
+				return ab;
+				
+			}).collect(Collectors.toList());
+			//构建模板组
+			TemCorModel temp=corList.stream().filter(t->t.getGroupId().equals(groupid)).findFirst().get();
+			TemplateGroup groupaGroup=new TemplateGroup();
+			groupaGroup.setGroupType(temp.getGroupType());
+			groupaGroup.setId(groupid);
+			groupaGroup.setTaskId(req.getTaskId());
+			groupaGroup.setTitle(temp.getGroupTitle());
+			groupaGroup.setTemplateList(childList);
+			groups.add(groupaGroup);		
+			}
+		templateInfo.setTemplateGroup(groups);	
+		return templateInfo;
 	}
 }

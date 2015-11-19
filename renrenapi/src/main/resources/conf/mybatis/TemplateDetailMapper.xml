@@ -58,4 +58,20 @@ FROM    dbo.TemplateDetail  AS td ( NOLOCK )
 WHERE   td.TemplateId = #{templateId,jdbcType=INTEGER} order by OrderNum
 
   </select>
+  <!-- 获取任务模板控件 茹化肖 2015年11月19日16:11:47 -->
+  <select id="getTemCorModelsByTaskId" resultType="com.renrentui.renrenentity.domain.TemCorModel" parameterType="java.lang.Long">
+  SELECT  
+  		tg.id AS GroupId,
+        GroupType ,
+        tg.Title AS GroupTitle ,
+        OrderNum ,
+        Name ,
+        td.Title as controlTitle,
+        DefaultValue ,
+        ControlData ,
+        ControlType FROM dbo.TemplateGroup AS tg (NOLOCK)
+JOIN dbo.TemplateDetail AS td(NOLOCK) ON tg.id=td.TemplateGroupId
+JOIN dbo.TemplateControl AS tc ON td.ControlId=tc.id
+WHERE tg.TaskId=#{taskId,jdbcType=BIGINT}
+  </select>
 </mapper>

@@ -51,7 +51,17 @@ public class RenRenTask {
     private Integer taskType;
     private String logo;
     private Integer isHad;
-    public Integer getIsHad() {
+    private Long ctId;
+
+	public Long getCtId() {
+		return ctId;
+	}
+
+	public void setCtId(Long ctId) {
+		this.ctId = ctId;
+	}
+
+	public Integer getIsHad() {
 		return isHad;
 	}
 

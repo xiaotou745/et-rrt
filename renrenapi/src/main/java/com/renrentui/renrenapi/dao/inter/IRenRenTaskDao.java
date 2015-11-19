@@ -5,6 +5,7 @@ import java.util.List;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
+import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -78,4 +79,13 @@ public interface IRenRenTaskDao {
 	 * @return
 	 */
 	int insertTemplateGrpup(TemplateGroup group);
+	/**
+	 * 插入客户任务关系(领取任务)
+	 * 茹化肖
+	 * 2015年11月19日14:28:27
+	 * V1.0.2
+	 * @param task
+	 * @return
+	 */
+	int insertClienterTask(ClienterTask task);
 }

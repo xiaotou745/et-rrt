@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.ArrayList;
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenentity.domain.ControlInfo;
+import com.renrentui.renrenentity.domain.TemCorModel;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
 import com.renrentui.renrenentity.TemplateDetail;
@@ -56,6 +58,17 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 		return getReadOnlySqlSessionUtil().selectList(
 				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.listByTemplateId", templateId);
 
+	}
+	/**
+	 * 获取模板控件信息
+	 * 茹化肖
+	 * @param taskId
+	 * @return
+	 */
+	@Override
+	public List<TemCorModel> getTemCorModelsByTaskId(Long taskId){
+		return getReadOnlySqlSessionUtil().selectList(
+				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.getTemCorModelsByTaskId", taskId);
 	}
 
 }

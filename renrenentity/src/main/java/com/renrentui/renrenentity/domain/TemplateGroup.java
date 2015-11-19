@@ -1,6 +1,7 @@
 package com.renrentui.renrenentity.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.renrentui.renrenentity.TemplateDetail;
 
@@ -15,11 +16,11 @@ private Long id;
 private Long taskId;//任务ID
 private Integer groupType;//组类型 1 文字组 2 图片组
 private String title;//组显示标题(前端显示文字)
-private ArrayList<TemplateDetail> templateList;//组里面的模板
-public ArrayList<TemplateDetail> getTemplateList() {
+private List<TemplateDetail> templateList;//组里面的模板
+public List<TemplateDetail> getTemplateList() {
 	return templateList;
 }
-public void setTemplateList(ArrayList<TemplateDetail> templateList) {
+public void setTemplateList(List<TemplateDetail> templateList) {
 	this.templateList = templateList;
 }
 public Long getId() {

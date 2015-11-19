@@ -9,6 +9,7 @@ import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskDomain;
+import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
@@ -88,5 +89,17 @@ public interface ITaskService {
 	@POST
 	@Path("/getsubmittedtasklist")
 	public HttpResultModel<MyJobTaskDomain> getSubmittedTaskList(TaskReq req);
+	
+	/**
+	 * 提交资料详情接口
+	 * @author 茹化肖
+	 * @date 2015年9月28日10:18:57
+	 * @return
+	 */
+	@POST
+	@Path("/templatedetail")
+	 public HttpResultModel<TemplateInfo> templateDeatil(TaskDetailReq req);
+	
+	
 	
 }
