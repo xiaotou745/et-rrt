@@ -9,6 +9,8 @@ import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.domain.TaskSetp;
+import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
@@ -19,8 +21,14 @@ public interface IRenRenTaskDao {
     int insert(RenRenTask record);
     int update(RenRenTask record);
     RenRenTask selectById(Long id);
-    
-    TaskDetail getTaskDetail(TaskDetailReq req);
+    /**
+     * 获取任务详情(接口用)
+     * 茹化肖 1.0.2
+     * 修改时间 2015年11月19日11:23:44
+     * @param req
+     * @return
+     */
+    RenRenTask getTaskDetail(TaskDetailReq req);
     
     CheckTask checkTask(TaskDetailReq req);
     
@@ -54,4 +62,20 @@ public interface IRenRenTaskDao {
 	 * @return
 	 */
 	MyJobTaskDomain getMyJobCount(TaskReq req); 
+	/**
+	 * 插入步骤信息
+	 * 茹化肖
+	 * 2015年11月16日15:27:05
+	 * @param setp
+	 * @return
+	 */
+	int insertTaskSetp(TaskSetp setp);
+	/**
+	 * 插入模板组信息
+	 * 茹化肖
+	 * 2015年11月16日15:42:59
+	 * @param group
+	 * @return
+	 */
+	int insertTemplateGrpup(TemplateGroup group);
 }

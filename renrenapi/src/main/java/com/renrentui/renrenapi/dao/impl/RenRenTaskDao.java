@@ -14,6 +14,8 @@ import com.renrentui.renrenentity.domain.MyJobTaskDomain;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.domain.TaskSetp;
+import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
@@ -39,11 +41,13 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:13:43
+	 * 修改时间 2015年11月19日11:21:23
+	 * 修改人 
 	 */
 	@Override
-	public TaskDetail getTaskDetail(TaskDetailReq req) {
+	public RenRenTask getTaskDetail(TaskDetailReq req) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getTaskDetail";
-		TaskDetail res = getReadOnlySqlSessionUtil().selectOne(statement, req);
+		RenRenTask res = getReadOnlySqlSessionUtil().selectOne(statement, req);
 		return res;
 	}
 
@@ -175,5 +179,23 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		return getReadOnlySqlSessionUtil().selectList(
 				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getListByTemplateId",
 				templateId);
+	}
+	/**
+	 * 插入步骤信息
+	 * 茹化肖
+	 * 2015年11月16日15:27:40
+	 */
+	@Override
+	public int insertTaskSetp(TaskSetp setp) {
+		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insertTaskSetp", setp);
+	}
+	/**
+	 * 插入模板组信息
+	 * 茹化肖
+	 * 2015年11月16日15:43:29
+	 */
+	@Override
+	public int insertTemplateGrpup(TemplateGroup group) {
+		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insertTemplateGrpup", group);
 	}
 }

@@ -2,8 +2,16 @@ package com.renrentui.renrenentity;
 
 public class TemplateDetail {
     private Long id;
+    private Long templateGroupId;
+    public Long getTemplateGroupId() {
+		return templateGroupId;
+	}
 
-    private Long controlId;
+	public void setTemplateGroupId(Long templateGroupId) {
+		this.templateGroupId = templateGroupId;
+	}
+
+	private Long controlId;
 
     private Integer orderNum;
 

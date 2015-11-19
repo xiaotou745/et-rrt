@@ -47,7 +47,43 @@ public class RenRenTask {
     private String taskNote;
     private Long targetPeople;
     private String companySummary;
-    public Integer getAuditCycle() {
+    private String hotLine;
+    private Integer taskType;
+    private String logo;
+    private Integer isHad;
+    public Integer getIsHad() {
+		return isHad;
+	}
+
+	public void setIsHad(Integer isHad) {
+		this.isHad = isHad;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+
+	public Integer getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(Integer taskType) {
+		this.taskType = taskType;
+	}
+
+	public String getHotLine() {
+		return hotLine;
+	}
+
+	public void setHotLine(String hotLine) {
+		this.hotLine = hotLine;
+	}
+
+	public Integer getAuditCycle() {
 		return auditCycle;
 	}
 

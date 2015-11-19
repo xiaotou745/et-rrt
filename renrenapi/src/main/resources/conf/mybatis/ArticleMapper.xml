@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IArticleDao" >
+<!-- 保存文章  茹化肖  2015年11月18日15:52:06 -->
+<insert id="saveArticle" parameterType="com.renrentui.renrenentity.domain.Article">
+INSERT INTO dbo.Article
+        ( Title ,
+          Content ,
+          CreateName ,
+          UpdateName 
+        )
+VALUES  ( '${title}' , 
+          '${content}' ,
+          '${createName}' , 
+          '${updateName}' 
+        )
+</insert>
+
+<insert id="updateArticle" parameterType="com.renrentui.renrenentity.domain.Article">
+UPDATE  dbo.Article
+SET     Title = '${title}' ,
+        Content = '${content}' ,
+        UpdateName = '${updateName}' ,
+        UpdateDate = GETDATE()
+WHERE   Id =${id}
+</insert>
+<!-- 分页列表 茹化肖 2015年11月18日17:02:10 -->
+<select id="querList" resultType="com.renrentui.renrenentity.domain.Article"  parameterType="com.renrentui.renrenentity.req.PagedArticleReq" statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' a.Id DESC ',
+		'
+		id ,
+        Title ,
+        CreateDate
+		',
+		' dbo.Article AS a ( NOLOCK )  ',
+		'
+		<include refid="querListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+</select>
+ <!-- 分页where 茹化肖 2015年11月18日17:08:39 -->
+<sql id="querListWhere">
+	1=1		
+	<if test="id != null and id!=0">
+		and a.Id = ${id}	
+	</if>
+	<if test="title != null and title!=''">
+		AND a.Title LIKE ''%${title}%''	
+	</if>
+</sql>
+<!-- 获取文章详情 茹化肖 -->
+<select id="getDetail" resultType="com.renrentui.renrenentity.domain.Article"  parameterType="java.lang.Long" >
+SELECT  id ,
+        Title,
+        Content
+FROM    dbo.Article AS a ( NOLOCK )
+WHERE   a.Id = #{id,jdbcType=INTEGER}
+</select>
+</mapper>
