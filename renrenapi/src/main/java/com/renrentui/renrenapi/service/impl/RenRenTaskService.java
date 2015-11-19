@@ -24,6 +24,7 @@ import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
 import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
+import com.renrentui.renrenapi.dao.inter.ITaskSetpDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao;
@@ -113,20 +114,24 @@ public class RenRenTaskService implements IRenRenTaskService {
 	private IBusinessBalanceDao businessBalanceDao;
 	@Autowired
 	private IBusinessBalanceRecordDao businessBalanceRecordDao;
+	
+	@Autowired
+	private ITaskSetpDao taskSetpDao;
 
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:00:35
+	 * 修改时间 2015年11月19日11:20:38
+	 * 修改人  
 	 */
 	@Override
 	public TaskDetail getTaskDetail(TaskDetailReq req) {
 
-		TaskDetail detail = renRenTaskDao.getTaskDetail(req);// 任务信息
-		detail.setOrderId(req.getOrderId());
-		if (detail == null)// 没有找到任务信息
-			return null;
-		// 控件列表
-		detail.setControlInfo(templateDetailDao.getTemplateList(
-				detail.getTemplateId(), req.getOrderId()));
+		TaskDetail detail = new TaskDetail();
+	 	RenRenTask task= renRenTaskDao.getTaskDetail(req);//获取任务 任务信息
+	 	//获取任务步骤 等信息
+	 	ArrayList<TaskSetp> taskSetps=(ArrayList<TaskSetp>)taskSetpDao.getSetpsByTaskId(req.getTaskId());
+	 	detail.setTask(task);
+	 	detail.setTaskSetps(taskSetps);
 		return detail;
 	}
 

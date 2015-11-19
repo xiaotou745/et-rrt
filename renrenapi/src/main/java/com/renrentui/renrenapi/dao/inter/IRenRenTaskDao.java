@@ -21,8 +21,14 @@ public interface IRenRenTaskDao {
     int insert(RenRenTask record);
     int update(RenRenTask record);
     RenRenTask selectById(Long id);
-    
-    TaskDetail getTaskDetail(TaskDetailReq req);
+    /**
+     * 获取任务详情(接口用)
+     * 茹化肖 1.0.2
+     * 修改时间 2015年11月19日11:23:44
+     * @param req
+     * @return
+     */
+    RenRenTask getTaskDetail(TaskDetailReq req);
     
     CheckTask checkTask(TaskDetailReq req);
     

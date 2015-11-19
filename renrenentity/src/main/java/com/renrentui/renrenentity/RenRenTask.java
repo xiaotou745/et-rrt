@@ -49,7 +49,25 @@ public class RenRenTask {
     private String companySummary;
     private String hotLine;
     private Integer taskType;
-    public Integer getTaskType() {
+    private String logo;
+    private Integer isHad;
+    public Integer getIsHad() {
+		return isHad;
+	}
+
+	public void setIsHad(Integer isHad) {
+		this.isHad = isHad;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+
+	public Integer getTaskType() {
 		return taskType;
 	}
 

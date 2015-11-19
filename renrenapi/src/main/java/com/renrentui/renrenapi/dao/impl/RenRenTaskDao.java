@@ -41,11 +41,13 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:13:43
+	 * 修改时间 2015年11月19日11:21:23
+	 * 修改人 
 	 */
 	@Override
-	public TaskDetail getTaskDetail(TaskDetailReq req) {
+	public RenRenTask getTaskDetail(TaskDetailReq req) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getTaskDetail";
-		TaskDetail res = getReadOnlySqlSessionUtil().selectOne(statement, req);
+		RenRenTask res = getReadOnlySqlSessionUtil().selectOne(statement, req);
 		return res;
 	}
 

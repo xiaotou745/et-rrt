@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.ITaskSetpDao" >
+<!-- 获取任务步骤信息 茹化肖 2015年11月19日11:38:07 -->
+<select id="getSetpsByTaskId" resultType="com.renrentui.renrenentity.domain.TaskSetp" parameterType="java.lang.Long">
+SELECT  LinkTitle,SortNo,SetpType,Content
+FROM    dbo.TaskSetp AS ts(NOLOCK)
+WHERE   ts.TaskId = #{taskId,jdbcType=BIGINT}
+ORDER BY SetpType ASC ,
+        ts.SortNo ASC
+</select>
+</mapper>
