@@ -18,7 +18,17 @@ public class PublicProvinceCity implements Serializable {
     private String upperRcronym;
 
     private String lowerFullPinYin;
+    /*
+     * 首字母
+     */
+    private String firstLetter;
+    /*
+     * 是否热门城市
+     */
+    private Integer isHot;
 
+    private Integer isPublic;
+    
     public Integer getId() {
         return id;
     }
@@ -81,6 +91,30 @@ public class PublicProvinceCity implements Serializable {
 
 	public void setLowerFullPinYin(String lowerFullPinYin) {
 		this.lowerFullPinYin = lowerFullPinYin;
+	}
+
+	public String getFirstLetter() {
+		return firstLetter;
+	}
+
+	public void setFirstLetter(String firstLetter) {
+		this.firstLetter = firstLetter;
+	}
+
+	public Integer getIsHot() {
+		return isHot;
+	}
+
+	public void setIsHot(Integer isHot) {
+		this.isHot = isHot;
+	}
+
+	public Integer getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(Integer isPublic) {
+		this.isPublic = isPublic;
 	}
 
     
