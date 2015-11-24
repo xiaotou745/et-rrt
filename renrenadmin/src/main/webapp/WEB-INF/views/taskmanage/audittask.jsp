@@ -39,32 +39,13 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">创建人:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="createName"
-									id="createName" />
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">发布人:</label>
+							<label class="col-sm-4 control-label">商家名称:</label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" name="pusher"
 									id="pusher" />
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">商户名称:</label>
-							<div class="col-sm-8">
-								<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,-1, "全部")%>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">创建时间:</label>
@@ -92,6 +73,8 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">起止日期:</label>
@@ -116,16 +99,6 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="form-group">
-							<label class="col-sm-4 control-label">合同模板: </label>
-							<div class="col-sm-8">
-								<%=HtmlHelper.getSelect("templateId", templatelist, "templateName", "id", null,-1, "全部")%>
-							</div>
-						</div>
-					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">任务状态:</label>
@@ -134,20 +107,21 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="paymentMethod" id="paymentMethod" value="1" />
-<!-- 					<div class="col-lg-3"> -->
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="col-sm-4 control-label">支付方式: </label> -->
-<!-- 							<div class="col-sm-8"> -->
-<!-- 								<select id="paymentMethod" name="paymentMethod" -->
-<!-- 									class="form-control m-b"> -->
-<!-- 									<option value="1">线下支付</option> -->
-<!-- 									<option value="2">线上支付</option> -->
-<!-- 								</select> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">任务类型:</label>
+							<div class="col-sm-8">
+<%-- 								<%=HtmlHelper.getSelect("status", EnumHelper.GetEnumItems(TaskType.class), "desc", "value",null,"-1","全部")%> --%>
+								<select class="form-control m-b" name="taskType">
+								<option value="1">签约任务</option>
+								<option value="2">分享任务</option>
+								<option value="3">下载任务</option>
+								</select>
+							</div>
+						</div>
+					</div>
 				</div>
+
 				<div class="row">
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
