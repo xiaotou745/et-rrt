@@ -5,7 +5,7 @@ import com.renrentui.renrenentity.RenRenTask;
 public class RenRenTaskModel extends RenRenTask{
     private String businessName;
     private String templateName;
-	private  Integer canSettlement;
+	//private  Integer canSettlement;
 	public String getBusinessName() {
 		return businessName;
 	}
@@ -18,18 +18,18 @@ public class RenRenTaskModel extends RenRenTask{
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
 	}
-	/**
-	 * 是否可以结算 1 可以 0 不可以 
-	 * @param canSettlement
-	 */
-	public Integer getCanSettlement() {
-		return canSettlement;
-	}
-	/**
-	 * 是否可以结算 1 可以 0 不可以 
-	 * @param canSettlement
-	 */
-	public void setCanSettlement(Integer canSettlement) {
-		this.canSettlement = canSettlement;
-	}
+//	/**
+//	 * 是否可以结算 1 可以 0 不可以 
+//	 * @param canSettlement
+//	 */
+//	public Integer getCanSettlement() {
+//		return canSettlement;
+//	}
+//	/**
+//	 * 是否可以结算 1 可以 0 不可以 
+//	 * @param canSettlement
+//	 */
+//	public void setCanSettlement(Integer canSettlement) {
+//		this.canSettlement = canSettlement;
+//	}
 }

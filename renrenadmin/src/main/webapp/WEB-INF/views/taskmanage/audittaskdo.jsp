@@ -9,6 +9,7 @@
 <%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
 <%@page import="com.renrentui.renrenentity.domain.RenRenTaskModel"%>
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
+<%@page import="com.renrentui.renrencore.enums.TaskType"%>
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
@@ -48,6 +49,7 @@
 			<td><%=ParseHelper.ShowString(data.get(i).getPusher())%></td>
 			<td><%=ParseHelper.digitsNum(data.get(i).getAmount(),2)%></td>
 			<td><%=TaskStatus.getEnum(data.get(i).getStatus()).desc()%></td>
+			<td><%=TaskType.getEnum(data.get(i).getTaskType()).desc()%></td>
 			<td>
 			<% if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()){%>
 				<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',1,0,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">审核通过</a>
@@ -58,10 +60,10 @@
 			<%}
 		    if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()||data.get(i).getStatus()==TaskStatus.Reject.value()){%>
 			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',5,<%=data.get(i).getStatus() %>,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">取消</a>
-			<%}	
-			if(data.get(i).getCanSettlement().equals(1)){%>
-					<a href="javascript:settlementtask('<%=data.get(i).getId()%>')">结算</a>
-				<%}%>
+			<%}	%>
+<!-- 			if(data.get(i).getCanSettlement().equals(1)){%> -->
+<%-- 					<a href="javascript:settlementtask('<%=data.get(i).getId()%>')">结算</a> --%>
+<%-- 				<%} --%>
 			</td>
 		</tr>
 		<%

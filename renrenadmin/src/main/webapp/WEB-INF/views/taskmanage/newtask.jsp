@@ -166,26 +166,34 @@ String city_region = (String) request.getAttribute("city_region");
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
 				<div class="templateGroupText template" style="border:1px solid red;">
-					<label>1.</label><span>文本组标题:</span><input type="text" value="文本组标题" class="cltxt">	
+					<label class="boxno">1.</label><span>文本组标题:</span><input type="text" value="文本组标题" class="cltxt">	
 					<a href="javascript:void(0);" onclick="addTxtControl(this)">添加文本控件</a>
 					<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> 
-					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本控件组</a>
+					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本组</a>
 					<div class="textGroup">
 						<div class="textitem">说明文本:<input type="text" class="cltitle">默认值:<input type="text" class="cldefval"></div>
 					</div>
 				</div>
 				<div class="templateGroupImg template"  style="border:1px solid blue;">
-					<label>2.</label><span>图片组标题</span><input type="text" value="图片组标题" class="climg">
+					<label class="boxno">2.</label><span>图片组标题</span><input type="text" value="图片组标题" class="climg">
 					<a href="javascript:void(0);" onclick="addImgControl(this)" >添加图片控件</a>
 					<a href="javascript:void(0);" onclick="delImgControl(this)" >删除图片控件</a>
-					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该图片控件组</a>
+					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该图片组</a>
 					<div class="imgGroup">
 						<div class="imgitem">图片说明:<input type="text" class="cltitle"></div>
 					</div>
 				</div>
+				<div class="templateGroupMoreImg template"  style="border:1px solid blue;">
+					<label class="boxno">3.</label><span>多图组标题</span><input type="text" value="多图组标题" class="clmoreimg">
+					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该多图组</a>
+					<div class="imgGroup">
+						<div class="imgitemnum">图片数量:<input type="text" class="imgitemnumn"></div>
+					</div>
+				</div>
 			</div>
-			<a href="javascript:void(0);"  id="addtxtgroup">添加文本控件组</a>
-			<a href="javascript:void(0);"  id="addimggroup">添加图片控件组</a>
+			<a href="javascript:void(0);"  id="addtxtgroup">添加文本组</a>
+			<a href="javascript:void(0);"  id="addimggroup">添加图片组</a>
+			<a href="javascript:void(0);"  id="addmoreimggroup">添加多图组</a>
 		</fieldset>
 		<fieldset>
 			<legend>关联设置</legend>
@@ -274,6 +282,7 @@ String city_region = (String) request.getAttribute("city_region");
 <script>  
   var txtgroup="";
   var imggroup="";
+  var moreimggroup="";
   $(document).ready(function() {
 		//添加步骤控件行
 		var add = $('.copy').clone(true);
@@ -281,6 +290,7 @@ String city_region = (String) request.getAttribute("city_region");
 		var add3 = $('.copy3').clone(true);
 		txtgroup=$('.templateGroupText').clone(true);
 		imggroup=$('.templateGroupImg').clone(true);
+		moreimggroup=$('.templateGroupMoreImg').clone(true);
 		$("#setpadd").click(function() {
 			var clone = add.clone();
 			$('#setpbox').append(clone);
@@ -333,11 +343,19 @@ String city_region = (String) request.getAttribute("city_region");
 		$('#addtxtgroup').click(function(){
 			var clone=txtgroup.clone()
 			$('#templateBox').append(clone);
+			orderByGroup();
 		});
 		//添加图片组
 		$('#addimggroup').click(function(){
 			var clone=imggroup.clone()
 			$('#templateBox').append(clone);
+			orderByGroup();
+		});
+		//添加多图组
+		$('#addmoreimggroup').click(function(){
+			var clone=moreimggroup.clone()
+			$('#templateBox').append(clone);
+			orderByGroup();
 		});
 	    $("#uploadify").uploadify({
 	     	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
@@ -374,6 +392,7 @@ String city_region = (String) request.getAttribute("city_region");
 	  //console.log(div);
 	  var item='<div class="textitem">说明文本:<input type="text" class="cltitle">默认值:<input type="text" class="cldefval"></div>';
 	  div.append(item);
+	  orderByGroup()
   }
   //删除文本控件
   function delTxtControl(obj){
@@ -405,6 +424,13 @@ String city_region = (String) request.getAttribute("city_region");
   //删除控件组
   function delThisGroup(obj){
 	  $(obj).parent().remove();
+	  orderByGroup();
+  }
+  //重新排序各组序号
+  function orderByGroup(){
+	  var len=$('.boxno').each(function(index,el){
+		  $(el).html(index+1+'.');
+	  });
   }
   //商家改版重新获余额
 function businessChange(){  
@@ -518,7 +544,7 @@ function createGroupPar(){
 			//console.log(detailArr);
 			TemplateGroup.templateList=detailArr;//数组为group的一个对象
 		}
-		else{
+		else if($(el).attr("class").indexOf("templateGroupImg")>=0){
 			//图片组
 			TemplateGroup.groupType=2;
 			TemplateGroup.title=$(el).find('.climg').val();
@@ -537,6 +563,25 @@ function createGroupPar(){
 			//console.log(detailArr);
 			TemplateGroup.templateList=detailArr;
 		}
+		else{
+			//多图组
+			TemplateGroup.groupType=3;
+			TemplateGroup.title=$(el).find('.clmoreimg').val();
+			var num=$(el).find('.imgitemnumn').val();
+			console.log(num);
+			var detailArr=new Array();
+			for(var nx=0;nx<num;nx++){
+				var detail=new Object();
+				detail.title="";
+				detail.name="key"+id+nx;
+				detail.orderNum=nx+1;
+				detail.controlId=3;
+				detail.defaultValue="";
+				detail.controlData='';
+				detailArr.push(detail);
+			}
+			TemplateGroup.templateList=detailArr;
+		}
 		groupArr.push(TemplateGroup);
 	});
 	return groupArr;
@@ -551,7 +596,7 @@ function savetask(){
     saveTaskReq.provinceCode=$('#provinceCode').val();
     saveTaskReq.cityCode=$('#cityCode').val();
     var json_data =JSON.stringify(saveTaskReq);
-	//console.log(json_data);
+	//console.log(saveTaskReq);
 	
   // return;
 // 	if(!validPage(true)){

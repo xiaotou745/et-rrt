@@ -10,6 +10,7 @@
 <%@page import="com.renrentui.renrenentity.Template"%>
 <%@page import="com.renrentui.renrencore.util.EnumHelper"%>
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
+<%@page import="com.renrentui.renrencore.enums.TaskType"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
@@ -111,12 +112,7 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 						<div class="form-group">
 							<label class="col-sm-4 control-label">任务类型:</label>
 							<div class="col-sm-8">
-<%-- 								<%=HtmlHelper.getSelect("status", EnumHelper.GetEnumItems(TaskType.class), "desc", "value",null,"-1","全部")%> --%>
-								<select class="form-control m-b" name="taskType">
-								<option value="1">签约任务</option>
-								<option value="2">分享任务</option>
-								<option value="3">下载任务</option>
-								</select>
+								<%=HtmlHelper.getSelect("taskType", EnumHelper.GetEnumItems(TaskType.class), "desc", "value",null,"-1","全部")%>
 							</div>
 						</div>
 					</div>
