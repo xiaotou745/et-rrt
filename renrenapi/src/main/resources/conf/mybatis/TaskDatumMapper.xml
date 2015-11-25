@@ -34,4 +34,62 @@ VALUES  ( ${taskDatumId} ,
           1 
         )
 </insert>
+ <!--  查询我的资料审核列表，zhaohl,20151125 -->
+  <select id="getMyTaskDatumList" resultType="com.renrentui.renrenentity.domain.TaskDatumModel" parameterType="com.renrentui.renrenentity.req.TaskDatumReq" >
+	  
+  SELECT   	
+  <if test="itemsCount > 0" >
+		top  ${itemsCount} 
+  </if>
+	        b.id AS taskId ,
+            b.TaskTitle as taskName,
+            b.amount ,
+            b.TaskType ,
+            b.Status AS taskStatus ,
+            b.auditCycle,
+            a.id AS taskDatumId ,
+            a.Status AS auditStatus ,
+            a.CreateDate ,
+            a.AuditTime
+  FROM      TaskDatum a
+            JOIN RenRenTask b ON a.TaskId = b.id
+  where a.ClienterId = ${userId}
+  	<if test="taskId > 0" >
+	      AND a.TaskId = ${taskId}
+	</if>
+    <if test="nextId > 0" >
+	       and   a.id > ${nextId}
+	</if>
+	order by a.CreateDate asc;
+  </select> 
+   <!--  查询我的资料审核列表中每个资料需要显示的内容，zhaohl,20151125 -->
+    <select id="getMyTaskDatumTitleList" resultType="com.renrentui.renrenentity.domain.TaskDatumTitle" parameterType="com.renrentui.renrenentity.req.TaskDatumReq" >
+            SELECT  b.id AS taskDatumId ,
+                    g.groupType ,
+                    k.controlName ,
+                    k.controlValue,
+                    g.orderNum
+            FROM    ClienterTask a WITH ( NOLOCK )
+                    JOIN TaskDatum b WITH ( NOLOCK ) ON b.TaskId = a.TaskId
+                    JOIN ( SELECT   taskid ,
+                                    MIN(id) AS groupid
+                           FROM     TemplateGroup g1 WITH ( NOLOCK )
+                           join ClienterTask c2 WITH ( NOLOCK ) on g1.taskid=c2.taskid
+                           WHERE   c2.ClienterId = ${userId}
+							<if test="taskId > 0" >
+							    AND c2.TaskId = ${taskId}
+							</if>
+                           GROUP BY taskid
+                         ) TB ON b.TaskId = tb.taskid
+                    JOIN TemplateGroup g WITH ( NOLOCK ) ON tb.groupid = g.id
+                    JOIN TemplateDetail m WITH ( NOLOCK ) ON m.templategroupid = g.id
+                    JOIN TaskDatumChild k WITH ( NOLOCK ) ON m.NAME = k.controlname
+                                             AND k.taskdatumid = b.id
+            WHERE   a.ClienterId = ${userId}
+	                <if test="taskId > 0" >
+					    AND a.TaskId = ${taskId}
+					</if>
+                    AND k.isenable = 1
+         
+  </select> 
 </mapper>

@@ -1,17 +1,19 @@
 package com.renrentui.renrenapihttp.service.inter;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
-import com.renrentui.renrenentity.domain.MyJobTaskDomain;
+import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
-import com.renrentui.renrenentity.domain.TaskDomain;
+import com.renrentui.renrenentity.domain.TabModel;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.CancelTaskReq;
-import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
@@ -71,7 +73,7 @@ public interface ITaskService {
 	 */
 	@POST
 	@Path("/getnewtasklist")
-	public HttpResultModel<TaskDomain> getNewTaskList(TaskReq req);
+	public HttpResultModel<TabModel<TaskModel>> getNewTaskList(TaskReq req);
 	
 	/*
 	 * 获取所有已领取的任务
@@ -79,16 +81,8 @@ public interface ITaskService {
 	 */
 	@POST
 	@Path("/getmyreceivedtasklist")
-	public HttpResultModel<MyJobTaskDomain> getMyReceivedTaskList(TaskReq req);
+	public HttpResultModel<TabModel<MyReceiveTask>> getMyReceivedTaskList(TaskReq req);
 	
-	
-	/*
-	 * 获取所有已提交的任务
-	 * wangchao
-	 */
-	@POST
-	@Path("/getsubmittedtasklist")
-	public HttpResultModel<MyJobTaskDomain> getSubmittedTaskList(TaskReq req);
 	
 	/**
 	 * 提交资料详情接口

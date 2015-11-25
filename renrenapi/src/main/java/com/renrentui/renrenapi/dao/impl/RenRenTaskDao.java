@@ -11,9 +11,8 @@ import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
-import com.renrentui.renrenentity.domain.MyJobTaskDomain;
+import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
-import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
@@ -119,9 +118,9 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	}
 
 	@Override
-	public List<TaskModel> getMyReceivedTaskList(TaskReq req) {
+	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getMyReceivedTaskList";
-		List<TaskModel> taskModels = getMasterSqlSessionUtil().selectList(statement, req);
+		List<MyReceiveTask> taskModels = getMasterSqlSessionUtil().selectList(statement, req);
 		return taskModels;
 	}
 
@@ -145,16 +144,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
 	}
-	
-	/**
-	 * 统计我的任务列表   已领取 审核中 未通过 -的数量信息  add by caoheyang  20151026
-	 */
-	@Override
-	public MyJobTaskDomain getMyJobCount(TaskReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getMyJobCount";
-		MyJobTaskDomain taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
-		return taskTotal;
-	}
+
 	
 	/**
 	 * 超时取消任务服务

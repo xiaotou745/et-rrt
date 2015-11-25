@@ -9,15 +9,15 @@ public enum TaskType {
 	/**
 	 * 签约任务
 	 */
-	WaitAudit(1, "签约任务"),
+	ContractTask(1, "签约任务"),
 	/**
 	 * 分享任务
 	 */
-	Audited(2, "分享任务"),
+	ShareTask(2, "分享任务"),
 	/**
 	 * 下载任务
 	 */
-	Reject(3, "下载任务");
+	DownLoadTask(3, "下载任务");
 
 	private int value = 0;
 	private String desc;

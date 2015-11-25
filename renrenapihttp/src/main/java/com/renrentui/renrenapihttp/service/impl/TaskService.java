@@ -3,9 +3,10 @@ package com.renrentui.renrenapihttp.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
@@ -14,10 +15,11 @@ import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
+import com.renrentui.renrencore.enums.TaskStatus;
+import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
-import com.renrentui.renrenentity.domain.TaskDomain;
-import com.renrentui.renrenentity.domain.MyJobTaskDomain;
+import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.CancelTaskReq;
@@ -88,107 +90,73 @@ public class TaskService implements ITaskService{
 		SubmitTaskCode code=rrTaskServcie.submitTask(req);
 		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
 	}
-	/*
-	 *获取未领取的任务
-	 *wangchao
-	 */ 
+/**
+ * 获取可接任务列表
+ * @author hailongzhao
+ * @date 20151125 
+ */
 	@Override
-	public HttpResultModel<TaskDomain> getNewTaskList(TaskReq req) {
-		HttpResultModel<TaskDomain> hrm = new HttpResultModel<TaskDomain>();
+	public HttpResultModel<TabModel<TaskModel>> getNewTaskList(TaskReq req) {
+		HttpResultModel<TabModel<TaskModel>> hrm = new HttpResultModel<TabModel<TaskModel>>();
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
-		TaskDomain td = new TaskDomain();
+		if(req.getUserId()<0){
+			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
+			return hrm;
+		} 
+		if(req.getCityCode()<=0){
+			hrm.setCode(TaskCode.CityCode.value()).setMsg(TaskCode.CityCode.desc());			
+			return hrm;
+		}  
 		List<TaskModel> taskModelList= rrTaskServcie.getNewTaskList(req);
-		int taskTotal = rrTaskServcie.getNewTaskTotal(req);
+		//int taskTotal = rrTaskServcie.getNewTaskTotal(req);
+		TabModel<TaskModel> td = new TabModel<TaskModel>();
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
 		if(taskModelList!=null && taskModelList.size()>0){
 			td.setNextId(taskModelList.get(taskModelList.size()-1).getTaskId());
 		}
-		td.setTotal(taskTotal);
 		hrm.setData(td); 
 		return hrm;
 	}
-	/*
-	 * 获取已领取任务
-	 * wangchao
+	/**
+	 * 获取我的任务列表
+	 * @author hailongzhao
+	 * @date 20151125
 	 */
 	@Override
-	public HttpResultModel<MyJobTaskDomain> getMyReceivedTaskList(TaskReq req) {
-		HttpResultModel<MyJobTaskDomain> hrm = new HttpResultModel<MyJobTaskDomain>();
+	public HttpResultModel<TabModel<MyReceiveTask>> getMyReceivedTaskList(TaskReq req) {
+		HttpResultModel<TabModel<MyReceiveTask>> hrm = new HttpResultModel<TabModel<MyReceiveTask>>();
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
-		if(req.getUserId()==0){
+		if(req.getUserId()<=0){
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
 		} 
-		MyJobTaskDomain td =rrTaskServcie.getMyJobCount(req);
-		List<TaskModel> taskModelList= rrTaskServcie.getMyReceivedTaskList(req);
-		int taskTotal = rrTaskServcie.getMyReceivedTaskListTotal(req);
+		if(req.getCityCode()<=0){
+			hrm.setCode(TaskCode.CityCode.value()).setMsg(TaskCode.CityCode.desc());			
+			return hrm;
+		} 
+		if(req.getTaskStatus()!=TaskStatus.Audited.value()&&
+		   req.getTaskStatus()!=TaskStatus.Expired.value()){
+			hrm.setCode(TaskCode.TaskStatus.value()).setMsg(TaskCode.TaskStatus.desc());			
+			return hrm;
+		} 
+		List<MyReceiveTask> taskModelList= rrTaskServcie.getMyReceivedTaskList(req);
+		TabModel<MyReceiveTask> td = new TabModel<MyReceiveTask>();
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
-		if(taskModelList!=null && taskModelList.size()>0){
-			td.setNextId(taskModelList.get(taskModelList.size()-1).getOrderId());
+		if (req.getTaskStatus()==TaskStatus.Audited.value()) {
+			td.setTitle("进行中("+td.getCount()+")");
 		}
-		td.setTotal(taskTotal);
+		else if(req.getTaskStatus()==TaskStatus.Expired.value()){
+			td.setTitle("已过期("+td.getCount()+")");
+		}
+		if(taskModelList!=null && taskModelList.size()>0){
+			td.setNextId(taskModelList.get(taskModelList.size()-1).getTaskId());
+		}
 		hrm.setData(td); 
 		return hrm;
 	}
-	/*
-	 * 获取已提交的任务
-	 * wangchao
-	 */
-	@Override
-	public HttpResultModel<MyJobTaskDomain> getSubmittedTaskList(TaskReq req) {
-		HttpResultModel<MyJobTaskDomain> hrm = new HttpResultModel<MyJobTaskDomain>();
-		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
-		if(req.getUserId()==0){
-			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
-			return hrm;
-		}	
-		MyJobTaskDomain td =new MyJobTaskDomain();
-		if(req.getOrderType()==null ||req.getOrderType()<=0)
-		{
-			hrm.setCode(TaskCode.OrderType.value()).setMsg(TaskCode.OrderType.desc());			
-			return hrm;
-		}		
-		else
-		{
-			switch (req.getOrderType()) {
-				case 1://完成
-					req.setOrderStatus((short)1);
-					req.setAuditStatus((short)2);
-					break;
-				case 2://已取消
-					req.setOrderStatus((short)2);				
-					break;
-				case 3://已失效	
-					req.setOrderStatus((short)3);
-					break;
-				case 4://当前任务审核中
-					req.setOrderStatus((short)1);
-					req.setAuditStatus((short)0);
-					td=rrTaskServcie.getMyJobCount(req);
-					break;
-				case 5: //当前任务未通过
-					req.setOrderStatus((short)1);//
-					req.setAuditStatus((short)3);
-					td=rrTaskServcie.getMyJobCount(req);
-					break;
-				default:
-					break;
-			}
-		}
-		
-		List<TaskModel> taskModelList= rrTaskServcie.getSubmittedTaskList(req);
-		int taskTotal = rrTaskServcie.getSubmittedTaskListTotal(req);
-		td.setContent(taskModelList);
-		td.setCount(taskModelList.size());
-		if(taskModelList!=null && taskModelList.size()>0){
-			td.setNextId(taskModelList.get(taskModelList.size()-1).getOrderId());
-		}
-		td.setTotal(taskTotal);
-		hrm.setData(td); 
-		return hrm;
-	}
+	
 	/**
 	 * 提交资料的详情接口
 	 * 茹化肖

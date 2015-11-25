@@ -37,11 +37,13 @@ import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrencore.enums.BBalanceRecordType;
 import com.renrentui.renrencore.enums.CancelTaskCode;
+import com.renrentui.renrencore.enums.DatumAuditStatus;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.PaymentMethodType;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.enums.TaskOpType;
 import com.renrentui.renrencore.enums.TaskStatus;
+import com.renrentui.renrencore.enums.TaskType;
 import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
@@ -55,6 +57,7 @@ import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.OrderChild;
 import com.renrentui.renrenentity.OrderLog;
+import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.RenRenTaskLog;
 import com.renrentui.renrenentity.TaskCityRelation;
@@ -64,7 +67,7 @@ import com.renrentui.renrenentity.TemplateSnapshot;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
-import com.renrentui.renrenentity.domain.MyJobTaskDomain;
+import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
@@ -85,7 +88,6 @@ import com.renrentui.renrenentity.req.TaskDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 import com.renrentui.renrenentity.req.TemplateSnapshotReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
-import com.sun.mail.handlers.message_rfc822;
 
 @Service
 public class RenRenTaskService implements IRenRenTaskService {
@@ -522,21 +524,42 @@ public class RenRenTaskService implements IRenRenTaskService {
 
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
-		List<TaskModel> list = renRenTaskDao.getNewTaskList(req);
-		// list.stream().forEach(
-		// t -> t.setLogo(PropertyUtils.getProperty("ImgShowUrl")
-		// + t.getLogo()));
-		return list;
+		List<PublicProvinceCity> list=publicProvinceCityService.getOpenCityListFromRedis();
+		PublicProvinceCity city=list.stream().filter(t->t.getCode().intValue()==req.getCityCode()).findFirst().get();
+		req.setProvinceCode(city.getParentCode().longValue());
+		return renRenTaskDao.getNewTaskList(req);
 	}
 
 	@Override
 	public int getNewTaskTotal(TaskReq req) {
 		return renRenTaskDao.getNewTaskTotal(req);
 	}
-
+/**
+ * 获取我的任务列表
+ * @author hailongzhao
+ * @date 20151124
+ */
 	@Override
-	public List<TaskModel> getMyReceivedTaskList(TaskReq req) {
-		return renRenTaskDao.getMyReceivedTaskList(req);
+	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
+		List<MyReceiveTask> result= renRenTaskDao.getMyReceivedTaskList(req);
+		for (MyReceiveTask myReceiveTask : result) {
+			if (myReceiveTask.getTaskType().equals(TaskType.ContractTask.desc())) {
+				switch (DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus())) {
+				case WaitAudit:
+					myReceiveTask.setAuditWaitNum(myReceiveTask.getAuditNum());
+					break;
+				case Audited:
+					myReceiveTask.setAuditPassNum(myReceiveTask.getAuditNum());
+					break;
+				case Refuse:
+					myReceiveTask.setAuditRefuseNum(myReceiveTask.getAuditNum());
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -556,16 +579,6 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Override
 	public int getSubmittedTaskListTotal(TaskReq req) {
 		return renRenTaskDao.getSubmittedTaskListTotal(req);
-	}
-
-	/**
-	 * 统计我的任务列表 已领取 审核中 未通过 -的数量信息 add by caoheyang 20151026
-	 * 
-	 * @param req
-	 * @return
-	 */
-	public MyJobTaskDomain getMyJobCount(TaskReq req) {
-		return renRenTaskDao.getMyJobCount(req);
 	}
 
 	/**

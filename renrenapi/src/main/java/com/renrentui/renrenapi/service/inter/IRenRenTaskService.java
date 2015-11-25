@@ -3,7 +3,7 @@ package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrenentity.common.PagedResponse;
-import com.renrentui.renrenentity.domain.MyJobTaskDomain;
+import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -13,6 +13,7 @@ import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.RenRenTask;
+
 
 
 
@@ -63,18 +64,12 @@ public interface IRenRenTaskService {
 	 List<TaskModel> getNewTaskList(TaskReq req); 
 	 int getNewTaskTotal(TaskReq req); 
 
-	 List<TaskModel> getMyReceivedTaskList(TaskReq req); 
+	 List<MyReceiveTask> getMyReceivedTaskList(TaskReq req); 
 	 int getMyReceivedTaskListTotal(TaskReq req);
 
 
 	 List<TaskModel> getSubmittedTaskList(TaskReq req); 
 	 int getSubmittedTaskListTotal(TaskReq req);
-	/**
-	 * 统计我的任务列表   已领取 审核中 未通过 -的数量信息  add by caoheyang  20151026
-	 * @param req
-	 * @return
-	 */
-	  MyJobTaskDomain getMyJobCount(TaskReq req);
 	
 	/**
 	 * 超时取消任务服务

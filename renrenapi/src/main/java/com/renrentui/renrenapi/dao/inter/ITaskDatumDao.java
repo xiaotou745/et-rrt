@@ -1,7 +1,12 @@
 package com.renrentui.renrenapi.dao.inter;
 
+import java.util.List;
+
 import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
+import com.renrentui.renrenentity.domain.TaskDatumModel;
+import com.renrentui.renrenentity.domain.TaskDatumTitle;
+import com.renrentui.renrenentity.req.TaskDatumReq;
 
 public interface ITaskDatumDao {
 	/**
@@ -19,5 +24,21 @@ public interface ITaskDatumDao {
 	 * @return
 	 */
 	int insertTaskDatumChild(TaskDatumChild child);
-
+	
+	/**
+	 * 获取我的资料列表
+	 * @author hailongzhao
+	 * @date 20151125
+	 * @param req
+	 * @return
+	 */
+	 List<TaskDatumModel> getMyTaskDatumList(TaskDatumReq req);
+		/**
+		 * 获取我的资料列表中每个资料的title
+		 * @author hailongzhao
+		 * @date 20151125
+		 * @param req
+		 * @return
+		 */
+     List<TaskDatumTitle> getMyTaskDatumTitleList(TaskDatumReq req);
 }

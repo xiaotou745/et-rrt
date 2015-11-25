@@ -2,22 +2,19 @@ package com.renrentui.renrenentity.domain;
 
 import java.util.List;
 
-public class TaskDomain {
-	private int total;
-	
+/**
+ * 给手机端提供的通用页签对象
+ * @author hailongzhao
+ * @date 20151125
+ * @param <T>
+ */
+public class TabModel<T> {
+	private String title;
 	private int count;
 	
 	private long nextId;
 	
-	private List<TaskModel> content;
-
-	public int getTotal() {
-		return total;
-	}
-
-	public void setTotal(int total) {
-		this.total = total;
-	}
+	private List<T> content;
 
 	public int getCount() {
 		return count;
@@ -35,11 +32,19 @@ public class TaskDomain {
 		this.nextId = nextId;
 	}
 
-	public List<TaskModel> getContent() {
+	public List<T> getContent() {
 		return content;
 	}
 
-	public void setContent(List<TaskModel> content) {
+	public void setContent(List<T> content) {
 		this.content = content;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }
