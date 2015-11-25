@@ -207,7 +207,8 @@ select
 		   	</if> 
   </select> 
   <!--  我的任务  已领取 -->
-  <select id="getMyReceivedTaskList" resultType="com.renrentui.renrenentity.domain.MyReceiveTask" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+  <select id="getMyReceivedTaskList" resultType="com.renrentui.renrenentity.domain.MyReceiveTask" 
+  parameterType="com.renrentui.renrenentity.req.TaskReq" >
 	select 
 	<if test="itemsCount != 0" >
 		top  ${itemsCount} 
@@ -239,7 +240,13 @@ select
 		            JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
 		            JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId
 		  WHERE     c.ClienterId =  ${userId} 
-		  			and a.status =${taskStatus} ) mt
+					<if test="taskStatus == 3" >
+					       and  a.status in (3,4)
+					</if>
+					<if test="taskStatus == 1" >
+					       and  a.status =1
+					</if>
+		  			) mt
 	LEFT JOIN ( SELECT CtId,Status as auditStatus ,COUNT(0) AS auditNum FROM TaskDatum WITH(nolock)
 	            WHERE     ClienterId =  ${userId} 
 	            GROUP BY CtId,Status) mb
