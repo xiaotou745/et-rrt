@@ -4,12 +4,12 @@
   <sql id="Base_Column_List" >
     Id, TaskTitle, TaskNotice, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
     ModifyName, ModifyTime, BeginTime, EndTime, TaskCycle, AvailableCount, Amount, status, 
-    TaskTotalCount, SnapshotTemplateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary
+    TaskTotalCount, SnapshotTemplateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary,TaskType,HotLine
   </sql>
   <select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from RenRenTask
+    from RenRenTask (NOLOCK)
     where Id = #{id,jdbcType=BIGINT}
   </select>
   <!--添加一个任务 茹化肖 2015年11月16日13:45:54 -->

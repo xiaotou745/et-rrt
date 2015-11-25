@@ -16,19 +16,15 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr class="tdbg">
-			<th width="%5">编号</th>
-			<th width="%5">订单号</th>
+			<th width="%10">编号</th>
 			<th >地推员</th>
 			<th >公司名称</th>
 			<th >任务名称</th>
 			<th >任务状态</th>
-			<th >剩余订单次数</th>
 			<th>该地推员<br/>完成次数</th>
 			<th >佣金/次</th>
-			<th >订单提交<br/>审核时间</th>
+			<th >提交时间</th>
 			<th >终审时间</th>
-<!-- 			<th >分钟前</th> -->
-			<th >订单状态</th>
 			<th >审核状态</th>
 			<th >操作</th>		
 		</tr>
@@ -41,46 +37,31 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			for (int i = 0; i < data.size(); i++) {			
 		%>
 		<tr>
-			<td><%=data.get(i).getOrderId()%></td>
-			<td><%=data.get(i).getOrderNo()%></td>
+			<td><%=data.get(i).getId()%></td>
+
 			<td><%=data.get(i).getClienterName()%></td>	
-			<td><%=data.get(i).getCompanyName()%></td>
+			<td><%=data.get(i).getPusher()%></td>
 			<td><%=data.get(i).getTaskTitle()%></td>	
 			<td><%=data.get(i).getTaskStatus()%></td>	
-			<td><%=data.get(i).getAvailableCount()%></td>
-			<td><%=data.get(i).getCompCount()%></td>	
+			<td><%=data.get(i).getCompleteNum()%></td>	
 			<td><%=data.get(i).getAmountStr()%></td>
 			<td><%=data.get(i).getFinishTime()%></td>	
 			<td><%=data.get(i).getAuditTime()%></td>	
-<%-- 			<td><%=data.get(i).getTimeAfter()%></td> --%>
-			<td><%=data.get(i).getOrderStatus()%></td>	
 			<td><%=data.get(i).getAuditStatus()%></td>
 			<td>
 			<%if(data.get(i).getAuditStatusCode()==0&&data.get(i).getOrderStatusCode()==1) 
 			{%>
-			<a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getOrderId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getOrderNo()%>)">审核通过</a>
-		    <a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getOrderId()%>,3,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getOrderNo()%>)">审核拒绝</a>
+			<a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核通过</a>
+		    <a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getId()%>,3,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核拒绝</a>
 			<%} else if(data.get(i).getAuditStatusCode()==3&&data.get(i).getOrderStatusCode()==1) {%>
-			<a href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getOrderId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getOrderNo()%>)">审核通过</a>
+			<a href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核通过</a>
 
 			<%}
 			if(!data.get(i).getFinishTime().equals(""))
 			{
 			%>
-			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getOrderId()%>)">查看</a>
-			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getOrderId()%>)">下载</a>
-			<%	
-			}
-			%>
-			<%
-			//已经完成 但是审核未通过, 都是可以取消订单的
-			if((!data.get(i).getFinishTime().equals(""))
-					&&(data.get(i).getAuditStatusCode()!=2)
-					&&(data.get(i).getOrderStatusCode()!=2)
-					&&(data.get(i).getOrderStatusCode()!=3))
-			{
-			%>
-			<a href="javascript:void(0)"  onclick="CancelOrder(<%=data.get(i).getOrderId()%>,<%=data.get(i).getClienterId()%>)">取消订单</a>
+			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getId()%>)">查看</a>
+			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getId()%>)">下载</a>
 			<%	
 			}
 			%>

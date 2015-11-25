@@ -4,7 +4,7 @@ public enum AuditStatus {
 	/**
 	 * 待审核
 	 */
-	WaitAudit(0, "待审核"),
+	WaitAudit(1, "待审核"),
 	/**
 	 * 审核通过
 	 */

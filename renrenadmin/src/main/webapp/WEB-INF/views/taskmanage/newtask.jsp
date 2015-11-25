@@ -45,7 +45,7 @@ String city_region = (String) request.getAttribute("city_region");
 								</div>
 							</div>
 						</div>
-						</div>
+					</div>
 					<div class="row">
 						<div class="col-lg-3">
 							<div class="form-group">
@@ -151,7 +151,7 @@ String city_region = (String) request.getAttribute("city_region");
 				<thead>
 					<tr><th>序号</th><th>链接文字</th><th>链接地址</th><th>操作</th></tr>
 				</thead>
-				<tbody>
+				<tbody id="setpbox3tbody">
 					<tr class="copy3">
 					<td><label>1</label></td>
 					<td><input type="text"  style="width:200px;" class="eltitle"></td>
@@ -162,7 +162,7 @@ String city_region = (String) request.getAttribute("city_region");
 			</table>
 			</div>
 		</fieldset>
-			<fieldset>
+		<fieldset>
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
 				<div class="templateGroupText template" style="border:1px solid red;">
@@ -369,7 +369,7 @@ var jss={
 		//添加细则
 		$("#setpadd3").click(function() {
 			var clone = add3.clone();
-			$('#setpbox3').append(clone);
+			$('#setpbox3tbody').append(clone);
 			for(index=0;index<$('.copy3').length;index++)
             {
             	$('.copy3').eq(index).find('td label').html((index+1));
@@ -645,9 +645,8 @@ function savetask(){
     saveTaskReq.provinceCode=$('#provinceCode').val();
     saveTaskReq.cityCode=$('#cityCode').val();
     var json_data =JSON.stringify(saveTaskReq);
-	//console.log(saveTaskReq);
-	
-  // return;
+	console.log(saveTaskReq);
+  return;
 // 	if(!validPage(true)){
 // 		return;
 // 	}
