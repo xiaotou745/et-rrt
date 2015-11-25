@@ -591,29 +591,16 @@ public class RenRenTaskService implements IRenRenTaskService {
 	public void outTimeCanelTask() {
 		renRenTaskDao.outTimeCanelTask();
 	}
-	
+	/**
+	 * 获取任务信息(BYID)
+	 * 茹化肖
+	 * 2015年11月25日13:06:00
+	 * 
+	 */
 	@Override
-	public RenRenTaskDetail getTaskInfo(Long taskId) {
-		RenRenTaskDetail detail = null;
+	public RenRenTask getTaskInfo(Long taskId) {
 		RenRenTask model = renRenTaskDao.selectById(taskId);
-		if (model != null) {
-			detail = new RenRenTaskDetail();
-			List<Attachment> attachList = attachmentDao.selectByTaskId(taskId);
-			List<TaskCityRelation> relations = taskCityRelationDao
-					.selectByTaskId(taskId);
-			detail.setTaskInfo(model);
-			detail.setAttachmentsList(attachList);
-			detail.setCityRelationList(relations);
-			TemplateSnapshot snapshot = templateSnapshotDao.detailById(model
-					.getSnapshotTemplateId());
-			if (snapshot == null) {
-				detail.setTemplateId(-1l);
-				// throw new TransactionalRuntimeException("没有找到任务的模板快照数据");
-			} else {
-				detail.setTemplateId(snapshot.getTemplateId());
-			}
-		}
-		return detail;
+		return model;
 	}
 	/**
 	 * 构建任务投放区域列表
@@ -1010,9 +997,29 @@ public class RenRenTaskService implements IRenRenTaskService {
 		//获取任务信息
 		RenRenTask task=renRenTaskDao.getTaskDetail(req);
 		templateInfo.setTask(task);
-		//获取模板信息
-		List<TemCorModel> corList= templateDetailDao.getTemCorModelsByTaskId(req.getTaskId());
 		//构建控件组
+		List<TemplateGroup> groups=this.getTemplateGroups(req.getTaskId());
+		templateInfo.setTemplateGroup(groups);	
+		return templateInfo;
+	}
+	/**
+	 * 获取任务的步骤信息
+	 * 茹化肖
+	 * 2015年11月25日13:23:06
+	 */
+	@Override
+	public ArrayList<TaskSetp> getTaskSetps(Long taskId) {
+		ArrayList<TaskSetp> taskSetps=(ArrayList<TaskSetp>)taskSetpDao.getSetpsByTaskId(taskId);
+		return taskSetps;
+	}
+	/**
+	 * 获取任务控件信息
+	 * 茹化肖
+	 * 2015年11月25日13:38:41
+	 */
+	@Override
+	public List<TemplateGroup> getTemplateGroups(Long taskId) {
+		List<TemCorModel> corList= templateDetailDao.getTemCorModelsByTaskId(taskId);
 		List<TemplateGroup> groups=new ArrayList<TemplateGroup>(); 
 		List<Long> groupIdList =corList.stream().map(t->t.getGroupId()).distinct().collect(Collectors.toList());
 		for (Long groupid : groupIdList) {
@@ -1034,12 +1041,11 @@ public class RenRenTaskService implements IRenRenTaskService {
 			TemplateGroup groupaGroup=new TemplateGroup();
 			groupaGroup.setGroupType(temp.getGroupType());
 			groupaGroup.setId(groupid);
-			groupaGroup.setTaskId(req.getTaskId());
+			groupaGroup.setTaskId(taskId);
 			groupaGroup.setTitle(temp.getGroupTitle());
 			groupaGroup.setTemplateList(childList);
 			groups.add(groupaGroup);		
 			}
-		templateInfo.setTemplateGroup(groups);	
-		return templateInfo;
+		return groups;
 	}
 }

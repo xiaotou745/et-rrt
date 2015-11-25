@@ -59,7 +59,7 @@ width: 100%;
 							<div class="col-sm-8">
 								<select id="auditStatus" class="form-control m-b">
 								<option value=-1>全部</option>
-								<option value=0>待审核</option>
+								<option value=1>待审核</option>
 								<option value=2>审核通过</option>
 								<option value=3>审核拒绝</option>
 								</select>

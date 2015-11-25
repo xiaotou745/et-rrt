@@ -252,14 +252,13 @@ WHERE   id = ${orderId}
    <sql id="getOrderAuditListWhere">
 		1=1			
 		<if test="orderNo != null and orderNo!=''">
-			 AND o.orderNo=''${orderNo}''
+			 AND td.id=''${orderNo}''
 		</if>
 	    <if test="auditStatus != -1">
-			AND o.AuditStatus=${auditStatus}
-			AND o.OrderStatus!=0
+			AND td.Status=${auditStatus}
 		</if>
 		<if test="companyName != null and companyName!=''">
-			AND b.CompanyName LIKE ''%${companyName}%''
+			AND rrt.pusher LIKE ''%${companyName}%''
 		</if>
 		<if test="clienterName != null and clienterName!=''">
 			AND c.ClienterName LIKE ''%${clienterName}%''
@@ -270,29 +269,24 @@ WHERE   id = ${orderId}
 		parameterType="com.renrentui.renrenentity.req.PagedAuditorderReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' o.id DESC ',
+		' td.id DESC ',
 		'
-		o.OrderNo ,
-        o.id AS orderId ,
+		 td.id ,
+		td.ClienterId,
         c.ClienterName ,
-        b.CompanyName ,
+        rrt.Pusher ,
         rrt.TaskTitle ,
         rrt.Status AS taskStatus ,
-        rrt.AvailableCount ,
-        o.Amount ,
-        o.FinishTime ,
-        o.AuditTime,
-        (SELECT COUNT(1) FROM dbo.[Order] (NOLOCK) o2 WHERE o2.TaskId=rrt.id AND o.ClienterId=c.id AND o2.OrderStatus=1) AS compCount ,
-        o.AuditStatus,
-        datediff(mi,o.FinishTime,GETDATE()) AS TimeAfter,
-        o.OrderStatus,
-        o.ClienterId
+        ct.CompleteNum ,
+        ct.Amount ,
+        td.CreateDate AS finishTime,
+        td.AuditTime ,
+        td.Status AS auditStatus 
 		',
-		' dbo.[Order] AS o ( NOLOCK )
-        JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON rrt.Id = o.TaskId
-        JOIN dbo.Business AS b ( NOLOCK ) ON b.Id = rrt.BusinessId
-        JOIN dbo.TemplateSnapshot AS t ( NOLOCK ) ON rrt.snapshotTemplateId = t.id
-        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON o.ClienterId = c.Id ',
+		' dbo.TaskDatum AS td ( NOLOCK )
+        LEFT JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.TaskId = td.TaskId
+        LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id ',
 		'
 		<include refid="getOrderAuditListWhere" />
 		',

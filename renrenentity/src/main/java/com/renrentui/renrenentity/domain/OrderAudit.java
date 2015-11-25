@@ -15,13 +15,12 @@ import com.renrentui.renrencore.util.ParseHelper;
  */
 public class OrderAudit {
 
-	private String orderNo;
-	private Long orderId;
+	private Long id;
 	private String clienterName;
-	private String companyName;
+	private String pusher;
 	private String taskTitle;
 	private int taskStatus;
-	private int availableCount;
+	private int completeNum;
 	private double amount;
 	private String finishTime;
 	private String auditTime;
@@ -45,17 +44,23 @@ public class OrderAudit {
 	public void setOrderStatus(int orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-	public String getOrderNo() {
-		return orderNo;
+	public Long getId() {
+		return id;
 	}
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public Long getOrderId() {
-		return orderId;
+	public String getPusher() {
+		return pusher;
 	}
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
+	public void setPusher(String pusher) {
+		this.pusher = pusher;
+	}
+	public int getCompleteNum() {
+		return completeNum;
+	}
+	public void setCompleteNum(int completeNum) {
+		this.completeNum = completeNum;
 	}
 	public String getClienterName() {
 		return clienterName;
@@ -63,12 +68,7 @@ public class OrderAudit {
 	public void setClienterName(String clienterName) {
 		this.clienterName = clienterName;
 	}
-	public String getCompanyName() {
-		return companyName;
-	}
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
+
 	public String getTaskTitle() {
 		return taskTitle;
 	}
@@ -80,12 +80,6 @@ public class OrderAudit {
 	}
 	public void setTaskStatus(int taskStatus) {
 		this.taskStatus = taskStatus;
-	}
-	public int getAvailableCount() {
-		return availableCount;
-	}
-	public void setAvailableCount(int availableCount) {
-		this.availableCount = availableCount;
 	}
 	public double getAmount() {
 		return amount;

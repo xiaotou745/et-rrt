@@ -4,12 +4,12 @@
   <sql id="Base_Column_List" >
     Id, TaskTitle, TaskNotice, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
     ModifyName, ModifyTime, BeginTime, EndTime, TaskCycle, AvailableCount, Amount, status, 
-    TaskTotalCount, SnapshotTemplateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary
+    TaskTotalCount, SnapshotTemplateId, Link, PaymentMethod,AuditCycle,TaskNote,TargetPeople,CompanySummary,TaskType,HotLine
   </sql>
   <select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from RenRenTask
+    from RenRenTask (NOLOCK)
     where Id = #{id,jdbcType=BIGINT}
   </select>
   <!--添加一个任务 茹化肖 2015年11月16日13:45:54 -->
@@ -89,62 +89,53 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
 	UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount+1
     where Id = #{taskid,jdbcType=BIGINT}
   </update>
+  
+    	<!-- 获取任务列表 WHERE茹化肖 2015年11月24日13:51:51 -->
   <sql id="getPagedRenRenTaskListWhere">
-
 		1=1		
-		<if test="taskTitle != null and taskTitle!=''">
-			and a.taskTitle like ''%${taskTitle}%''
-		</if>	
-		<if test="pusher != null and pusher!=''">
-			and a.pusher like ''%${pusher}%''
-		</if>	
-		<if test="businessId != null and businessId>0">
-			and a.businessId=${businessId}
-		</if>
-		<if test="createName != null and createName!=''">
-			and a.createName like ''%${createName}%''
-		</if>
 		<if test="createTimeBegin != null and createTimeBegin!=''">
-			and a.createTime >=''${createTimeBegin}''
+			and createTime >=''${createTimeBegin}''
 		</if>
 		<if test="createTimeEnd != null and createTimeEnd!=''">
-			and ''${createTimeEnd} 23:59:59''>a.createTime
+			and ''${createTimeEnd} 23:59:59''>createTime
 		</if>
 	    <if test="beginTime != null and beginTime!=''">
-			and a.endTime>=''${beginTime}''
+			and endTime>=''${beginTime}''
 		</if>
 		<if test="endTime != null and endTime!=''">
-			and ''${endTime} 23:59:59''>=a.beginTime
+			and ''${endTime} 23:59:59''>=beginTime
 		</if>
 	    <if test="status != null and status>-1">
-			and a.status=${status}
+			and status=${status}
 		</if>
-	    <if test="templateId != null and templateId>-1">
-			and b.templateId=${templateId}
+		<if test="taskType != null and taskType>0">
+			and status=${status}
 		</if>
-	    <if test="paymentMethod != null and paymentMethod>0">
-			and a.paymentMethod=${paymentMethod}
-		</if>
+		<if test="taskTitle != null and taskTitle!=''">
+			and taskTitle like ''%${taskTitle}%''
+		</if>	
+		<if test="pusher != null and pusher!=''">
+			and pusher like ''%${pusher}%''
+		</if>	
 	</sql>
-  
+  	<!-- 获取任务列表 茹化肖 2015年11月24日13:51:51 -->
   	<select id="getPagedRenRenTaskList" resultType="com.renrentui.renrenentity.domain.RenRenTaskModel"
 		parameterType="com.renrentui.renrenentity.req.PagedRenRenTaskReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' a.Id DESC ',
-		'a.*,b.templateName,c.CompanyName as businessName, 
-        CASE when o.TaskAudi is  null and (a.status=3 or a.status=4) then 1
-             else 0 end  as canSettlement 
+		' rrt.Id DESC ',
+		'id ,
+        TaskTitle ,
+        CreateName ,
+        CreateTime ,
+        BeginTime ,
+        EndTime ,
+        Pusher ,
+        Amount ,
+        Status ,
+        TaskType
         ',
-		'RenRenTask a with ( nolock )
-        join TemplateSnapshot b with ( nolock ) on a.snapshotTemplateId = b.id
-        join Business c with ( nolock ) on a.businessId = c.id
-        left  join ( select distinct
-                            TaskId as TaskAudi
-                     from   [Order] (nolock) 
-                     where  (AuditStatus =0 or AuditStatus=1)
-                            and OrderStatus = 1
-                   ) as o on a.Id = o.TaskAudi  
+		' dbo.RenRenTask AS rrt (NOLOCK)  
         ',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />

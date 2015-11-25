@@ -38,6 +38,8 @@ import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
+import com.renrentui.renrenentity.domain.TaskSetp;
+import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.AesParameterReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
@@ -243,25 +245,36 @@ public class TaskManageController {
 		req.setUserName(context.getUserName());
 		return renRenTaskService.setTaskStatus(req);
 	}
+	/**
+	 * 任务详情页面
+	 * 茹化肖
+	 * 2015年11月25日11:41:50
+	 * @param taskId
+	 * @return
+	 */
 	@RequestMapping("detail")
 	public ModelAndView taskDetail(Long taskId) {
 		if (taskId==null||taskId<0) {
 			throw new RuntimeException("taskId不能为空");
 		}
-		RenRenTaskDetail taskInfo=renRenTaskService.getTaskInfo(taskId);
+		//1获取任务信息
+		RenRenTask taskInfo=renRenTaskService.getTaskInfo(taskId);
 		if (taskInfo==null) {
 			throw new RuntimeException("id="+taskId+"的任务不存在");
 		}
+		//2.获取步骤信息
+		ArrayList<TaskSetp> taskSetps =renRenTaskService.getTaskSetps(taskId);
+		//3 获取控件信息
+		List<TemplateGroup> groups=renRenTaskService.getTemplateGroups(taskId);
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "任务管理");
-		model.addObject("currenttitle", "修改任务");
+		model.addObject("currenttitle", "任务详情");
 		model.addObject("viewPath", "taskmanage/detail");
+		model.addObject("taskSetps", taskSetps);
+		model.addObject("groups", groups);
 		model.addObject("taskInfo", taskInfo);
-		List<Business> datalist=businessService.getAllList();
-		model.addObject("businessData", datalist);
-		model.addObject("templatelist", getTemplateList());
+		//4 获取投放放范围
 		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
-		
 		model.addObject("provincelist", getOpenCityByJiBie(list,1));
 		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,2);
 		model.addObject("pro_city", getCityStr(citylistlist));
