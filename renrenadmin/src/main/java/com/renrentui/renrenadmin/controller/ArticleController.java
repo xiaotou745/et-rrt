@@ -75,7 +75,7 @@ public class ArticleController {
 	}
 	
 	/**
-	 * 新建文章
+	 * 列表文章
 	 * 茹化肖
 	 * 2015年11月18日15:29:56
 	 * @return
@@ -83,9 +83,24 @@ public class ArticleController {
 	@RequestMapping("listdo")
 	public ModelAndView listdo(PagedArticleReq req) {
 		PagedResponse<Article> resp = articleService.querList(req);
-		ModelAndView view = new ModelAndView();
+		ModelAndView view = new ModelAndView("article/listdo");
 		view.addObject("listData", resp);
-		view.addObject("viewPath", "article/listdo");
+		//view.addObject("viewPath", "article/listdo");
+		return view;
+	}
+	/**
+	 * 列表文章
+	 * 茹化肖
+	 * 2015年11月18日15:29:56
+	 * @return
+	 */
+	@RequestMapping("listdofortask")
+	public ModelAndView listdofortask(PagedArticleReq req) {
+		PagedResponse<Article> resp = articleService.querList(req);
+		ModelAndView view = new ModelAndView("article/listfortask");
+		view.addObject("listData", resp);
+			//新建任务的文章列表
+		//view.addObject("viewPath", "article/listfortask");
 		return view;
 	}
 	

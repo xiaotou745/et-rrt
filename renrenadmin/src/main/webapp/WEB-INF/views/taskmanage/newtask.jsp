@@ -156,7 +156,7 @@ String city_region = (String) request.getAttribute("city_region");
 					<td><label>1</label></td>
 					<td><input type="text"  style="width:200px;" class="eltitle"></td>
 					<td><input type="text"  style="width:200px;" class="elurl"></td>
-					<td><input type="button" value="选择文章"><input type="button" value="新建页面"></td>
+					<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a><a href="javascript:void(0)" >新建页面</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -278,8 +278,50 @@ String city_region = (String) request.getAttribute("city_region");
 	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> 
 	<input type="hidden" id="city_region" value="<%=city_region %>" />
 </div>
-
+<div tabindex="-1" class="modal inmodal" id="alertbox" role="dialog" aria-hidden="true" style="display: none;">	
+	
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<input type="text" placeholder="文章标题" class="form-control" id="arttitle" style="width: 100px;"/>
+				<input type="text" placeholder="文章编号" class="form-control" id="artid" style="float: left;margin-top: -34px;margin-left: 104px;width: 100px;" />
+				<button type="button" class="btn btn-w-m btn-primary" id="btnSearch" style="margin-left: -14px;margin-top: -50px;" onclick="jss.search(1)">查询</button>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body" id="articleBody">
+				
+				分页列表
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">确定</button>
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>	
+</div>
 <script>  
+var article="";//选择文章对象
+var jss={
+		search:function(currentPage){
+			var url="<%=basePath%>/article/listdofortask";
+			var par={currentPage:currentPage,
+					id:$('#artid').val(),
+					title:$('#arttitle').val(),
+					type:2,
+					pageSize:5,
+					m:Math.random()}
+			$.post(url,par,function(d){
+				$("#articleBody").html(d);
+			});
+		}
+	}
   var txtgroup="";
   var imggroup="";
   var moreimggroup="";
@@ -432,6 +474,13 @@ String city_region = (String) request.getAttribute("city_region");
 		  $(el).html(index+1+'.');
 	  });
   }
+  //选择文章
+  function chooseArticle(obj){
+	  jss.search(1);
+	  article=obj;
+	  $('#alertbox').modal('show');
+  }
+  
   //商家改版重新获余额
 function businessChange(){  
 	var templateList="<%=templatelist%>";

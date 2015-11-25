@@ -38,6 +38,7 @@ var jss={
 			var par={currentPage:currentPage,
 					id:$('#id').val(),
 					title:$('#title').val(),
+					type:1,
 					m:Math.random()}
 			$.post(url,par,function(d){
 				$("#content").html(d);
