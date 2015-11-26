@@ -8,6 +8,8 @@ import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.domain.TaskSetp;
+import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
@@ -18,6 +20,9 @@ import com.renrentui.renrenentity.RenRenTask;
 
 
 
+
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.renrentui.renrenentity.req.CancelTaskReq;
@@ -78,7 +83,7 @@ public interface IRenRenTaskService {
 	 * @date 20151009
 	 */
 	 void outTimeCanelTask();
-	 RenRenTaskDetail getTaskInfo(Long taskId);
+	 RenRenTask getTaskInfo(Long taskId);
 	 List<RenRenTask> getListByTemplateId(Long templateId); 
 	 int settlementTask(Long taskId,String userName);
 	 /**
@@ -89,5 +94,17 @@ public interface IRenRenTaskService {
 	  * @return
 	  */
 	 TemplateInfo getTemplateDetail(TaskDetailReq req);
+	 /**
+		 * 获取任务控件信息
+		 * 茹化肖
+		 * 2015年11月25日13:38:41
+		 */
+	 List<TemplateGroup> getTemplateGroups(Long taskId);
+	 /**
+	  * 获取任务步骤信息
+	  * @param taskId
+	  * @return
+	  */
+	 ArrayList<TaskSetp> getTaskSetps(Long taskId);
 	
 }
