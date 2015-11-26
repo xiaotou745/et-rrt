@@ -7,17 +7,17 @@ import com.renrentui.renrenentity.RenRenTask;
 
 public class TemplateInfo {
 	private RenRenTask task;
-	private List<TemplateGroup> templateGroup;
+	private List<TaskDatumDetailGroup> templateGroup;
 	public RenRenTask getTask() {
 		return task;
 	}
 	public void setTask(RenRenTask task) {
 		this.task = task;
 	}
-	public List<TemplateGroup> getTemplateGroup() {
+	public List<TaskDatumDetailGroup> getTemplateGroup() {
 		return templateGroup;
 	}
-	public void setTemplateGroup(List<TemplateGroup> templateGroup) {
+	public void setTemplateGroup(List<TaskDatumDetailGroup> templateGroup) {
 		this.templateGroup = templateGroup;
 	}
 }

@@ -22,6 +22,7 @@ import com.renrentui.renrenentity.RenRenTask;
 
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
-import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
 
@@ -42,10 +43,10 @@ public interface IRenRenTaskService {
 	 * @param req
 	 * @return
 	 */
-	 TaskDetail getTaskDetail(TaskDetailReq req);
+	 TaskDetail getTaskDetail(TaskDatumDetailReq req);
 	
 	
-	 OrderRetrunModel getTask(TaskDetailReq req);
+	 OrderRetrunModel getTask(TaskDatumDetailReq req);
 	
 	/**
 	 * 取消任务
@@ -86,14 +87,6 @@ public interface IRenRenTaskService {
 	 RenRenTask getTaskInfo(Long taskId);
 	 List<RenRenTask> getListByTemplateId(Long templateId); 
 	 int settlementTask(Long taskId,String userName);
-	 /**
-	  * 提交资料详情
-	  * 茹化肖
-	  * 2015年11月19日15:48:05
-	  * @param req
-	  * @return
-	  */
-	 TemplateInfo getTemplateDetail(TaskDetailReq req);
 	 /**
 		 * 获取任务控件信息
 		 * 茹化肖

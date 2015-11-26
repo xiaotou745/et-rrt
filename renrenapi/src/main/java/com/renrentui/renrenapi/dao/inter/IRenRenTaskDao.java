@@ -12,7 +12,7 @@ import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
-import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
 
@@ -28,9 +28,9 @@ public interface IRenRenTaskDao {
      * @param req
      * @return
      */
-    RenRenTask getTaskDetail(TaskDetailReq req);
+    RenRenTask getTaskDetail(TaskDatumDetailReq req);
     
-    CheckTask checkTask(TaskDetailReq req);
+    CheckTask checkTask(TaskDatumDetailReq req);
     
     int cutTaskAvailableCount(Long taskID);
     int addTaskAvailableCount(Long taskID);

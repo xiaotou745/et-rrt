@@ -52,7 +52,7 @@
        #{taskType,jdbcType=INTEGER})
   </insert>
   <!-- 获取任务详情接口  2015年11月19日11:24:46 V1.0.2 茹化肖  -->
-   <select id="getTaskDetail" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="com.renrentui.renrenentity.req.TaskDetailReq" >
+   <select id="getTaskDetail" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
 SELECT TOP 1  rrt.id,
         b.Logo ,
         rrt.amount,
@@ -70,7 +70,7 @@ FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 WHERE   rrt.id =  ${taskId}
   </select>
   <!-- 验证任务是否可以领取 2015年9月29日17:13:19 茹化肖 v1.0.2 -->
- <select id="checkTask" resultType="com.renrentui.renrenentity.domain.CheckTask" parameterType="com.renrentui.renrenentity.req.TaskDetailReq" >
+ <select id="checkTask" resultType="com.renrentui.renrenentity.domain.CheckTask" parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
 SELECT  BusinessId ,
         Amount ,
         TaskType

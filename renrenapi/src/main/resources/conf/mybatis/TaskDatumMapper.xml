@@ -92,4 +92,51 @@ VALUES  ( ${taskDatumId} ,
                     AND k.isenable = 1
          
   </select> 
+  <!--  查询(资料对应的任务或某个任务)的模板的分组信息列表，zhaohl,20151126 -->
+    <select id="getTaskDatumGroupList" resultType="com.renrentui.renrenentity.domain.TaskDatumDetailGroup" 
+    parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
+            	    SELECT  
+					        ${taskDatumId} AS TaskDatumId ,
+                            ${taskId} as TaskId ,
+                            a.id AS groupId ,
+                            a.GroupType ,
+                            a.Title
+                    FROM     TemplateGroup a WITH ( NOLOCK ) 
+                            <if test="taskDatumId > 0" >
+					     		JOIN TaskDatum b WITH ( NOLOCK ) ON a.TaskId = b.TaskId
+			 				</if>
+			        WHERE a.TaskId=${taskId}
+			           <if test="taskDatumId > 0" >
+							and b.id=${taskDatumId}
+			 		   </if>
+  </select> 
+    <!--  查询(资料对应的任务或某个任务)的模板的控件值列表，zhaohl,20151126 -->
+    <select id="getTaskDatumDetailList" resultType="com.renrentui.renrenentity.domain.TaskDatumDetail" 
+    parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
+             SELECT   		b.ControlId as controlTypeId,
+                            b.OrderNum ,
+                            b.Name as controlKey,
+                            b.Title ,
+                            b.DefaultValue ,
+                            b.ControlData ,
+                            b.TemplateGroupId as groupId,
+                            <if test="taskDatumId > 0" >
+                            d.ControlValue
+			 				</if>
+                            <if test="0 >= taskDatumId" >
+			     			'' as ControlValue
+	 						</if> 
+                    FROM    TemplateGroup a WITH ( NOLOCK ) 
+                            JOIN TemplateDetail b WITH ( NOLOCK ) ON a.id = b.TemplateGroupId
+                            <if test="taskDatumId > 0" >
+                            join TaskDatum c WITH ( NOLOCK ) ON a.TaskId = c.TaskId
+					     	JOIN TaskDatumChild d WITH ( NOLOCK ) ON c.id = d.TaskDatumId
+                                                              AND b.Name = d.ControlName
+			 				</if>
+
+			     	WHERE a.TaskId=${taskId}
+	 				<if test="taskDatumId > 0" >
+                        and c.id=${taskDatumId}
+			 		</if> 
+  </select> 
 </mapper>

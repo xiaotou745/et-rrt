@@ -17,7 +17,7 @@ import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
-import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
 
@@ -45,7 +45,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 * 修改人 
 	 */
 	@Override
-	public RenRenTask getTaskDetail(TaskDetailReq req) {
+	public RenRenTask getTaskDetail(TaskDatumDetailReq req) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getTaskDetail";
 		RenRenTask res = getReadOnlySqlSessionUtil().selectOne(statement, req);
 		return res;
@@ -55,7 +55,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 * 验证任务是否可以领取(主库查询不加锁) 2015年9月29日17:16:32 茹化肖
 	 */
 	@Override
-	public CheckTask checkTask(TaskDetailReq req) {
+	public CheckTask checkTask(TaskDatumDetailReq req) {
 		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.checkTask";
 		CheckTask res = getMasterSqlSessionUtil().selectOne(statement, req);
 		return res;

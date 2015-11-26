@@ -8,8 +8,11 @@ import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
 import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
+import com.renrentui.renrenentity.domain.TaskDatumDetail;
+import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TaskDatumTitle;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskDatumReq;
 @Repository
 public class TaskDatumDao extends DaoBase implements ITaskDatumDao{
@@ -39,6 +42,16 @@ public class TaskDatumDao extends DaoBase implements ITaskDatumDao{
 	@Override
 	public List<TaskDatumTitle> getMyTaskDatumTitleList(TaskDatumReq req) {
 		return getMasterSqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.getMyTaskDatumTitleList", req);
+	}
+
+	@Override
+	public List<TaskDatumDetailGroup> getTaskDatumGroupList(TaskDatumDetailReq req) {
+		return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.getTaskDatumGroupList", req);
+	}
+
+	@Override
+	public List<TaskDatumDetail> getTaskDatumDetailList(TaskDatumDetailReq req) {
+return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.getTaskDatumDetailList", req);
 	}
 
 }

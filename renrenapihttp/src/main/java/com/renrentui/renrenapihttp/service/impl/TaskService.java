@@ -21,10 +21,9 @@ import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskModel;
-import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
-import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 
 /**
@@ -41,7 +40,7 @@ public class TaskService implements ITaskService{
 	 * C端任务详情接口
 	 */
 	@Override
-	public HttpResultModel<TaskDetail> taskDeatil(TaskDetailReq req) {
+	public HttpResultModel<TaskDetail> taskDeatil(TaskDatumDetailReq req) {
 		if(req.getTaskId()<=0)//任务ID
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.TaskIdErr.value()).setMsg(TaskDetailCode.TaskIdErr.desc());
 		TaskDetail detail= rrTaskServcie.getTaskDetail(req);
@@ -56,10 +55,10 @@ public class TaskService implements ITaskService{
 	 * 
 	 */
 	@Override
-	public HttpResultModel<Object> getTask(TaskDetailReq req) {
-		if(req.getTaskId()==null||req.getTaskId()<=0)//任务ID
+	public HttpResultModel<Object> getTask(TaskDatumDetailReq req) {
+		if(req.getTaskId()<=0)//任务ID
 			return new HttpResultModel<Object>().setCode(GetTaskCode.TaskIdErr.value()).setMsg(GetTaskCode.TaskIdErr.desc());
-		if(req.getUserId()==null||req.getUserId()<=0)//用户ID
+		if(req.getUserId()<=0)//用户ID
 			return new HttpResultModel<Object>().setCode(GetTaskCode.UserIdErr.value()).setMsg(GetTaskCode.UserIdErr.desc());
 		OrderRetrunModel code=rrTaskServcie.getTask(req);//领取任务
 		return new HttpResultModel<Object>().setCode(code.getCode().value()).setMsg(code.getCode().desc());
@@ -155,19 +154,5 @@ public class TaskService implements ITaskService{
 		}
 		hrm.setData(td); 
 		return hrm;
-	}
-	
-	/**
-	 * 提交资料的详情接口
-	 * 茹化肖
-	 * 2015年11月19日15:41:43
-	 * V1.0.2
-	 */
-	@Override
-	public HttpResultModel<TemplateInfo> templateDeatil(TaskDetailReq req) {
-		TemplateInfo detail= rrTaskServcie.getTemplateDetail(req);
-		if(detail==null)
-			return new HttpResultModel<TemplateInfo>().setData(detail).setCode(TaskDetailCode.Fail.value()).setMsg(TaskDetailCode.Fail.desc())  ;
-		return new HttpResultModel<TemplateInfo>().setData(detail).setCode(TaskDetailCode.Success.value()).setMsg(TaskDetailCode.Success.desc()) ;
 	}
 }

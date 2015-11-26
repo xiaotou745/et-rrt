@@ -9,8 +9,11 @@ import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.domain.TabModel;
+import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.domain.TemplateInfo;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskDatumReq;
 
 /**
@@ -22,6 +25,16 @@ import com.renrentui.renrenentity.req.TaskDatumReq;
 @Consumes("application/json")//当前方法接收的参数类型
 @Produces("application/json; charset=utf-8")//当前类的所有方法都返回json格式的数据
 public interface IDatumService {
+	/**
+	 * 获取资料模板或资料详情
+	 * @param req
+	 * @author hailongzhao
+	 * @date 20151126
+	 * @return
+	 */
+	@POST
+	@Path("/gettaskdatumdetail")
+	HttpResultModel<TemplateInfo> getTaskDatumDetail(TaskDatumDetailReq req);
 	/**
 	 * 获取我的资料列表
 	 * @author hailongzhao

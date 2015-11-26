@@ -78,13 +78,12 @@ import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemCorModel;
 import com.renrentui.renrenentity.domain.TemplateGroup;
-import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
-import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 import com.renrentui.renrenentity.req.TemplateSnapshotReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
@@ -139,7 +138,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	 * 修改人  
 	 */
 	@Override
-	public TaskDetail getTaskDetail(TaskDetailReq req) {
+	public TaskDetail getTaskDetail(TaskDatumDetailReq req) {
 
 		TaskDetail detail = new TaskDetail();
 	 	RenRenTask task= renRenTaskDao.getTaskDetail(req);//获取任务 任务信息
@@ -155,7 +154,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public OrderRetrunModel getTask(TaskDetailReq req) {
+	public OrderRetrunModel getTask(TaskDatumDetailReq req) {
 		OrderRetrunModel model = new OrderRetrunModel();
 		//获取任务相关数据
 		CheckTask detail = renRenTaskDao.checkTask(req);
@@ -985,22 +984,6 @@ public class RenRenTaskService implements IRenRenTaskService {
 		statusReq.setUserName(userName);
 		setTaskStatus(statusReq);
 		return 1;
-	}
-	/**
-	 * 提交资料前获取模板信息
-	 * 茹化肖
-	 * 2015年11月19日15:57:38
-	 */
-	@Override
-	public TemplateInfo getTemplateDetail(TaskDetailReq req) {
-		TemplateInfo templateInfo =new TemplateInfo();
-		//获取任务信息
-		RenRenTask task=renRenTaskDao.getTaskDetail(req);
-		templateInfo.setTask(task);
-		//构建控件组
-		List<TemplateGroup> groups=this.getTemplateGroups(req.getTaskId());
-		templateInfo.setTemplateGroup(groups);	
-		return templateInfo;
 	}
 	/**
 	 * 获取任务的步骤信息
