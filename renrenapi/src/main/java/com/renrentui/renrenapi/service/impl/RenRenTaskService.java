@@ -523,9 +523,9 @@ public class RenRenTaskService implements IRenRenTaskService {
 
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
-		List<PublicProvinceCity> list=publicProvinceCityService.getOpenCityListFromRedis();
-		PublicProvinceCity city=list.stream().filter(t->t.getCode().intValue()==req.getCityCode()).findFirst().get();
-		req.setProvinceCode(city.getParentCode().longValue());
+		if (req.getCityCode()<=0||req.getProvinceCode()<=0||req.getUserId()<=0) {
+			return null;
+		}
 		return renRenTaskDao.getNewTaskList(req);
 	}
 
@@ -543,18 +543,21 @@ public class RenRenTaskService implements IRenRenTaskService {
 		List<MyReceiveTask> result= renRenTaskDao.getMyReceivedTaskList(req);
 		for (MyReceiveTask myReceiveTask : result) {
 			if (myReceiveTask.getTaskType().equals(TaskType.ContractTask.desc())) {
-				switch (DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus())) {
-				case WaitAudit:
-					myReceiveTask.setAuditWaitNum(myReceiveTask.getAuditNum());
-					break;
-				case Audited:
-					myReceiveTask.setAuditPassNum(myReceiveTask.getAuditNum());
-					break;
-				case Refuse:
-					myReceiveTask.setAuditRefuseNum(myReceiveTask.getAuditNum());
-					break;
-				default:
-					break;
+				DatumAuditStatus datumAuditStatus=DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus());
+				if (datumAuditStatus!=null) {
+					switch (datumAuditStatus) {
+					case WaitAudit:
+						myReceiveTask.setAuditWaitNum(myReceiveTask.getAuditNum());
+						break;
+					case Audited:
+						myReceiveTask.setAuditPassNum(myReceiveTask.getAuditNum());
+						break;
+					case Refuse:
+						myReceiveTask.setAuditRefuseNum(myReceiveTask.getAuditNum());
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}

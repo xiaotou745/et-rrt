@@ -53,7 +53,8 @@ VALUES  ( ${taskDatumId} ,
             a.AuditTime
   FROM      TaskDatum a
             JOIN RenRenTask b ON a.TaskId = b.id
-  where a.ClienterId = ${userId}
+  where a.ClienterId = ${userId} 
+  		and a.status=${auditStatus}
   	<if test="taskId > 0" >
 	      AND a.TaskId = ${taskId}
 	</if>
@@ -68,18 +69,18 @@ VALUES  ( ${taskDatumId} ,
                     g.groupType ,
                     k.controlName ,
                     k.controlValue,
-                    g.orderNum
+                    m.orderNum
             FROM    ClienterTask a WITH ( NOLOCK )
                     JOIN TaskDatum b WITH ( NOLOCK ) ON b.TaskId = a.TaskId
-                    JOIN ( SELECT   taskid ,
-                                    MIN(id) AS groupid
+                    JOIN ( SELECT   g1.taskid ,
+                                    MIN(g1.id) AS groupid
                            FROM     TemplateGroup g1 WITH ( NOLOCK )
                            join ClienterTask c2 WITH ( NOLOCK ) on g1.taskid=c2.taskid
                            WHERE   c2.ClienterId = ${userId}
 							<if test="taskId > 0" >
 							    AND c2.TaskId = ${taskId}
 							</if>
-                           GROUP BY taskid
+                           GROUP BY g1.taskid
                          ) TB ON b.TaskId = tb.taskid
                     JOIN TemplateGroup g WITH ( NOLOCK ) ON tb.groupid = g.id
                     JOIN TemplateDetail m WITH ( NOLOCK ) ON m.templategroupid = g.id
@@ -89,7 +90,6 @@ VALUES  ( ${taskDatumId} ,
 	                <if test="taskId > 0" >
 					    AND a.TaskId = ${taskId}
 					</if>
-                    AND k.isenable = 1
          
   </select> 
   <!--  查询(资料对应的任务或某个任务)的模板的分组信息列表，zhaohl,20151126 -->
@@ -116,7 +116,7 @@ VALUES  ( ${taskDatumId} ,
              SELECT   		b.ControlId as controlTypeId,
                             b.OrderNum ,
                             b.Name as controlKey,
-                            b.Title ,
+                            b.Title as controlTitle,
                             b.DefaultValue ,
                             b.ControlData ,
                             b.TemplateGroupId as groupId,
