@@ -129,27 +129,51 @@ String city_region = (String) request.getAttribute("city_region");
 			<a href="javascript:void(0);" class="fl add" id="setpadd">添加</a>
 			<a href="javascript:void(0);" class="fl del" id="setpdel">删除</a> 
 			<div class="orderBox dn" id="setpbox">
-				<p class="copy">
-								<label class="col-sm-4 control-label">步骤1</label>
-									<input type="text" class="form-control" name="taskTitle"
-										id="taskTitle" />
-				</p>
+				<div class="copy">
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">步骤1: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<hr align="center" width="50%" style="color:#333333;">
+			
+			
+			
+			
+			
 			<span>补充说明（如果任务有特殊说明，或者注意事项，可在此处进行补充）</span>
 			<a href="javascript:void(0);" class="fl add" id="setpadd2">添加</a>
 			<a href="javascript:void(0);" class="fl del" id="setpdel2">删除</a> 
 			<div class="orderBox dn" id="setpbox2">
-				<p class="copy2">
-					<label class="control-label">1、 </label> <input type="text"  style="width:200px;">
-				</p>
+				<div class="copy2">
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">1、 </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<hr align="center" width="50%" style="color:#333333;">
+			
+			
+			
 			<span>细则（添加超链接，打开新页面）</span>
 			<a href="javascript:void(0);" class="fl add" id="setpadd3">添加</a>
 			<a href="javascript:void(0);" class="fl del" id="setpdel3">删除</a> 
 			<div class="orderBox dn" id="setpbox3">
-			<table>
+			<table class="table table-striped table-bordered table-hover dataTables-example" style="width:40%;">
 				<thead>
 					<tr><th>序号</th><th>链接文字</th><th>链接地址</th><th>操作</th></tr>
 				</thead>
@@ -167,7 +191,7 @@ String city_region = (String) request.getAttribute("city_region");
 		<fieldset>
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
-				<div class="templateGroupText template" style="border:1px solid red;">
+				<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
 					<label class="boxno">1.</label><span>文本组标题:</span><input type="text" value="文本组标题" class="cltxt">	
 					<a href="javascript:void(0);" onclick="addTxtControl(this)">添加文本控件</a>
 					<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> 
@@ -176,7 +200,7 @@ String city_region = (String) request.getAttribute("city_region");
 						<div class="textitem">说明文本:<input type="text" class="cltitle">默认值:<input type="text" class="cldefval"></div>
 					</div>
 				</div>
-				<div class="templateGroupImg template"  style="border:1px solid blue;">
+				<div class="templateGroupImg template"  style="border: 3px solid #DDDDDD;margin-top: 8px;width: 40%;">
 					<label class="boxno">2.</label><span>图片组标题</span><input type="text" value="图片组标题" class="climg">
 					<a href="javascript:void(0);" onclick="addImgControl(this)" >添加图片控件</a>
 					<a href="javascript:void(0);" onclick="delImgControl(this)" >删除图片控件</a>
@@ -185,7 +209,7 @@ String city_region = (String) request.getAttribute("city_region");
 						<div class="imgitem">图片说明:<input type="text" class="cltitle"></div>
 					</div>
 				</div>
-				<div class="templateGroupMoreImg template"  style="border:1px solid blue;">
+				<div class="templateGroupMoreImg template"  style="border: 3px solid #DDDDDD;margin-top: 8px;width: 40%;">
 					<label class="boxno">3.</label><span>多图组标题</span><input type="text" value="多图组标题" class="clmoreimg">
 					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该多图组</a>
 					<div class="imgGroup">
@@ -242,7 +266,7 @@ String city_region = (String) request.getAttribute("city_region");
 			</div>
 
 		</fieldset>
-				<fieldset>
+		<fieldset>
 			<legend>投放范围</legend>
 			<div class="row">
 				<div class="col-lg-12">
@@ -350,7 +374,7 @@ var jss={
 				alert("最少保留一个步骤");
 				return;
 			}
-			var ld=$("#setpbox p:last");
+			var ld=$("#setpbox .copy:last");
 			ld.remove(); 
 		});
 		//添加补充说明
@@ -365,7 +389,7 @@ var jss={
 		//删除补充说明
 		$('#setpdel2').click(function() {
 			var len=$('.copy2').length;
-			var ld=$("#setpbox2 p:last");
+			var ld=$("#setpbox2 .copy2:last");
 			ld.remove(); 
 		});
 		//添加细则
