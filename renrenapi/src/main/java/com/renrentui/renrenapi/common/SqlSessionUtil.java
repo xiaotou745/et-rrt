@@ -13,6 +13,9 @@ public class SqlSessionUtil {
 
 	private SqlSession innerSession;
 
+	private String getPrefix(){
+		return "com.renrentui.renrenapi.dao.inter.";
+	}
 	private SqlSessionUtil(SqlSession session) {
 		innerSession = session;
 	}
@@ -24,7 +27,7 @@ public class SqlSessionUtil {
 
 	public <E> List<E> selectList(String statement, Object parameter) {
 		try {
-			return innerSession.selectList(statement, parameter);
+			return innerSession.selectList(getPrefix()+statement, parameter);
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -36,7 +39,7 @@ public class SqlSessionUtil {
 
 	public <E> List<E> selectList(String statement) {
 		try {
-			return innerSession.selectList(statement);
+			return innerSession.selectList(getPrefix()+statement);
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -68,7 +71,7 @@ public class SqlSessionUtil {
 				basemodel.setPageSize(15);  //默认页容量
 			}
 			PagedResponse<E> result=new PagedResponse<E>();
-			result.setResultList(innerSession.selectList(statement, parameter));
+			result.setResultList(innerSession.selectList(getPrefix()+statement, parameter));
 			result.setCurrentPage(basemodel.getCurrentPage());
 			result.setPageSize(basemodel.getPageSize());
 			result.setTotalPage(basemodel.getTotalPage());
@@ -84,7 +87,7 @@ public class SqlSessionUtil {
 		
 	public <T> T selectOne(String statement, Object parameter) {
 		try {
-			return innerSession.selectOne(statement, parameter);
+			return innerSession.selectOne(getPrefix()+statement, parameter);
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -94,7 +97,7 @@ public class SqlSessionUtil {
 
 	public <T> T selectOne(String statement) {
 		try {
-			return innerSession.selectOne(statement);
+			return innerSession.selectOne(getPrefix()+statement);
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -104,7 +107,7 @@ public class SqlSessionUtil {
 
 	public int delete(String statement, Object parameter) {
 		try {
-			int result = innerSession.delete(statement, parameter);
+			int result = innerSession.delete(getPrefix()+statement, parameter);
 			innerSession.commit();
 			return result;
 		} catch (Exception e) {
@@ -116,7 +119,7 @@ public class SqlSessionUtil {
 
 	public int delete(String statement) {
 		try {
-			int result = innerSession.delete(statement);
+			int result = innerSession.delete(getPrefix()+statement);
 			innerSession.commit();
 			return result;
 		} catch (Exception e) {
@@ -128,7 +131,7 @@ public class SqlSessionUtil {
 
 	public int update(String statement, Object parameter) {
 		try {
-			int result = innerSession.update(statement, parameter);
+			int result = innerSession.update(getPrefix()+statement, parameter);
 			innerSession.commit();
 			return result;
 		} catch (Exception e) {
@@ -140,7 +143,7 @@ public class SqlSessionUtil {
 
 	public int update(String statement) {
 		try {
-			int result = innerSession.update(statement);
+			int result = innerSession.update(getPrefix()+statement);
 			innerSession.commit();
 			return result;
 		} catch (Exception e) {
@@ -152,7 +155,7 @@ public class SqlSessionUtil {
 
 	public int insert(String statement, Object parameter) {
 		try {
-			int result = innerSession.insert(statement, parameter);			
+			int result = innerSession.insert(getPrefix()+statement, parameter);			
 			innerSession.commit();
 			return result;
 		} catch (Exception e) {
@@ -164,7 +167,7 @@ public class SqlSessionUtil {
 
 	public int insert(String statement) {
 		try {
-			int result = innerSession.insert(statement);
+			int result = innerSession.insert(getPrefix()+statement);
 			innerSession.commit();
 			return result;
 		} catch (Exception e) {

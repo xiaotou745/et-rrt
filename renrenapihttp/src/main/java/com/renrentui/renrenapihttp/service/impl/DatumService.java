@@ -12,12 +12,46 @@ import com.renrentui.renrenapihttp.service.inter.IDatumService;
 import com.renrentui.renrencore.enums.DatumAuditStatus;
 import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrenentity.domain.TabModel;
+import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
+import com.renrentui.renrenentity.domain.TemplateInfo;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskDatumReq;
 @Service
 public class DatumService implements IDatumService{
 	@Autowired
 	ITaskDatumService taskDatumService;
+	/**
+	 * 获取资料模板或资料详情
+	 * @param req
+	 * @author hailongzhao
+	 * @date 20151126
+	 * @return
+	 */
+	@Override
+	public HttpResultModel<TemplateInfo> getTaskDatumDetail(
+			TaskDatumDetailReq req) {
+		HttpResultModel<TemplateInfo> hrm = new HttpResultModel<TemplateInfo>();
+		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+		if(req.getUserId()<=0){
+			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
+			return hrm;
+		} 
+		if (req.getTaskId()<=0) {
+			hrm.setCode(TaskCode.TaskId.value()).setMsg(TaskCode.TaskId.desc());			
+			return hrm;
+		}
+		TemplateInfo result=taskDatumService.getTaskDatumDetail(req);
+		hrm.setData(result);
+		return hrm;
+	}
+	/**
+	 * 获取我的资料列表
+	 * @author hailongzhao
+	 * @date 20151125
+	 * @param req
+	 * @return
+	 */
 	@Override
 	public HttpResultModel<TabModel<TaskDatumModel>> getMyTaskDatumList(TaskDatumReq req) {
 		HttpResultModel<TabModel<TaskDatumModel>> hrm = new HttpResultModel<TabModel<TaskDatumModel>>();
@@ -52,5 +86,4 @@ public class DatumService implements IDatumService{
 		hrm.setData(td); 
 		return hrm;
 	}
-
 }

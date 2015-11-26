@@ -28,7 +28,7 @@ public class MenuInfoDao extends DaoBase implements
 		if (result==null||result.size()==0) {
 			List<MenuInfo> list = getReadOnlySqlSessionUtil()
 					.selectList(
-							"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getMenuListByUserID",
+							"IMenuInfoDao.getMenuListByUserID",
 							accountId);
 			redisService.set(key, list);
 			return list;
@@ -41,7 +41,7 @@ public class MenuInfoDao extends DaoBase implements
 	public List<MenuEntity> getAuthSettingList(int userID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getAuthSettingList",
+						"IMenuInfoDao.getAuthSettingList",
 						userID);
 	}
 
@@ -49,7 +49,7 @@ public class MenuInfoDao extends DaoBase implements
 	public List<MenuEntity> getMenuListByRoleID(int roleID) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getMenuListByRoleID",
+						"IMenuInfoDao.getMenuListByRoleID",
 						roleID);
 	}
 
@@ -57,7 +57,7 @@ public class MenuInfoDao extends DaoBase implements
 	public List<MenuInfo> getListMenuByParId(int parId) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getListMenuByParId",
+						"IMenuInfoDao.getListMenuByParId",
 						parId);
 	}
 
@@ -65,7 +65,7 @@ public class MenuInfoDao extends DaoBase implements
 	public MenuInfo getMenuById(int id) {
 		return getReadOnlySqlSessionUtil()
 				.selectOne(
-						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.getMenuById",
+						"IMenuInfoDao.getMenuById",
 						id);
 	}
 
@@ -73,7 +73,7 @@ public class MenuInfoDao extends DaoBase implements
 	public boolean addMenu(MenuInfo req) {
 		return getMasterSqlSessionUtil()
 				.insert(
-						"com.renrentui.renrenapi.dao.inter.IMenuInfoDao.addMenu",
+						"IMenuInfoDao.addMenu",
 						req) > 0;
 	}
 }

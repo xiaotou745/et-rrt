@@ -15,14 +15,14 @@ public class TemplateDetailSnapshotDao extends DaoBase implements ITemplateDetai
 		map.put("templateId", templateId);
 		map.put("snapshotId", snapshotId);
 		return getMasterSqlSessionUtil()
-				.insert("com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao.copySnapshot",
+				.insert("ITemplateDetailSnapshotDao.copySnapshot",
 						map);
 	}
 
 	@Override
 	public int deleteBySnapshotTemplateId(Long snapshotTemplateId) {
 		return getMasterSqlSessionUtil()
-				.delete("com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao.deleteBySnapshotTemplateId",
+				.delete("ITemplateDetailSnapshotDao.deleteBySnapshotTemplateId",
 						snapshotTemplateId);
 	}
 

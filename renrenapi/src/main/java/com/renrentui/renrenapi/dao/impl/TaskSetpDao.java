@@ -17,7 +17,7 @@ public class TaskSetpDao extends DaoBase implements ITaskSetpDao {
 	 */
 	@Override
 	public List<TaskSetp> getSetpsByTaskId(Long taskID) {
-		return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskSetpDao.getSetpsByTaskId",taskID);
+		return getReadOnlySqlSessionUtil().selectList("ITaskSetpDao.getSetpsByTaskId",taskID);
 	}
 
 }

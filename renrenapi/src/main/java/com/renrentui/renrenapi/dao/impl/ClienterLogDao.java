@@ -18,7 +18,7 @@ public class ClienterLogDao extends DaoBase implements IClienterLogDao {
 
 	@Override
 	public int insert(ClienterLog record) {
-		getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IClienterLogDao.insert", record);
+		getMasterSqlSessionUtil().insert("IClienterLogDao.insert", record);
 		return 0;
 	}
 
@@ -54,7 +54,7 @@ public class ClienterLogDao extends DaoBase implements IClienterLogDao {
 	 */
 	@Override
 	public int addClienterLog(ClienterLog log) {
-		int res=getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IClienterLogDao.addClienterLog", log);
+		int res=getMasterSqlSessionUtil().insert("IClienterLogDao.addClienterLog", log);
 		return res;
 	}
 

@@ -50,7 +50,7 @@ public class OrderLogDao extends DaoBase implements IOrderLogDao{
 	 */
 	@Override
 	public int addOrderLog(OrderLog log) {
-		return	getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IOrderLogDao.addOrderLog", log);
+		return	getMasterSqlSessionUtil().insert("IOrderLogDao.addOrderLog", log);
 	}
 
 }

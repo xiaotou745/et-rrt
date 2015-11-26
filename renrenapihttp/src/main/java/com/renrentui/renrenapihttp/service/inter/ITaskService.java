@@ -12,10 +12,9 @@ import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskModel;
-import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
-import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 
 /**
@@ -36,7 +35,7 @@ public interface ITaskService {
 	 */
 	@POST
 	@Path("/taskdetail")
-	 public HttpResultModel<TaskDetail> taskDeatil(TaskDetailReq req);
+	 public HttpResultModel<TaskDetail> taskDeatil(TaskDatumDetailReq req);
 	
 	/**
 	 * 领取任务接口
@@ -46,7 +45,7 @@ public interface ITaskService {
 	 */
 	@POST
 	@Path("/gettask")
-	 public HttpResultModel<Object> getTask(TaskDetailReq req);
+	 public HttpResultModel<Object> getTask(TaskDatumDetailReq req);
 	/**
 	 * 取消任务接口
 	 * @author 茹化肖
@@ -82,18 +81,5 @@ public interface ITaskService {
 	@POST
 	@Path("/getmyreceivedtasklist")
 	public HttpResultModel<TabModel<MyReceiveTask>> getMyReceivedTaskList(TaskReq req);
-	
-	
-	/**
-	 * 提交资料详情接口
-	 * @author 茹化肖
-	 * @date 2015年9月28日10:18:57
-	 * @return
-	 */
-	@POST
-	@Path("/templatedetail")
-	 public HttpResultModel<TemplateInfo> templateDeatil(TaskDetailReq req);
-	
-	
-	
+
 }

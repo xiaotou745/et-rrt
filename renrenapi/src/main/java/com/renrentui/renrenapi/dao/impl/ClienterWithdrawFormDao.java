@@ -23,7 +23,7 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 	public int insert(ClienterWithdrawForm record) {
 		// TODO Auto-generated method stub		
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao.insert", record);
+				"IClienterWithdrawFormDao.insert", record);
 	}
 	@Override
 	public ClienterWithdrawForm selectByPrimaryKey(Long id) {
@@ -42,7 +42,7 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 	public	PagedResponse<ClienterWithdrawFormDM> getList(PagedClienterWithdrawFormReq req){
 		PagedResponse<ClienterWithdrawFormDM> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao.getList",						 
+						"IClienterWithdrawFormDao.getList",						 
 						req);
 		return model;
 	}
@@ -50,7 +50,7 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 	@Override
 	public int updateByPrimaryKeySelective(ClienterWithdrawForm record) {	
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao.updateByPrimaryKeySelective", record);
+				"IClienterWithdrawFormDao.updateByPrimaryKeySelective", record);
 	}
 	
 	@Override

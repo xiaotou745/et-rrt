@@ -17,7 +17,7 @@ import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
-import com.renrentui.renrenentity.req.TaskDetailReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;
 import com.renrentui.renrenentity.req.UpdateStatusReq;
 
@@ -27,14 +27,14 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	@Override
 	public int insert(RenRenTask record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insert",
+				"IRenRenTaskDao.insert",
 				record);
 	}
 
 	@Override
 	public RenRenTask selectById(Long id) {
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.selectById",
+				"IRenRenTaskDao.selectById",
 				id);
 	}
 
@@ -45,8 +45,8 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 * 修改人 
 	 */
 	@Override
-	public RenRenTask getTaskDetail(TaskDetailReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getTaskDetail";
+	public RenRenTask getTaskDetail(TaskDatumDetailReq req) {
+		String statement = "IRenRenTaskDao.getTaskDetail";
 		RenRenTask res = getReadOnlySqlSessionUtil().selectOne(statement, req);
 		return res;
 	}
@@ -55,8 +55,8 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 * 验证任务是否可以领取(主库查询不加锁) 2015年9月29日17:16:32 茹化肖
 	 */
 	@Override
-	public CheckTask checkTask(TaskDetailReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.checkTask";
+	public CheckTask checkTask(TaskDatumDetailReq req) {
+		String statement = "IRenRenTaskDao.checkTask";
 		CheckTask res = getMasterSqlSessionUtil().selectOne(statement, req);
 		return res;
 	}
@@ -66,7 +66,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 */
 	@Override
 	public int cutTaskAvailableCount(Long taskID) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.cutTaskAvailableCount";
+		String statement = "IRenRenTaskDao.cutTaskAvailableCount";
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("taskid", taskID);
 		int res = getMasterSqlSessionUtil().update(statement, map);
@@ -78,7 +78,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 */
 	@Override
 	public int addTaskAvailableCount(Long taskID) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.addTaskAvailableCount";
+		String statement = "IRenRenTaskDao.addTaskAvailableCount";
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("taskid", taskID);
 		int res = getMasterSqlSessionUtil().update(statement, map);
@@ -93,54 +93,54 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 			PagedRenRenTaskReq req) {
 		return getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getPagedRenRenTaskList",
+						"IRenRenTaskDao.getPagedRenRenTaskList",
 						req);
 	}
 
 	@Override
 	public int setTaskStatus(UpdateStatusReq req) {
 		return getMasterSqlSessionUtil()
-				.update("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.setTaskStatus",
+				.update("IRenRenTaskDao.setTaskStatus",
 						req);
 	}
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getNewTaskList";
+		String statement = "IRenRenTaskDao.getNewTaskList";
 		List<TaskModel> taskModels = getMasterSqlSessionUtil().selectList(statement, req);
 		return taskModels;
 	}
 
 	@Override
 	public int getNewTaskTotal(TaskReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getNewTaskListTotal";
+		String statement = "IRenRenTaskDao.getNewTaskListTotal";
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
 	}
 
 	@Override
 	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getMyReceivedTaskList";
+		String statement = "IRenRenTaskDao.getMyReceivedTaskList";
 		List<MyReceiveTask> taskModels = getMasterSqlSessionUtil().selectList(statement, req);
 		return taskModels;
 	}
 
 	@Override
 	public int getMyReceivedTaskListTotal(TaskReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getMyReceivedTaskListTotal";
+		String statement = "IRenRenTaskDao.getMyReceivedTaskListTotal";
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
 	}
 
 	@Override
 	public List<TaskModel> getSubmittedTaskList(TaskReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getSubmittedTaskList";
+		String statement = "IRenRenTaskDao.getSubmittedTaskList";
 		List<TaskModel> taskModels = getMasterSqlSessionUtil().selectList(statement, req);
 		return taskModels;
 	}
 
 	@Override
 	public int getSubmittedTaskListTotal(TaskReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getSubmittedTaskListTotal";
+		String statement = "IRenRenTaskDao.getSubmittedTaskListTotal";
 		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
 		return taskTotal;
 	}
@@ -154,21 +154,21 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 */
 	@Override
 	public void outTimeCanelTask(){
-		String statement = "com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.outTimeCanelTask";
+		String statement = "IRenRenTaskDao.outTimeCanelTask";
 		int count= getMasterSqlSessionUtil().update(statement);
 	}
 
 	@Override
 	public int update(RenRenTask record) {
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.update",
+				"IRenRenTaskDao.update",
 				record);
 	}
 
 	@Override
 	public List<RenRenTask> getListByTemplateId(Long templateId) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.getListByTemplateId",
+				"IRenRenTaskDao.getListByTemplateId",
 				templateId);
 	}
 	/**
@@ -178,7 +178,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 */
 	@Override
 	public int insertTaskSetp(TaskSetp setp) {
-		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insertTaskSetp", setp);
+		return getMasterSqlSessionUtil().insert("IRenRenTaskDao.insertTaskSetp", setp);
 	}
 	/**
 	 * 插入模板组信息
@@ -187,7 +187,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 */
 	@Override
 	public int insertTemplateGrpup(TemplateGroup group) {
-		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insertTemplateGrpup", group);
+		return getMasterSqlSessionUtil().insert("IRenRenTaskDao.insertTemplateGrpup", group);
 	}
 	/**
 	 * 插入领取任务关系数据
@@ -197,7 +197,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 */
 	@Override
 	public int insertClienterTask(ClienterTask task) {
-		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.insertClienterTask", task);
+		return getMasterSqlSessionUtil().selectOne("IRenRenTaskDao.insertClienterTask", task);
 	}
 	/**
 	 * 提交一次资料就讲完成次数加1
@@ -206,7 +206,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 */
 	@Override
 	public int addClienterCompleteCount(Long ctId) {
-		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IRenRenTaskDao.addClienterCompleteCount", ctId);
+		return getMasterSqlSessionUtil().update("IRenRenTaskDao.addClienterCompleteCount", ctId);
 	}
 	
 	

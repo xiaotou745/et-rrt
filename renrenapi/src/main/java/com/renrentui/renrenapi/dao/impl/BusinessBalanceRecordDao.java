@@ -28,7 +28,7 @@ public class BusinessBalanceRecordDao extends DaoBase implements IBusinessBalanc
 	@Override
 	public int insert(BusinessBalanceRecord record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao.insert", record);
+				"IBusinessBalanceRecordDao.insert", record);
 	}
 
 	@Override

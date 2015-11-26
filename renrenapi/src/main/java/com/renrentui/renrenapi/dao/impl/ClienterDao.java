@@ -56,7 +56,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
      */
 	@Override
 	public int updateByPrimaryKeySelective(Clienter record) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.updateByPrimaryKeySelective";
+		String statement = "IClienterDao.updateByPrimaryKeySelective";
 		return getMasterSqlSessionUtil().update(statement, record);
 	}
 
@@ -72,7 +72,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 */
 	@Override
 	public boolean isExistPhone(String phoneNo) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.isExistPhone";
+		String statement = "IClienterDao.isExistPhone";
 		HashMap<String, Object> paramMap = new HashMap<>();
 		paramMap.put("phoneNo", phoneNo);
 		int res = getReadOnlySqlSessionUtil().selectOne(statement, paramMap);
@@ -84,7 +84,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 */
 	@Override
 	public boolean forgotPassword(ForgotPwdReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.forgotPassword";
+		String statement = "IClienterDao.forgotPassword";
 		int res = getMasterSqlSessionUtil().update(statement, req);
 		return res > 0;
 	}
@@ -94,7 +94,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 */
 	@Override
 	public boolean isRightPwd(int uid, String md5Pwd) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.isRightPwd";
+		String statement = "IClienterDao.isRightPwd";
 		HashMap<String, Object> paramMap = new HashMap<>();
 		paramMap.put("uid", uid);
 		paramMap.put("md5Pwd", md5Pwd);
@@ -108,7 +108,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	 */
 	@Override
 	public boolean modifyPwdUserc(ModifyPwdReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.modifyPwdUserc";
+		String statement = "IClienterDao.modifyPwdUserc";
 		int res = getMasterSqlSessionUtil().update(statement, req);
 		return res > 0;
 	}
@@ -121,7 +121,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public Clienter queryClienter(SignInReq req) {
 		Clienter result = getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IClienterDao.queryClienter",
+				"IClienterDao.queryClienter",
 				req);
 		return result;
 	}
@@ -130,7 +130,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public long signup(SignUpReq req) {
-		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IClienterDao.insert", req);
+		return getMasterSqlSessionUtil().insert("IClienterDao.insert", req);
 	}
 	/**
 	* @Des 根据用户Id判断是否存在  
@@ -140,7 +140,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	*/
 	@Override
 	public boolean isExistUserC(long userId) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.isExistUserC";
+		String statement = "IClienterDao.isExistUserC";
 		HashMap<String, Object> paramMap = new HashMap<>();
 		paramMap.put("userId", userId);
 		int res= getReadOnlySqlSessionUtil().selectOne(statement,paramMap);
@@ -154,7 +154,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	*/
 	@Override
 	public ClienterDetail getUserC(long userId) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.getUserC";
+		String statement = "IClienterDao.getUserC";
 		HashMap<String, Object> paramMap = new HashMap<>();
 		paramMap.put("userId", userId);
 		return getReadOnlySqlSessionUtil().selectOne(statement,paramMap);
@@ -169,7 +169,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
 		PagedResponse<ClienterResp> resp=new PagedResponse<ClienterResp>();
 		resp = getReadOnlySqlSessionUtil().selectPageList(
-				"com.renrentui.renrenapi.dao.inter.IClienterDao.queryClienterList", req);
+				"IClienterDao.queryClienterList", req);
 		return resp;
 	}
 	/**
@@ -180,7 +180,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	*/
 	@Override
 	public boolean editClienterStatus(ModifyClienterStatusReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IClienterDao.editClienterStatus";
+		String statement = "IClienterDao.editClienterStatus";
 		int res = getMasterSqlSessionUtil().update(statement, req);
 		return res > 0;
 	}

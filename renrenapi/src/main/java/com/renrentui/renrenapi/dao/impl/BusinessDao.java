@@ -23,7 +23,7 @@ public class BusinessDao extends DaoBase implements IBusinessDao{
 	@Override
 	public int insert(Business record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IBusinessDao.insert", record);
+				"IBusinessDao.insert", record);
 	}
 
 	@Override
@@ -35,13 +35,13 @@ public class BusinessDao extends DaoBase implements IBusinessDao{
 	@Override
 	public Business selectById(Long id) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IBusinessDao.selectById", id);
+				"IBusinessDao.selectById", id);
 	}
 
 	@Override
 	public int updateByPrimaryKeySelective(Business record) {
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IBusinessDao.updateByPrimaryKeySelective", record);
+				"IBusinessDao.updateByPrimaryKeySelective", record);
 	}
 
 	@Override
@@ -52,13 +52,13 @@ public class BusinessDao extends DaoBase implements IBusinessDao{
 
 	@Override
 	public List<Business> getAllList() {
-		return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.IBusinessDao.getAllList");
+		return getReadOnlySqlSessionUtil().selectList("IBusinessDao.getAllList");
 	}
 	@Override
 	public	PagedResponse<BusinessModel> getBusinessList(PagedBusinessReq req){
 		PagedResponse<BusinessModel> model = getReadOnlySqlSessionUtil()
 				.selectPageList(
-						"com.renrentui.renrenapi.dao.inter.IBusinessDao.getBusinessList",						 
+						"IBusinessDao.getBusinessList",						 
 						req);
 		return model;
 	}

@@ -4,8 +4,11 @@ import java.util.List;
 
 import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
+import com.renrentui.renrenentity.domain.TaskDatumDetail;
+import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TaskDatumTitle;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskDatumReq;
 
 public interface ITaskDatumDao {
@@ -41,4 +44,22 @@ public interface ITaskDatumDao {
 		 * @return
 		 */
      List<TaskDatumTitle> getMyTaskDatumTitleList(TaskDatumReq req);
+     
+ 	/**
+ 	 * 获取资料模板或资料详情中的分组信息
+ 	 * @param req
+ 	 * @author hailongzhao
+ 	 * @date 20151126
+ 	 * @return
+ 	 */
+ 	 List<TaskDatumDetailGroup> getTaskDatumGroupList(TaskDatumDetailReq req);
+ 	 
+  	/**
+  	 * 获取资料模板或资料详情中的分组中的控件值
+  	 * @param req
+  	 * @author hailongzhao
+  	 * @date 20151126
+  	 * @return
+  	 */
+  	 List<TaskDatumDetail> getTaskDatumDetailList(TaskDatumDetailReq req);
 }
