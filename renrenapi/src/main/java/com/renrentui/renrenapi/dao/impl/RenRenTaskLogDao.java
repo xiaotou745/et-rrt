@@ -10,7 +10,7 @@ public class RenRenTaskLogDao extends DaoBase implements IRenRenTaskLogDao {
 
 	@Override
 	public int insert(RenRenTaskLog record) {
-return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao.insert", record);
+return getMasterSqlSessionUtil().insert("IRenRenTaskLogDao.insert", record);
 	}
 
 }

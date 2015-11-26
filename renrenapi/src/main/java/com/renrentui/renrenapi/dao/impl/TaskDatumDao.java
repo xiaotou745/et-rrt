@@ -26,32 +26,32 @@ public class TaskDatumDao extends DaoBase implements ITaskDatumDao{
 	 */
 	@Override
 	public int insertTaskDatum(TaskDatum par) {
-		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.insertTaskDatum", par);
+		return getMasterSqlSessionUtil().insert("ITaskDatumDao.insertTaskDatum", par);
 	}
 
 	@Override
 	public int insertTaskDatumChild(TaskDatumChild child) {
-		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.insertTaskDatumChild", child);
+		return getMasterSqlSessionUtil().insert("ITaskDatumDao.insertTaskDatumChild", child);
 	}
 
 	@Override
 	public List<TaskDatumModel> getMyTaskDatumList(TaskDatumReq req) {
-		return getMasterSqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.getMyTaskDatumList", req);
+		return getMasterSqlSessionUtil().selectList("ITaskDatumDao.getMyTaskDatumList", req);
 	}
 
 	@Override
 	public List<TaskDatumTitle> getMyTaskDatumTitleList(TaskDatumReq req) {
-		return getMasterSqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.getMyTaskDatumTitleList", req);
+		return getMasterSqlSessionUtil().selectList("ITaskDatumDao.getMyTaskDatumTitleList", req);
 	}
 
 	@Override
 	public List<TaskDatumDetailGroup> getTaskDatumGroupList(TaskDatumDetailReq req) {
-		return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.getTaskDatumGroupList", req);
+		return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getTaskDatumGroupList", req);
 	}
 
 	@Override
 	public List<TaskDatumDetail> getTaskDatumDetailList(TaskDatumDetailReq req) {
-return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskDatumDao.getTaskDatumDetailList", req);
+return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getTaskDatumDetailList", req);
 	}
 
 }

@@ -19,9 +19,9 @@ public class ArticleDao extends DaoBase  implements IArticleDao {
 	public int saveArticle(Article req) {
 		if(req.getId()==null)
 		{
-			 return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IArticleDao.saveArticle", req);	
+			 return getMasterSqlSessionUtil().insert("IArticleDao.saveArticle", req);	
 		}
-		return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IArticleDao.updateArticle", req);
+		return getMasterSqlSessionUtil().insert("IArticleDao.updateArticle", req);
 	}
 	/**
 	 * 异步分页列表
@@ -30,14 +30,14 @@ public class ArticleDao extends DaoBase  implements IArticleDao {
 	 */
 	@Override
 	public PagedResponse<Article> querList(PagedArticleReq req) {
-		return getReadOnlySqlSessionUtil().selectPageList("com.renrentui.renrenapi.dao.inter.IArticleDao.querList", req);
+		return getReadOnlySqlSessionUtil().selectPageList("IArticleDao.querList", req);
 	}
 	/**
 	 * 获取文章详情
 	 */
 	@Override
 	public Article getDetail(Long id) {
-		return getReadOnlySqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IArticleDao.getDetail", id);
+		return getReadOnlySqlSessionUtil().selectOne("IArticleDao.getDetail", id);
 	}
 
 }

@@ -19,7 +19,7 @@ public class AccountInfoDao extends DaoBase implements IAccountInfoDao {
 	@Override
 	public PagedResponse<AccountInfo> queryAccount(PagedAccountInfoReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList(
-				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.query", req);
+				"IAccountInfoDao.query", req);
 	}
 
 	@Override
@@ -28,13 +28,13 @@ public class AccountInfoDao extends DaoBase implements IAccountInfoDao {
 		params.put("username", username);
 		params.put("password", password);
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.login", params);
+				"IAccountInfoDao.login", params);
 	}
 
 	@Override
 	public AccountInfo getByID(int userID) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.getByID", userID);
+				"IAccountInfoDao.getByID", userID);
 	}
 
 	@Override
@@ -43,31 +43,31 @@ public class AccountInfoDao extends DaoBase implements IAccountInfoDao {
 		params.put("userID", userID);
 		params.put("newRoleID", newRoleID);
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.updateRoleID", params);
+				"IAccountInfoDao.updateRoleID", params);
 	}
 
 	@Override
 	public List<AccountInfo> getByRoleID(int roleID) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.getByRoleID", roleID);
+				"IAccountInfoDao.getByRoleID", roleID);
 	}
 
 	@Override
 	public int insert(AccountInfo account) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.insert", account);
+				"IAccountInfoDao.insert", account);
 	}
 
 	@Override
 	public int update(AccountInfo account) {
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.update", account);
+				"IAccountInfoDao.update", account);
 	}
 
 	@Override
 	public int updatePwd(UpdatePwdReq req) {
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IAccountInfoDao.updatePwd", req);
+				"IAccountInfoDao.updatePwd", req);
 	}
 
 }

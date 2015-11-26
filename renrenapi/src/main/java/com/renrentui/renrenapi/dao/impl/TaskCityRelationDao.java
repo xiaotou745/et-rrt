@@ -15,21 +15,21 @@ public class TaskCityRelationDao extends DaoBase implements
 	@Override
 	public int insertList(List<TaskCityRelation> recordList) {
 		return getMasterSqlSessionUtil()
-				.update("com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao.insertList",
+				.update("ITaskCityRelationDao.insertList",
 						recordList);
 	}
 
 	@Override
 	public List<TaskCityRelation> selectByTaskId(Long taskId) {
 		return getMasterSqlSessionUtil()
-				.selectList("com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao.selectByTaskId",
+				.selectList("ITaskCityRelationDao.selectByTaskId",
 						taskId);
 	}
 
 	@Override
 	public int deleteByTaskId(Long taskId) {
 		return getMasterSqlSessionUtil()
-				.delete("com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao.deleteByTaskId",
+				.delete("ITaskCityRelationDao.deleteByTaskId",
 						taskId);
 	}
 }

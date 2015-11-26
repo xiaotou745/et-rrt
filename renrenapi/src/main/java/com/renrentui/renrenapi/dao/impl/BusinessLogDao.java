@@ -21,7 +21,7 @@ public class BusinessLogDao extends DaoBase implements IBusinessLogDao {
 	@Override
 	public int insert(BusinessLog record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IBusinessLogDao.insert", record);
+				"IBusinessLogDao.insert", record);
 	}
 
 	@Override

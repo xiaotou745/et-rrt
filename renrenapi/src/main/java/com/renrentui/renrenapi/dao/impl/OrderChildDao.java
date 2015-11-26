@@ -17,7 +17,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao{
 	 */
 	@Override
 	public int insert(OrderChild record) {
-		String statement="com.renrentui.renrenapi.dao.inter.IOrderChildDao.insert";
+		String statement="IOrderChildDao.insert";
 		return getMasterSqlSessionUtil().insert(statement, record);
 	}
 	
@@ -28,7 +28,7 @@ public class OrderChildDao extends DaoBase implements IOrderChildDao{
 	 */
 	@Override
 	public int deleteOrderChild(Long orderId) {
-		String statement="com.renrentui.renrenapi.dao.inter.IOrderChildDao.deleteOrderChild";
+		String statement="IOrderChildDao.deleteOrderChild";
 		HashMap<String, Object> map=new HashMap<String, Object> ();
 		map.put("orderid", orderId);
 		return getMasterSqlSessionUtil().update(statement, map);

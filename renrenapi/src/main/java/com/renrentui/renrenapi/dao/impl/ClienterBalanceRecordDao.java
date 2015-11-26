@@ -20,19 +20,19 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	@Override
 	public int insert(ClienterBalanceRecord record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao.insert", record);
+				"IClienterBalanceRecordDao.insert", record);
 	}
 	
 	@Override
 	public ClienterBalanceRecord selectByPrimaryKey(Long id) {	
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao.selectByPrimaryKey", id);
+				"IClienterBalanceRecordDao.selectByPrimaryKey", id);
 	}
 	
 	@Override
 	public ClienterBalanceRecord selectByOrderId(Long orderId) {	
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao.selectByOrderId", orderId);
+				"IClienterBalanceRecordDao.selectByOrderId", orderId);
 	}
 	
 	
@@ -40,13 +40,13 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	@Override
 	public int updateByPrimaryKeySelective(ClienterBalanceRecord record) {
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao.updateByPrimaryKeySelective", record);
+				"IClienterBalanceRecordDao.updateByPrimaryKeySelective", record);
 	}
 	
 	@Override
 	public int updateStatusByOrderId(ClienterBalanceRecord record) {
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao.updateStatusByOrderId", record);
+				"IClienterBalanceRecordDao.updateStatusByOrderId", record);
 	}
 	
 	@Override

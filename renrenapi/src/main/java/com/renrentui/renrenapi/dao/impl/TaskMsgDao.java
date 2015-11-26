@@ -14,17 +14,17 @@ public class TaskMsgDao extends DaoBase implements ITaskMsgDao{
 
 	@Override
 	public List<TaskMsg> getMyMsgList(TaskMsgReq req) {
-return getReadOnlySqlSessionUtil().selectList("com.renrentui.renrenapi.dao.inter.ITaskMsgDao.getMyMsgList", req);
+return getReadOnlySqlSessionUtil().selectList("ITaskMsgDao.getMyMsgList", req);
 	}
 
 	@Override
 	public int updateMsg(TaskMsgUpdateReq req) {
-		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.ITaskMsgDao.updateMsg", req);
+		return getMasterSqlSessionUtil().update("ITaskMsgDao.updateMsg", req);
 	}
 
 	@Override
 	public int insert(TaskMsg record) {
-return getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.ITaskMsgDao.insert", record);
+return getMasterSqlSessionUtil().insert("ITaskMsgDao.insert", record);
 	}
 
 }

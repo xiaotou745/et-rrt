@@ -67,7 +67,7 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	 */
 	@Override
 	public int addOrder(Order order) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.addOrder";
+		String statement = "IOrderDao.addOrder";
 		int res = getMasterSqlSessionUtil().insert(statement, order);
 		return res;
 	}
@@ -77,7 +77,7 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	@Override
 	public CheckCancelOrder checkCancelOrder(CancelTaskReq req) {
 		
-		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IOrderDao.checkCancelOrder", req);
+		return getMasterSqlSessionUtil().selectOne("IOrderDao.checkCancelOrder", req);
 	}
 	/**
 	 * 取消订单
@@ -86,14 +86,14 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	 */
 	@Override
 	public int cancelOrder(CancelTaskReq req) {
-		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.cancelOrder", req);
+		return getMasterSqlSessionUtil().update("IOrderDao.cancelOrder", req);
 	}
 	/**
 	 * 验证合同是否可以提交
 	 */
 	@Override
 	public CheckSubmitTask checkOrderSubmit(SubmitTaskReq req) {
-		return getMasterSqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IOrderDao.checkOrderSubmit", req);
+		return getMasterSqlSessionUtil().selectOne("IOrderDao.checkOrderSubmit", req);
 	}
 	/**
 	 * 提交合同信息
@@ -103,14 +103,14 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	 */
 	@Override
 	public int submitOrder(SubmitTaskReq req) {
-		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.submitOrder", req);
+		return getMasterSqlSessionUtil().update("IOrderDao.submitOrder", req);
 	}
 	/**
 	 * 管理后台-获取订单列表分页
 	 */
 	@Override
 	public PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req) {
-		return getReadOnlySqlSessionUtil().selectPageList("com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderAuditList", req);
+		return getReadOnlySqlSessionUtil().selectPageList("IOrderDao.getOrderAuditList", req);
 	}
 	/**
 	 * 订单审核
@@ -120,7 +120,7 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	 */
 	@Override
 	public int orderAudit(OrderAuditReq req) {
-		return getMasterSqlSessionUtil().update("com.renrentui.renrenapi.dao.inter.IOrderDao.orderAudit", req);
+		return getMasterSqlSessionUtil().update("IOrderDao.orderAudit", req);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	 */
 	@Override
 	public void outTimeCanelOrder() {
-		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.outTimeCanelOrder";
+		String statement = "IOrderDao.outTimeCanelOrder";
 		int count= getMasterSqlSessionUtil().update(statement);
 	}
 
@@ -141,7 +141,7 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	@Override
 	public OrderChildInfoModel getOrderInfo(OrderChildReq req) {
 		
-		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderInfo";
+		String statement = "IOrderDao.getOrderInfo";
 		return getReadOnlySqlSessionUtil().selectOne(statement,req);
 	}
 	/**
@@ -149,7 +149,7 @@ public class OrderDao extends DaoBase implements IOrderDao{
 	 */
 	@Override
 	public ArrayList<OrderChildModel> getOrderChildList(OrderChildReq req) {
-		String statement = "com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderChildList";
+		String statement = "IOrderDao.getOrderChildList";
 		List<OrderChildModel> list= getReadOnlySqlSessionUtil().selectList(statement,req);
 		if(list.size()>0)
 		{
@@ -160,7 +160,7 @@ public class OrderDao extends DaoBase implements IOrderDao{
 
 	@Override
 	public Double getOrderTotalAmount(Long taskId) {
-		return getReadOnlySqlSessionUtil().selectOne("com.renrentui.renrenapi.dao.inter.IOrderDao.getOrderTotalAmount",taskId);
+		return getReadOnlySqlSessionUtil().selectOne("IOrderDao.getOrderTotalAmount",taskId);
 	}
 	
 	

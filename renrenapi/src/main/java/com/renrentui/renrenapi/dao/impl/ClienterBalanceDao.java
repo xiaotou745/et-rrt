@@ -27,7 +27,7 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 	@Override
 	public ClienterBalance selectByPrimaryKey(Long id) {		
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.selectByPrimaryKey", id);	
+				"IClienterBalanceDao.selectByPrimaryKey", id);	
        
 	}
 	
@@ -42,7 +42,7 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 	@Override
 	public ClienterBalance selectByClienterId(Long clienterId) {		
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.selectByClienterId", clienterId);	
+				"IClienterBalanceDao.selectByClienterId", clienterId);	
        
 	}
 	
@@ -56,7 +56,7 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 	public int updateMoneyByKey(ClienterBalanceReq record)
 	{
 		return getMasterSqlSessionUtil()
-				.update("com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.updateMoneyByKey",
+				.update("IClienterBalanceDao.updateMoneyByKey",
 						record);	
 	}
 	/**
@@ -69,7 +69,7 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 	public int  updateHadWithdrawByClienterId(Map<String, Object> params)
 	{
 		return getMasterSqlSessionUtil()
-				.update("com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.updateHadWithdrawByClienterId",
+				.update("IClienterBalanceDao.updateHadWithdrawByClienterId",
 						params);	
 	}
 	
@@ -81,7 +81,7 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 
 	@Override
 	public int insert(Long clienterid) {
-		return  getMasterSqlSessionUtil().insert("com.renrentui.renrenapi.dao.inter.IClienterBalanceDao.insert",
+		return  getMasterSqlSessionUtil().insert("IClienterBalanceDao.insert",
 				clienterid);
 	}
 

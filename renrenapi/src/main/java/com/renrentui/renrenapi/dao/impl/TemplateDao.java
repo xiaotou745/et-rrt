@@ -19,38 +19,38 @@ public class TemplateDao extends DaoBase implements ITemplateDao {
 	@Override
 	public int insert(Template record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDao.insert", record);
+				"ITemplateDao.insert", record);
 	}
 
 	@Override
 	public Template detail(Long templateId) {
 		return  getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDao.detail", templateId);
+				"ITemplateDao.detail", templateId);
 	}
 
 	@Override
 	public PagedResponse<PageTemplateModel> queryTemplate(PagedTemplateReq req) {
 		return getReadOnlySqlSessionUtil().selectPageList(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDao.queryTemplate", req);
+				"ITemplateDao.queryTemplate", req);
 	}
 
 	@Override
 	public List<Template> getAllList(PagedTemplateReq req) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDao.getAllList",req);
+				"ITemplateDao.getAllList",req);
 	}
 
 	@Override
 	public int setTemplateStatus(UpdateStatusReq req) {
 		return getMasterSqlSessionUtil()
-				.update("com.renrentui.renrenapi.dao.inter.ITemplateDao.setTemplateStatus",
+				.update("ITemplateDao.setTemplateStatus",
 						req);
 	}
 
 	@Override
 	public int update(Template record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDao.update", record);
+				"ITemplateDao.update", record);
 	}
 
 

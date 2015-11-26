@@ -19,7 +19,7 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 	@Override
 	public int deleteByTemplateId(Long templateId) {
 		return getMasterSqlSessionUtil().delete(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.deleteByTemplateId", templateId);
+				"ITemplateDetailDao.deleteByTemplateId", templateId);
 	}
 	/**
 	 * 插入一个模板详情
@@ -29,13 +29,13 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 	@Override
 	public int insert(TemplateDetail record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.insert", record);
+				"ITemplateDetailDao.insert", record);
 	}
 
 	@Override
 	public int insertList(List<TemplateDetail> recordList) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.insertList", recordList);
+				"ITemplateDetailDao.insertList", recordList);
 	}
 	/**
 	 * ��ȡ��ͬ����ϸ�ؼ���Ϣ
@@ -45,7 +45,7 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 	 */
 	@Override
 	public ArrayList<ControlInfo> getTemplateList(Long templateId,Long orderId) {
-		String statement = "com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.getTemplateList";
+		String statement = "ITemplateDetailDao.getTemplateList";
 		HashMap<String, Object> map=new HashMap<String, Object>();
 		map.put("templateId", templateId);
 		map.put("orderId", orderId);
@@ -56,7 +56,7 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 	@Override
 	public List<TemplateDetail> listByTemplateId(Long templateId) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.listByTemplateId", templateId);
+				"ITemplateDetailDao.listByTemplateId", templateId);
 
 	}
 	/**
@@ -68,7 +68,7 @@ public class TemplateDetailDao extends DaoBase implements ITemplateDetailDao {
 	@Override
 	public List<TemCorModel> getTemCorModelsByTaskId(Long taskId){
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.ITemplateDetailDao.getTemCorModelsByTaskId", taskId);
+				"ITemplateDetailDao.getTemCorModelsByTaskId", taskId);
 	}
 
 }

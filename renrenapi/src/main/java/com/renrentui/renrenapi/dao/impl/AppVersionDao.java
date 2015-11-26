@@ -27,7 +27,7 @@ public class AppVersionDao extends DaoBase  implements IAppVersionDao {
 	@Override
 	public AppVersion getVersionCheck(VersionCheckReq req) {
 		return getReadOnlySqlSessionUtil().
-				selectOne("com.renrentui.renrenapi.dao.inter.IAppVersionDao.getVersionCheck",req);
+				selectOne("IAppVersionDao.getVersionCheck",req);
 	}
 
 }

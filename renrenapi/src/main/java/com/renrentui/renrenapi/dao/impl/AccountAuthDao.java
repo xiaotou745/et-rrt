@@ -21,13 +21,13 @@ public class AccountAuthDao extends DaoBase implements IAccountAuthDao{
 	@Override
 	public List<Integer> getMenuIdsByAccountId(Integer id) {
 		return getReadOnlySqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.IAccountAuthDao.getMenuIdsByAccountId",id);
+				"IAccountAuthDao.getMenuIdsByAccountId",id);
 	}
 
 	@Override
 	public boolean modifyAuthList(List<AccountAuth> authList) {
 		return getMasterSqlSessionUtil()
-				.update("com.renrentui.renrenapi.dao.inter.IAccountAuthDao.modifyAuthList",
+				.update("IAccountAuthDao.modifyAuthList",
 						authList) > 0;
 
 	}

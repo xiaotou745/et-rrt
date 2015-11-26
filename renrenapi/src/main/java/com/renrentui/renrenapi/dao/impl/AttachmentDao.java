@@ -13,19 +13,19 @@ public class AttachmentDao extends DaoBase implements IAttachmentDao{
 	@Override
 	public int insertList(List<Attachment> recordList) {
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IAttachmentDao.insertList", recordList);
+				"IAttachmentDao.insertList", recordList);
 	}
 
 	@Override
 	public List<Attachment> selectByTaskId(Long taskId) {
 		return getMasterSqlSessionUtil().selectList(
-				"com.renrentui.renrenapi.dao.inter.IAttachmentDao.selectByTaskId", taskId);
+				"IAttachmentDao.selectByTaskId", taskId);
 	}
 
 	@Override
 	public int deleteByTaskId(Long taskId) {
 		return getMasterSqlSessionUtil().delete(
-				"com.renrentui.renrenapi.dao.inter.IAttachmentDao.deleteByTaskId", taskId);
+				"IAttachmentDao.deleteByTaskId", taskId);
 	}
 
 }

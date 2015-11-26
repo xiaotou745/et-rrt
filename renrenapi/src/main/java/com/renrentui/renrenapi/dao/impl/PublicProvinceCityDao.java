@@ -15,7 +15,7 @@ public class PublicProvinceCityDao extends DaoBase implements
 	public List<PublicProvinceCity> getOpenCityList(String cityName) {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.renrentui.renrenapi.dao.inter.IPublicProvinceCityDao.getOpenCityList",
+						"IPublicProvinceCityDao.getOpenCityList",
 						cityName);
 	}
 
@@ -23,7 +23,7 @@ public class PublicProvinceCityDao extends DaoBase implements
 	public List<PublicProvinceCity> getAllOpenCity() {
 		return getReadOnlySqlSessionUtil()
 				.selectList(
-						"com.renrentui.renrenapi.dao.inter.IPublicProvinceCityDao.getAllOpenCity");
+						"IPublicProvinceCityDao.getAllOpenCity");
 	}
 
 }

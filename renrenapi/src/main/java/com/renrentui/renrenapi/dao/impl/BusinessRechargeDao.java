@@ -27,7 +27,7 @@ public class BusinessRechargeDao extends DaoBase implements IBusinessRechargeDao
 	@Override
 	public int insert(BusinessRecharge record) {
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IBusinessRechargeDao.insert", record);
+				"IBusinessRechargeDao.insert", record);
 	}
 
 	@Override

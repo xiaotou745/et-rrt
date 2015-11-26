@@ -26,7 +26,7 @@ public class BusinessBalanceDao extends DaoBase implements IBusinessBalanceDao{
 	public int insert(BusinessBalance record) {
 		// TODO Auto-generated method stub
 		return getMasterSqlSessionUtil().insert(
-				"com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao.insert", record);
+				"IBusinessBalanceDao.insert", record);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class BusinessBalanceDao extends DaoBase implements IBusinessBalanceDao{
 	@Override
 	public BusinessBalance selectByBusinessId(Long businessId) {
 		return getReadOnlySqlSessionUtil().selectOne(
-				"com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao.selectByBusinessId", businessId);
+				"IBusinessBalanceDao.selectByBusinessId", businessId);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class BusinessBalanceDao extends DaoBase implements IBusinessBalanceDao{
 	@Override
 	public int updateBalanceByBusinessId(BusinessBalanceReq record) {
 		return getMasterSqlSessionUtil().update(
-				"com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao.updateByBusinessId", record);
+				"IBusinessBalanceDao.updateByBusinessId", record);
 	}
 	
 }
