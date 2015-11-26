@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.ITaskMsgDao" >
+<!-- 插入消息数据表  zhaohl 20151125-->
+<insert id="insert"  parameterType="com.renrentui.renrenentity.TaskMsg">
+ <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+select @@IDENTITY as id
+ </selectKey>
+INSERT INTO dbo.TaskMsg
+        ( Title ,
+          Msg ,
+          CreateName,
+          CreateDate,
+          HasRead,
+          ReadDate,
+          isDel, 
+          MsgType,
+          ClienterId,
+          TaskId,
+          TaskDatumId
+        )
+VALUES  ( ${title} , 
+          ${msg} , 
+          ${createName},
+          getdate() , 
+          0 , 
+          null , 
+          0 ,
+          0,
+          ${clienterId},
+          ${taskId} , 
+          ${taskDatumId}
+        )	
+</insert>
+
+ <!--  查询我的资料审核列表，zhaohl,20151125 -->
+  <select id="getMyMsgList" resultType="com.renrentui.renrenentity.TaskMsg" parameterType="com.renrentui.renrenentity.req.TaskMsgReq" >
+	  
+  SELECT   	
+  <if test="itemsCount != 0" >
+		top  ${itemsCount} 
+  </if>
+	      id,
+	      Title ,
+          Msg ,
+          CreateName,
+          CreateDate,
+          HasRead,
+          ReadDate,
+          isDel, 
+          MsgType,
+          ClienterId,
+          TaskId,
+          TaskDatumId
+  FROM      TaskMsg  with (nolock)        
+  where ClienterId = ${userId}
+    <if test="nextId != 0" >
+	       and   id > ${nextId}
+	</if>
+	order by CreateDate asc;
+  </select> 
+   <!--  删除消息或已读消息，zhaohl,20151125 -->
+    <update id="updateMsg" parameterType="com.renrentui.renrenentity.req.TaskMsgUpdateReq" >
+         update TaskMsg
+    <set >
+      <if test="opType =1" >
+        Status = 1,
+      </if>
+      <if test="opType =2" >
+        HasRead=1, ReadDate=getdate()
+      </if>
+    </set>
+    where Id = #{msgId,jdbcType=BIGINT} and ClienterId = ${userId}
+  </update> 
+</mapper>

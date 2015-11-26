@@ -6,9 +6,8 @@ import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
-import com.renrentui.renrenentity.domain.MyJobTaskDomain;
+import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
-import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
@@ -41,7 +40,7 @@ public interface IRenRenTaskDao {
 
 	int getNewTaskTotal(TaskReq req);
 
-	List<TaskModel> getMyReceivedTaskList(TaskReq req);
+	List<MyReceiveTask> getMyReceivedTaskList(TaskReq req);
 
 	int getMyReceivedTaskListTotal(TaskReq req);
 
@@ -57,12 +56,7 @@ public interface IRenRenTaskDao {
 	 */
 	public void outTimeCanelTask();
 	public List<RenRenTask> getListByTemplateId(Long templateId);
-	/**
-	 * 统计我的任务列表   已领取 审核中 未通过 -的数量信息  add by caoheyang  20151026
-	 * @param req
-	 * @return
-	 */
-	MyJobTaskDomain getMyJobCount(TaskReq req); 
+
 	/**
 	 * 插入步骤信息
 	 * 茹化肖
