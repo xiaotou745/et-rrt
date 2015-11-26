@@ -68,19 +68,7 @@ public class TaskService implements ITaskService{
 		return new HttpResultModel<Object>().setCode(code.getCode().value()).setMsg(code.getCode().desc());
 	}
 	/**
-	 * 取消任务接口
-	 */
-	@Override
-	public HttpResultModel<Object> cancelTask(CancelTaskReq req) {
-		if(req.getOrderId()==null||req.getOrderId()<=0)
-			return new HttpResultModel<Object>().setCode(CancelTaskCode.OrderIdErr.value()).setMsg(CancelTaskCode.OrderIdErr.desc());
-		if(req.getUserId()==null||req.getUserId()<=0)
-			return new HttpResultModel<Object>().setCode(CancelTaskCode.UserIdErr.value()).setMsg(CancelTaskCode.UserIdErr.desc());
-		CancelTaskCode code=rrTaskServcie.cancelTask(req);
-		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
-	}
-	/**
-	 * 提交任务
+	 * 提交资料接口
 	 * 茹化肖
 	 * 2015年9月30日14:53:05
 	 */

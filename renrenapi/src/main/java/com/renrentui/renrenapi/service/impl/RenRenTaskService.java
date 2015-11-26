@@ -542,7 +542,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
 		List<MyReceiveTask> result= renRenTaskDao.getMyReceivedTaskList(req);
 		for (MyReceiveTask myReceiveTask : result) {
-			if (myReceiveTask.getTaskType().equals(TaskType.ContractTask.desc())) {
+			if (myReceiveTask.getTaskType()==TaskType.ContractTask.value()) {
 				DatumAuditStatus datumAuditStatus=DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus());
 				if (datumAuditStatus!=null) {
 					switch (datumAuditStatus) {

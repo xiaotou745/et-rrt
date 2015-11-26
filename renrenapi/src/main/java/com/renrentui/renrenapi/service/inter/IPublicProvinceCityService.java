@@ -33,7 +33,7 @@ public interface IPublicProvinceCityService {
 	 Map<Integer,String> getOpenCityMap();
 	 /**
 	  * 获取开通市
-	  * 赵海龙
+	  * 赵海龙(1是国家，2是省份，3是城市级别，4是区域)
 	  * 2015年7月29日 10:40:36
 	  * */
 	 List<PublicProvinceCity> getOpenCityByJiBie(int jiBie);

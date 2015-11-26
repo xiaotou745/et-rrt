@@ -13,7 +13,8 @@ public class TaskModel implements Serializable {
 	private String taskGeneralInfo;
 	private String taskName;
 	private double amount;
-	private String taskType;
+	private int taskType;
+	private String taskTypeName;
 	private String logo;
 
 	public long getTaskId() {
@@ -59,11 +60,19 @@ public class TaskModel implements Serializable {
 		this.logo = logo;
 	}
 
-	public String getTaskType() {
-		return TaskType.getEnum(Integer.parseInt(taskType)).desc();
+	public int getTaskType() {
+		return taskType;
 	}
 
-	public void setTaskType(String taskType) {
+	public void setTaskType(int taskType) {
 		this.taskType = taskType;
+	}
+
+	public String getTaskTypeName() {
+		return TaskType.getEnum(taskType).desc();
+	}
+
+	public void setTaskTypeName(String taskTypeName) {
+		this.taskTypeName = taskTypeName;
 	}
 }
