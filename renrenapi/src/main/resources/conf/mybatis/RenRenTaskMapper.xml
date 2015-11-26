@@ -367,23 +367,6 @@ order by o.Id asc;
   where  b.TemplateId = #{templateId,jdbcType=BIGINT} and (a.Status=0 or a.Status=2)
   </select> 
  
-  <!-- 统计我的任务列表   已领取 审核中 未通过 -的数量信息  add by caoheyang  20151026-->
-   <select id="getMyJobCount" resultType="com.renrentui.renrenentity.domain.MyJobTaskDomain" parameterType="com.renrentui.renrenentity.req.TaskReq" >
-   select   ISNULL(SUM(CASE when OrderStatus = 0
-                                 and AuditStatus = 0 then 1
-                            else 0
-                       end), 0) ReceivedCount ,
-            ISNULL(SUM(CASE when OrderStatus = 1
-                                 and AuditStatus = 0 then 1
-                            else 0
-                       end), 0) PassCount ,
-            ISNULL(SUM(CASE when OrderStatus = 1
-                                 and AuditStatus = 3 then 1
-                            else 0
-                       end), 0) NoPassCount
-   from     dbo.[Order] o
-            join dbo.RenRenTask rt on rt.Id = o.TaskId where  o.ClienterId =  ${userId} 
-  </select> 
   <!-- 添加任务的步骤信息 茹化肖 2015年11月16日15:30:04 -->
   <insert id="insertTaskSetp" parameterType="com.renrentui.renrenentity.domain.TaskSetp">
   INSERT INTO dbo.TaskSetp
