@@ -8,6 +8,10 @@
 <%@page import="com.renrentui.renrenentity.PublicProvinceCity"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
+<%@page import="com.renrentui.renrenentity.domain.TaskSetp"%>
+<%@page import="com.renrentui.renrenentity.domain.TemplateGroup"%>
+<%@page import="com.renrentui.renrenentity.RenRenTask"%>
+<%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 String UploadPath= PropertyUtils.getProperty("UploadUrl");
@@ -16,13 +20,21 @@ String templatelist = (String) request.getAttribute("templatelist");
 List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");
 String pro_city = (String) request.getAttribute("pro_city");
 String city_region = (String) request.getAttribute("city_region");
+
+
+Long taskID=request.getAttribute("taskID")==null?0:(Long)request.getAttribute("taskID");
+RenRenTask taskInfo =request.getAttribute("taskInfo")==null?null:(RenRenTask)request.getAttribute("taskInfo");
+List<TaskSetp> taskSetps=request.getAttribute("taskSetps")==null?null:(List<TaskSetp>)request.getAttribute("taskSetps");
+List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<TemplateGroup>)request.getAttribute("groups");
+
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script src="<%=basePath%>/js/renrentask.js"></script>
-<%-- <script src="<%=basePath%>/js/jquery.json-2.4.js"></script> --%>
+<script src="<%=basePath%>/js/renrentemplate.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
+		<input type="hidden" id="hdtaskid" value=<%=taskID%>/>
 		<fieldset>
 			<legend>基本信息</legend>
 			<div class="row">
@@ -33,7 +45,7 @@ String city_region = (String) request.getAttribute("city_region");
 								<label class="col-sm-4 control-label">任务标题: </label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" name="taskTitle"
-										id="taskTitle" />
+										id="taskTitle" value="<%=taskInfo==null?"":taskInfo.getTaskTitle() %>"/>
 								</div>
 							</div>
 						</div>
@@ -41,7 +53,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务描述: </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="taskGeneralInfo" id="taskGeneralInfo" />
+									<input type="text" class="form-control" name="taskGeneralInfo" id="taskGeneralInfo" value="<%=taskInfo==null?"":taskInfo.getTaskGeneralInfo() %>"/>
 								</div>
 							</div>
 						</div>
@@ -51,7 +63,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">审核周期: </label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="auditCycle" id="auditCycle" />
+									<input type="text" class="form-control" name="auditCycle" id="auditCycle" value="<%=taskInfo==null?"":taskInfo.getAuditCycle()%>"/>
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
 	  							   天
@@ -62,7 +74,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">单次佣金: </label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="amount" id="amount" />
+									<input type="text" class="form-control" name="amount" id="amount" value="<%=taskInfo==null?"":taskInfo.getAmount()%>"/>
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
 	  							   元
@@ -80,7 +92,7 @@ String city_region = (String) request.getAttribute("city_region");
 										<span class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</span> 
-										<input type="text" class="form-control" value="" name="beginDate" id="beginDate" />
+										<input type="text" class="form-control"  name="beginDate" id="beginDate" value="<%=taskInfo==null?"":ParseHelper.ToDateString(taskInfo.getBeginTime(), "yyyy-MM-dd") %>"/>
 									</div>
 								</div>
 							</div>
@@ -93,7 +105,7 @@ String city_region = (String) request.getAttribute("city_region");
 										<span class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</span> 
-										<input type="text"	class="form-control" value="" name="endDate" id="endDate" />
+										<input type="text"	class="form-control" name="endDate" id="endDate" value="<%=taskInfo==null?"":ParseHelper.ToDateString(taskInfo.getEndTime(), "yyyy-MM-dd") %>"/>
 									</div>
 								</div>
 							</div>
@@ -104,17 +116,17 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">咨询热线: </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="hotline" id="hotline" />
+									<input type="text" class="form-control" name="hotline" id="hotline" value="<%=taskInfo==null?"":taskInfo.getHotLine()%>"/>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务类型: </label>
 								<div class="col-sm-8">
-									<input id="rTaskType1" name="rTaskType" type="radio" value="1" > 
+									<input id="rTaskType1" name="rTaskType" type="radio" value="1"  <%=taskInfo==null?"":(taskInfo.getTaskType()==1?"checked" : "")%>> 
 									<label>签约任务</label>
-									<input id="rTaskType2" name="rTaskType" type="radio" value="2" > 
+									<input id="rTaskType2" name="rTaskType" type="radio" value="2" <%=taskInfo==null?"":(taskInfo.getTaskType()==2?"checked" : "")%>> 
 									<label>分享任务</label>
-									<input id="rTaskType3" name="rTaskType" type="radio" value="3" > 
+									<input id="rTaskType3" name="rTaskType" type="radio" value="3" <%=taskInfo==null?"":(taskInfo.getTaskType()==3?"checked" : "")%>> 
 									<label>下载任务</label>
 								</div>
 							</div>
@@ -123,7 +135,11 @@ String city_region = (String) request.getAttribute("city_region");
 				</div>
 			</div>
 		</fieldset>
-		<fieldset>
+		
+		<%if(taskID==0)
+		{
+			 %>
+			 <fieldset>
 			<legend>任务流程</legend>
 			<span style="color:red;">*</span><span>完成步骤（请详细说明完成任务需要哪几个步骤，方便地推员按要求完成任务）</span>
 			<a href="javascript:void(0);" class="fl add" id="setpadd">添加</a>
@@ -187,8 +203,105 @@ String city_region = (String) request.getAttribute("city_region");
 				</tbody>
 			</table>
 			</div>
+		</fieldset>		
+			 <%
+		}
+		else{
+			 %>
+			 
+			<fieldset>
+			<legend>任务流程</legend>
+			<span style="color:red;">*</span><span>完成步骤（请详细说明完成任务需要哪几个步骤，方便地推员按要求完成任务）</span>
+			<a href="javascript:void(0);" class="fl add" id="setpadd">添加</a>
+			<a href="javascript:void(0);" class="fl del" id="setpdel">删除</a> 
+			<div class="orderBox dn" id="setpbox">
+			<%  int num=0;
+				for(int i=0;i<taskSetps.size();i++)
+				{ 
+					if(taskSetps.get(i).getSetpType()==1){
+						num++;
+						%>
+						<div class="copy">
+							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label class="col-sm-4 control-label">步骤<%=num%>: </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" value="<%=taskSetps.get(i).getContent()%>"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<%
+					}
+				}%>
+				
+			</div>
+			<hr align="center" width="50%" style="color:#333333;">
+			<span>补充说明（如果任务有特殊说明，或者注意事项，可在此处进行补充）</span>
+			<a href="javascript:void(0);" class="fl add" id="setpadd2">添加</a>
+			<a href="javascript:void(0);" class="fl del" id="setpdel2">删除</a> 
+			<div class="orderBox dn" id="setpbox2">
+				<%num=0; 
+				for(int i=0;i<taskSetps.size();i++)
+				{ 
+					if(taskSetps.get(i).getSetpType()==2){
+						num++;
+						%>
+						<div class="copy2">
+							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label class="col-sm-4 control-label"><%=num%>、 </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" value="<%=taskSetps.get(i).getContent()%>" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<%
+					}
+				}%>
+				
+			</div>
+			<hr align="center" width="50%" style="color:#333333;">
+			<span>细则（添加超链接，打开新页面）</span>
+			<a href="javascript:void(0);" class="fl add" id="setpadd3">添加</a>
+			<a href="javascript:void(0);" class="fl del" id="setpdel3">删除</a> 
+			<div class="orderBox dn" id="setpbox3" >
+			<table class="table table-striped table-bordered table-hover dataTables-example" style="width:40%;">
+				<thead>
+					<tr><th>序号</th><th>链接文字</th><th>链接地址</th><th>操作</th></tr>
+				</thead>
+				<tbody>
+				<%num=0;
+				for(int i=0;i<taskSetps.size();i++)
+				{ 
+					if(taskSetps.get(i).getSetpType()==3){
+						num++;
+						%>
+						<tr class="copy3">
+						<td><label><%=num%></label></td>
+						<td><input type="text"  style="width:200px;" class="eltitle" value="<%=taskSetps.get(i).getLinkTitle()%>"></td>
+						<td><input type="text"  style="width:200px;" class="elurl" value="<%=taskSetps.get(i).getContent()%>"></td>
+						<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a><a href="javascript:void(0)" >新建页面</a></td>
+						</tr>
+						<%
+					}
+				}%>
+				</tbody>
+			</table>
+			</div>
 		</fieldset>
-		<fieldset>
+			 <% 
+		}%>
+		
+		<%if(taskID==0)
+		{
+			%>
+			<fieldset>
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
 				<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
@@ -221,6 +334,84 @@ String city_region = (String) request.getAttribute("city_region");
 			<a href="javascript:void(0);"  id="addimggroup">添加图片组</a>
 			<a href="javascript:void(0);"  id="addmoreimggroup">添加多图组</a>
 		</fieldset>
+			<%
+		}
+		else{
+			%>
+			<fieldset>
+			<legend>提交审核模板</legend>
+			<div id="templateBox">
+				<% int num2=0; 
+				for(int i=0;i<groups.size();i++)
+				{	num2++;
+					if(groups.get(i).getGroupType()==1)
+					{
+						%>
+						<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
+							<label class="boxno"><%=num2%>.</label><span>文本组标题:</span><input type="text" value="<%=groups.get(i).getTitle()%>" class="cltxt">
+							<a href="javascript:void(0);" onclick="addTxtControl(this)">添加文本控件</a>
+							<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> 
+							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本组</a>	
+							<div class="textGroup">
+								<% 
+									for(int j=0;j<groups.get(i).getTemplateList().size();j++)
+									{
+										%>
+											<div class="textitem">
+											说明文本:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>">
+											默认值:<input type="text" class="cldefval" value="<%=groups.get(i).getTemplateList().get(j).getDefaultValue()%>">
+											</div>
+										<%
+									}
+								%>
+								
+							</div>
+						</div>
+						<%
+					}
+					else if (groups.get(i).getGroupType()==2)
+					{
+						%>
+						<div class="templateGroupImg template"  style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
+							<label class="boxno"><%=num2%>.</label><span>图片组标题</span><input type="text" value="<%=groups.get(i).getTitle()%>"  class="climg">
+							<a href="javascript:void(0);" onclick="addImgControl(this)" >添加图片控件</a>
+							<a href="javascript:void(0);" onclick="delImgControl(this)" >删除图片控件</a>
+							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该图片组</a>
+							<div class="imgGroup">
+							<% 
+									for(int j=0;j<groups.get(i).getTemplateList().size();j++)
+									{
+										%>
+											<div class="imgitem">图片说明:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>"></div>
+										<%
+									}
+								%>
+							</div>
+						</div>
+						<%
+					}
+					else if (groups.get(i).getGroupType()==3)
+					{
+						%>		
+						<div class="templateGroupMoreImg template"  style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
+							<label class="boxno"><%=num2%>.</label><span>多图组标题</span><input type="text" value="多图组标题" class="clmoreimg" value="<%=groups.get(i).getTitle()%>">
+							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该多图组</a>
+							<div class="imgGroup">
+								<div class="imgitemnum">图片数量:<input type="text" class="imgitemnumn" value="<%=groups.get(i).getTemplateList().size()%>"></div>
+							</div>
+						</div>
+						<%
+					}
+				}%>
+
+			</div>
+			<a href="javascript:void(0);"  id="addtxtgroup">添加文本组</a>
+			<a href="javascript:void(0);"  id="addimggroup">添加图片组</a>
+			<a href="javascript:void(0);"  id="addmoreimggroup">添加多图组</a>
+		</fieldset>
+			<%
+			}%>
+		
 		<fieldset>
 			<legend>关联设置</legend>
 			<div class="row">
@@ -348,20 +539,11 @@ var jss={
 			});
 		}
 	}
-  var txtgroup="";
-  var imggroup="";
-  var moreimggroup="";
   $(document).ready(function() {
 		//添加步骤控件行
-		var add = $('.copy').clone(true);
-		var add2 = $('.copy2').clone(true);
-		var add3 = $('.copy3').clone(true);
-		txtgroup=$('.templateGroupText').clone(true);
-		imggroup=$('.templateGroupImg').clone(true);
-		moreimggroup=$('.templateGroupMoreImg').clone(true);
 		$("#setpadd").click(function() {
-			var clone = add.clone();
-			$('#setpbox').append(clone);
+			//var clone = add.clone();
+			$('#setpbox').append(add);
 			for(index=0;index<$('.copy').length;index++)
             {
             	$('.copy').eq(index).find('label').html('步骤' +  (index+1));
@@ -379,8 +561,8 @@ var jss={
 		});
 		//添加补充说明
 		$("#setpadd2").click(function() {
-			var clone = add2.clone();
-			$('#setpbox2').append(clone);
+			//var clone = add2.clone();
+			$('#setpbox2').append(add2);
 			for(index=0;index<$('.copy2').length;index++)
             {
             	$('.copy2').eq(index).find('label').html((index+1)+'、');
@@ -394,10 +576,12 @@ var jss={
 		});
 		//添加细则
 		$("#setpadd3").click(function() {
-			var clone = add3.clone();
-			$('#setpbox3tbody').append(clone);
+			//var clone = add3.clone();
+			$('#setpbox3 tbody').append(add3);
+			//console.log($('.copy3').length);
 			for(index=0;index<$('.copy3').length;index++)
             {
+				
             	$('.copy3').eq(index).find('td label').html((index+1));
             }
 		});
@@ -409,20 +593,20 @@ var jss={
 		});
 		//添加文本组
 		$('#addtxtgroup').click(function(){
-			var clone=txtgroup.clone()
-			$('#templateBox').append(clone);
+			//var clone=txtgroup.clone()
+			$('#templateBox').append(txtgroup);
 			orderByGroup();
 		});
 		//添加图片组
 		$('#addimggroup').click(function(){
-			var clone=imggroup.clone()
-			$('#templateBox').append(clone);
+			//var clone=imggroup.clone()
+			$('#templateBox').append(imggroup);
 			orderByGroup();
 		});
 		//添加多图组
 		$('#addmoreimggroup').click(function(){
-			var clone=moreimggroup.clone()
-			$('#templateBox').append(clone);
+			//var clone=moreimggroup.clone()
+			$('#templateBox').append(moreimggroup);
 			orderByGroup();
 		});
 	    $("#uploadify").uploadify({
@@ -549,6 +733,7 @@ function realDeleteFiles(){
 //构建任务对象参数
 function createTaskPar(){
 	var task=new Object();
+	task.id=$('#hdtaskid').val();
 	task.taskTitle=$('#taskTitle').val();
 	task.taskGeneralInfo=$('#taskGeneralInfo').val();
 	task.businessId=$('#businessId').val();
@@ -671,11 +856,8 @@ function savetask(){
     saveTaskReq.provinceCode=$('#provinceCode').val();
     saveTaskReq.cityCode=$('#cityCode').val();
     var json_data =JSON.stringify(saveTaskReq);
-	console.log(saveTaskReq);
-  return;
-// 	if(!validPage(true)){
-// 		return;
-// 	}
+	//console.log(saveTaskReq);
+  //return;
 	
 	//组建参数对象
 		var url = "<%=basePath%>/taskmanage/savetask";

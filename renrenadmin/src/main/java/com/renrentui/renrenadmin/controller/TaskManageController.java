@@ -69,11 +69,29 @@ public class TaskManageController {
 	 * @return
 	 */
 	@RequestMapping("newtask")
-	public ModelAndView newTask() {
+	public ModelAndView newTask(Long taskId) {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "任务管理");
 		model.addObject("currenttitle", "新建任务");
 		model.addObject("viewPath", "taskmanage/newtask");
+		if(taskId!=null&&taskId>0)
+		{//修改任务
+			//1.查询任务信息
+			//1获取任务信息
+			RenRenTask taskInfo=renRenTaskService.getTaskInfo(taskId);
+			if (taskInfo==null) {
+				throw new RuntimeException("id="+taskId+"的任务不存在");
+			}
+			//2.获取步骤信息
+			ArrayList<TaskSetp> taskSetps =renRenTaskService.getTaskSetps(taskId);
+			//3 获取控件信息
+			List<TemplateGroup> groups=renRenTaskService.getTemplateGroups(taskId);
+			model.addObject("taskSetps", taskSetps);
+			model.addObject("groups", groups);
+			model.addObject("taskInfo", taskInfo);
+			model.addObject("taskID", taskId);
+			
+		}
 		List<Business> datalist=businessService.getAllList();
 		model.addObject("businessData", datalist);
 		model.addObject("templatelist", getTemplateList());
