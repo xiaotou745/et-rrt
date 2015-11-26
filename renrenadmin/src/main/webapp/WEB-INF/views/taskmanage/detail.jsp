@@ -139,9 +139,18 @@ List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
 					if(taskSetps.get(i).getSetpType()==1){
 						num++;
 						%>
-						<p class="copy">
-						<label class="control-label">步骤<%=num%> </label> <input type="text"  style="width:200px;" value="<%=taskSetps.get(i).getContent()%>">
-						</p>
+						<div class="copy">
+							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label class="col-sm-4 control-label">步骤<%=num%>: </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" value="<%=taskSetps.get(i).getContent()%>"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<%
 					}
 				}%>
@@ -156,9 +165,18 @@ List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
 					if(taskSetps.get(i).getSetpType()==2){
 						num++;
 						%>
-						<p class="copy2">
-							<label class="control-label"><%=num%>、 </label> <input type="text"  style="width:200px;" value="<%=taskSetps.get(i).getContent()%>" />
-						</p>
+						<div class="copy2">
+							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label class="col-sm-4 control-label"><%=num%>、 </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" value="<%=taskSetps.get(i).getContent()%>" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<%
 					}
 				}%>
@@ -166,8 +184,8 @@ List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
 			</div>
 			<hr align="center" width="50%" style="color:#333333;">
 			<span>细则（添加超链接，打开新页面）</span>
-			<div class="orderBox dn" id="setpbox3">
-			<table>
+			<div class="orderBox dn" id="setpbox3" >
+			<table class="table table-striped table-bordered table-hover dataTables-example" style="width:40%;">
 				<thead>
 					<tr><th>序号</th><th>链接文字</th><th>链接地址</th></tr>
 				</thead>
@@ -199,7 +217,7 @@ List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
 					if(groups.get(i).getGroupType()==1)
 					{
 						%>
-						<div class="templateGroupText template" style="border:1px solid red;">
+						<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
 							<label class="boxno"><%=num2%>.</label><span>文本组标题:</span><input type="text" value="<%=groups.get(i).getTitle()%>" class="cltxt">	
 							<div class="textGroup">
 								<% 
@@ -221,7 +239,7 @@ List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
 					else if (groups.get(i).getGroupType()==2)
 					{
 						%>
-						<div class="templateGroupImg template"  style="border:1px solid blue;">
+						<div class="templateGroupImg template"  style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
 							<label class="boxno"><%=num2%>.</label><span>图片组标题</span><input type="text" value="<%=groups.get(i).getTitle()%>"  class="climg">
 							<div class="imgGroup">
 							<% 
@@ -239,7 +257,7 @@ List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
 					else if (groups.get(i).getGroupType()==3)
 					{
 						%>		
-						<div class="templateGroupMoreImg template"  style="border:1px solid blue;">
+						<div class="templateGroupMoreImg template"  style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
 							<label class="boxno"><%=num2%>.</label><span>多图组标题</span><input type="text" value="多图组标题" class="clmoreimg" value="<%=groups.get(i).getTitle()%>">
 							<div class="imgGroup">
 								<div class="imgitemnum">图片数量:<input type="text" class="imgitemnumn" value="<%=groups.get(i).getTemplateList().size()%>"></div>
