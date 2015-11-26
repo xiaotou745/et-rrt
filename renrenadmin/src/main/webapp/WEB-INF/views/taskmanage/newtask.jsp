@@ -130,7 +130,9 @@ String city_region = (String) request.getAttribute("city_region");
 			<a href="javascript:void(0);" class="fl del" id="setpdel">删除</a> 
 			<div class="orderBox dn" id="setpbox">
 				<p class="copy">
-					<label class="control-label">步骤1 </label> <input type="text"  style="width:200px;">
+								<label class="col-sm-4 control-label">步骤1</label>
+									<input type="text" class="form-control" name="taskTitle"
+										id="taskTitle" />
 				</p>
 			</div>
 			<hr align="center" width="50%" style="color:#333333;">
