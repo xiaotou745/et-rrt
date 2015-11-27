@@ -7,6 +7,7 @@ public enum RegionCode {
 	Success(200, "success"),
 	
 	NewVersion(201,"请获取最新版区域信息"),
+	Version(202,"版本号不能为空"),
 	/**
 	 * 
 	 */

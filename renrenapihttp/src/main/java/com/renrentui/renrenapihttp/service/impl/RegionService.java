@@ -11,6 +11,7 @@ import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IRegionService;
 import com.renrentui.renrencore.enums.RegionCode;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.RegionModel;
 import com.renrentui.renrenentity.domain.RegionModelFirstLetter;
@@ -23,12 +24,19 @@ public class RegionService implements IRegionService{
 	IPublicProvinceCityService iPublicProvinceCityService;
 	@Override
 	public HttpResultModel<RegionModel> getHotRegionAndAll(RegionReq req) { 
+		if (req.getVersion()==null||req.getVersion().trim().isEmpty()) {
+			return new HttpResultModel<RegionModel>().setCode(RegionCode.Version.value()).setMsg(RegionCode.Version.desc());
+		}
 		
+		String dbVersion=PropertyUtils.getProperty("ProvinceCityVersion");
+		if (req.getVersion().equals(dbVersion)) {
+			return new HttpResultModel<RegionModel>().setCode(RegionCode.Success.value()).setMsg(RegionCode.Success.desc());
+		}
 		String[] letter={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 		
 		//返回给app的结果Model
 		RegionModel rModel = new RegionModel(); 
-		
+		rModel.setVersion(dbVersion);
 		//首字母排列的所有城市
 		List<RegionModelFirstLetter> firstLetterRegionModel = new ArrayList<RegionModelFirstLetter>();
 		//热门城市
