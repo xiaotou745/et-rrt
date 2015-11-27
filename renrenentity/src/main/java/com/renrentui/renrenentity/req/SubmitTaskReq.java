@@ -13,13 +13,14 @@ public class SubmitTaskReq {
 	private Long userId;
 	private Long taskId;
 	private Long ctId;
+	private ArrayList<SubmitValue> valueInfo;
 	public Long getCtId() {
 		return ctId;
 	}
 	public void setCtId(Long ctId) {
 		this.ctId = ctId;
 	}
-	private ArrayList<SubmitValue> valueInfo;
+
 	public Long getUserId() {
 		return userId;
 	}

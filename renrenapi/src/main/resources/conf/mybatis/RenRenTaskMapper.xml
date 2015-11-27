@@ -219,8 +219,8 @@ select
 	mt.tasktype,
 	mt.amount,
 	mt.logo,
-	mb.auditStatus ,
-	mb.auditNum,
+	isnull(mb.auditStatus,0) as  auditStatus,
+	isnull(mb.auditNum,0) as  auditNum,
 	CASE mt.TaskType
 	  WHEN 1 THEN 0
 	  ELSE mt.CompleteNum

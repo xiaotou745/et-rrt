@@ -3,56 +3,59 @@ package com.renrentui.renrenentity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.renrentui.renrencore.enums.TaskType;
+
 public class RenRenTask {
-    private Long id;
-
-    private String taskTitle;
-
+    @JsonIgnore
     private String taskNotice;
-
-    private String taskGeneralInfo;
-
+    @JsonIgnore
     private Long businessId;
-
+    @JsonIgnore
     private String pusher;
-
+    @JsonIgnore
     private String createName;
-
+    @JsonIgnore
     private Date createTime;
-
+    @JsonIgnore
     private String modifyName;
-
+    @JsonIgnore
     private Date modifyTime;
-
+    @JsonIgnore
     private Date beginTime;
-
-    private Date endTime;
-
-    private Integer taskCycle;
-
+    @JsonIgnore
     private Integer availableCount;
-
-    private Double amount;
-
-    private Integer status;
-
+    @JsonIgnore
     private Integer taskTotalCount;
-
+    @JsonIgnore
     private Long snapshotTemplateId;
+    @JsonIgnore
     private String link;
-
+    @JsonIgnore
     private Short paymentMethod;
-    private Integer auditCycle;
-
+    @JsonIgnore
     private String taskNote;
+    @JsonIgnore
     private Long targetPeople;
+    @JsonIgnore
     private String companySummary;
+    @JsonIgnore
+    private Integer status;
+    @JsonIgnore
+    private Integer taskCycle;
+    
+    private Long id;
+    private String taskTitle;
+    private String taskGeneralInfo;
+    private Date endTime;
+    private Double amount;
+    private Integer auditCycle;
     private String hotLine;
     private Integer taskType;
+    private String taskTypeName;
     private String logo;
     private Integer isHad;
     private Long ctId;
-
 	public Long getCtId() {
 		return ctId;
 	}
@@ -295,5 +298,13 @@ public class RenRenTask {
 	 */
 	public void setSnapshotTemplateId(Long snapshotTemplateId) {
 		this.snapshotTemplateId = snapshotTemplateId;
+	}
+
+	public String getTaskTypeName() {
+		return TaskType.getEnum(taskType.intValue()).desc();
+	}
+
+	public void setTaskTypeName(String taskTypeName) {
+		this.taskTypeName = taskTypeName;
 	} 
 }

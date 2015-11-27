@@ -2,31 +2,37 @@ package com.renrentui.renrenentity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class PublicProvinceCity implements Serializable {
-    private Integer id;
 
     private String name;
 
     private Integer code;
-
+    
+	@JsonIgnore
+    private Integer id;
+	@JsonIgnore
     private Integer parentCode;
-
+	@JsonIgnore
     private Integer jiBie;
-
+	@JsonIgnore
     private String loweRacronym;
-
+	@JsonIgnore
     private String upperRcronym;
-
+	@JsonIgnore
     private String lowerFullPinYin;
     /*
      * 首字母
      */
+	@JsonIgnore
     private String firstLetter;
     /*
      * 是否热门城市
      */
+	@JsonIgnore
     private Integer isHot;
-
+	@JsonIgnore
     private Integer isPublic;
     
     public Integer getId() {
