@@ -35,7 +35,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 				<body>
 				<div style="text-align:center;">
 				<h3>任务名称:<%=view.getTask().getTaskTitle() %></h3>
-				<h3>人员名称:aaaaaaa</h3>
+				<h3>人员名称:<%=(String)request.getAttribute("Name")%></h3>
 				<h3>公司名称:<%=view.getTask().getPusher()%></h3>
 				</div>
 				<div style="text-align:center;">

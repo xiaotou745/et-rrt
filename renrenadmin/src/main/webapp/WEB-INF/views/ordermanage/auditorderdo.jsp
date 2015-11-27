@@ -56,8 +56,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<%	
 			}
 			%>
-			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>)">查看</a>
-			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>)">下载</a>
+			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>,'<%=data.get(i).getClienterName()%>')">查看</a>
+			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>,'<%=data.get(i).getClienterName()%>')">下载</a>
 			</td>						
 		</tr>
 		<%
@@ -95,15 +95,15 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        }
 		    });
    }
-   function ShowInfo(userId,taskId,taskDatumId){
+   function ShowInfo(userId,taskId,taskDatumId,name){
 	   var paramaters = {"userId":userId,
 			   			  "taskId":taskId,
 			   			  "taskDatumId":taskDatumId};
 	   $('#btndown').unbind("click");
 	   $('#btndown').click(function(){
-		   saveFile(userId,taskId,taskDatumId);
+		   saveFile(userId,taskId,taskDatumId,name);
 	   });
-		   var url = "<%=basePath%>/ordermanage/orderchildInfo?tag=0";
+		   var url = "<%=basePath%>/ordermanage/orderchildInfo?tag=0&name="+name;
 		   $.ajax({
 		        type: 'POST',
 		        url: url,
@@ -143,8 +143,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	   
    }
  //保存
-   function saveFile(userId,taskId,taskDatumId){
-	   var url = '<%=basePath%>/ordermanage/orderdownload?userId='+userId+'&taskId='+taskId+'&taskDatumId='+taskDatumId;
+   function saveFile(userId,taskId,taskDatumId,name){
+	   var url = '<%=basePath%>/ordermanage/orderdownload?userId='+userId+'&taskId='+taskId+'&taskDatumId='+taskDatumId+'&name='+name;
 	   window.open(url);
    }
 </script>

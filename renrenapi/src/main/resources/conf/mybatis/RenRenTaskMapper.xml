@@ -157,9 +157,6 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
       <if test="userName != null and userName!=''" >
        modifyName=#{userName,jdbcType=NVARCHAR},modifyTime=getdate(),
       </if>
-      <if test="status != null and status==1" >
-        pusher=#{userName,jdbcType=NVARCHAR},
-      </if>
     </set>
      where Id = #{reocrdId,jdbcType=BIGINT} and status=#{oldStatus,jdbcType=BIGINT}
   </update>

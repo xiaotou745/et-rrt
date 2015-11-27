@@ -13,15 +13,10 @@
 <%@page import="com.renrentui.renrenentity.RenRenTask"%>
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%
-	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
-String UploadPath= PropertyUtils.getProperty("UploadUrl");
+String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
-String templatelist = (String) request.getAttribute("templatelist");
-List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");
-String pro_city = (String) request.getAttribute("pro_city");
-String city_region = (String) request.getAttribute("city_region");
-
-
+List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");//省份
+String pro_city = (String) request.getAttribute("pro_city");//城市字符串
 Long taskID=request.getAttribute("taskID")==null?0:(Long)request.getAttribute("taskID");
 RenRenTask taskInfo =request.getAttribute("taskInfo")==null?null:(RenRenTask)request.getAttribute("taskInfo");
 List<TaskSetp> taskSetps=request.getAttribute("taskSetps")==null?null:(List<TaskSetp>)request.getAttribute("taskSetps");
@@ -30,7 +25,7 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<script src="<%=basePath%>/js/renrentask.js"></script>
+ <script src="<%=basePath%>/js/renrentask.js"></script> 
 <script src="<%=basePath%>/js/renrentemplate.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
@@ -122,7 +117,7 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务类型: </label>
 								<div class="col-sm-8">
-									<input id="rTaskType1" name="rTaskType" type="radio" value="1"  <%=taskInfo==null?"":(taskInfo.getTaskType()==1?"checked" : "")%>> 
+									<input id="rTaskType1" name="rTaskType" type="radio" value="1"  <%=taskInfo==null?"checked":(taskInfo.getTaskType()==1?"checked" : "")%>> 
 									<label>签约任务</label>
 									<input id="rTaskType2" name="rTaskType" type="radio" value="2" <%=taskInfo==null?"":(taskInfo.getTaskType()==2?"checked" : "")%>> 
 									<label>分享任务</label>
@@ -426,22 +421,6 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label class="col-sm-4 control-label">当前账户余额: </label>
-								<div class="col-sm-8">
-									<label class="control-label" id="businessBalance">0元</label>
-								</div>
-							</div>
-						</div>
-<!-- 						<div class="col-lg-3"> -->
-<!-- 							<div class="form-group"> -->
-<!-- 								<label class="col-sm-4 control-label">合同模板: </label> -->
-<!-- 								<div class="col-sm-8"> -->
-<!-- 									<select id="snapshotTemplateId" name="snapshotTemplateId"  class='form-control m-b'></select> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 					<div class="row">
 					<div class="col-lg-5">
@@ -493,7 +472,6 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 		</div>
 	</form> 
 	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> 
-	<input type="hidden" id="city_region" value="<%=city_region %>" />
 </div>
 <div tabindex="-1" class="modal inmodal" id="alertbox" role="dialog" aria-hidden="true" style="display: none;">	
 	
@@ -524,6 +502,34 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 	<small class="font-bold"> </small>	
 </div>
 <script>  
+//省市联动
+$('#provinceCode').on('change',function(){
+	 try{  
+	        var pro=$(this).val();  
+	        var pro_city=$("#pro_city").val().split("#");
+	        
+	        var i,j,tmpprocity=new Array();  
+	        var tmpkeyvalue=new Array();  
+	        for(i=0;i<pro_city.length;i++){
+	        	tmpcity=pro_city[i].split("=");
+	            if(pro==tmpcity[0]){  
+	                tmpcity=tmpcity[1].split(";");  
+	                $("#cityCode").html("<option value='-1'>全部城市</option>");  
+	                for(j=0;j<tmpcity.length;j++){  
+	                	tmpkeyvalue=tmpcity[j].split("|");
+	                    $("#cityCode").append("<option value='"+tmpkeyvalue[0]+"'>"+tmpkeyvalue[1]+"</option>");     
+	                }
+	                break;
+	            }  
+	        }
+	        $("#divregion").html(""); 
+	        $("#selectAll").prop("checked",false);
+	    }catch(e){  
+	        alert(e);     
+	    }  
+});
+
+   
 var article="";//选择文章对象
 var jss={
 		search:function(currentPage){
@@ -540,6 +546,14 @@ var jss={
 		}
 	}
   $(document).ready(function() {
+	  //初始化时间控件
+	  $(' .input-group.date').datepicker({
+	        todayBtn: "linked",
+	        keyboardNavigation: false,
+	        forceParse: false,
+	        calendarWeeks: true,
+	        autoclose: true
+	    });
 		//添加步骤控件行
 		$("#setpadd").click(function() {
 			//var clone = add.clone();
@@ -609,34 +623,7 @@ var jss={
 			$('#templateBox').append(moreimggroup);
 			orderByGroup();
 		});
-	    $("#uploadify").uploadify({
-	     	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
-	        'uploader':'<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.swf',
-	        'script':'<%=UploadPath%>/Upload/UploadFile?uploadFrom=1',//后台处理的请求
-	        'cancelImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/cancel.png',
-	        'folder':'uploads',//您想将文件保存到的路径
-	        'queueID':'fileQueue',//与下面的id对应
-	        'queueSizeLimit':1,
-	        'wmode':'transparent',
-	        'fileDesc':'文件',    
-	    	'fileExt':'*.*', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
-	       	'auto':false,
-	        'multi':false,
-	        'simUploadLimit':1,
-	        'maxQueueSize': 1,
-	        'successTimeout':600,
-	         'buttonText':"BROWSER",
-	        'fileSizeLimit' : '2MB',
-	        onComplete: function (event, queueId, fileObj, response, data) {
-	            var jsonstr = JSON.parse(response);
-	             if(jsonstr.Status==1){
-	            	 var fileinfo=jsonstr.Result.OriginalName+"#"+jsonstr.Result.RelativePath+"#"+jsonstr.Result.FileUrl;
-	            	 appendAttachRow(fileinfo);
-	             }else{
-	            	 alert("上传失败");
-	             }
-	        }
-	    });
+	    
 	});
   //添加文本控件
   function addTxtControl(obj){
@@ -691,45 +678,12 @@ var jss={
 	  $('#alertbox').modal('show');
   }
   
-  //商家改版重新获余额
-function businessChange(){  
-	var templateList="<%=templatelist%>";
-	initSelectTemplate(templateList,null);
-	var paramaters={"businessId":$("#businessId").val()};
-	var url = "<%=basePath%>/taskmanage/getbusinessbanlance";
-	$.ajax({
-		type : 'POST',
-		url : url,
-		data : paramaters,
-		success : function(result) {
-			$("#businessBalance").html(result+"元");
-		}
-	});
-};
-
-
 function initFunction(){
 	 
 	$("#businessId").on("change",businessChange);
 	$("#businessId").change();
 }
-function realDeleteFiles(){
-	if(deleteFiles!=""){
-		var tempFiles=deleteFiles.split(";");
-		for(var i=0;i<tempFiles.length;i++){
-			var s=tempFiles[i].split("#");
-			var url = "<%=UploadPath%>/upload/deletefile?fileName="+s[1];
-			$.ajax({
-					type : 'POST',
-					url : url,
-					data : "",
-					success : function(result) {
-			            //alert(result.Status);
-					}
-			});
-		}
-	}
-}
+
 //构建任务对象参数
 function createTaskPar(){
 	var task=new Object();
@@ -853,20 +807,19 @@ function createGroupPar(){
 }
 //保存任务
 function savetask(){
-	
+	//控件验证
+// 	if(!CheckSave()){
+// 		return;
+// 	}
+// 	return;
     var saveTaskReq=new Object();
     saveTaskReq.renRenTask=createTaskPar();
     saveTaskReq.taskSetps=createTaskSetpPar();
     saveTaskReq.templateGroup=createGroupPar();
     saveTaskReq.provinceCode=$('#provinceCode').val();
     saveTaskReq.cityCode=$('#cityCode').val();
-//     saveTaskReq.beginTime=$('#beginDate').val()+" 00:00:00";
-//     saveTaskReq.endTime=$('#endDate').val()+" 23:59:59";
     var json_data =JSON.stringify(saveTaskReq);
-	console.log(json_data);
-    //return;
-	
-	//组建参数对象
+	//console.log(json_data);
 		var url = "<%=basePath%>/taskmanage/savetask";
 		$.ajax({
 					type : 'POST',
@@ -882,12 +835,6 @@ function savetask(){
 						}
 					}
 		});
-
-//var url = "<%=basePath%>/taskmanage/savetask";
-// alert(json_data);
-// $.post(url,json_data,function(d){
-// 		alert(d);
-// });
 }
 
 </script>

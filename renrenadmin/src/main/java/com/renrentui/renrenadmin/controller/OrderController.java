@@ -118,11 +118,12 @@ public class OrderController {
 	 * @return	
 	 */	
 	@RequestMapping("orderchildInfo")
-	public ModelAndView getorderchiid(TaskDatumDetailReq req,String tag)  {			
+	public ModelAndView getorderchiid(TaskDatumDetailReq req,String tag,String name)  {			
 		TemplateInfo model=taskDatumService.getTaskDatumDetail(req);
 		ModelAndView view = new ModelAndView("ordermanage/orderchildinfo");		
 		view.addObject("listData", model);
 		view.addObject("Tag", tag);
+		view.addObject("Name", name);
 		return view;		
 	}
 	
@@ -136,7 +137,7 @@ public class OrderController {
 	 */	
 	@RequestMapping("orderdownload")
 	@ResponseBody
-	public void  orderdownload(TaskDatumDetailReq req,HttpServletResponse response,HttpServletRequest request) throws Exception  {			
+	public void  orderdownload(TaskDatumDetailReq req,HttpServletResponse response,HttpServletRequest request,String name) throws Exception  {			
 		 try {
 			 	String url=PropertyUtils.getProperty("java.renrenadmin.url")+"/ordermanage/orderchildInfo";
 			 	Map<String, String> map=new HashMap<String, String>();
@@ -144,6 +145,7 @@ public class OrderController {
 			 	map.put("taskId", req.getTaskId()+"");
 			 	map.put("taskDatumId", req.getTaskDatumId()+"");
 			 	map.put("tag","1");
+			 	map.put("name",name);
 			 	List<Cookie> Cookies=new ArrayList<Cookie>();
 			 	Collections.addAll(Cookies, request.getCookies());
 	            String contentString=HttpRequestUtil.httpRequestPost(url, map,Cookies).getHttpResponseText();
