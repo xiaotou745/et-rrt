@@ -6,14 +6,14 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
-<%@page import="com.renrentui.renrenentity.domain.OrderChildInfoModel"%>
+<%@page import="com.renrentui.renrenentity.domain.TemplateInfo"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
 
 		<%
-			OrderChildInfoModel view = (OrderChildInfoModel)request.getAttribute("listData");
-			if(view==null||view.getList()==null)
+		TemplateInfo view = (TemplateInfo)request.getAttribute("listData");
+			if(view==null||view.getTemplateGroup().size()<=0)
 			{
 				%>
 			<h1>找不到当前订单的合同信息</h1>
@@ -21,42 +21,105 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			else
 			{
 				%>
-				<h3>任务名称:<%=view.getTaskTitle() %></h3>
-				<h3>人员名称:<%=view.getClienterName() %></h3>
-				<h3>公司名称:<%=view.getCompanyName() %></h3>
-				<input type="hidden" id="filename"/>
-				<input type="hidden" id="contentid"/>
-				<table class="table table-striped table-bordered table-hover dataTables-example">
-				<thead>
-					<tr class="tdbg">
-						<th width="%5">条目</th>
-						<th >内容</th>						
-					</tr>
-				</thead>
-				<tbody>
-				<%
-					for(int i=0;i<view.getList().size();i++)
+				<!DOCTYPE html>
+				<html>
+				<head>
+				<meta charset="utf-8"></meta>
+				<%if("1".equals((String)request.getAttribute("Tag")))
+					{
+					%>
+					<link rel="stylesheet" href="<%=basePath%>/css/bootstrap.min.css">
+					<%
+				}%>
+				<head>
+				<body>
+				<div style="text-align:center;">
+				<h3>任务名称:<%=view.getTask().getTaskTitle() %></h3>
+				<h3>人员名称:aaaaaaa</h3>
+				<h3>公司名称:<%=view.getTask().getPusher()%></h3>
+				</div>
+				<div style="text-align:center;">
+				<%for(int i=0;i<view.getTemplateGroup().size();i++)
+				{
+					if(view.getTemplateGroup().get(i).getGroupType()==1)
 					{
 						%>
-						<tr>
-							<td><%=view.getList().get(i).getTitle()%></td>
-							<%if(view.getList().get(i).getControlType().equals("FileUpload"))
-							{%>
-							<td><img alt="" src="<%=view.getList().get(i).getControlValue().equals("")?"":PropertyUtils.getProperty("ImgShowUrl")+view.getList().get(i).getControlValue()%>"></td>
-							<%}
-							else{%>
-							<td><%=view.getList().get(i).getControlValue()%></td>
-							<%}%>
-							
+						<table class="table table-striped table-bordered table-hover dataTables-example" style="text-align:center;">
+						<thead>
+						<caption><%=view.getTemplateGroup().get(i).getTitle()%></caption>
+						<tr >
+						<th width="50%">条目</th>
+						<th >内容</th>						
 						</tr>
+						</thead>
+						<tbody>
 						<% 
+						for(int j=0;j<view.getTemplateGroup().get(i).getControlList().size();j++)
+						{
+							%>
+							<tr><td><%=view.getTemplateGroup().get(i).getControlList().get(j).getControlTitle()%></td><td><%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%></td></tr>
+							<%
+						}
+						%>
+						</tbody>
+						</table>
+						<%
+						
 					}
-				%>
-				</tbody>
-				</table>
+					else if (view.getTemplateGroup().get(i).getGroupType()==2)
+					{
+						%>
+						<table class="table table-striped table-bordered table-hover dataTables-example">
+						<thead>
+						<caption><%=view.getTemplateGroup().get(i).getTitle()%></caption>
+						<tr >
+						<th width="50%">条目</th>
+						<th >内容</th>						
+						</tr>
+						</thead>
+						<tbody>
+						<% 
+						for(int j=0;j<view.getTemplateGroup().get(i).getControlList().size();j++)
+						{
+							%>
+							<tr><td><%=view.getTemplateGroup().get(i).getControlList().get(j).getControlTitle()%></td>
+							<td><img alt="" src="<%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue().equals("")?"":PropertyUtils.getProperty("ImgShowUrl")+view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%>"></td></tr>
+							<%
+						}
+						%>
+						</tbody>
+						</table>
+						<%
+					}
+					else if (view.getTemplateGroup().get(i).getGroupType()==3)
+					{
+						%>
+						<table class="table table-striped table-bordered table-hover dataTables-example">
+						<thead>
+						<caption><%=view.getTemplateGroup().get(i).getTitle()%></caption>
+						<tr >
+						<th >图片</th>						
+						</tr>
+						</thead>
+						<tbody>
+						<% 
+						for(int j=0;j<view.getTemplateGroup().get(i).getControlList().size();j++)
+						{
+							%>
+							<td><img alt="" src="<%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue().equals("")?"":PropertyUtils.getProperty("ImgShowUrl")+view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%>"></td></tr>
+							<%
+						}
+						%>
+						</tbody>
+						</table>
+						
+						<%
+					}
+				}%>
+			
 <%}%>
-
-
+</div>
+</body>
 <script type="text/javascript">
 
 </script>

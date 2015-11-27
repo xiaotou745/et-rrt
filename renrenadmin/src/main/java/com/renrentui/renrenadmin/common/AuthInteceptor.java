@@ -26,7 +26,8 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 			// 判断是否登录
 			boolean isLogin = LoginUtil.checkIsLogin(request,response);
 			if (!isLogin&& 
-				!request.getServletPath().equals("/account/login") && 
+				!request.getServletPath().equals("/account/login") &&
+				!request.getServletPath().equals("/ordermanage/orderchildInfo")&&
 				!request.getServletPath().equals("/account/code")) {
 				if(isAjax(request)){
 					throw new AjaxNotLoginRunTimeException("请重新登录");
