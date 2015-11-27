@@ -43,8 +43,8 @@
        getdate(),
        #{modifyName,jdbcType=NVARCHAR},
         getdate(),
-      #{beginTime,jdbcType=TIMESTAMP},
-       #{endTime,jdbcType=TIMESTAMP}, 
+      #{beginTime},
+       #{endTime}, 
       #{amount,jdbcType=DECIMAL}, 
       #{status,jdbcType=INTEGER},
       #{auditCycle,jdbcType=BIGINT}, 
@@ -426,5 +426,33 @@ ELSE
   <!-- 提交一次资料将完成次数加1 茹化肖2015年11月20日00:16:42 -->
   <update id="addClienterCompleteCount" parameterType="java.lang.Long">
   UPDATE ClienterTask SET CompleteNum=(CompleteNum+1) WHERE id=#{ctId,jdbcType=BIGINT}
+  </update>
+  <!-- 修改任务删除任务下的信息 茹化肖 2015年11月26日17:01:15 -->
+  <delete id="clearTaskInfo" parameterType="java.lang.Long">
+  DELETE dbo.TemplateDetail  WHERE TemplateGroupId IN (
+	SELECT TemplateGroupId FROM dbo.TemplateGroup (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT})
+DELETE dbo.TemplateGroup WHERE TaskId=#{taskId,jdbcType=BIGINT}
+DELETE dbo.TaskSetp WHERE TaskId=#{taskId,jdbcType=BIGINT}
+DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
+  
+  </delete>
+  
+    <!-- 修改任务 更新任务信息 -->
+  <update id="updateTaskInfo" parameterType="com.renrentui.renrenentity.RenRenTask">
+  UPDATE dbo.RenRenTask	SET
+	  TaskTitle= #{taskTitle,jdbcType=NVARCHAR},
+      TaskGeneralInfo=#{taskGeneralInfo,jdbcType=NVARCHAR},
+      BusinessId=#{businessId,jdbcType=BIGINT}, 
+      Pusher=#{pusher,jdbcType=NVARCHAR}, 
+      ModifyName= #{modifyName,jdbcType=NVARCHAR}, 
+      ModifyTime=getdate(),
+      BeginTime= #{beginTime,jdbcType=TIMESTAMP},
+      EndTime= #{endTime,jdbcType=TIMESTAMP}, 
+      Amount=#{amount,jdbcType=DECIMAL},
+      status=#{status,jdbcType=INTEGER}, 
+      AuditCycle=#{auditCycle,jdbcType=BIGINT}, 
+      HotLine=#{hotLine,jdbcType=NVARCHAR},
+      TaskType=#{taskType,jdbcType=INTEGER}
+      WHERE id=#{id,jdbcType=BIGINT}
   </update>
 </mapper>

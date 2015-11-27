@@ -34,6 +34,20 @@ public class SaveTaskReq {
 	private ArrayList<TemplateGroup> templateGroup;
 	private String provinceCode;
 	private String cityCode;
+	private String beginTime;
+	private String endTime;
+	public String getBeginTime() {
+		return beginTime;
+	}
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 	public String getProvinceCode() {
 		return provinceCode;
 	}

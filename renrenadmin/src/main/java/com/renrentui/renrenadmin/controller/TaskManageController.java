@@ -166,7 +166,7 @@ public class TaskManageController {
 		return listnew;
 	}
 	/**
-	 * 新建任务
+	 * 保存.修改
 	 * 茹化肖
 	 * 2015年11月16日11:13:58
 	 * @param request
@@ -177,9 +177,9 @@ public class TaskManageController {
 	 */
 	@RequestMapping("savetask")
 	@ResponseBody
-	public int saveTask(HttpServletRequest request,AesParameterReq asreq) {
+	public int saveTask(HttpServletRequest request,String data) {
 		
-		SaveTaskReq req=JsonUtil.str2obj(asreq.getData(),SaveTaskReq.class);
+		SaveTaskReq req=JsonUtil.str2obj(data,SaveTaskReq.class);
 		RenRenTask taskItem=req.getRenRenTask();
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
 		UserContext context=UserContext.getCurrentContext(request);
@@ -187,7 +187,6 @@ public class TaskManageController {
 		taskItem.setModifyName(context.getUserName());
 		List<Integer> regionCodes=getRegionCodeList(request,req);//获取城市信息
 		List<Attachment> attachments=null;//TODO 暂时将附件去掉
-		
 		return renRenTaskService.insert(req, regionCodes,attachments);
 	}
 	/**

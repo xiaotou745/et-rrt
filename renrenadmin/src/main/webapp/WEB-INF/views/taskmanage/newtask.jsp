@@ -34,7 +34,7 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 <script src="<%=basePath%>/js/renrentemplate.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
-		<input type="hidden" id="hdtaskid" value=<%=taskID%>/>
+		<input type="hidden" id="hdtaskid" value="<%=taskID%>"/>
 		<fieldset>
 			<legend>基本信息</legend>
 			<div class="row">
@@ -739,7 +739,7 @@ function createTaskPar(){
 	task.businessId=$('#businessId').val();
 	task.pusher=$('#businessId').find("option:selected").text();
 	task.beginTime=$('#beginDate').val()+" 00:00:00";
-	task.endTime=$('#endDate').val()+" 00:00:00";
+	task.endTime=$('#endDate').val()+" 23:59:59";
 	task.amount=$('#amount').val();
 	task.status=0;
 	task.auditCycle=$('#auditCycle').val();
@@ -828,6 +828,11 @@ function createGroupPar(){
 			TemplateGroup.groupType=3;
 			TemplateGroup.title=$(el).find('.clmoreimg').val();
 			var num=$(el).find('.imgitemnumn').val();
+			if(Number(num)>0){
+				num=Number(num);
+				}else{
+					num=0;
+				}
 			console.log(num);
 			var detailArr=new Array();
 			for(var nx=0;nx<num;nx++){
@@ -855,9 +860,11 @@ function savetask(){
     saveTaskReq.templateGroup=createGroupPar();
     saveTaskReq.provinceCode=$('#provinceCode').val();
     saveTaskReq.cityCode=$('#cityCode').val();
+//     saveTaskReq.beginTime=$('#beginDate').val()+" 00:00:00";
+//     saveTaskReq.endTime=$('#endDate').val()+" 23:59:59";
     var json_data =JSON.stringify(saveTaskReq);
-	//console.log(saveTaskReq);
-  //return;
+	console.log(json_data);
+    //return;
 	
 	//组建参数对象
 		var url = "<%=basePath%>/taskmanage/savetask";
