@@ -39,7 +39,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 
 	@Override
 	public List<PublicProvinceCity> getOpenCityListFromRedis() {
-		List<PublicProvinceCity> listdata=redisService.get(RedissCacheKey.RR_PublicProvinceCity, List.class);
+		List<PublicProvinceCity> listdata=null;//redisService.get(RedissCacheKey.RR_PublicProvinceCity, List.class);
 		listdata=null;//todo 
 		if (listdata==null||listdata.size()==0) {
 			listdata=publicProvinceCityDao.getAllOpenCity();
