@@ -12,6 +12,7 @@ import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
 import com.renrentui.renrenapi.service.inter.ITaskDatumService;
 import com.renrentui.renrencore.enums.TemplateGroupType;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.domain.TaskDatumDetail;
 import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
@@ -37,6 +38,7 @@ private IRenRenTaskDao renRenTaskDao;
 	public List<TaskDatumModel> getMyTaskDatumList(TaskDatumReq req) {
 		List<TaskDatumModel> result=taskDatumDao.getMyTaskDatumList(req);
 		List<TaskDatumTitle> titlesList=taskDatumDao.getMyTaskDatumTitleList(req);
+		String imagePath= PropertyUtils.getProperty("ImgShowUrl");
 		for (TaskDatumModel datumModel : result) {
 			List<String> tempTitles=new ArrayList<>();
 			List<TaskDatumTitle> tempList=titlesList.stream().filter(t->t.getTaskDatumId()==datumModel.getTaskDatumId()).collect(Collectors.toList());
@@ -49,7 +51,7 @@ private IRenRenTaskDao renRenTaskDao;
 					tempTitles.add(tempList.get(0).getControlValue());
 				}else if(datumGroupType==TemplateGroupType.ImageGroup||
 						datumGroupType==TemplateGroupType.MutliImageGroup){
-					List<String> imageList=tempList.stream().map(t->t.getControlValue()).collect(Collectors.toList());
+					List<String> imageList=tempList.stream().map(t->imagePath+t.getControlValue()).collect(Collectors.toList());
 					tempTitles.addAll(imageList);
 				}
 			}
@@ -73,8 +75,17 @@ private IRenRenTaskDao renRenTaskDao;
 		RenRenTask task= renRenTaskDao.getTaskDetail(req);//获取任务 任务信息
 		List<TaskDatumDetailGroup> result=taskDatumDao.getTaskDatumGroupList(req);
 		List<TaskDatumDetail> detailList=taskDatumDao.getTaskDatumDetailList(req);
+		String imagePath=PropertyUtils.getProperty("ImgShowUrl");
 		for (TaskDatumDetailGroup detailGroup : result) {
-			List<TaskDatumDetail> tempDetail=detailList.stream().filter(t->t.getGroupId()==detailGroup.getGroupId()).collect(Collectors.toList());
+			List<TaskDatumDetail> tempDetail = detailList.stream()
+					.filter(t -> t.getGroupId() == detailGroup.getGroupId())
+					.collect(Collectors.toList());
+			if (req.getTaskDatumId()>0&&
+				detailGroup.getGroupType() != TemplateGroupType.TextGroup.value()) {
+				for (TaskDatumDetail taskDatumDetail : tempDetail) {
+					taskDatumDetail.setControlValue(imagePath+ taskDatumDetail.getControlValue());
+				}
+			}
 			detailGroup.setControlList(tempDetail);
 		}
 		info.setTask(task);

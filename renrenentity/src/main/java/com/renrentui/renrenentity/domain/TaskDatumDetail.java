@@ -1,4 +1,6 @@
 package com.renrentui.renrenentity.domain;
+import com.renrentui.renrencore.enums.TemplateGroupType;
+import com.renrentui.renrencore.util.PropertyUtils;
 
 public class TaskDatumDetail {
     private long groupId;
