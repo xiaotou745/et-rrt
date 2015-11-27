@@ -540,27 +540,35 @@ public class RenRenTaskService implements IRenRenTaskService {
  */
 	@Override
 	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
-		List<MyReceiveTask> result= renRenTaskDao.getMyReceivedTaskList(req);
-		for (MyReceiveTask myReceiveTask : result) {
-			if (myReceiveTask.getTaskType()==TaskType.ContractTask.value()) {
-				DatumAuditStatus datumAuditStatus=DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus());
-				if (datumAuditStatus!=null) {
-					switch (datumAuditStatus) {
-					case WaitAudit:
-						myReceiveTask.setAuditWaitNum(myReceiveTask.getAuditNum());
-						break;
-					case Audited:
-						myReceiveTask.setAuditPassNum(myReceiveTask.getAuditNum());
-						break;
-					case Refuse:
-						myReceiveTask.setAuditRefuseNum(myReceiveTask.getAuditNum());
-						break;
-					default:
-						break;
+		List<MyReceiveTask> result=new ArrayList<>();
+		List<MyReceiveTask> taskList= renRenTaskDao.getMyReceivedTaskList(req);
+		List<Long> taskIdList=taskList.stream().map(t->t.getTaskId()).distinct().collect(Collectors.toList());
+		for (Long taskId : taskIdList) {
+			List<MyReceiveTask> taskTempList=taskList.stream().filter(t->t.getTaskId()==taskId).collect(Collectors.toList());
+			MyReceiveTask tempTask=taskTempList.get(0);
+			for (MyReceiveTask myReceiveTask : taskTempList) {
+				if (myReceiveTask.getTaskType()==TaskType.ContractTask.value()) {
+					DatumAuditStatus datumAuditStatus=DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus());
+					if (datumAuditStatus!=null) {
+						switch (datumAuditStatus) {
+						case WaitAudit:
+							tempTask.setAuditWaitNum(myReceiveTask.getAuditNum());
+							break;
+						case Audited:
+							tempTask.setAuditPassNum(myReceiveTask.getAuditNum());
+							break;
+						case Refuse:
+							tempTask.setAuditRefuseNum(myReceiveTask.getAuditNum());
+							break;
+						default:
+							break;
+						}
 					}
 				}
 			}
+			result.add(tempTask);
 		}
+		
 		return result;
 	}
 
