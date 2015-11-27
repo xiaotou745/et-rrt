@@ -49,22 +49,15 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getAuditTime()%></td>	
 			<td><%=data.get(i).getAuditStatus()%></td>
 			<td>
-			<%if(data.get(i).getAuditStatusCode()==0&&data.get(i).getOrderStatusCode()==1) 
+			<%if(data.get(i).getAuditStatusCode()==1) 
 			{%>
 			<a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核通过</a>
 		    <a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getId()%>,3,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核拒绝</a>
-			<%} else if(data.get(i).getAuditStatusCode()==3&&data.get(i).getOrderStatusCode()==1) {%>
-			<a href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核通过</a>
-
-			<%}
-			if(!data.get(i).getFinishTime().equals(""))
-			{
-			%>
-			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getId()%>)">查看</a>
-			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getId()%>)">下载</a>
 			<%	
 			}
 			%>
+			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>)">查看</a>
+			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>)">下载</a>
 			</td>						
 		</tr>
 		<%
@@ -102,13 +95,15 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        }
 		    });
    }
-   function ShowInfo(orderId){
-	   var paramaters = {"orderId":orderId};
+   function ShowInfo(userId,taskId,taskDatumId){
+	   var paramaters = {"userId":userId,
+			   			  "taskId":taskId,
+			   			  "taskDatumId":taskDatumId};
 	   $('#btndown').unbind("click");
 	   $('#btndown').click(function(){
-		   saveFile(orderId);
+		   saveFile(userId,taskId,taskDatumId);
 	   });
-		   var url = "<%=basePath%>/ordermanage/orderchildInfo";
+		   var url = "<%=basePath%>/ordermanage/orderchildInfo?tag=0";
 		   $.ajax({
 		        type: 'POST',
 		        url: url,
@@ -116,8 +111,6 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		        success: function (result) {   	
 		        	//alert(result);
 		        	$('#infobox').html(result);
-		        	$('#contentid').val(result);
-		        	$('#filename').val('123.html');
 		        	$('#alertbox').modal('show'); 
 		        	
 		        }
@@ -150,8 +143,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	   
    }
  //保存
-   function saveFile(orderId){
-	   var url = '<%=basePath%>/ordermanage/orderdownload?orderId='+orderId;
+   function saveFile(userId,taskId,taskDatumId){
+	   var url = '<%=basePath%>/ordermanage/orderdownload?userId='+userId+'&taskId='+taskId+'&taskDatumId='+taskDatumId;
 	   window.open(url);
    }
 </script>

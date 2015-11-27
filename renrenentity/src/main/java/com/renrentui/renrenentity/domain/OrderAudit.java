@@ -29,6 +29,13 @@ public class OrderAudit {
 	private int timeAfter;
 	private int orderStatus;
 	private Long clienterId;
+	private Long taskId;
+	public Long getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+	}
 	public Long getClienterId() {
 		return clienterId;
 	}

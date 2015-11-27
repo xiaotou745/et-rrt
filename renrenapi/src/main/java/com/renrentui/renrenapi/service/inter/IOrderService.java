@@ -10,6 +10,7 @@ import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 
 /**
  * 订单相关接口
@@ -31,7 +32,7 @@ public interface IOrderService {
 	
 	public OrderChildInfoModel getOrderChildInfo(OrderChildReq req);
 	
-	public String downLoadOrderInfo(OrderChildReq req);
+	public String downLoadOrderInfo(TaskDatumDetailReq req);
 	public int cancelOrder(CancelTaskReq req);
 	public Double getOrderTotalAmount(Long taskId);
 }
