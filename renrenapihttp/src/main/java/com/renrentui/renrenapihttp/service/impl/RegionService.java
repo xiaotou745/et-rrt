@@ -36,7 +36,7 @@ public class RegionService implements IRegionService{
 		
 		//返回给app的结果Model
 		RegionModel rModel = new RegionModel(); 
-		
+		rModel.setVersion(dbVersion);
 		//首字母排列的所有城市
 		List<RegionModelFirstLetter> firstLetterRegionModel = new ArrayList<RegionModelFirstLetter>();
 		//热门城市
