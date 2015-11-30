@@ -95,15 +95,9 @@ public class TaskManageController {
 		List<Business> datalist=businessService.getAllList();
 		model.addObject("businessData", datalist);
 		model.addObject("templatelist", getTemplateList());
-		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
-		
-		model.addObject("provincelist", getOpenCityByJiBie(list,2));
-		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,3);
-		model.addObject("pro_city", getCityStr(citylistlist));
-//		List<PublicProvinceCity> regionlist =getOpenCityByJiBie(list,3);
-//		String city_region=getCityStr(regionlist);
-		String city_region="";
-		model.addObject("city_region", city_region);
+		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
+		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
+		model.addObject("pro_city", getCityStr(citylistlist));//构建城市字符串
 		return model;
 	}
 
@@ -155,16 +149,16 @@ public class TaskManageController {
 
 		return resultBuilder.toString();
 	}
-	private List<PublicProvinceCity> getOpenCityByJiBie(List<PublicProvinceCity> list,int jiBie)
-	{
-		List<PublicProvinceCity> listnew = new ArrayList<PublicProvinceCity>();
-		for (PublicProvinceCity item : list) {
-			if (item.getJiBie() == jiBie) {
-				listnew.add(item);
-			}
-		}
-		return listnew;
-	}
+//	private List<PublicProvinceCity> getOpenCityByJiBie(List<PublicProvinceCity> list,int jiBie)
+//	{
+//		List<PublicProvinceCity> listnew = new ArrayList<PublicProvinceCity>();
+//		for (PublicProvinceCity item : list) {
+//			if (item.getJiBie() == jiBie) {
+//				listnew.add(item);
+//			}
+//		}
+//		return listnew;
+//	}
 	/**
 	 * 保存.修改
 	 * 茹化肖
@@ -254,7 +248,13 @@ public class TaskManageController {
 		model.addObject("listData", resp);
 		return model;
 	}
-
+	/**
+	 * 修改任务状态 (审核 取消.驳回,终止)
+	 * 
+	 * @param request
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("settaskstatus")
 	@ResponseBody
 	public int setTaskStatus(HttpServletRequest request,UpdateStatusReq req) {
@@ -291,12 +291,9 @@ public class TaskManageController {
 		model.addObject("groups", groups);
 		model.addObject("taskInfo", taskInfo);
 		//4 获取投放放范围
-		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
-		model.addObject("provincelist", getOpenCityByJiBie(list,1));
-		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,2);
+		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
+		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
 		model.addObject("pro_city", getCityStr(citylistlist));
-		List<PublicProvinceCity> regionlist =getOpenCityByJiBie(list,3);
-		model.addObject("city_region", getCityStr(regionlist));
 		return model;
 	}
 	@RequestMapping("updatetask")

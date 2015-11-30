@@ -7,41 +7,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.renrentui.renrencore.enums.TaskType;
 
 public class RenRenTask {
-    
     private String taskNotice;
-    
     private Long businessId;
-    
     private String pusher;
-    
     private String createName;
-    
     private Date createTime;
-    
     private String modifyName;
-    
     private Date modifyTime;
-    
     private Date beginTime;
-    
     private Integer availableCount;
-    
     private Integer taskTotalCount;
-    
     private Long snapshotTemplateId;
-    
     private String link;
-    
     private Short paymentMethod;
-    
     private String taskNote;
-    
     private Long targetPeople;
-    
     private String companySummary;
-    
     private Integer status;
-    
     private Integer taskCycle;
     
     private Long id;
