@@ -808,10 +808,10 @@ function createGroupPar(){
 //保存任务
 function savetask(){
 	//控件验证
-// 	if(!CheckSave()){
-// 		return;
-// 	}
-// 	return;
+	var bl=CheckSave();
+	if(!bl){
+		return;
+	}
     var saveTaskReq=new Object();
     saveTaskReq.renRenTask=createTaskPar();
     saveTaskReq.taskSetps=createTaskSetpPar();

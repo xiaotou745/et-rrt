@@ -38,17 +38,17 @@ function CheckSave(){
 	      $('#beginDate').val("");
 	      return false;
 	  }
-		var pagestart=new Date(startDate);
-		var pageStartDate=pagestart.getFullYear()+""+(pagestart.getMonth()+1)+""+pagestart.getDate();
+		//var pagestart=new Date(startDate);
+		//var pageStartDate=pagestart.getFullYear()+""+(pagestart.getMonth()+1)+""+pagestart.getDate();
 		var myDate = new Date();
-		var nowdate=myDate.getFullYear()+""+(myDate.getMonth()+1)+""+myDate.getDate();
-		if(parseInt(pageStartDate)<parseInt(nowdate)){
+		var nowdate=myDate.getFullYear()+""+(myDate.getMonth().length==1?("0"+(myDate.getMonth()+1)):(myDate.getMonth()+1)+""+(myDate.getDate().length==1?("0"+myDate.getDate()):myDate.getDate()));
+		if(parseInt(intStartDate)<parseInt(nowdate)){
 			alert("开始日期必须大于等于今天");
 			return false;
 		}
-		var pageEnd=new Date(endDate);
-		var pageEndDate=pageEnd.getFullYear()+""+(pageEnd.getMonth()+1)+""+pageEnd.getDate();
-		if(parseInt(pageEndDate)<=parseInt(nowdate)){
+		//var pageEnd=new Date(endDate);
+		//var pageEndDate=pageEnd.getFullYear()+""+(pageEnd.getMonth()+1)+""+pageEnd.getDate();
+		if(parseInt(intEndDate)<=parseInt(nowdate)){
 			alert("结束日期必须大于今天");
 			return false;
 		}
@@ -58,6 +58,7 @@ function CheckSave(){
 			if($(el).val().length<1)
 			{
 				alert('步骤信息不能为空');
+				flag=false;
 				return false;
 			}
 	   	});
@@ -66,6 +67,7 @@ function CheckSave(){
 		$('#setpbox2 input').each(function(id,el){
 			if($(el).val().length<1)
 			{
+				flag=false;
 				alert('补充说明不能为空');
 				return false;
 			}
@@ -75,54 +77,72 @@ function CheckSave(){
 		$('#setpbox3 tbody tr').each(function(id,el){
 	   		if($(el).find('.eltitle').val().length<1){
 	   			alert('细则链接标题不能为空');
+	   			flag=false;
 				return false;
 	   			}
 	   		if($(el).find('.elurl').val().length<1)
 	   			{
+	   			flag=false;
 	   			alert('细则链接地址不能为空');
 				return false;
 	   			}
+	   		//if(!flag) return flag;
 	   	});
 		if(!flag) return flag;
+		
+		
 		$('#templateBox .template').each(function(id,el){
 			if($(el).attr("class").indexOf("templateGroupText")>=0){
 				if($(el).find('.cltxt').val().length<1){
-				alert('文本组标题不能为空')
+				alert('文本组标题不能为空');
+				flag=false;
 				return false;
 				}
 				$(el).find('.textGroup .textitem').each(function(id2,el2){
 					if($(el2).find('.cltitle').val().length<1){
-						alert('文本控件说明不能为空')
+						alert('文本控件说明不能为空');
+						flag=false;
 						return false;
 						}//文本标题
 				});
+				if(!flag) return flag;
 			}
 			else if($(el).attr("class").indexOf("templateGroupImg")>=0){
 				//图片组
 				if($(el).find('.climg').val().length<1){
-					alert('图片组标题不能为空')
+					alert('图片组标题不能为空');
+					flag=false;
 					return false;
 				}
+				if(!flag) return flag;
 				//遍历控件
 				$(el).find('.imgGroup .imgitem').each(function(id2,el2){
 
 					if($(el2).find('.cltitle').val().length<1){
-						alert('图片控件说明不能为空')
+						alert('图片控件说明不能为空');
+						flag=false;
 						return false;
 					}
+					if(!flag) return flag;
 				});
+				if(!flag) return flag;
 			}
 			else{
 				if($(el).find('.clmoreimg').val().length<1){
-					alert('多图组标题不能为空')
+					alert('多图组标题不能为空');
+					flag=false;
 					return false;
 				}
+				if(!flag) return flag;
 				var num=$(el).find('.imgitemnumn').val();
 				if(Number(num)<1){
-					alert('多图组图片控件数量不能小于0')
+					alert('多图组图片控件数量不能小于0');
+					flag=false;
 					return false;
 					}
+				if(!flag) return flag;
 			}
-
+			if(!flag) return flag;
 		});
+	    return flag;
 }
