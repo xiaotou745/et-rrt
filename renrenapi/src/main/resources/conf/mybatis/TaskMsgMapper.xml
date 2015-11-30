@@ -72,4 +72,23 @@ VALUES  ( ${title} ,
     </set>
     where Id = #{msgId,jdbcType=BIGINT} and ClienterId = ${userId}
   </update> 
+  
+  <!-- 批量插入消息 茹化肖  2015年11月30日14:47:06 -->
+  <insert id="insertList" parameterType="java.util.List">
+  		<foreach collection="list" item="item" index="index" >
+ 		INSERT INTO dbo.TaskMsg
+                ( Title ,
+                  Msg ,
+                  CreateName ,
+                  ClienterId ,
+                  TaskId 
+                )
+        VALUES  ( #{item.title,jdbcType=NVARCHAR} , 
+                  #{item.msg,jdbcType=NVARCHAR} , 
+                  #{item.createName,jdbcType=NVARCHAR} , 
+                  #{item.clienterId,jdbcType=BIGINT} , 
+                  #{item.taskId,jdbcType=BIGINT} 
+                )
+		</foreach>
+  </insert>
 </mapper>

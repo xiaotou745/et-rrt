@@ -15,7 +15,9 @@ import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ser.impl.IndexedListSerializer;
 import com.renrentui.renrenapi.common.TransactionalRuntimeException;
+import com.renrentui.renrenapi.dao.impl.TaskMsgDao;
 import com.renrentui.renrenapi.dao.inter.IAttachmentDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
@@ -28,6 +30,7 @@ import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
 import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
 import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
+import com.renrentui.renrenapi.dao.inter.ITaskMsgDao;
 import com.renrentui.renrenapi.dao.inter.ITaskSetpDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
@@ -61,6 +64,7 @@ import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.RenRenTaskLog;
 import com.renrentui.renrenentity.TaskCityRelation;
+import com.renrentui.renrenentity.TaskMsg;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateDetail;
 import com.renrentui.renrenentity.TemplateSnapshot;
@@ -131,6 +135,8 @@ public class RenRenTaskService implements IRenRenTaskService {
 	
 	@Autowired
 	private ITaskDatumDao taskDatumDao;
+	@Autowired
+	private ITaskMsgDao taskMsgDao;
 
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:00:35
@@ -450,6 +456,9 @@ public class RenRenTaskService implements IRenRenTaskService {
 			opType = TaskOpType.Reject;
 		} else if (status == TaskStatus.Stop) {
 			opType = TaskOpType.Stop;
+			inserMsgList(req.getReocrdId());//给所有骑士发站内信
+			
+			
 		} else if (status == TaskStatus.Cancel) {
 			opType = TaskOpType.CancelTask;
 			//V1.0.2需求.暂时和商户没有线上结算
@@ -471,11 +480,37 @@ public class RenRenTaskService implements IRenRenTaskService {
 		} else if (status == TaskStatus.HasSettlement) {
 			opType = TaskOpType.SettlementTask;
 		}
-
+		
 		logRecord.setOptType((short) opType.value());
 		logRecord.setRemark(opType.desc());
 		renRenTaskLogDao.insert(logRecord);
 		return result;
+	}
+	/**
+	 * 取消任务批量插入消息数据
+	 * @param list 骑士ID
+	 */
+	private void inserMsgList(Long taskID)
+	{
+		RenRenTask task=renRenTaskDao.selectById(taskID);
+		List<Long> list=renRenTaskDao.getClinerIdList(taskID);
+		List<TaskMsg> msgList=new ArrayList<TaskMsg> ();
+		for (int i = 0; i < list.size(); i++) {
+			TaskMsg itemMsg=new TaskMsg();
+			itemMsg.setClienterId(list.get(i));
+			itemMsg.setTaskId(task.getId());
+			itemMsg.setTitle("任务未过期但管理员手动终止");
+			itemMsg.setCreateName("admin");
+			itemMsg.setMsg("《"+task.getTaskTitle()+"》已经提前结束，您可以继续完成其他任务哦。如有疑问，请联系地推小管家：010-57173598");
+			itemMsg.setMsgType(0);
+			msgList.add(itemMsg);
+			if(msgList.size()==50||i==list.size()-1)//集合满50个 或者已经没有批次 插入数据库
+			{
+				taskMsgDao.insertList(msgList);
+				msgList.clear();//插完数据库清空集合
+			}
+		}
+		
 	}
 
 	@Override

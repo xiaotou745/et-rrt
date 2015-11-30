@@ -104,4 +104,10 @@ public interface IRenRenTaskDao {
 	 * @return
 	 */
 	int updateTaskInfo(RenRenTask task);
+	/**
+	 * 通过任务ID查询领取任务的骑士ID
+	 * @param taskId
+	 * @return
+	 */
+	List<Long> getClinerIdList(Long taskId);
 }

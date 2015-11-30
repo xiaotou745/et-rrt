@@ -453,4 +453,8 @@ DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
       TaskType=#{taskType,jdbcType=INTEGER}
       WHERE id=#{id,jdbcType=BIGINT}
   </update>
+  <!--  获取任务下面所有骑士ID -->
+  <select id="getClinerIdList" parameterType="java.lang.Long" resultType="java.lang.Long">
+  SELECT ClienterId FROM dbo.ClienterTask AS ct (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT}
+  </select>
 </mapper>

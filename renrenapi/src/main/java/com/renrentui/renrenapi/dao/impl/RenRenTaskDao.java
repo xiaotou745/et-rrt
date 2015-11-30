@@ -226,6 +226,13 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	public int updateTaskInfo(RenRenTask task) {
 		return getMasterSqlSessionUtil().delete("IRenRenTaskDao.updateTaskInfo", task);
 	}
+	/**
+	 * 获取任务下面所有骑士ID
+	 */
+	@Override
+	public List<Long> getClinerIdList(Long taskId) {
+		return getMasterSqlSessionUtil().selectList("IRenRenTaskDao.getClinerIdList", taskId);
+	}
 	
 	
 }
