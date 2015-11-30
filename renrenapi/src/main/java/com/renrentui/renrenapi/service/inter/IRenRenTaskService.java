@@ -63,7 +63,13 @@ public interface IRenRenTaskService {
 	 */
 	 SubmitTaskCode submitTask(SubmitTaskReq req);
 	 int insert(SaveTaskReq taskreq,List<Integer> regionCodes,List<Attachment> attachments);
-	 int updateTask(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
+	/**
+	 * 修改任务 V1.0.2删除
+	 * 茹化肖
+	 * @param req
+	 * @return
+	 */
+	 // int updateTask(RenRenTask record,List<Integer> regionCodes,List<Attachment> attachments);
 	PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(PagedRenRenTaskReq req);	
 	 int setTaskStatus(UpdateStatusReq req);
 	

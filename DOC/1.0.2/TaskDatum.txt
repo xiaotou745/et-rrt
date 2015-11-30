@@ -1,0 +1,65 @@
+USE [RenRenDB]
+GO
+
+/****** Object:  Table [dbo].[TaskDatum]    Script Date: 11/30/2015 11:42:53 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TaskDatum](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[CtId] [bigint] NOT NULL,
+	[ClienterId] [bigint] NOT NULL,
+	[TaskId] [bigint] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[Status] [int] NOT NULL,
+	[AuditTime] [datetime] NULL,
+	[AuditName] [nvarchar](500) NOT NULL,
+	[RefuseReason] [nvarchar](500) NOT NULL,
+ CONSTRAINT [PK_TaskDatum] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'客户任务关系表Id(ClienterTask)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskDatum', @level2type=N'COLUMN',@level2name=N'CtId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'地推员ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskDatum', @level2type=N'COLUMN',@level2name=N'ClienterId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'任务ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskDatum', @level2type=N'COLUMN',@level2name=N'TaskId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建时间(资料提交时间)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskDatum', @level2type=N'COLUMN',@level2name=N'CreateDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'资料状态 1 待审核 2 审核通过 3 审核拒绝' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskDatum', @level2type=N'COLUMN',@level2name=N'Status'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'审核时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskDatum', @level2type=N'COLUMN',@level2name=N'AuditTime'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'审核人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskDatum', @level2type=N'COLUMN',@level2name=N'AuditName'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'状态为审核拒绝时,拒绝原因' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskDatum', @level2type=N'COLUMN',@level2name=N'RefuseReason'
+GO
+
+ALTER TABLE [dbo].[TaskDatum] ADD  CONSTRAINT [DF_TaskDatum_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+ALTER TABLE [dbo].[TaskDatum] ADD  CONSTRAINT [DF_TaskDatum_Status]  DEFAULT ((1)) FOR [Status]
+GO
+
+ALTER TABLE [dbo].[TaskDatum] ADD  CONSTRAINT [DF_TaskDatum_AuditName]  DEFAULT ('') FOR [AuditName]
+GO
+
+ALTER TABLE [dbo].[TaskDatum] ADD  CONSTRAINT [DF_TaskDatum_RefuseReason]  DEFAULT ('') FOR [RefuseReason]
+GO
+
+

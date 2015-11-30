@@ -296,20 +296,30 @@ public class TaskManageController {
 		model.addObject("pro_city", getCityStr(citylistlist));
 		return model;
 	}
-	@RequestMapping("updatetask")
-	@ResponseBody
-	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
-		taskItem.setPusher("");
-		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
-		taskItem.setEndTime(ParseHelper.ToDate(endDate));
-		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
-		UserContext context=UserContext.getCurrentContext(request);
-		taskItem.setModifyName(context.getUserName());
-		List<Integer> regionCodes=getRegionCodeList(request,null);
-		List<Attachment> attachments=getAttachList(request);
-		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
-	}
+	
+	/**
+	 * 更新任务 .V1.0.2删除 茹化肖
+	 * 备注.任务修改和新建任务放在同一接口
+	 * @param request
+	 * @param taskItem
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+//	@RequestMapping("updatetask")
+//	@ResponseBody
+//	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
+//		taskItem.setPusher("");
+//		taskItem.setStatus(TaskStatus.WaitAudit.value());
+//		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
+//		taskItem.setEndTime(ParseHelper.ToDate(endDate));
+//		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
+//		UserContext context=UserContext.getCurrentContext(request);
+//		taskItem.setModifyName(context.getUserName());
+//		List<Integer> regionCodes=getRegionCodeList(request,null);
+//		List<Attachment> attachments=getAttachList(request);
+//		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
+//	}
 	@RequestMapping("getbusinessbanlance")
 	@ResponseBody
 	public String getBusinessBanlance(Long businessId){

@@ -1,0 +1,21 @@
+--人员任务关系表
+--SELECT * FROM dbo.ClienterTask AS ct
+CREATE INDEX IX_ClienterTask_TaskId ON ClienterTask(TaskId);
+CREATE INDEX IX_ClienterTask_ClienterId ON ClienterTask(ClienterId);
+--资料表
+--SELECT * FROM dbo.TaskDatum 
+CREATE INDEX IX_TaskDatum_CtId ON TaskDatum(CtId);
+CREATE INDEX IX_TaskDatum_ClienterId ON TaskDatum(ClienterId);
+CREATE INDEX IX_TaskDatum_TaskId ON TaskDatum(TaskId);
+--资料数据表
+--SELECT * FROM dbo.TaskDatumChild 
+CREATE INDEX IX_TaskDatumChild_TaskDatumId ON TaskDatumChild(TaskDatumId);
+--任务步骤表
+--SELECT * FROM dbo.TaskSetp 
+CREATE INDEX IX_TaskSetp_TaskId ON TaskSetp(TaskId);
+--模板组表
+--SELECT * FROM dbo.TemplateGroup 
+CREATE INDEX IX_TemplateGroup_TaskId ON TemplateGroup(TaskId);
+--模板内容表
+--SELECT * FROM dbo.TemplateDetail AS td
+CREATE INDEX IX_TemplateDetail_TemplateGroupId ON TemplateDetail(TemplateGroupId);
