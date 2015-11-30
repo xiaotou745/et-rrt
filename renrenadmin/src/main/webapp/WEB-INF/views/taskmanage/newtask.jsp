@@ -827,7 +827,6 @@ function savetask(){
 					data : {"data":json_data},
 					success : function(result) {
 						if (result > 0) {
-							realDeleteFiles();
 							alert("操作成功");
 							window.location.href = window.location.href;
 						} else {

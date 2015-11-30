@@ -38,16 +38,12 @@ function CheckSave(){
 	      $('#beginDate').val("");
 	      return false;
 	  }
-		//var pagestart=new Date(startDate);
-		//var pageStartDate=pagestart.getFullYear()+""+(pagestart.getMonth()+1)+""+pagestart.getDate();
 		var myDate = new Date();
-		var nowdate=myDate.getFullYear()+""+(myDate.getMonth().length==1?("0"+(myDate.getMonth()+1)):(myDate.getMonth()+1)+""+(myDate.getDate().length==1?("0"+myDate.getDate()):myDate.getDate()));
+		var nowdate=myDate.getFullYear()+""+(myDate.getMonth()<10?("0"+(myDate.getMonth()+1)):(myDate.getMonth()+1)+""+(myDate.getDate()<10?("0"+myDate.getDate()):myDate.getDate()));
 		if(parseInt(intStartDate)<parseInt(nowdate)){
 			alert("开始日期必须大于等于今天");
 			return false;
 		}
-		//var pageEnd=new Date(endDate);
-		//var pageEndDate=pageEnd.getFullYear()+""+(pageEnd.getMonth()+1)+""+pageEnd.getDate();
 		if(parseInt(intEndDate)<=parseInt(nowdate)){
 			alert("结束日期必须大于今天");
 			return false;
