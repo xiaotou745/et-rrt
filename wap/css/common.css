@@ -1,0 +1,71 @@
+﻿@charset "utf-8";
+/**
+*文件用途说明:全站通用样式
+**/
+
+/*通用*/
+.min-width{
+  width: 1000px;
+  margin: 0 auto;
+}
+.pt10{
+	padding-top: 10px;
+}
+img{
+	display: block;
+}
+/*头部样式*/
+header{
+	height: 55px;
+	padding-top: 15px;
+}
+.logo{
+	width: 280px;
+	float: left;
+}
+h1 a{
+	float: left;
+	margin-right: 20px;
+}
+h1 span{
+	padding-top: 12px;
+	margin-right: 20px;
+	font-size: 14px;
+	color: #e6e6e6;
+	float: left;
+}
+.nav{
+	width: 515px;
+	height: 55px;
+	float: right;
+}
+.nav li{
+	width: 80px;
+	margin-right: 23px;
+	font-size: 15px;
+	text-align: center;
+	float: left;
+}
+.nav a{
+	height: 41px;
+	padding-top: 12px;
+	color: #4c4c4c;
+	display: block;
+}
+.nav a.on,.nav a:hover{
+	color: #3656df;
+	border-bottom:2px solid #3656df; 
+}
+footer{
+	height: 105px;
+	background: #5e6363;
+}
+footer ul{
+	height: 70px;
+	padding-top: 35px;
+	font-size: 14px;
+	line-height: 22px;
+	text-align: center;
+	background: #5e6363;
+	color:#b2b2b2;
+}
