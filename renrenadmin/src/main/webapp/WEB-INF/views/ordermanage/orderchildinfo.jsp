@@ -83,7 +83,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						{
 							%>
 							<tr><td><%=view.getTemplateGroup().get(i).getControlList().get(j).getControlTitle()%></td>
-							<td><img alt="" src="<%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue().equals("")?"":PropertyUtils.getProperty("ImgShowUrl")+view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%>"></td></tr>
+							<td><img alt="" src="<%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue().equals("")?"":view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%>"></td></tr>
 							<%
 						}
 						%>

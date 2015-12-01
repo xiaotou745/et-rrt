@@ -285,7 +285,7 @@ WHERE   id = ${orderId}
         rrt.id as TaskId 
 		',
 		' dbo.TaskDatum AS td ( NOLOCK )
-        LEFT JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.TaskId = td.TaskId
+        LEFT JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
         LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
         LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id ',
 		'
