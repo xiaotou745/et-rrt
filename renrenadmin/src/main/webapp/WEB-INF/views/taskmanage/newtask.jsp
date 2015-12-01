@@ -8,21 +8,28 @@
 <%@page import="com.renrentui.renrenentity.PublicProvinceCity"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
+<%@page import="com.renrentui.renrenentity.domain.TaskSetp"%>
+<%@page import="com.renrentui.renrenentity.domain.TemplateGroup"%>
+<%@page import="com.renrentui.renrenentity.RenRenTask"%>
+<%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%
-	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
-String UploadPath= PropertyUtils.getProperty("UploadUrl");
+String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
-String templatelist = (String) request.getAttribute("templatelist");
-List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");
-String pro_city = (String) request.getAttribute("pro_city");
-String city_region = (String) request.getAttribute("city_region");
+List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");//省份
+String pro_city = (String) request.getAttribute("pro_city");//城市字符串
+Long taskID=request.getAttribute("taskID")==null?0:(Long)request.getAttribute("taskID");
+RenRenTask taskInfo =request.getAttribute("taskInfo")==null?null:(RenRenTask)request.getAttribute("taskInfo");
+List<TaskSetp> taskSetps=request.getAttribute("taskSetps")==null?null:(List<TaskSetp>)request.getAttribute("taskSetps");
+List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<TemplateGroup>)request.getAttribute("groups");
+
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<script src="<%=basePath%>/js/renrentask.js"></script>
-<%-- <script src="<%=basePath%>/js/jquery.json-2.4.js"></script> --%>
+ <script src="<%=basePath%>/js/renrentask.js"></script> 
+<script src="<%=basePath%>/js/renrentemplate.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
+		<input type="hidden" id="hdtaskid" value="<%=taskID%>"/>
 		<fieldset>
 			<legend>基本信息</legend>
 			<div class="row">
@@ -33,7 +40,7 @@ String city_region = (String) request.getAttribute("city_region");
 								<label class="col-sm-4 control-label">任务标题: </label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" name="taskTitle"
-										id="taskTitle" />
+										id="taskTitle" value="<%=taskInfo==null?"":taskInfo.getTaskTitle() %>"/>
 								</div>
 							</div>
 						</div>
@@ -41,7 +48,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务描述: </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="taskGeneralInfo" id="taskGeneralInfo" />
+									<input type="text" class="form-control" name="taskGeneralInfo" id="taskGeneralInfo" value="<%=taskInfo==null?"":taskInfo.getTaskGeneralInfo() %>"/>
 								</div>
 							</div>
 						</div>
@@ -51,7 +58,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">审核周期: </label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="auditCycle" id="auditCycle" />
+									<input type="text" class="form-control" name="auditCycle" id="auditCycle" value="<%=taskInfo==null?"":taskInfo.getAuditCycle()%>"/>
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
 	  							   天
@@ -62,7 +69,7 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">单次佣金: </label>
 								<div class="col-sm-6">
-									<input type="text" class="form-control" name="amount" id="amount" />
+									<input type="text" class="form-control" name="amount" id="amount" value="<%=taskInfo==null?"":taskInfo.getAmount()%>"/>
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
 	  							   元
@@ -80,7 +87,7 @@ String city_region = (String) request.getAttribute("city_region");
 										<span class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</span> 
-										<input type="text" class="form-control" value="" name="beginDate" id="beginDate" />
+										<input type="text" class="form-control"  name="beginDate" id="beginDate" value="<%=taskInfo==null?"":ParseHelper.ToDateString(taskInfo.getBeginTime(), "yyyy-MM-dd") %>"/>
 									</div>
 								</div>
 							</div>
@@ -93,7 +100,7 @@ String city_region = (String) request.getAttribute("city_region");
 										<span class="input-group-addon">
 											<i class="fa fa-calendar"></i>
 										</span> 
-										<input type="text"	class="form-control" value="" name="endDate" id="endDate" />
+										<input type="text"	class="form-control" name="endDate" id="endDate" value="<%=taskInfo==null?"":ParseHelper.ToDateString(taskInfo.getEndTime(), "yyyy-MM-dd") %>"/>
 									</div>
 								</div>
 							</div>
@@ -104,17 +111,17 @@ String city_region = (String) request.getAttribute("city_region");
 							<div class="form-group">
 								<label class="col-sm-4 control-label">咨询热线: </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="hotline" id="hotline" />
+									<input type="text" class="form-control" name="hotline" id="hotline" value="<%=taskInfo==null?"":taskInfo.getHotLine()%>"/>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-4 control-label">任务类型: </label>
 								<div class="col-sm-8">
-									<input id="rTaskType1" name="rTaskType" type="radio" value="1" > 
+									<input id="rTaskType1" name="rTaskType" type="radio" value="1"  <%=taskInfo==null?"checked":(taskInfo.getTaskType()==1?"checked" : "")%>> 
 									<label>签约任务</label>
-									<input id="rTaskType2" name="rTaskType" type="radio" value="2" > 
+									<input id="rTaskType2" name="rTaskType" type="radio" value="2" <%=taskInfo==null?"":(taskInfo.getTaskType()==2?"checked" : "")%>> 
 									<label>分享任务</label>
-									<input id="rTaskType3" name="rTaskType" type="radio" value="3" > 
+									<input id="rTaskType3" name="rTaskType" type="radio" value="3" <%=taskInfo==null?"":(taskInfo.getTaskType()==3?"checked" : "")%>> 
 									<label>下载任务</label>
 								</div>
 							</div>
@@ -123,7 +130,11 @@ String city_region = (String) request.getAttribute("city_region");
 				</div>
 			</div>
 		</fieldset>
-		<fieldset>
+		
+		<%if(taskID==0)
+		{
+			 %>
+			 <fieldset>
 			<legend>任务流程</legend>
 			<span style="color:red;">*</span><span>完成步骤（请详细说明完成任务需要哪几个步骤，方便地推员按要求完成任务）</span>
 			<a href="javascript:void(0);" class="fl add" id="setpadd">添加</a>
@@ -187,8 +198,105 @@ String city_region = (String) request.getAttribute("city_region");
 				</tbody>
 			</table>
 			</div>
+		</fieldset>		
+			 <%
+		}
+		else{
+			 %>
+			 
+			<fieldset>
+			<legend>任务流程</legend>
+			<span style="color:red;">*</span><span>完成步骤（请详细说明完成任务需要哪几个步骤，方便地推员按要求完成任务）</span>
+			<a href="javascript:void(0);" class="fl add" id="setpadd">添加</a>
+			<a href="javascript:void(0);" class="fl del" id="setpdel">删除</a> 
+			<div class="orderBox dn" id="setpbox">
+			<%  int num=0;
+				for(int i=0;i<taskSetps.size();i++)
+				{ 
+					if(taskSetps.get(i).getSetpType()==1){
+						num++;
+						%>
+						<div class="copy">
+							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label class="col-sm-4 control-label">步骤<%=num%>: </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" value="<%=taskSetps.get(i).getContent()%>"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<%
+					}
+				}%>
+				
+			</div>
+			<hr align="center" width="50%" style="color:#333333;">
+			<span>补充说明（如果任务有特殊说明，或者注意事项，可在此处进行补充）</span>
+			<a href="javascript:void(0);" class="fl add" id="setpadd2">添加</a>
+			<a href="javascript:void(0);" class="fl del" id="setpdel2">删除</a> 
+			<div class="orderBox dn" id="setpbox2">
+				<%num=0; 
+				for(int i=0;i<taskSetps.size();i++)
+				{ 
+					if(taskSetps.get(i).getSetpType()==2){
+						num++;
+						%>
+						<div class="copy2">
+							<div class="row">
+								<div class="col-lg-3">
+									<div class="form-group">
+										<label class="col-sm-4 control-label"><%=num%>、 </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control" value="<%=taskSetps.get(i).getContent()%>" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<%
+					}
+				}%>
+				
+			</div>
+			<hr align="center" width="50%" style="color:#333333;">
+			<span>细则（添加超链接，打开新页面）</span>
+			<a href="javascript:void(0);" class="fl add" id="setpadd3">添加</a>
+			<a href="javascript:void(0);" class="fl del" id="setpdel3">删除</a> 
+			<div class="orderBox dn" id="setpbox3" >
+			<table class="table table-striped table-bordered table-hover dataTables-example" style="width:40%;">
+				<thead>
+					<tr><th>序号</th><th>链接文字</th><th>链接地址</th><th>操作</th></tr>
+				</thead>
+				<tbody>
+				<%num=0;
+				for(int i=0;i<taskSetps.size();i++)
+				{ 
+					if(taskSetps.get(i).getSetpType()==3){
+						num++;
+						%>
+						<tr class="copy3">
+						<td><label><%=num%></label></td>
+						<td><input type="text"  style="width:200px;" class="eltitle" value="<%=taskSetps.get(i).getLinkTitle()%>"></td>
+						<td><input type="text"  style="width:200px;" class="elurl" value="<%=taskSetps.get(i).getContent()%>"></td>
+						<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a><a href="javascript:void(0)" >新建页面</a></td>
+						</tr>
+						<%
+					}
+				}%>
+				</tbody>
+			</table>
+			</div>
 		</fieldset>
-		<fieldset>
+			 <% 
+		}%>
+		
+		<%if(taskID==0)
+		{
+			%>
+			<fieldset>
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
 				<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
@@ -221,6 +329,84 @@ String city_region = (String) request.getAttribute("city_region");
 			<a href="javascript:void(0);"  id="addimggroup">添加图片组</a>
 			<a href="javascript:void(0);"  id="addmoreimggroup">添加多图组</a>
 		</fieldset>
+			<%
+		}
+		else{
+			%>
+			<fieldset>
+			<legend>提交审核模板</legend>
+			<div id="templateBox">
+				<% int num2=0; 
+				for(int i=0;i<groups.size();i++)
+				{	num2++;
+					if(groups.get(i).getGroupType()==1)
+					{
+						%>
+						<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
+							<label class="boxno"><%=num2%>.</label><span>文本组标题:</span><input type="text" value="<%=groups.get(i).getTitle()%>" class="cltxt">
+							<a href="javascript:void(0);" onclick="addTxtControl(this)">添加文本控件</a>
+							<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> 
+							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本组</a>	
+							<div class="textGroup">
+								<% 
+									for(int j=0;j<groups.get(i).getTemplateList().size();j++)
+									{
+										%>
+											<div class="textitem">
+											说明文本:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>">
+											默认值:<input type="text" class="cldefval" value="<%=groups.get(i).getTemplateList().get(j).getDefaultValue()%>">
+											</div>
+										<%
+									}
+								%>
+								
+							</div>
+						</div>
+						<%
+					}
+					else if (groups.get(i).getGroupType()==2)
+					{
+						%>
+						<div class="templateGroupImg template"  style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
+							<label class="boxno"><%=num2%>.</label><span>图片组标题</span><input type="text" value="<%=groups.get(i).getTitle()%>"  class="climg">
+							<a href="javascript:void(0);" onclick="addImgControl(this)" >添加图片控件</a>
+							<a href="javascript:void(0);" onclick="delImgControl(this)" >删除图片控件</a>
+							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该图片组</a>
+							<div class="imgGroup">
+							<% 
+									for(int j=0;j<groups.get(i).getTemplateList().size();j++)
+									{
+										%>
+											<div class="imgitem">图片说明:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>"></div>
+										<%
+									}
+								%>
+							</div>
+						</div>
+						<%
+					}
+					else if (groups.get(i).getGroupType()==3)
+					{
+						%>		
+						<div class="templateGroupMoreImg template"  style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
+							<label class="boxno"><%=num2%>.</label><span>多图组标题</span><input type="text" value="多图组标题" class="clmoreimg" value="<%=groups.get(i).getTitle()%>">
+							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该多图组</a>
+							<div class="imgGroup">
+								<div class="imgitemnum">图片数量:<input type="text" class="imgitemnumn" value="<%=groups.get(i).getTemplateList().size()%>"></div>
+							</div>
+						</div>
+						<%
+					}
+				}%>
+
+			</div>
+			<a href="javascript:void(0);"  id="addtxtgroup">添加文本组</a>
+			<a href="javascript:void(0);"  id="addimggroup">添加图片组</a>
+			<a href="javascript:void(0);"  id="addmoreimggroup">添加多图组</a>
+		</fieldset>
+			<%
+			}%>
+		
 		<fieldset>
 			<legend>关联设置</legend>
 			<div class="row">
@@ -235,22 +421,6 @@ String city_region = (String) request.getAttribute("city_region");
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label class="col-sm-4 control-label">当前账户余额: </label>
-								<div class="col-sm-8">
-									<label class="control-label" id="businessBalance">0元</label>
-								</div>
-							</div>
-						</div>
-<!-- 						<div class="col-lg-3"> -->
-<!-- 							<div class="form-group"> -->
-<!-- 								<label class="col-sm-4 control-label">合同模板: </label> -->
-<!-- 								<div class="col-sm-8"> -->
-<!-- 									<select id="snapshotTemplateId" name="snapshotTemplateId"  class='form-control m-b'></select> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 					</div>
 					<div class="row">
 					<div class="col-lg-5">
@@ -302,7 +472,6 @@ String city_region = (String) request.getAttribute("city_region");
 		</div>
 	</form> 
 	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> 
-	<input type="hidden" id="city_region" value="<%=city_region %>" />
 </div>
 <div tabindex="-1" class="modal inmodal" id="alertbox" role="dialog" aria-hidden="true" style="display: none;">	
 	
@@ -333,6 +502,34 @@ String city_region = (String) request.getAttribute("city_region");
 	<small class="font-bold"> </small>	
 </div>
 <script>  
+//省市联动
+$('#provinceCode').on('change',function(){
+	 try{  
+	        var pro=$(this).val();  
+	        var pro_city=$("#pro_city").val().split("#");
+	        
+	        var i,j,tmpprocity=new Array();  
+	        var tmpkeyvalue=new Array();  
+	        for(i=0;i<pro_city.length;i++){
+	        	tmpcity=pro_city[i].split("=");
+	            if(pro==tmpcity[0]){  
+	                tmpcity=tmpcity[1].split(";");  
+	                $("#cityCode").html("<option value='-1'>全部城市</option>");  
+	                for(j=0;j<tmpcity.length;j++){  
+	                	tmpkeyvalue=tmpcity[j].split("|");
+	                    $("#cityCode").append("<option value='"+tmpkeyvalue[0]+"'>"+tmpkeyvalue[1]+"</option>");     
+	                }
+	                break;
+	            }  
+	        }
+	        $("#divregion").html(""); 
+	        $("#selectAll").prop("checked",false);
+	    }catch(e){  
+	        alert(e);     
+	    }  
+});
+
+   
 var article="";//选择文章对象
 var jss={
 		search:function(currentPage){
@@ -348,20 +545,19 @@ var jss={
 			});
 		}
 	}
-  var txtgroup="";
-  var imggroup="";
-  var moreimggroup="";
   $(document).ready(function() {
+	  //初始化时间控件
+	  $(' .input-group.date').datepicker({
+	        todayBtn: "linked",
+	        keyboardNavigation: false,
+	        forceParse: false,
+	        calendarWeeks: true,
+	        autoclose: true
+	    });
 		//添加步骤控件行
-		var add = $('.copy').clone(true);
-		var add2 = $('.copy2').clone(true);
-		var add3 = $('.copy3').clone(true);
-		txtgroup=$('.templateGroupText').clone(true);
-		imggroup=$('.templateGroupImg').clone(true);
-		moreimggroup=$('.templateGroupMoreImg').clone(true);
 		$("#setpadd").click(function() {
-			var clone = add.clone();
-			$('#setpbox').append(clone);
+			//var clone = add.clone();
+			$('#setpbox').append(add);
 			for(index=0;index<$('.copy').length;index++)
             {
             	$('.copy').eq(index).find('label').html('步骤' +  (index+1));
@@ -379,8 +575,8 @@ var jss={
 		});
 		//添加补充说明
 		$("#setpadd2").click(function() {
-			var clone = add2.clone();
-			$('#setpbox2').append(clone);
+			//var clone = add2.clone();
+			$('#setpbox2').append(add2);
 			for(index=0;index<$('.copy2').length;index++)
             {
             	$('.copy2').eq(index).find('label').html((index+1)+'、');
@@ -394,10 +590,12 @@ var jss={
 		});
 		//添加细则
 		$("#setpadd3").click(function() {
-			var clone = add3.clone();
-			$('#setpbox3tbody').append(clone);
+			//var clone = add3.clone();
+			$('#setpbox3 tbody').append(add3);
+			//console.log($('.copy3').length);
 			for(index=0;index<$('.copy3').length;index++)
             {
+				
             	$('.copy3').eq(index).find('td label').html((index+1));
             }
 		});
@@ -409,50 +607,23 @@ var jss={
 		});
 		//添加文本组
 		$('#addtxtgroup').click(function(){
-			var clone=txtgroup.clone()
-			$('#templateBox').append(clone);
+			//var clone=txtgroup.clone()
+			$('#templateBox').append(txtgroup);
 			orderByGroup();
 		});
 		//添加图片组
 		$('#addimggroup').click(function(){
-			var clone=imggroup.clone()
-			$('#templateBox').append(clone);
+			//var clone=imggroup.clone()
+			$('#templateBox').append(imggroup);
 			orderByGroup();
 		});
 		//添加多图组
 		$('#addmoreimggroup').click(function(){
-			var clone=moreimggroup.clone()
-			$('#templateBox').append(clone);
+			//var clone=moreimggroup.clone()
+			$('#templateBox').append(moreimggroup);
 			orderByGroup();
 		});
-	    $("#uploadify").uploadify({
-	     	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
-	        'uploader':'<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.swf',
-	        'script':'<%=UploadPath%>/Upload/UploadFile?uploadFrom=1',//后台处理的请求
-	        'cancelImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/cancel.png',
-	        'folder':'uploads',//您想将文件保存到的路径
-	        'queueID':'fileQueue',//与下面的id对应
-	        'queueSizeLimit':1,
-	        'wmode':'transparent',
-	        'fileDesc':'文件',    
-	    	'fileExt':'*.*', //控制可上传文件的扩展名，启用本项时需同时声明fileDesc
-	       	'auto':false,
-	        'multi':false,
-	        'simUploadLimit':1,
-	        'maxQueueSize': 1,
-	        'successTimeout':600,
-	         'buttonText':"BROWSER",
-	        'fileSizeLimit' : '2MB',
-	        onComplete: function (event, queueId, fileObj, response, data) {
-	            var jsonstr = JSON.parse(response);
-	             if(jsonstr.Status==1){
-	            	 var fileinfo=jsonstr.Result.OriginalName+"#"+jsonstr.Result.RelativePath+"#"+jsonstr.Result.FileUrl;
-	            	 appendAttachRow(fileinfo);
-	             }else{
-	            	 alert("上传失败");
-	             }
-	        }
-	    });
+	    
 	});
   //添加文本控件
   function addTxtControl(obj){
@@ -507,54 +678,22 @@ var jss={
 	  $('#alertbox').modal('show');
   }
   
-  //商家改版重新获余额
-function businessChange(){  
-	var templateList="<%=templatelist%>";
-	initSelectTemplate(templateList,null);
-	var paramaters={"businessId":$("#businessId").val()};
-	var url = "<%=basePath%>/taskmanage/getbusinessbanlance";
-	$.ajax({
-		type : 'POST',
-		url : url,
-		data : paramaters,
-		success : function(result) {
-			$("#businessBalance").html(result+"元");
-		}
-	});
-};
-
-
 function initFunction(){
 	 
 	$("#businessId").on("change",businessChange);
 	$("#businessId").change();
 }
-function realDeleteFiles(){
-	if(deleteFiles!=""){
-		var tempFiles=deleteFiles.split(";");
-		for(var i=0;i<tempFiles.length;i++){
-			var s=tempFiles[i].split("#");
-			var url = "<%=UploadPath%>/upload/deletefile?fileName="+s[1];
-			$.ajax({
-					type : 'POST',
-					url : url,
-					data : "",
-					success : function(result) {
-			            //alert(result.Status);
-					}
-			});
-		}
-	}
-}
+
 //构建任务对象参数
 function createTaskPar(){
 	var task=new Object();
+	task.id=$('#hdtaskid').val();
 	task.taskTitle=$('#taskTitle').val();
 	task.taskGeneralInfo=$('#taskGeneralInfo').val();
 	task.businessId=$('#businessId').val();
 	task.pusher=$('#businessId').find("option:selected").text();
 	task.beginTime=$('#beginDate').val()+" 00:00:00";
-	task.endTime=$('#endDate').val()+" 00:00:00";
+	task.endTime=$('#endDate').val()+" 23:59:59";
 	task.amount=$('#amount').val();
 	task.status=0;
 	task.auditCycle=$('#auditCycle').val();
@@ -643,6 +782,11 @@ function createGroupPar(){
 			TemplateGroup.groupType=3;
 			TemplateGroup.title=$(el).find('.clmoreimg').val();
 			var num=$(el).find('.imgitemnumn').val();
+			if(Number(num)>0){
+				num=Number(num);
+				}else{
+					num=0;
+				}
 			console.log(num);
 			var detailArr=new Array();
 			for(var nx=0;nx<num;nx++){
@@ -663,7 +807,11 @@ function createGroupPar(){
 }
 //保存任务
 function savetask(){
-	
+	//控件验证
+	var bl=CheckSave();
+	if(!bl){
+		return;
+	}
     var saveTaskReq=new Object();
     saveTaskReq.renRenTask=createTaskPar();
     saveTaskReq.taskSetps=createTaskSetpPar();
@@ -671,13 +819,7 @@ function savetask(){
     saveTaskReq.provinceCode=$('#provinceCode').val();
     saveTaskReq.cityCode=$('#cityCode').val();
     var json_data =JSON.stringify(saveTaskReq);
-	console.log(saveTaskReq);
-  return;
-// 	if(!validPage(true)){
-// 		return;
-// 	}
-	
-	//组建参数对象
+	//console.log(json_data);
 		var url = "<%=basePath%>/taskmanage/savetask";
 		$.ajax({
 					type : 'POST',
@@ -685,7 +827,6 @@ function savetask(){
 					data : {"data":json_data},
 					success : function(result) {
 						if (result > 0) {
-							realDeleteFiles();
 							alert("操作成功");
 							window.location.href = window.location.href;
 						} else {
@@ -693,12 +834,6 @@ function savetask(){
 						}
 					}
 		});
-
-//var url = "<%=basePath%>/taskmanage/savetask";
-// alert(json_data);
-// $.post(url,json_data,function(d){
-// 		alert(d);
-// });
 }
 
 </script>

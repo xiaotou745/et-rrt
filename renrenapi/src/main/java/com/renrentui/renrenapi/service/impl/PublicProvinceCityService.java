@@ -36,7 +36,10 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	
 
 	
-
+	/**
+	 * 获取所有开发省份 城市 区域
+	 * 
+	 */
 	@Override
 	public List<PublicProvinceCity> getOpenCityListFromRedis() {
 		List<PublicProvinceCity> listdata=redisService.get(RedissCacheKey.RR_PublicProvinceCity, List.class);
@@ -49,6 +52,9 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		}
 		return listdata;
 	}
+	/**
+	 * 根据级别获取开发城市数据
+	 */
 	@Override
 	public List<PublicProvinceCity> getOpenCityByJiBie(int jiBie)
 	{

@@ -88,4 +88,26 @@ public interface IRenRenTaskDao {
 	 * @return
 	 */
 	int addClienterCompleteCount(Long ctId);
+	/**
+	 * 清除任务下的步骤,控件,控件组,投放城市
+	 * 茹化肖
+	 * 2015年11月26日16:57:32
+	 * @param taskId
+	 * @return
+	 */
+	int clearTaskInfo(Long taskId);
+	/**
+	 * 修改任务更新任务信息
+	 * 茹化肖
+	 * 2015年11月26日16:58:14
+	 * @param task
+	 * @return
+	 */
+	int updateTaskInfo(RenRenTask task);
+	/**
+	 * 通过任务ID查询领取任务的骑士ID
+	 * @param taskId
+	 * @return
+	 */
+	List<Long> getClinerIdList(Long taskId);
 }

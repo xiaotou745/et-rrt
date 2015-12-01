@@ -69,23 +69,35 @@ public class TaskManageController {
 	 * @return
 	 */
 	@RequestMapping("newtask")
-	public ModelAndView newTask() {
+	public ModelAndView newTask(Long taskId) {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "任务管理");
 		model.addObject("currenttitle", "新建任务");
 		model.addObject("viewPath", "taskmanage/newtask");
+		if(taskId!=null&&taskId>0)
+		{//修改任务
+			//1.查询任务信息
+			//1获取任务信息
+			RenRenTask taskInfo=renRenTaskService.getTaskInfo(taskId);
+			if (taskInfo==null) {
+				throw new RuntimeException("id="+taskId+"的任务不存在");
+			}
+			//2.获取步骤信息
+			ArrayList<TaskSetp> taskSetps =renRenTaskService.getTaskSetps(taskId);
+			//3 获取控件信息
+			List<TemplateGroup> groups=renRenTaskService.getTemplateGroups(taskId);
+			model.addObject("taskSetps", taskSetps);
+			model.addObject("groups", groups);
+			model.addObject("taskInfo", taskInfo);
+			model.addObject("taskID", taskId);
+			
+		}
 		List<Business> datalist=businessService.getAllList();
 		model.addObject("businessData", datalist);
 		model.addObject("templatelist", getTemplateList());
-		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
-		
-		model.addObject("provincelist", getOpenCityByJiBie(list,2));
-		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,3);
-		model.addObject("pro_city", getCityStr(citylistlist));
-//		List<PublicProvinceCity> regionlist =getOpenCityByJiBie(list,3);
-//		String city_region=getCityStr(regionlist);
-		String city_region="";
-		model.addObject("city_region", city_region);
+		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
+		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
+		model.addObject("pro_city", getCityStr(citylistlist));//构建城市字符串
 		return model;
 	}
 
@@ -137,18 +149,18 @@ public class TaskManageController {
 
 		return resultBuilder.toString();
 	}
-	private List<PublicProvinceCity> getOpenCityByJiBie(List<PublicProvinceCity> list,int jiBie)
-	{
-		List<PublicProvinceCity> listnew = new ArrayList<PublicProvinceCity>();
-		for (PublicProvinceCity item : list) {
-			if (item.getJiBie() == jiBie) {
-				listnew.add(item);
-			}
-		}
-		return listnew;
-	}
+//	private List<PublicProvinceCity> getOpenCityByJiBie(List<PublicProvinceCity> list,int jiBie)
+//	{
+//		List<PublicProvinceCity> listnew = new ArrayList<PublicProvinceCity>();
+//		for (PublicProvinceCity item : list) {
+//			if (item.getJiBie() == jiBie) {
+//				listnew.add(item);
+//			}
+//		}
+//		return listnew;
+//	}
 	/**
-	 * 新建任务
+	 * 保存.修改
 	 * 茹化肖
 	 * 2015年11月16日11:13:58
 	 * @param request
@@ -159,9 +171,9 @@ public class TaskManageController {
 	 */
 	@RequestMapping("savetask")
 	@ResponseBody
-	public int saveTask(HttpServletRequest request,AesParameterReq asreq) {
+	public int saveTask(HttpServletRequest request,String data) {
 		
-		SaveTaskReq req=JsonUtil.str2obj(asreq.getData(),SaveTaskReq.class);
+		SaveTaskReq req=JsonUtil.str2obj(data,SaveTaskReq.class);
 		RenRenTask taskItem=req.getRenRenTask();
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
 		UserContext context=UserContext.getCurrentContext(request);
@@ -169,7 +181,6 @@ public class TaskManageController {
 		taskItem.setModifyName(context.getUserName());
 		List<Integer> regionCodes=getRegionCodeList(request,req);//获取城市信息
 		List<Attachment> attachments=null;//TODO 暂时将附件去掉
-		
 		return renRenTaskService.insert(req, regionCodes,attachments);
 	}
 	/**
@@ -237,7 +248,13 @@ public class TaskManageController {
 		model.addObject("listData", resp);
 		return model;
 	}
-
+	/**
+	 * 修改任务状态 (审核 取消.驳回,终止)
+	 * 
+	 * @param request
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("settaskstatus")
 	@ResponseBody
 	public int setTaskStatus(HttpServletRequest request,UpdateStatusReq req) {
@@ -274,28 +291,35 @@ public class TaskManageController {
 		model.addObject("groups", groups);
 		model.addObject("taskInfo", taskInfo);
 		//4 获取投放放范围
-		List<PublicProvinceCity> list = publicProvinceCityService.getOpenCityListFromRedis();
-		model.addObject("provincelist", getOpenCityByJiBie(list,1));
-		List<PublicProvinceCity> citylistlist =getOpenCityByJiBie(list,2);
+		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
+		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
 		model.addObject("pro_city", getCityStr(citylistlist));
-		List<PublicProvinceCity> regionlist =getOpenCityByJiBie(list,3);
-		model.addObject("city_region", getCityStr(regionlist));
 		return model;
 	}
-	@RequestMapping("updatetask")
-	@ResponseBody
-	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
-		taskItem.setPusher("");
-		taskItem.setStatus(TaskStatus.WaitAudit.value());
-		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
-		taskItem.setEndTime(ParseHelper.ToDate(endDate));
-		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
-		UserContext context=UserContext.getCurrentContext(request);
-		taskItem.setModifyName(context.getUserName());
-		List<Integer> regionCodes=getRegionCodeList(request,null);
-		List<Attachment> attachments=getAttachList(request);
-		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
-	}
+	
+	/**
+	 * 更新任务 .V1.0.2删除 茹化肖
+	 * 备注.任务修改和新建任务放在同一接口
+	 * @param request
+	 * @param taskItem
+	 * @param beginDate
+	 * @param endDate
+	 * @return
+	 */
+//	@RequestMapping("updatetask")
+//	@ResponseBody
+//	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
+//		taskItem.setPusher("");
+//		taskItem.setStatus(TaskStatus.WaitAudit.value());
+//		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
+//		taskItem.setEndTime(ParseHelper.ToDate(endDate));
+//		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
+//		UserContext context=UserContext.getCurrentContext(request);
+//		taskItem.setModifyName(context.getUserName());
+//		List<Integer> regionCodes=getRegionCodeList(request,null);
+//		List<Attachment> attachments=getAttachList(request);
+//		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
+//	}
 	@RequestMapping("getbusinessbanlance")
 	@ResponseBody
 	public String getBusinessBanlance(Long businessId){

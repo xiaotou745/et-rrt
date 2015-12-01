@@ -13,6 +13,7 @@ import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IRegionService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.RegionCode;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.RegionModel;
 import com.renrentui.renrenentity.domain.RegionModelFirstLetter;
@@ -26,10 +27,12 @@ public class RegionService implements IRegionService{
 	IPublicProvinceCityService iPublicProvinceCityService;
 	@Override
 	public HttpResultModel<RegionModel> getHotRegionAndAll(RegionReq req) {  
+		if (req.getVersion()==null||req.getVersion().trim().isEmpty()) {
+			return new HttpResultModel<RegionModel>().setCode(RegionCode.Version.value()).setMsg(RegionCode.Version.desc());
+		} 
 		String[] letter={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 		//返回给app的结果Model
-		RegionModel rModel = new RegionModel(); 
-		
+		RegionModel rModel = new RegionModel();  
 		String cityVersion = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Version,String.class);
 		if(cityVersion == null || cityVersion == ""){
 			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,"1.1"); //初始化

@@ -24,7 +24,16 @@ return getReadOnlySqlSessionUtil().selectList("ITaskMsgDao.getMyMsgList", req);
 
 	@Override
 	public int insert(TaskMsg record) {
-return getMasterSqlSessionUtil().insert("ITaskMsgDao.insert", record);
+		return getMasterSqlSessionUtil().insert("ITaskMsgDao.insert", record);
+	}
+	/**
+	 * 批量新增消息
+	 * 茹化肖
+	 * 2015年11月30日14:42:17
+	 */
+	@Override
+	public int insertList(List<TaskMsg> msgList) {
+		return getMasterSqlSessionUtil().insert("ITaskMsgDao.insertList", msgList);
 	}
 
 }

@@ -15,7 +15,9 @@ import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ser.impl.IndexedListSerializer;
 import com.renrentui.renrenapi.common.TransactionalRuntimeException;
+import com.renrentui.renrenapi.dao.impl.TaskMsgDao;
 import com.renrentui.renrenapi.dao.inter.IAttachmentDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
@@ -28,6 +30,7 @@ import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
 import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
 import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
+import com.renrentui.renrenapi.dao.inter.ITaskMsgDao;
 import com.renrentui.renrenapi.dao.inter.ITaskSetpDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateDetailDao;
@@ -61,6 +64,7 @@ import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.RenRenTaskLog;
 import com.renrentui.renrenentity.TaskCityRelation;
+import com.renrentui.renrenentity.TaskMsg;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.TemplateDetail;
 import com.renrentui.renrenentity.TemplateSnapshot;
@@ -131,6 +135,8 @@ public class RenRenTaskService implements IRenRenTaskService {
 	
 	@Autowired
 	private ITaskDatumDao taskDatumDao;
+	@Autowired
+	private ITaskMsgDao taskMsgDao;
 
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:00:35
@@ -348,8 +354,18 @@ public class RenRenTaskService implements IRenRenTaskService {
 	public int insert(SaveTaskReq taskreq, List<Integer> regionCodes,List<Attachment> attachments) {
 	    RenRenTask	task=taskreq.getRenRenTask();
 	    //1.插入任务信息
-	    int result = renRenTaskDao.insert(task);
-	    
+	    if(task.getId()>0)
+	    {
+	    	//清除任务下的步骤,控件,控件组,投放城市
+	    	renRenTaskDao.clearTaskInfo(task.getId());
+	    	//更新任务信息
+	    	renRenTaskDao.updateTaskInfo(task);
+	    }
+	    else {
+	    	 //插入任务信息
+	    	 int result = renRenTaskDao.insert(task);
+		}
+	   
 	    //2. 插入步骤信息
 	    ArrayList<TaskSetp> setplist=taskreq.getTaskSetps();
 	    for (int i = 0; i < setplist.size(); i++) {
@@ -382,65 +398,6 @@ public class RenRenTaskService implements IRenRenTaskService {
 		logRecord.setRemark(TaskOpType.NewTask.desc());
 		renRenTaskLogDao.insert(logRecord);
 	    return 1;
-	   
-	    //获取
-	    
-	    /*
-		BusinessBalance oldBalance = businessBalanceDao.selectByBusinessId(record.getBusinessId());
-		if (oldBalance == null) {
-			throw new TransactionalRuntimeException("没有找到id=" + record.getBusinessId()
-					+ "的商户的余额信息");
-		}
-		Double totalFee = record.getAmount() * record.getTaskTotalCount();
-		if (totalFee.compareTo(oldBalance.getBalance()) > 0) {
-			return -1;
-		}
-		// 一：将任务的模板的数据复制到模板快照表
-	    
-	    
-		TemplateSnapshotReq req = new TemplateSnapshotReq();
-		req.setTemplateId(record.getSnapshotTemplateId());
-		int snapshotResult = templateSnapshotDao.copySnapshot(req);
-		if (snapshotResult > 0) {
-			int detailSnapshotResult = templateDetailSnapshotDao
-					.copySnapshot(record.getSnapshotTemplateId(),
-							req.getTemplateSnapshotId());
-			if (detailSnapshotResult > 0) {
-				// 二：将任务的模板id设置为模板快照表的id，保存任务
-				record.setSnapshotTemplateId(req.getTemplateSnapshotId());
-				int result = renRenTaskDao.insert(record);
-				if (result > 0) {
-					// 三：保存任务的投放区域信息
-					List<TaskCityRelation> recordList = getCityRelationList(
-							record, regionCodes);
-					int relationResult = taskCityRelationDao
-							.insertList(recordList);
-					if (relationResult > 0) {
-						// 三：保存任务的附件信息
-						if (attachments != null && attachments.size() > 0) {
-							for (Attachment attachment : attachments) {
-								attachment.setTaskId(record.getId());
-							}
-							attachmentDao.insertList(attachments);
-						}
-						// 四：扣除商家余额
-						updateBusinessBalance(record.getId(),
-								record.getBusinessId(), (-1) * totalFee,
-								oldBalance.getBalance(),
-								BBalanceRecordType.ReleaseTask,
-								record.getCreateName());
-						// 五：记录任务的操作日志
-						RenRenTaskLog logRecord = new RenRenTaskLog();
-						logRecord.setRenrenTaskId(record.getId());
-						logRecord.setOptName(record.getCreateName());
-						logRecord.setOptType((short) TaskOpType.NewTask.value());
-						logRecord.setRemark(TaskOpType.NewTask.desc());
-						renRenTaskLogDao.insert(logRecord);
-					}
-				}
-			}
-		}
-		return snapshotResult;*/
 	}
 
 	private void updateBusinessBalance(Long taskId, Long businessId,
@@ -474,7 +431,12 @@ public class RenRenTaskService implements IRenRenTaskService {
 			PagedRenRenTaskReq req) {
 		return renRenTaskDao.getPagedRenRenTaskList(req);
 	}
-
+	/**
+	 * 任务列表(审核)
+	 * 茹化肖
+	 * 2015年11月27日10:10:34
+	 * 
+	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int setTaskStatus(UpdateStatusReq req) {
@@ -494,38 +456,68 @@ public class RenRenTaskService implements IRenRenTaskService {
 			opType = TaskOpType.Reject;
 		} else if (status == TaskStatus.Stop) {
 			opType = TaskOpType.Stop;
+			inserMsgList(req.getReocrdId());//给所有骑士发站内信
+			
+			
 		} else if (status == TaskStatus.Cancel) {
 			opType = TaskOpType.CancelTask;
-			RenRenTask oldTaskModel = renRenTaskDao.selectById(req
-					.getReocrdId());
-			BusinessBalance oldBalance = businessBalanceDao
-					.selectByBusinessId(oldTaskModel.getBusinessId());
-			if (oldBalance == null) {
-				throw new TransactionalRuntimeException("没有找到id="
-						+ oldTaskModel.getBusinessId() + "的商户的余额信息");
-			}
-			// 取消任务时，给商户还钱
-			Double totalFee = oldTaskModel.getAmount()
-					* oldTaskModel.getTaskTotalCount();
-			updateBusinessBalance(req.getReocrdId(),
-					oldTaskModel.getBusinessId(), totalFee,
-					oldBalance.getBalance(), BBalanceRecordType.CancelTask,
-					req.getUserName());
+			//V1.0.2需求.暂时和商户没有线上结算
+//			RenRenTask oldTaskModel = renRenTaskDao.selectById(req
+//					.getReocrdId());
+//			BusinessBalance oldBalance = businessBalanceDao
+//					.selectByBusinessId(oldTaskModel.getBusinessId());
+//			if (oldBalance == null) {
+//				throw new TransactionalRuntimeException("没有找到id="
+//						+ oldTaskModel.getBusinessId() + "的商户的余额信息");
+//			}
+//			// 取消任务时，给商户还钱
+//			Double totalFee = oldTaskModel.getAmount()
+//					* oldTaskModel.getTaskTotalCount();
+//			updateBusinessBalance(req.getReocrdId(),
+//					oldTaskModel.getBusinessId(), totalFee,
+//					oldBalance.getBalance(), BBalanceRecordType.CancelTask,
+//					req.getUserName());
 		} else if (status == TaskStatus.HasSettlement) {
 			opType = TaskOpType.SettlementTask;
 		}
-
+		
 		logRecord.setOptType((short) opType.value());
 		logRecord.setRemark(opType.desc());
 		renRenTaskLogDao.insert(logRecord);
 		return result;
 	}
+	/**
+	 * 取消任务批量插入消息数据
+	 * @param list 骑士ID
+	 */
+	private void inserMsgList(Long taskID)
+	{
+		RenRenTask task=renRenTaskDao.selectById(taskID);
+		List<Long> list=renRenTaskDao.getClinerIdList(taskID);
+		List<TaskMsg> msgList=new ArrayList<TaskMsg> ();
+		for (int i = 0; i < list.size(); i++) {
+			TaskMsg itemMsg=new TaskMsg();
+			itemMsg.setClienterId(list.get(i));
+			itemMsg.setTaskId(task.getId());
+			itemMsg.setTitle("任务未过期但管理员手动终止");
+			itemMsg.setCreateName("admin");
+			itemMsg.setMsg("《"+task.getTaskTitle()+"》已经提前结束，您可以继续完成其他任务哦。如有疑问，请联系地推小管家：010-57173598");
+			itemMsg.setMsgType(0);
+			msgList.add(itemMsg);
+			if(msgList.size()==50||i==list.size()-1)//集合满50个 或者已经没有批次 插入数据库
+			{
+				taskMsgDao.insertList(msgList);
+				msgList.clear();//插完数据库清空集合
+			}
+		}
+		
+	}
 
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
-		List<PublicProvinceCity> list=publicProvinceCityService.getOpenCityListFromRedis();
-		PublicProvinceCity city=list.stream().filter(t->t.getCode().intValue()==req.getCityCode()).findFirst().get();
-		req.setProvinceCode(city.getParentCode().longValue());
+		if (req.getCityCode()<=0||req.getProvinceCode()<=0||req.getUserId()<=0) {
+			return null;
+		}
 		return renRenTaskDao.getNewTaskList(req);
 	}
 
@@ -540,24 +532,35 @@ public class RenRenTaskService implements IRenRenTaskService {
  */
 	@Override
 	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
-		List<MyReceiveTask> result= renRenTaskDao.getMyReceivedTaskList(req);
-		for (MyReceiveTask myReceiveTask : result) {
-			if (myReceiveTask.getTaskType().equals(TaskType.ContractTask.desc())) {
-				switch (DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus())) {
-				case WaitAudit:
-					myReceiveTask.setAuditWaitNum(myReceiveTask.getAuditNum());
-					break;
-				case Audited:
-					myReceiveTask.setAuditPassNum(myReceiveTask.getAuditNum());
-					break;
-				case Refuse:
-					myReceiveTask.setAuditRefuseNum(myReceiveTask.getAuditNum());
-					break;
-				default:
-					break;
+		List<MyReceiveTask> result=new ArrayList<>();
+		List<MyReceiveTask> taskList= renRenTaskDao.getMyReceivedTaskList(req);
+		List<Long> taskIdList=taskList.stream().map(t->t.getTaskId()).distinct().collect(Collectors.toList());
+		for (Long taskId : taskIdList) {
+			List<MyReceiveTask> taskTempList=taskList.stream().filter(t->t.getTaskId()==taskId).collect(Collectors.toList());
+			MyReceiveTask tempTask=taskTempList.get(0);
+			for (MyReceiveTask myReceiveTask : taskTempList) {
+				if (myReceiveTask.getTaskType()==TaskType.ContractTask.value()) {
+					DatumAuditStatus datumAuditStatus=DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus());
+					if (datumAuditStatus!=null) {
+						switch (datumAuditStatus) {
+						case WaitAudit:
+							tempTask.setAuditWaitNum(myReceiveTask.getAuditNum());
+							break;
+						case Audited:
+							tempTask.setAuditPassNum(myReceiveTask.getAuditNum());
+							break;
+						case Refuse:
+							tempTask.setAuditRefuseNum(myReceiveTask.getAuditNum());
+							break;
+						default:
+							break;
+						}
+					}
 				}
 			}
+			result.add(tempTask);
 		}
+		
 		return result;
 	}
 
@@ -628,104 +631,109 @@ public class RenRenTaskService implements IRenRenTaskService {
 		}
 		return recordList;
 	}
-
-	@Override
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int updateTask(RenRenTask record, List<Integer> regionCodes,
-			List<Attachment> attachments) {
-		RenRenTask oldTaskModel = renRenTaskDao.selectById(record.getId());
-		if (oldTaskModel == null
-				|| (oldTaskModel.getStatus() != TaskStatus.Reject.value() && oldTaskModel
-						.getStatus() != TaskStatus.WaitAudit.value())) {
-			return -1;
-		}
-		BusinessBalance nowBalance = businessBalanceDao
-				.selectByBusinessId(record.getBusinessId());
-		if (nowBalance == null) {
-			throw new TransactionalRuntimeException("没有找到id=" + record.getBusinessId()
-					+ "的商户的余额信息");
-		}
-		Double oldTotalFee = oldTaskModel.getAmount()
-				* oldTaskModel.getTaskTotalCount();
-		Double totalFee = record.getAmount() * record.getTaskTotalCount();
-
-		if (record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
-			Double difFee = totalFee - oldTotalFee;
-			// 如果任务修改后，商户id没有变更,但是任务的费用增加了，则需要判断新增的费用是否小于商家余额
-			if (difFee.compareTo(0d) > 0
-					&& difFee.compareTo(nowBalance.getBalance()) > 0) {
-				return -1;
-			}
-		} else if (totalFee.compareTo(nowBalance.getBalance()) > 0) {
-			// 如果任务修改后，商户id变更了,需要判断变更后的商户的余额是否足够支付任务的费用
-			return -1;
-		}
-		StringBuilder sbRemark = new StringBuilder();
-
-		// 如果任务的合同模板有变更，则重新生成模板的快照
-		Long oldTemplateId = record.getSnapshotTemplateId();
-		String templateremark = updateTemplateSnapshot(record, oldTaskModel);
-		// 没有重新生成模板快照时，当前任务的模板快照id不变
-		if (oldTemplateId.equals(record.getSnapshotTemplateId())) {
-			record.setSnapshotTemplateId(oldTaskModel.getSnapshotTemplateId());
-		}
-		// 如果任务的属性或模板快照有变更，则更新db（在此之前必须先更新快照，否则模板id不对）
-		String taskRemark = getUpdateRemark(record, oldTaskModel);
-		if ((taskRemark != null && !taskRemark.isEmpty())
-				|| !record.getSnapshotTemplateId().equals(
-						oldTaskModel.getSnapshotTemplateId())) {
-			int result = renRenTaskDao.update(record);
-			if (result == 0) {
-				throw new TransactionalRuntimeException("更新任务基础信息时失败");
-			}
-			sbRemark.append(taskRemark);
-		}
-		if (templateremark != null && !templateremark.isEmpty()) {
-			sbRemark.append(templateremark);
-		}
-		// 如果任务的附件有变更，则重新保存附件信息
-		String attachRemark = updateAttachment(record, attachments);
-		if (attachRemark != null && !attachRemark.isEmpty()) {
-			sbRemark.append(attachRemark);
-		}
-		// //如果任务的投放范围有变更，则重新投放范围信息
-		String regionRemark = updateRegion(record, regionCodes);
-		if (regionRemark != null && !regionRemark.isEmpty()) {
-			sbRemark.append(regionRemark);
-		}
-		// 商家id发生了变更，则需要将钱返回给原来的商家
-		if (!record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
-			BusinessBalance oldBalance = businessBalanceDao
-					.selectByBusinessId(oldTaskModel.getBusinessId());
-			if (oldBalance == null) {
-				throw new TransactionalRuntimeException("没有找到id="
-						+ oldTaskModel.getBusinessId() + "的商户的余额信息");
-			}
-			updateBusinessBalance(record.getId(), oldTaskModel.getBusinessId(),
-					oldTotalFee, oldBalance.getBalance(),
-					BBalanceRecordType.CancelTask, record.getModifyName());
-			// 扣除当前商家的余额
-			updateBusinessBalance(record.getId(), record.getBusinessId(), (-1)
-					* totalFee, nowBalance.getBalance(),
-					BBalanceRecordType.ReleaseTask, record.getModifyName());
-		} else if (!oldTotalFee.equals(totalFee)) {
-			// 商家id没变，但是任务的费用发生了变化，则对商户多退少补
-			updateBusinessBalance(record.getId(), record.getBusinessId(),
-					oldTotalFee - totalFee, nowBalance.getBalance(),
-					BBalanceRecordType.UpdateTask, record.getModifyName());
-		}
-		// 记录操作日志
-		if (!sbRemark.toString().isEmpty()) {
-			RenRenTaskLog logRecord = new RenRenTaskLog();
-			logRecord.setRenrenTaskId(record.getId());
-			logRecord.setOptName(record.getModifyName());
-			logRecord.setOptType((short) TaskOpType.Modify.value());
-			logRecord.setRemark(sbRemark.toString());
-			renRenTaskLogDao.insert(logRecord);
-		}
-
-		return 1;
-	}
+	/***
+	 * 修改任务.
+	 * V1.0.2需求删除
+	 * 备注:茹化肖将修改任务和新建任务放在一起
+	 * 
+	 */
+//	@Override
+//	@Transactional(rollbackFor = Exception.class, timeout = 30)
+//	public int updateTask(RenRenTask record, List<Integer> regionCodes,
+//			List<Attachment> attachments) {
+//		RenRenTask oldTaskModel = renRenTaskDao.selectById(record.getId());
+//		if (oldTaskModel == null
+//				|| (oldTaskModel.getStatus() != TaskStatus.Reject.value() && oldTaskModel
+//						.getStatus() != TaskStatus.WaitAudit.value())) {
+//			return -1;
+//		}
+//		BusinessBalance nowBalance = businessBalanceDao
+//				.selectByBusinessId(record.getBusinessId());
+//		if (nowBalance == null) {
+//			throw new TransactionalRuntimeException("没有找到id=" + record.getBusinessId()
+//					+ "的商户的余额信息");
+//		}
+//		Double oldTotalFee = oldTaskModel.getAmount()
+//				* oldTaskModel.getTaskTotalCount();
+//		Double totalFee = record.getAmount() * record.getTaskTotalCount();
+//
+//		if (record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
+//			Double difFee = totalFee - oldTotalFee;
+//			// 如果任务修改后，商户id没有变更,但是任务的费用增加了，则需要判断新增的费用是否小于商家余额
+//			if (difFee.compareTo(0d) > 0
+//					&& difFee.compareTo(nowBalance.getBalance()) > 0) {
+//				return -1;
+//			}
+//		} else if (totalFee.compareTo(nowBalance.getBalance()) > 0) {
+//			// 如果任务修改后，商户id变更了,需要判断变更后的商户的余额是否足够支付任务的费用
+//			return -1;
+//		}
+//		StringBuilder sbRemark = new StringBuilder();
+//
+//		// 如果任务的合同模板有变更，则重新生成模板的快照
+//		Long oldTemplateId = record.getSnapshotTemplateId();
+//		String templateremark = updateTemplateSnapshot(record, oldTaskModel);
+//		// 没有重新生成模板快照时，当前任务的模板快照id不变
+//		if (oldTemplateId.equals(record.getSnapshotTemplateId())) {
+//			record.setSnapshotTemplateId(oldTaskModel.getSnapshotTemplateId());
+//		}
+//		// 如果任务的属性或模板快照有变更，则更新db（在此之前必须先更新快照，否则模板id不对）
+//		String taskRemark = getUpdateRemark(record, oldTaskModel);
+//		if ((taskRemark != null && !taskRemark.isEmpty())
+//				|| !record.getSnapshotTemplateId().equals(
+//						oldTaskModel.getSnapshotTemplateId())) {
+//			int result = renRenTaskDao.update(record);
+//			if (result == 0) {
+//				throw new TransactionalRuntimeException("更新任务基础信息时失败");
+//			}
+//			sbRemark.append(taskRemark);
+//		}
+//		if (templateremark != null && !templateremark.isEmpty()) {
+//			sbRemark.append(templateremark);
+//		}
+//		// 如果任务的附件有变更，则重新保存附件信息
+//		String attachRemark = updateAttachment(record, attachments);
+//		if (attachRemark != null && !attachRemark.isEmpty()) {
+//			sbRemark.append(attachRemark);
+//		}
+//		// //如果任务的投放范围有变更，则重新投放范围信息
+//		String regionRemark = updateRegion(record, regionCodes);
+//		if (regionRemark != null && !regionRemark.isEmpty()) {
+//			sbRemark.append(regionRemark);
+//		}
+//		// 商家id发生了变更，则需要将钱返回给原来的商家
+//		if (!record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
+//			BusinessBalance oldBalance = businessBalanceDao
+//					.selectByBusinessId(oldTaskModel.getBusinessId());
+//			if (oldBalance == null) {
+//				throw new TransactionalRuntimeException("没有找到id="
+//						+ oldTaskModel.getBusinessId() + "的商户的余额信息");
+//			}
+//			updateBusinessBalance(record.getId(), oldTaskModel.getBusinessId(),
+//					oldTotalFee, oldBalance.getBalance(),
+//					BBalanceRecordType.CancelTask, record.getModifyName());
+//			// 扣除当前商家的余额
+//			updateBusinessBalance(record.getId(), record.getBusinessId(), (-1)
+//					* totalFee, nowBalance.getBalance(),
+//					BBalanceRecordType.ReleaseTask, record.getModifyName());
+//		} else if (!oldTotalFee.equals(totalFee)) {
+//			// 商家id没变，但是任务的费用发生了变化，则对商户多退少补
+//			updateBusinessBalance(record.getId(), record.getBusinessId(),
+//					oldTotalFee - totalFee, nowBalance.getBalance(),
+//					BBalanceRecordType.UpdateTask, record.getModifyName());
+//		}
+//		// 记录操作日志
+//		if (!sbRemark.toString().isEmpty()) {
+//			RenRenTaskLog logRecord = new RenRenTaskLog();
+//			logRecord.setRenrenTaskId(record.getId());
+//			logRecord.setOptName(record.getModifyName());
+//			logRecord.setOptType((short) TaskOpType.Modify.value());
+//			logRecord.setRemark(sbRemark.toString());
+//			renRenTaskLogDao.insert(logRecord);
+//		}
+//
+//		return 1;
+//	}
 
 	private String updateRegion(RenRenTask record, List<Integer> regionCodes) {
 		boolean isExist = false;
@@ -766,98 +774,109 @@ public class RenRenTaskService implements IRenRenTaskService {
 		}
 		return sb.toString();
 	}
-
-	private String updateAttachment(RenRenTask record,
-			List<Attachment> attachments) {
-		if (attachments != null && attachments.size() > 0) {
-			for (Attachment attachment : attachments) {
-				attachment.setTaskId(record.getId());
-			}
-		}
-
-		boolean isExist = false;
-		StringBuilder sb = new StringBuilder();
-		List<Attachment> attachList = attachmentDao.selectByTaskId(record
-				.getId());
-
-		for (Attachment attach : attachments) {
-			isExist = false;
-			for (Attachment oldAttach : attachList) {
-				if (attach.getAttachUrl().equals(oldAttach.getAttachUrl())) {
-					isExist = true;
-					break;
-				}
-			}
-			if (!isExist) {
-				sb.append("附件新增了" + attach.getAttachmentName() + ",");
-			}
-		}
-		for (Attachment oldAttach : attachList) {
-			isExist = false;
-			for (Attachment attach : attachments) {
-				if (attach.getAttachUrl().equals(oldAttach.getAttachUrl())) {
-					isExist = true;
-					break;
-				}
-			}
-			if (!isExist) {
-				sb.append("附件删除了" + oldAttach.getAttachmentName() + ",");
-			}
-		}
-
-		if (!sb.toString().isEmpty()) {
-			attachmentDao.deleteByTaskId(record.getId());
-			attachmentDao.insertList(attachments);
-		}
-		return sb.toString();
-	}
-
-	private String updateTemplateSnapshot(RenRenTask record,
-			RenRenTask oldTaskmodel) {
-		String result = "";
-		boolean needReCreateSnapshot = false;
-		Long newTemplateId = record.getSnapshotTemplateId();
-		TemplateSnapshot oldSnapshotTemplate = templateSnapshotDao
-				.detailById(oldTaskmodel.getSnapshotTemplateId());
-		Template nowTemplate = templateDao.detail(newTemplateId);
-		if (oldSnapshotTemplate != null
-				&& oldSnapshotTemplate.getTemplateId().equals(newTemplateId)) {
-			if (nowTemplate.getLastOptTime().getTime() != oldSnapshotTemplate
-					.getLastOptTime().getTime()) {
-				needReCreateSnapshot = true;
-				result = "更新了合同模板;";
-			}
-		} else {
-			needReCreateSnapshot = true;
-			String oldName = "未知";
-			if (oldSnapshotTemplate != null) {
-				oldName = oldSnapshotTemplate.getTemplateName();
-			}
-			result = "合同模板从:" + oldName + "改为了:"
-					+ nowTemplate.getTemplateName() + ";";
-		}
-		if (needReCreateSnapshot) {
-			TemplateSnapshotReq req = new TemplateSnapshotReq();
-			req.setTemplateId(newTemplateId);
-			int snapshotResult = templateSnapshotDao.copySnapshot(req);
-			if (snapshotResult == 0) {
-				throw new TransactionalRuntimeException("生成任务的模板快照失败");
-			}
-			int detailSnapshotResult = templateDetailSnapshotDao.copySnapshot(
-					req.getTemplateId(), req.getTemplateSnapshotId());
-			if (detailSnapshotResult == 0) {
-				throw new TransactionalRuntimeException("生成任务的模板详情快照失败");
-			}
-			// 重新生成了模板的快照数据之后，才删除原来的模板快照数据
-			templateSnapshotDao
-					.deleteById(oldTaskmodel.getSnapshotTemplateId());
-			templateDetailSnapshotDao.deleteBySnapshotTemplateId(oldTaskmodel
-					.getSnapshotTemplateId());
-			// 将当前任务的模板id设置为模板快照表的id
-			record.setSnapshotTemplateId(req.getTemplateSnapshotId());
-		}
-		return result;
-	}
+	/**
+	 * 更新附件 V1.0.2删除
+	 * @param record
+	 * @param attachments
+	 * @return
+	 */
+//	private String updateAttachment(RenRenTask record,
+//			List<Attachment> attachments) {
+//		if (attachments != null && attachments.size() > 0) {
+//			for (Attachment attachment : attachments) {
+//				attachment.setTaskId(record.getId());
+//			}
+//		}
+//
+//		boolean isExist = false;
+//		StringBuilder sb = new StringBuilder();
+//		List<Attachment> attachList = attachmentDao.selectByTaskId(record
+//				.getId());
+//
+//		for (Attachment attach : attachments) {
+//			isExist = false;
+//			for (Attachment oldAttach : attachList) {
+//				if (attach.getAttachUrl().equals(oldAttach.getAttachUrl())) {
+//					isExist = true;
+//					break;
+//				}
+//			}
+//			if (!isExist) {
+//				sb.append("附件新增了" + attach.getAttachmentName() + ",");
+//			}
+//		}
+//		for (Attachment oldAttach : attachList) {
+//			isExist = false;
+//			for (Attachment attach : attachments) {
+//				if (attach.getAttachUrl().equals(oldAttach.getAttachUrl())) {
+//					isExist = true;
+//					break;
+//				}
+//			}
+//			if (!isExist) {
+//				sb.append("附件删除了" + oldAttach.getAttachmentName() + ",");
+//			}
+//		}
+//
+//		if (!sb.toString().isEmpty()) {
+//			attachmentDao.deleteByTaskId(record.getId());
+//			attachmentDao.insertList(attachments);
+//		}
+//		return sb.toString();
+//	}
+	/**
+	 * 更新模板快照
+	 * V1.0.2需求删除
+	 * @param record
+	 * @param oldTaskmodel
+	 * @return
+	 */
+//	private String updateTemplateSnapshot(RenRenTask record,
+//			RenRenTask oldTaskmodel) {
+//		String result = "";
+//		boolean needReCreateSnapshot = false;
+//		Long newTemplateId = record.getSnapshotTemplateId();
+//		TemplateSnapshot oldSnapshotTemplate = templateSnapshotDao
+//				.detailById(oldTaskmodel.getSnapshotTemplateId());
+//		Template nowTemplate = templateDao.detail(newTemplateId);
+//		if (oldSnapshotTemplate != null
+//				&& oldSnapshotTemplate.getTemplateId().equals(newTemplateId)) {
+//			if (nowTemplate.getLastOptTime().getTime() != oldSnapshotTemplate
+//					.getLastOptTime().getTime()) {
+//				needReCreateSnapshot = true;
+//				result = "更新了合同模板;";
+//			}
+//		} else {
+//			needReCreateSnapshot = true;
+//			String oldName = "未知";
+//			if (oldSnapshotTemplate != null) {
+//				oldName = oldSnapshotTemplate.getTemplateName();
+//			}
+//			result = "合同模板从:" + oldName + "改为了:"
+//					+ nowTemplate.getTemplateName() + ";";
+//		}
+//		if (needReCreateSnapshot) {
+//			TemplateSnapshotReq req = new TemplateSnapshotReq();
+//			req.setTemplateId(newTemplateId);
+//			int snapshotResult = templateSnapshotDao.copySnapshot(req);
+//			if (snapshotResult == 0) {
+//				throw new TransactionalRuntimeException("生成任务的模板快照失败");
+//			}
+//			int detailSnapshotResult = templateDetailSnapshotDao.copySnapshot(
+//					req.getTemplateId(), req.getTemplateSnapshotId());
+//			if (detailSnapshotResult == 0) {
+//				throw new TransactionalRuntimeException("生成任务的模板详情快照失败");
+//			}
+//			// 重新生成了模板的快照数据之后，才删除原来的模板快照数据
+//			templateSnapshotDao
+//					.deleteById(oldTaskmodel.getSnapshotTemplateId());
+//			templateDetailSnapshotDao.deleteBySnapshotTemplateId(oldTaskmodel
+//					.getSnapshotTemplateId());
+//			// 将当前任务的模板id设置为模板快照表的id
+//			record.setSnapshotTemplateId(req.getTemplateSnapshotId());
+//		}
+//		return result;
+//	}
 
 	private String getUpdateRemark(RenRenTask record, RenRenTask oldModel) {
 		if (oldModel == null || record == null) {

@@ -183,10 +183,15 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 		var optype="";
 		switch(status){
 		case 1:optype="审核通过";
-		var end=endtime.replace(/-/g, "");
+		//var end=endtime.replace(/-/g, "");
+		var pageEnd=new Date(endtime);
+		var a=pageEnd.getFullYear()+"";
+		var b=(pageEnd.getMonth()+1)<10?("0"+(pageEnd.getMonth()+1)):(pageEnd.getMonth()+1)+"";
+		var c=pageEnd.getDate()<10?("0"+pageEnd.getDate()):pageEnd.getDate()+"";
+		var intEndDate=a+""+b+""+c;
 		var myDate = new Date();
-		var nowdate=myDate.getFullYear()+""+(myDate.getMonth()+1)+""+myDate.getDate();
-		if(parseInt(end)<parseInt(nowdate)){
+		var nowdate=myDate.getFullYear()+""+((myDate.getMonth()+1)<10?("0"+(myDate.getMonth()+1)):(myDate.getMonth()+1))+""+(myDate.getDate()<10?("0"+myDate.getDate()):myDate.getDate());
+		if(parseInt(intEndDate)<parseInt(nowdate)){
 			alert("任务已经过期，不能审核");
 			return;
 		}

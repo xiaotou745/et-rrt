@@ -10,22 +10,22 @@ import com.renrentui.renrenentity.Attachment;
 @Repository
 public class AttachmentDao extends DaoBase implements IAttachmentDao{
 
-	@Override
-	public int insertList(List<Attachment> recordList) {
-		return getMasterSqlSessionUtil().update(
-				"IAttachmentDao.insertList", recordList);
-	}
-
-	@Override
-	public List<Attachment> selectByTaskId(Long taskId) {
-		return getMasterSqlSessionUtil().selectList(
-				"IAttachmentDao.selectByTaskId", taskId);
-	}
-
-	@Override
-	public int deleteByTaskId(Long taskId) {
-		return getMasterSqlSessionUtil().delete(
-				"IAttachmentDao.deleteByTaskId", taskId);
-	}
+//	@Override
+//	public int insertList(List<Attachment> recordList) {
+//		return getMasterSqlSessionUtil().update(
+//				"IAttachmentDao.insertList", recordList);
+//	}
+//
+//	@Override
+//	public List<Attachment> selectByTaskId(Long taskId) {
+//		return getMasterSqlSessionUtil().selectList(
+//				"IAttachmentDao.selectByTaskId", taskId);
+//	}
+//
+//	@Override
+//	public int deleteByTaskId(Long taskId) {
+//		return getMasterSqlSessionUtil().delete(
+//				"IAttachmentDao.deleteByTaskId", taskId);
+//	}
 
 }

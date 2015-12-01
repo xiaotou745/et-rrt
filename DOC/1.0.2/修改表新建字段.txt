@@ -1,0 +1,39 @@
+
+--任务表添加一个咨询电话
+USE RenRenDB
+alter table dbo.RenRenTask add HotLine NVARCHAR(50) NOT NULL default('') 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'咨询电话' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'HotLine'
+GO
+alter table dbo.RenRenTask add TaskType int NOT NULL default(1) 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'任务类别 默认1 签约任务 2 分享任务 3 下载任务' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'TaskType'
+GO
+--模板详情添加一个组ID
+USE RenRenDB
+alter table dbo.TemplateDetail add TemplateGroupId BIGINT NOT NULL default(0) 
+
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'模板组ID' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'TemplateDetail', 
+  @level2type=N'COLUMN',
+  @level2name=N'TemplateGroupId'
+GO

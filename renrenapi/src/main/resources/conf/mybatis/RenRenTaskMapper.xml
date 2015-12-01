@@ -43,8 +43,8 @@
        getdate(),
        #{modifyName,jdbcType=NVARCHAR},
         getdate(),
-      #{beginTime,jdbcType=TIMESTAMP},
-       #{endTime,jdbcType=TIMESTAMP}, 
+      #{beginTime},
+       #{endTime}, 
       #{amount,jdbcType=DECIMAL}, 
       #{status,jdbcType=INTEGER},
       #{auditCycle,jdbcType=BIGINT}, 
@@ -63,7 +63,8 @@ SELECT TOP 1  rrt.id,
         EndTime ,
         HotLine,
         CASE WHEN ct.id is NULL THEN 0 ELSE 1 END AS IsHad,
-        ISNULL(ct.id,0) AS CtId
+        ISNULL(ct.id,0) AS CtId,
+        rrt.pusher
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
         JOIN dbo.Business AS b ( NOLOCK ) ON rrt.BusinessId = b.id
         LEFT JOIN dbo.ClienterTask AS ct ON ct.TaskId=rrt.id AND ct.ClienterId=${userId}
@@ -156,9 +157,6 @@ UPDATE dbo.RenRenTask SET AvailableCount=AvailableCount-1
       <if test="userName != null and userName!=''" >
        modifyName=#{userName,jdbcType=NVARCHAR},modifyTime=getdate(),
       </if>
-      <if test="status != null and status==1" >
-        pusher=#{userName,jdbcType=NVARCHAR},
-      </if>
     </set>
      where Id = #{reocrdId,jdbcType=BIGINT} and status=#{oldStatus,jdbcType=BIGINT}
   </update>
@@ -219,8 +217,8 @@ select
 	mt.tasktype,
 	mt.amount,
 	mt.logo,
-	mb.auditStatus ,
-	mb.auditNum,
+	isnull(mb.auditStatus,0) as  auditStatus,
+	isnull(mb.auditNum,0) as  auditNum,
 	CASE mt.TaskType
 	  WHEN 1 THEN 0
 	  ELSE mt.CompleteNum
@@ -427,4 +425,36 @@ ELSE
   <update id="addClienterCompleteCount" parameterType="java.lang.Long">
   UPDATE ClienterTask SET CompleteNum=(CompleteNum+1) WHERE id=#{ctId,jdbcType=BIGINT}
   </update>
+  <!-- 修改任务删除任务下的信息 茹化肖 2015年11月26日17:01:15 -->
+  <delete id="clearTaskInfo" parameterType="java.lang.Long">
+  DELETE dbo.TemplateDetail  WHERE TemplateGroupId IN (
+	SELECT TemplateGroupId FROM dbo.TemplateGroup (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT})
+DELETE dbo.TemplateGroup WHERE TaskId=#{taskId,jdbcType=BIGINT}
+DELETE dbo.TaskSetp WHERE TaskId=#{taskId,jdbcType=BIGINT}
+DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
+  
+  </delete>
+  
+    <!-- 修改任务 更新任务信息 -->
+  <update id="updateTaskInfo" parameterType="com.renrentui.renrenentity.RenRenTask">
+  UPDATE dbo.RenRenTask	SET
+	  TaskTitle= #{taskTitle,jdbcType=NVARCHAR},
+      TaskGeneralInfo=#{taskGeneralInfo,jdbcType=NVARCHAR},
+      BusinessId=#{businessId,jdbcType=BIGINT}, 
+      Pusher=#{pusher,jdbcType=NVARCHAR}, 
+      ModifyName= #{modifyName,jdbcType=NVARCHAR}, 
+      ModifyTime=getdate(),
+      BeginTime= #{beginTime,jdbcType=TIMESTAMP},
+      EndTime= #{endTime,jdbcType=TIMESTAMP}, 
+      Amount=#{amount,jdbcType=DECIMAL},
+      status=#{status,jdbcType=INTEGER}, 
+      AuditCycle=#{auditCycle,jdbcType=BIGINT}, 
+      HotLine=#{hotLine,jdbcType=NVARCHAR},
+      TaskType=#{taskType,jdbcType=INTEGER}
+      WHERE id=#{id,jdbcType=BIGINT}
+  </update>
+  <!--  获取任务下面所有骑士ID -->
+  <select id="getClinerIdList" parameterType="java.lang.Long" resultType="java.lang.Long">
+  SELECT ClienterId FROM dbo.ClienterTask AS ct (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT}
+  </select>
 </mapper>

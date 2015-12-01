@@ -3,56 +3,41 @@ package com.renrentui.renrenentity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.renrentui.renrencore.enums.TaskType;
+
 public class RenRenTask {
-    private Long id;
-
-    private String taskTitle;
-
     private String taskNotice;
-
-    private String taskGeneralInfo;
-
     private Long businessId;
-
     private String pusher;
-
     private String createName;
-
     private Date createTime;
-
     private String modifyName;
-
     private Date modifyTime;
-
     private Date beginTime;
-
-    private Date endTime;
-
-    private Integer taskCycle;
-
     private Integer availableCount;
-
-    private Double amount;
-
-    private Integer status;
-
     private Integer taskTotalCount;
-
     private Long snapshotTemplateId;
     private String link;
-
     private Short paymentMethod;
-    private Integer auditCycle;
-
     private String taskNote;
     private Long targetPeople;
     private String companySummary;
+    private Integer status;
+    private Integer taskCycle;
+    
+    private Long id;
+    private String taskTitle;
+    private String taskGeneralInfo;
+    private Date endTime;
+    private Double amount;
+    private Integer auditCycle;
     private String hotLine;
     private Integer taskType;
+    private String taskTypeName;
     private String logo;
     private Integer isHad;
     private Long ctId;
-
 	public Long getCtId() {
 		return ctId;
 	}
@@ -295,5 +280,13 @@ public class RenRenTask {
 	 */
 	public void setSnapshotTemplateId(Long snapshotTemplateId) {
 		this.snapshotTemplateId = snapshotTemplateId;
+	}
+
+	public String getTaskTypeName() {
+		return TaskType.getEnum(taskType.intValue()).desc();
+	}
+
+	public void setTaskTypeName(String taskTypeName) {
+		this.taskTypeName = taskTypeName;
 	} 
 }

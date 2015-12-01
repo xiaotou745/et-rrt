@@ -1,0 +1,54 @@
+USE [RenRenDB]
+GO
+
+/****** Object:  Table [dbo].[TaskSetp]    Script Date: 11/30/2015 11:44:06 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TaskSetp](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TaskId] [bigint] NOT NULL,
+	[LinkTitle] [nvarchar](100) NOT NULL,
+	[SortNo] [int] NOT NULL,
+	[SetpType] [int] NOT NULL,
+	[Content] [nvarchar](500) NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_TaskSetp] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'任务ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskSetp', @level2type=N'COLUMN',@level2name=N'TaskId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'链接文本(SetpType=3才有用)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskSetp', @level2type=N'COLUMN',@level2name=N'LinkTitle'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'排序编号' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskSetp', @level2type=N'COLUMN',@level2name=N'SortNo'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'类型 1 步骤 2 补充说明 3 细则(URL链接)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskSetp', @level2type=N'COLUMN',@level2name=N'SetpType'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'具体内容 setpType为 1 或者2 时,是文本内容 为3 时  是链接地址Url' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskSetp', @level2type=N'COLUMN',@level2name=N'Content'
+GO
+
+ALTER TABLE [dbo].[TaskSetp] ADD  CONSTRAINT [DF_TaskSetp_LinkTitle]  DEFAULT ('') FOR [LinkTitle]
+GO
+
+ALTER TABLE [dbo].[TaskSetp] ADD  CONSTRAINT [DF_TaskSetp_SetpType]  DEFAULT ((1)) FOR [SetpType]
+GO
+
+ALTER TABLE [dbo].[TaskSetp] ADD  CONSTRAINT [DF_Table_1_Content]  DEFAULT ('') FOR [Content]
+GO
+
+ALTER TABLE [dbo].[TaskSetp] ADD  CONSTRAINT [DF_TaskSetp_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+

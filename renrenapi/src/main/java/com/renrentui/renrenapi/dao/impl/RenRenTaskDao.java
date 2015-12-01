@@ -208,6 +208,31 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	public int addClienterCompleteCount(Long ctId) {
 		return getMasterSqlSessionUtil().update("IRenRenTaskDao.addClienterCompleteCount", ctId);
 	}
+	/**
+	 * 清除任务下的步骤,控件,控件组,投放城市
+	 * 茹化肖
+	 * 2015年11月26日16:58:47
+	 */
+	@Override
+	public int clearTaskInfo(Long taskId) {
+		return getMasterSqlSessionUtil().delete("IRenRenTaskDao.clearTaskInfo", taskId);
+	}
+	/**
+	 * 修改任务更新任务信息
+	 * 茹化肖
+	 * 2015年11月26日16:59:57
+	 */
+	@Override
+	public int updateTaskInfo(RenRenTask task) {
+		return getMasterSqlSessionUtil().delete("IRenRenTaskDao.updateTaskInfo", task);
+	}
+	/**
+	 * 获取任务下面所有骑士ID
+	 */
+	@Override
+	public List<Long> getClinerIdList(Long taskId) {
+		return getMasterSqlSessionUtil().selectList("IRenRenTaskDao.getClinerIdList", taskId);
+	}
 	
 	
 }

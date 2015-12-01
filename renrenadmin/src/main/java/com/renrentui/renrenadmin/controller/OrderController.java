@@ -8,10 +8,18 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,14 +28,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IOrderService;
+import com.renrentui.renrenapi.service.inter.ITaskDatumService;
+import com.renrentui.renrencore.util.HttpRequestUtil;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.OrderChildInfoModel;
+import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.CancelOrderReq;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 
 
 @Controller
@@ -35,6 +48,8 @@ import com.renrentui.renrenentity.req.PagedAuditorderReq;
 public class OrderController {
 	@Autowired
 	private IOrderService orderService;
+	@Autowired
+	private ITaskDatumService taskDatumService;
 	/**
 	 * 订单管理页面 
 	 * @author 茹化肖
@@ -103,10 +118,12 @@ public class OrderController {
 	 * @return	
 	 */	
 	@RequestMapping("orderchildInfo")
-	public ModelAndView getorderchiid(OrderChildReq req)  {			
-		OrderChildInfoModel model=orderService.getOrderChildInfo(req);
+	public ModelAndView getorderchiid(TaskDatumDetailReq req,String tag,String name)  {			
+		TemplateInfo model=taskDatumService.getTaskDatumDetail(req);
 		ModelAndView view = new ModelAndView("ordermanage/orderchildinfo");		
 		view.addObject("listData", model);
+		view.addObject("Tag", tag);
+		view.addObject("Name", name);
 		return view;		
 	}
 	
@@ -116,16 +133,25 @@ public class OrderController {
 	 * @Date 2015年9月29日 11:17:53
 	 * @param search 查询条件实体
 	 * @return	
+	 * @throws Exception 
 	 */	
 	@RequestMapping("orderdownload")
-	public HttpServletResponse  orderdownload(OrderChildReq req,HttpServletResponse response)  {			
+	@ResponseBody
+	public void  orderdownload(TaskDatumDetailReq req,HttpServletResponse response,HttpServletRequest request,String name) throws Exception  {			
 		 try {
-	            String contentString=orderService.downLoadOrderInfo(req);
+			 	String url=PropertyUtils.getProperty("java.renrenadmin.url")+"/ordermanage/orderchildInfo";
+			 	Map<String, String> map=new HashMap<String, String>();
+			 	map.put("userId", req.getUserId()+"");
+			 	map.put("taskId", req.getTaskId()+"");
+			 	map.put("taskDatumId", req.getTaskDatumId()+"");
+			 	map.put("tag","1");
+			 	map.put("name",name);
+			 	List<Cookie> Cookies=new ArrayList<Cookie>();
+			 	Collections.addAll(Cookies, request.getCookies());
+	            String contentString=HttpRequestUtil.httpRequestPost(url, map,Cookies).getHttpResponseText();
 	            ByteArrayInputStream tInputStringStream = new ByteArrayInputStream(contentString.getBytes("utf-8"));
-	            String filename = "OrderInfo_"+req.getOrderId()+".html";
+	            String filename = "OrderInfo_"+req.getTaskDatumId()+".html";
 	            String ext = filename.substring(filename.lastIndexOf(".") + 1).toUpperCase();
-	           
-	            
 	            InputStream fis = tInputStringStream;
 	            byte[] buffer = new byte[fis.available()];
 	            fis.read(buffer);
@@ -141,7 +167,6 @@ public class OrderController {
 	            toClient.close();
 	        } catch (IOException ex) {
 	            ex.printStackTrace();
-	        }
-	        return response;		
+	        }		
 	}
 }

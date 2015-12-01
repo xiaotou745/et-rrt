@@ -46,18 +46,9 @@ public interface ITaskService {
 	@POST
 	@Path("/gettask")
 	 public HttpResultModel<Object> getTask(TaskDatumDetailReq req);
-	/**
-	 * 取消任务接口
-	 * @author 茹化肖
-	 * @date 2015年9月28日10:18:57
-	 * @return
-	 */
-	@POST
-	@Path("/canceltask")
-	 public HttpResultModel<Object> cancelTask(CancelTaskReq req);
 	
 	/**
-	 * 提交任务接口
+	 * 骑士提交资料接口
 	 * @author 茹化肖
 	 * @date 2015年9月28日10:18:57
 	 * @return

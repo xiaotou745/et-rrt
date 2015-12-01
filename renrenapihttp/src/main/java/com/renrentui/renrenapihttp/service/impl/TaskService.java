@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
@@ -16,6 +17,7 @@ import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrencore.enums.TaskDetailCode;
 import com.renrentui.renrencore.enums.TaskStatus;
+import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -35,7 +37,9 @@ import com.renrentui.renrenentity.req.TaskReq;
 @Service
 public class TaskService implements ITaskService{
 	@Autowired
-	IRenRenTaskService rrTaskServcie;
+	private IRenRenTaskService rrTaskServcie;
+	@Autowired
+	private IPublicProvinceCityService publicProvinceCityService;
 	/**
 	 * C端任务详情接口
 	 */
@@ -64,19 +68,7 @@ public class TaskService implements ITaskService{
 		return new HttpResultModel<Object>().setCode(code.getCode().value()).setMsg(code.getCode().desc());
 	}
 	/**
-	 * 取消任务接口
-	 */
-	@Override
-	public HttpResultModel<Object> cancelTask(CancelTaskReq req) {
-		if(req.getOrderId()==null||req.getOrderId()<=0)
-			return new HttpResultModel<Object>().setCode(CancelTaskCode.OrderIdErr.value()).setMsg(CancelTaskCode.OrderIdErr.desc());
-		if(req.getUserId()==null||req.getUserId()<=0)
-			return new HttpResultModel<Object>().setCode(CancelTaskCode.UserIdErr.value()).setMsg(CancelTaskCode.UserIdErr.desc());
-		CancelTaskCode code=rrTaskServcie.cancelTask(req);
-		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
-	}
-	/**
-	 * 提交任务
+	 * 提交资料接口
 	 * 茹化肖
 	 * 2015年9月30日14:53:05
 	 */
@@ -106,6 +98,15 @@ public class TaskService implements ITaskService{
 			hrm.setCode(TaskCode.CityCode.value()).setMsg(TaskCode.CityCode.desc());			
 			return hrm;
 		}  
+		List<PublicProvinceCity> citylist=publicProvinceCityService.getOpenCityListFromRedis();
+		List<PublicProvinceCity> cityInfo=citylist.stream().filter(t->t.getCode().intValue()==req.getCityCode()).collect(Collectors.toList());
+		if (cityInfo.size()==0) {
+			hrm.setCode(TaskCode.CityCode.value()).setMsg(TaskCode.CityCode.desc());			
+			return hrm;
+		}
+		PublicProvinceCity city=cityInfo.get(0);
+		req.setProvinceCode(city.getParentCode().longValue());
+		
 		List<TaskModel> taskModelList= rrTaskServcie.getNewTaskList(req);
 		//int taskTotal = rrTaskServcie.getNewTaskTotal(req);
 		TabModel<TaskModel> td = new TabModel<TaskModel>();
@@ -128,10 +129,6 @@ public class TaskService implements ITaskService{
 		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
 		if(req.getUserId()<=0){
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
-			return hrm;
-		} 
-		if(req.getCityCode()<=0){
-			hrm.setCode(TaskCode.CityCode.value()).setMsg(TaskCode.CityCode.desc());			
 			return hrm;
 		} 
 		if(req.getTaskStatus()!=TaskStatus.Audited.value()&&

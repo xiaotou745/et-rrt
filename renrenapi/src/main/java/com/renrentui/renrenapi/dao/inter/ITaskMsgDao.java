@@ -30,4 +30,10 @@ public interface ITaskMsgDao {
 	 * @return
 	 */
 	int insert(TaskMsg record);
+	/**
+	 * 批量新增消息
+	 * @param msgList
+	 * @return
+	 */
+	int insertList(List<TaskMsg> msgList);
 }
