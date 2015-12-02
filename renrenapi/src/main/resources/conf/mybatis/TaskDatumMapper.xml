@@ -34,6 +34,20 @@ VALUES  ( ${taskDatumId} ,
           1 
         )
 </insert>
+ <!--  查询我的资料审核列表表头上每种状态的总数，zhaohl,20151125 -->
+  <select id="getMyTaskDatumListTotal" resultType="java.util.HashMap" parameterType="com.renrentui.renrenentity.req.TaskDatumReq" >
+	  
+  SELECT   	
+            a.status,
+            count(*) as totalNum
+  FROM      TaskDatum a
+            JOIN RenRenTask b ON a.TaskId = b.id
+  where a.ClienterId = ${userId} 
+  	<if test="taskId > 0" >
+	      AND a.TaskId = ${taskId}
+	</if>
+ group by a.Status
+  </select> 
  <!--  查询我的资料审核列表，zhaohl,20151125 -->
   <select id="getMyTaskDatumList" resultType="com.renrentui.renrenentity.domain.TaskDatumModel" parameterType="com.renrentui.renrenentity.req.TaskDatumReq" >
 	  

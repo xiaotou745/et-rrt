@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
@@ -12,6 +14,7 @@ import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.ITaskService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
+import com.renrentui.renrencore.enums.DatumAuditStatus;
 import com.renrentui.renrencore.enums.GetTaskCode;
 import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrencore.enums.TaskCode;
@@ -140,6 +143,19 @@ public class TaskService implements ITaskService{
 		TabModel<MyReceiveTask> td = new TabModel<MyReceiveTask>();
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
+		List<Map<String, Integer>> totalResult=rrTaskServcie.getMyReceivedTaskListTotal(req);
+		for (Map<String, Integer> map : totalResult) {
+			TaskStatus datumStatus=TaskStatus.getEnum(map.get("status"));
+			if (datumStatus==TaskStatus.Audited) {
+				td.setPassTotal(map.get("totalNum"));
+			}
+			else if(datumStatus==TaskStatus.Expired){
+				td.setRefuseTotal(td.getRefuseTotal()+map.get("totalNum"));
+			}
+			else if(datumStatus==TaskStatus.Stop){
+				td.setRefuseTotal(td.getRefuseTotal()+map.get("totalNum"));
+			}
+		}
 		if (req.getTaskStatus()==TaskStatus.Audited.value()) {
 			td.setTitle("进行中("+td.getCount()+")");
 		}

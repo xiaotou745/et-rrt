@@ -1,7 +1,10 @@
 package com.renrentui.renrenapihttp.service.impl;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +74,19 @@ public class DatumService implements IDatumService{
 		TabModel<TaskDatumModel> td = new TabModel<TaskDatumModel>();
 		td.setContent(result);
 		td.setCount(result.size());
+		List<Map<String, Integer>> totalResult=taskDatumService.getMyTaskDatumListTotal(req);
+		for (Map<String, Integer> map : totalResult) {
+			DatumAuditStatus datumStatus=DatumAuditStatus.getEnum(map.get("status"));
+			if (datumStatus==DatumAuditStatus.Audited) {
+				td.setPassTotal(map.get("totalNum"));
+			}
+			else if(datumStatus==DatumAuditStatus.WaitAudit){
+				td.setWaitTotal(map.get("totalNum"));
+			}
+			else if(datumStatus==DatumAuditStatus.Refuse){
+				td.setRefuseTotal(map.get("totalNum"));
+			}
+		}
 		if(result!=null && result.size()>0){
 			td.setNextId(result.get(result.size()-1).getTaskDatumId());
 		}

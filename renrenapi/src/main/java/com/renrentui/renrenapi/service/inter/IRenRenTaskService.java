@@ -23,8 +23,10 @@ import com.renrentui.renrenentity.RenRenTask;
 
 
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
@@ -77,8 +79,7 @@ public interface IRenRenTaskService {
 	 int getNewTaskTotal(TaskReq req); 
 
 	 List<MyReceiveTask> getMyReceivedTaskList(TaskReq req); 
-	 int getMyReceivedTaskListTotal(TaskReq req);
-
+	 List<Map<String, Integer>> getMyReceivedTaskListTotal(TaskReq req);
 
 	 List<TaskModel> getSubmittedTaskList(TaskReq req); 
 	 int getSubmittedTaskListTotal(TaskReq req);
