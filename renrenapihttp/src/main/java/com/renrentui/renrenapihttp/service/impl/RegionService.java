@@ -1,8 +1,12 @@
 package com.renrentui.renrenapihttp.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.print.attribute.standard.DateTimeAtCompleted;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IRegionService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.RegionCode;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.RegionModel;
@@ -35,8 +40,9 @@ public class RegionService implements IRegionService{
 		RegionModel rModel = new RegionModel();  
 		String cityVersion = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Version,String.class);
 		if(cityVersion == null || cityVersion == ""){
-			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,"1.1"); //初始化
-			rModel.setVersion("1.1");
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,df.toString()); //初始化
+			rModel.setVersion(df.toString());
 		} 
 		if(req.getVersion().equals(cityVersion)){  //版本一致，直接从缓存中取出
 			rModel = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Hot,RegionModel.class);  //获取热门城市和26个字母排序城市 
