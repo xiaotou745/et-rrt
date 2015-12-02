@@ -1,10 +1,11 @@
 package com.renrentui.renrenentity.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.renrentui.renrenentity.PublicProvinceCity;
 
-public class RegionModel {
+public class RegionModel implements Serializable{
 	
 	/*
 	 * 热门城市

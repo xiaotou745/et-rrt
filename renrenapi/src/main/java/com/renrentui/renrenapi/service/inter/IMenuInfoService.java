@@ -24,6 +24,12 @@ public interface IMenuInfoService {
  * @return
  */
 	public boolean checkHasAuth(int userID,int menuID) ;
+	/**
+	 * 根据AuthCode判断用户是否有权限
+	 * @param userID
+	 * @param authCode
+	 * @return
+	 */
 	public boolean checkHasAuthByCode(int userID,String authCode);
 	/**
 	 * 修改权限时，获取给定用户的权限列表（包括没有权限的menu）
@@ -70,4 +76,5 @@ public interface IMenuInfoService {
 	 * @return
 	 */
 	boolean addMenu(MenuInfo req);
+	
 }

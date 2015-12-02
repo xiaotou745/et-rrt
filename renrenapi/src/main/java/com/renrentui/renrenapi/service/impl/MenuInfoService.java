@@ -40,6 +40,11 @@ public class MenuInfoService implements IMenuInfoService {
 
 		return false;
 	}
+	/**
+	 * 根据AuthCode判断用户是否有该权限
+	 * 2015年12月2日14:42:12
+	 * 茹化肖
+	 */
 	@Override
 	public boolean checkHasAuthByCode(int userID,String authCode) {
 		List<MenuInfo> data=dao.getMenuListByUserID(userID);
@@ -50,7 +55,6 @@ public class MenuInfoService implements IMenuInfoService {
 				}
 			}
 		}
-
 		return false;
 	}
 	@Override
