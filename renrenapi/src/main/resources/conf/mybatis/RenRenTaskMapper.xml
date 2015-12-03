@@ -255,13 +255,14 @@ select
 	order by mt.taskId asc;
   </select>   
     <!--  我的任务  已领取 -->
-   <select id="getMyReceivedTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
-   	select count(1) from dbo.RenRenTask rt ( nolock )
-        left join dbo.[Order] o ( nolock ) on rt.Id = o.TaskId and o.ClienterId = ${userId} 
-where o.ClienterId is not null and o.OrderStatus = 0 
- 	 <if test="nextId != 0" >
-         and o.Id > ${nextId}
-     </if>
+   <select id="getMyReceivedTaskListTotal" resultType="java.util.HashMap" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   	select  a.status,
+            count(*) as totalNum 
+    from RenRenTask a WITH(nolock) 
+   	join ClienterTask rt ( nolock )
+   	on a.id=rt.taskid
+   	where rt.ClienterId =  ${userId} and a.status in (1,3,4)
+   	group by a.status
   </select> 
   <!-- 我的任务  审核中  未通过 -->
    <select id="getSubmittedTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >

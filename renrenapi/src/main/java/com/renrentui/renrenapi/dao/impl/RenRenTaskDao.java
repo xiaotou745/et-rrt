@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -125,10 +126,9 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	}
 
 	@Override
-	public int getMyReceivedTaskListTotal(TaskReq req) {
+	public List<Map<String, Integer>>  getMyReceivedTaskListTotal(TaskReq req) {
 		String statement = "IRenRenTaskDao.getMyReceivedTaskListTotal";
-		int taskTotal = getMasterSqlSessionUtil().selectOne(statement, req);
-		return taskTotal;
+		return getMasterSqlSessionUtil().selectList(statement, req);
 	}
 
 	@Override

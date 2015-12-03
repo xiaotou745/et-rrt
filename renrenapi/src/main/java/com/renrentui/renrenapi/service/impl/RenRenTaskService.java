@@ -565,7 +565,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	}
 
 	@Override
-	public int getMyReceivedTaskListTotal(TaskReq req) {
+	public List<Map<String, Integer>>  getMyReceivedTaskListTotal(TaskReq req) {
 		return renRenTaskDao.getMyReceivedTaskListTotal(req);
 	}
 

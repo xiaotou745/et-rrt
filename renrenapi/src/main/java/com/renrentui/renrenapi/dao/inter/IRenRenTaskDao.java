@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import java.util.List;
+import java.util.Map;
 
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.PagedResponse;
@@ -42,7 +43,7 @@ public interface IRenRenTaskDao {
 
 	List<MyReceiveTask> getMyReceivedTaskList(TaskReq req);
 
-	int getMyReceivedTaskListTotal(TaskReq req);
+	List<Map<String, Integer>>  getMyReceivedTaskListTotal(TaskReq req);
 
 	List<TaskModel> getSubmittedTaskList(TaskReq req);
 
