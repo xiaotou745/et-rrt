@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -91,6 +92,10 @@ private IRenRenTaskDao renRenTaskDao;
 		info.setTask(task);
 		info.setTemplateGroup(result);
 		return info;
+	}
+	@Override
+	public List<Map<String, Integer>> getMyTaskDatumListTotal(TaskDatumReq req) {
+		return taskDatumDao.getMyTaskDatumListTotal(req);
 	}
 
 }

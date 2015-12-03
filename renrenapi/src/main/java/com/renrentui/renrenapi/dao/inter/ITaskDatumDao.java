@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import java.util.List;
+import java.util.Map;
 
 import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
@@ -27,7 +28,14 @@ public interface ITaskDatumDao {
 	 * @return
 	 */
 	int insertTaskDatumChild(TaskDatumChild child);
-	
+	/**
+	 * 获取我的资料列表表头上的总数
+	 * @author hailongzhao
+	 * @date 20151202
+	 * @param req
+	 * @return
+	 */
+	 List<Map<String,Integer>> getMyTaskDatumListTotal(TaskDatumReq req);
 	/**
 	 * 获取我的资料列表
 	 * @author hailongzhao

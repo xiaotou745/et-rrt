@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -52,6 +53,11 @@ public class TaskDatumDao extends DaoBase implements ITaskDatumDao{
 	@Override
 	public List<TaskDatumDetail> getTaskDatumDetailList(TaskDatumDetailReq req) {
 return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getTaskDatumDetailList", req);
+	}
+
+	@Override
+	public List<Map<String, Integer>> getMyTaskDatumListTotal(TaskDatumReq req) {
+return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getMyTaskDatumListTotal", req);
 	}
 
 }
