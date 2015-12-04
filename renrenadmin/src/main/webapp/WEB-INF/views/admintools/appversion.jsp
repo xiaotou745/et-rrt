@@ -7,22 +7,20 @@
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%@page import="com.renrentui.renrencore.util.EnumHelper"%>
-
+<%@page import="com.renrentui.renrenadmin.common.UserContext"%>
 <%
 	String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 
 	<div class="row">
 		<div class="col-lg-12">
-			<form method="POST" action="#" class="form-horizontal" id="searchForm">
 			    <div class="row">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id="addversion"
 							style="margin-left: 3px;height:30px;">添加版本</button>
 					</div>
 			</div>
-			</form>
 		</div>
 	</div>
 	<div class="row">

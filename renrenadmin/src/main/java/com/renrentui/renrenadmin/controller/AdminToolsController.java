@@ -98,7 +98,7 @@ public class AdminToolsController {
 
 	@RequestMapping("saveversion")
 	@ResponseBody
-	public int saveVersion(String appName, AppVersion version, int opType,
+	public int saveVersion(AppVersion version, int opType,
 			HttpServletRequest request) {
 		UserContext context = UserContext.getCurrentContext(request);
 		version.setCreateBy(context.getUserName());
