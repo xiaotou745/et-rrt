@@ -13,20 +13,68 @@ public class AppVersion {
 	/**
 	 * 
 	 */
-	private Integer iD;
-
-	public Integer getID() {
-		return iD;
-	}
-
-	public void setID(Integer iD) {
-		this.iD = iD;
-	}
-
+	private Integer id;
+	/**
+	 * 发布状态 0待发布 1 已发布 2 取消发布
+	 */
+	private Integer pubStatus;
 	/**
 	 * 当前版本号
 	 */
 	private String version;
+	/**
+	 * 是否强制升级 1 是 0否 默认0
+	 */
+	private Integer isMust;
+	/**
+	 * 下载地址
+	 */
+	private String updateUrl;
+	/**
+	 * 升级信息 可以不填
+	 */
+	private String message;
+	/**
+	 * 客户端类型 1:Android 2 :IOS 默认Android
+	 */
+	private Integer platForm;
+	/**
+	 * 用户版本 1 骑士 2 商家 默认1骑士
+	 */
+	private Integer userType;
+	/**
+	 * 
+	 */
+	private Date createDate;
+	/**
+	 * 更新时间
+	 */
+	private Date updateDate;
+	/**
+	 * 创建人
+	 */
+	private String createBy;
+	/**
+	 * 更新人
+	 */
+	private String updateBy;
+	/**
+	 * 是否定时 0否 1 是
+	 */
+	private Integer isTiming;
+	/**
+	 * 定时发布时间
+	 */
+	private Date timingDate;
+	public Integer getID() {
+		return id;
+	}
+
+	public void setID(Integer id) {
+		this.id = id;
+	}
+
+
 
 	public String getVersion() {
 		return version;
@@ -36,10 +84,7 @@ public class AppVersion {
 		this.version = version;
 	}
 
-	/**
-	 * 是否强制升级 1 是 0否 默认0
-	 */
-	private Integer isMust;
+
 
 	public Integer getIsMust() {
 		return isMust;
@@ -49,10 +94,7 @@ public class AppVersion {
 		this.isMust = isMust;
 	}
 
-	/**
-	 * 下载地址
-	 */
-	private String updateUrl;
+
 
 	public String getUpdateUrl() {
 		return updateUrl;
@@ -62,10 +104,7 @@ public class AppVersion {
 		this.updateUrl = updateUrl;
 	}
 
-	/**
-	 * 升级信息 可以不填
-	 */
-	private String message;
+
 
 	public String getMessage() {
 		return message;
@@ -75,10 +114,7 @@ public class AppVersion {
 		this.message = message;
 	}
 
-	/**
-	 * 客户端类型 1:Android 2 :IOS 默认Android
-	 */
-	private Integer platForm;
+
 
 	public Integer getPlatForm() {
 		return platForm;
@@ -88,10 +124,7 @@ public class AppVersion {
 		this.platForm = platForm;
 	}
 
-	/**
-	 * 用户版本 1 骑士 2 商家 默认1骑士
-	 */
-	private Integer userType;
+
 
 	public Integer getUserType() {
 		return userType;
@@ -101,10 +134,7 @@ public class AppVersion {
 		this.userType = userType;
 	}
 
-	/**
-	 * 
-	 */
-	private Date createDate;
+
 
 	public Date getCreateDate() {
 		return createDate;
@@ -114,10 +144,7 @@ public class AppVersion {
 		this.createDate = createDate;
 	}
 
-	/**
-	 * 创建人
-	 */
-	private String createBy;
+
 
 	public String getCreateBy() {
 		return createBy;
@@ -127,10 +154,7 @@ public class AppVersion {
 		this.createBy = createBy;
 	}
 
-	/**
-	 * 更新时间
-	 */
-	private Date updateDate;
+
 
 	public Date getUpdateDate() {
 		return updateDate;
@@ -140,10 +164,7 @@ public class AppVersion {
 		this.updateDate = updateDate;
 	}
 
-	/**
-	 * 更新人
-	 */
-	private String updateBy;
+
 
 	public String getUpdateBy() {
 		return updateBy;
@@ -153,10 +174,7 @@ public class AppVersion {
 		this.updateBy = updateBy;
 	}
 
-	/**
-	 * 是否定时 0否 1 是
-	 */
-	private Integer isTiming;
+
 
 	public Integer getIsTiming() {
 		return isTiming;
@@ -166,10 +184,7 @@ public class AppVersion {
 		this.isTiming = isTiming;
 	}
 
-	/**
-	 * 定时发布时间
-	 */
-	private Date timingDate;
+
 
 	public Date getTimingDate() {
 		return timingDate;
@@ -178,11 +193,6 @@ public class AppVersion {
 	public void setTimingDate(Date timingDate) {
 		this.timingDate = timingDate;
 	}
-
-	/**
-	 * 发布状态 0待发布 1 已发布 2 取消发布
-	 */
-	private Integer pubStatus;
 
 	public Integer getPubStatus() {
 		return pubStatus;
