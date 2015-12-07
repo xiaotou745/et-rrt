@@ -515,9 +515,6 @@ public class RenRenTaskService implements IRenRenTaskService {
 
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
-		if (req.getCityCode()<=0||req.getProvinceCode()<=0||req.getUserId()<=0) {
-			return null;
-		}
 		return renRenTaskDao.getNewTaskList(req);
 	}
 

@@ -24,6 +24,12 @@ label {
 width: 100%;
 }
 </style>
+<script src="<%=basePath%>/js/ajaxfileupload.js"></script>
+
+<link href="<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.css" rel="stylesheet" />
+<link href="<%=basePath%>/js/jquery.uploadify-v2.1.0/example/css/default.css" rel="stylesheet" />
+<script src="<%=basePath%>/js/jquery.uploadify-v2.1.0/swfobject.js"></script> 
+<script src="<%=basePath%>/js/jquery.uploadify-v2.1.0/jquery.uploadify.v2.1.0.min.js"></script> 
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">

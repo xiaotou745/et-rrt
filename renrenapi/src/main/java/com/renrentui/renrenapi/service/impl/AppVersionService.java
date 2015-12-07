@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IAppVersionDao;
 import com.renrentui.renrenapi.service.inter.IAppVersionService;
 import com.renrentui.renrenentity.AppVersion;
+import com.renrentui.renrenentity.common.PagedRequestBase;
+import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.req.VersionCheckReq;
 
 
@@ -31,6 +33,30 @@ public class AppVersionService implements IAppVersionService {
 	@Override
 	public AppVersion getVersionCheck(VersionCheckReq req) {
 		return appVersionDao.getVersionCheck(req);
+	}
+	@Override
+	public PagedResponse<AppVersion> queryAppVersion(PagedRequestBase req) {
+		return appVersionDao.queryAppVersion(req);
+	}
+	@Override
+	public AppVersion getByID(int id) {
+return appVersionDao.getByID(id);
+	}
+	@Override
+	public int insert(AppVersion record) {
+return appVersionDao.insert(record);
+	}
+	@Override
+	public int update(AppVersion record) {
+return appVersionDao.update(record);
+	}
+	@Override
+	public int cancel(int id,String userName) {
+return appVersionDao.cancel(id, userName);
+	}
+	@Override
+	public int modify() {
+		return appVersionDao.modify();
 	}
 	
 }

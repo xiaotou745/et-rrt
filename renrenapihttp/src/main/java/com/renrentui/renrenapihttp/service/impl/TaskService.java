@@ -109,7 +109,10 @@ public class TaskService implements ITaskService{
 		}
 		PublicProvinceCity city=cityInfo.get(0);
 		req.setProvinceCode(city.getParentCode().longValue());
-		
+		if(req.getProvinceCode()<=0){
+			hrm.setCode(TaskCode.CityCode.value()).setMsg(TaskCode.CityCode.desc());			
+			return hrm;
+		} 
 		List<TaskModel> taskModelList= rrTaskServcie.getNewTaskList(req);
 		//int taskTotal = rrTaskServcie.getNewTaskTotal(req);
 		TabModel<TaskModel> td = new TabModel<TaskModel>();
