@@ -16,7 +16,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			if(view==null||view.getTemplateGroup().size()<=0)
 			{
 				%>
-			<h1>找不到当前订单的合同信息</h1>
+			<h1>找不到当前订单的资料信息</h1>
 				<%}
 			else
 			{

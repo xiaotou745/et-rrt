@@ -94,14 +94,14 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
-				<h4 class="modal-title">合同信息</h4>				
+				<h4 class="modal-title">资料信息</h4>				
 			</div>
 			<small class="font-bold">
 				<div class="modal-body" id="infobox">
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
-					<button class="btn btn-primary" type="button" id="btndown">下载合同</button>
+					<button class="btn btn-primary" type="button" id="btndown">下载资料</button>
 				</div>
 			</small>
 		</div>

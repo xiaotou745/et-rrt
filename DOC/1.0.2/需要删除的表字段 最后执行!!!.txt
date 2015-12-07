@@ -1,0 +1,46 @@
+BEGIN TRAN
+USE RenRenDB
+go
+ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_Notice
+alter table dbo.RenRenTask drop column TaskNotice--删除任务公告
+ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_TaskCycle
+alter table dbo.RenRenTask drop column TaskCycle--删除任务周期
+ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_AvailableCount
+alter table dbo.RenRenTask drop column AvailableCount--删除任务剩余量
+ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_TaskToatlCount
+alter table dbo.RenRenTask drop column TaskTotalCount--任务总量
+ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_TempateId
+alter table dbo.RenRenTask drop column SnapshotTemplateId--模板快照
+ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_Link
+alter table dbo.RenRenTask drop column Link--链接
+ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_TaskNote
+alter table dbo.RenRenTask drop column TaskNote--注意事项
+ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_CompanySummary
+alter table dbo.RenRenTask drop column CompanySummary--公司介绍
+GO 
+alter table dbo.TemplateDetail drop column TemplateId--控件详情表中的模板ID
+
+PRINT +@@ERROR
+IF @@ERROR>0
+	BEGIN
+		ROLLBACK TRAN
+	END 
+ELSE
+	begin
+		COMMIT TRAN
+	END 
+	
+	
+
+
+
+--SELECT  name
+--FROM    sysobjects
+--WHERE   id = ( SELECT   cdefault
+--               FROM     syscolumns
+--               WHERE    name = 'SnapshotTemplateId'
+--                        AND id = ( SELECT   id
+--                                   FROM     sysobjects
+--                                   WHERE    name = 'RenRenTask'
+--                                 )
+--             )

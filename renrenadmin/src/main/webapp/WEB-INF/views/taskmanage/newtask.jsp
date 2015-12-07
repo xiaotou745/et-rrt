@@ -183,6 +183,7 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 			<span>细则（添加超链接，打开新页面）</span>
 			<a href="javascript:void(0);" class="fl add" id="setpadd3">添加</a>
 			<a href="javascript:void(0);" class="fl del" id="setpdel3">删除</a> 
+			<a target="_blank" href="<%=basePath%>/article/new" >新建页面</a>
 			<div class="orderBox dn" id="setpbox3">
 			<table class="table table-striped table-bordered table-hover dataTables-example" style="width:40%;">
 				<thead>
@@ -193,7 +194,7 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 					<td><label>1</label></td>
 					<td><input type="text"  style="width:200px;" class="eltitle"></td>
 					<td><input type="text"  style="width:200px;" class="elurl"></td>
-					<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a><a href="javascript:void(0)" >新建页面</a></td>
+					<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a></td>
 					</tr>
 				</tbody>
 			</table>
@@ -590,9 +591,7 @@ var jss={
 		});
 		//添加细则
 		$("#setpadd3").click(function() {
-			//var clone = add3.clone();
 			$('#setpbox3 tbody').append(add3);
-			//console.log($('.copy3').length);
 			for(index=0;index<$('.copy3').length;index++)
             {
 				
@@ -602,6 +601,11 @@ var jss={
 		//删除细则
 		$('#setpdel3').click(function() {
 			var len=$('.copy3').length;
+			if(len==0)
+				{
+				alert('没有可以删除的细则了!');
+				return;
+				}
 			var ld=$("#setpbox3 tr:last");
 			ld.remove(); 
 		});
@@ -662,12 +666,17 @@ var jss={
   }
   //删除控件组
   function delThisGroup(obj){
+	  if($('.boxno').length==1)
+		{
+		 alert('最少保留一个控件组!');
+		 return;
+		}
 	  $(obj).parent().remove();
 	  orderByGroup();
   }
   //重新排序各组序号
   function orderByGroup(){
-	  var len=$('.boxno').each(function(index,el){
+	  $('.boxno').each(function(index,el){
 		  $(el).html(index+1+'.');
 	  });
   }

@@ -2,12 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.ITemplateDetailDao" >
   <sql id="Base_Column_List" >
-    Id, TemplateId,ControlId, OrderNum, Name, Title, DefaultValue, ControlData
+    Id, ControlId, OrderNum, Name, Title, DefaultValue, ControlData
   </sql>
-  <delete id="deleteByTemplateId" parameterType="java.lang.Long" >
-    delete from TemplateDetail
-    where TemplateId = #{templateId,jdbcType=BIGINT}
-  </delete>
   <!-- 插入一个模板详情 茹化肖 -->
   <insert id="insert" parameterType="com.renrentui.renrenentity.TemplateDetail" >
     insert into TemplateDetail (
@@ -29,35 +25,12 @@
   </insert>
   <update id="insertList" parameterType="java.util.List">
 		<foreach collection="list" item="item" index="index" >
-	insert into TemplateDetail (templateId,ControlId, OrderNum,Name, Title, DefaultValue, ControlData)     
-	values (#{item.templateId,jdbcType=BIGINT},#{item.controlId,jdbcType=BIGINT}, #{item.orderNum,jdbcType=INTEGER}, 
+	insert into TemplateDetail (ControlId, OrderNum,Name, Title, DefaultValue, ControlData)     
+	values (#{item.controlId,jdbcType=BIGINT}, #{item.orderNum,jdbcType=INTEGER}, 
       #{item.name,jdbcType=NVARCHAR}, #{item.title,jdbcType=NVARCHAR}, #{item.defaultValue,jdbcType=NVARCHAR}, 
       #{item.controlData,jdbcType=NVARCHAR});
 		</foreach>
 	</update>
-  <!-- 获取模板的控件详情13:49:49 -->
-  <select id="getTemplateList" resultType="com.renrentui.renrenentity.domain.ControlInfo" parameterType="java.util.HashMap" >
-    SELECT  TC.ControlType ,
-        Title ,
-        Name ,
-        DefaultValue ,
-        td.ControlData, 
-        CASE WHEN oc.ControlValue IS NOT NULL THEN oc.ControlValue ELSE '' END  AS HadValue,
-        CASE WHEN oc.ControlValue IS NOT NULL THEN oc.ControlValue ELSE '' END  AS ControlValue,
-        OrderNum
-FROM    dbo.TemplateDetailSnapshot  AS td ( NOLOCK )
-        LEFT JOIN dbo.TemplateControl AS tc ( NOLOCK ) ON td.ControlId = tc.id
-        LEFT JOIN dbo.OrderChild AS oc(NOLOCK) ON oc.TemplateSnapshotId=td.SnapshotTemplateId AND oc.OrderId=#{orderId,jdbcType=BIGINT} AND oc.ControlName=td.Name
-WHERE   td.SnapshotTemplateId = #{templateId,jdbcType=INTEGER}
-		AND ISNULL(oc.IsEnable,1)=1
-ORDER BY OrderNum ASC
-  </select>
-  <select id="listByTemplateId" resultType="com.renrentui.renrenentity.TemplateDetail" parameterType="java.lang.Long" >
-    SELECT  * 
-FROM    dbo.TemplateDetail  AS td ( NOLOCK )
-WHERE   td.TemplateId = #{templateId,jdbcType=INTEGER} order by OrderNum
-
-  </select>
   <!-- 获取任务模板控件 茹化肖 2015年11月19日16:11:47 -->
   <select id="getTemCorModelsByTaskId" resultType="com.renrentui.renrenentity.domain.TemCorModel" parameterType="java.lang.Long">
   SELECT  

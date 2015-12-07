@@ -1,0 +1,36 @@
+--SELECT * FROM dbo.AccountAuth
+--账户权限表
+CREATE INDEX IX_AccountAuth_AccoutId ON AccountAuth(AccoutId);
+--SELECT * FROM dbo.AccountInfo AS ai
+--后台用户表
+CREATE INDEX IX_AccountInfo_Password ON AccountInfo(Password);
+CREATE INDEX IX_AccountInfo_LoginName ON AccountInfo(LoginName);
+--B端表
+CREATE INDEX IX_Business_CompanyName ON Business(CompanyName);
+CREATE INDEX IX_Business_PhoneNo ON Business(PhoneNo);
+--C端表
+--dbo.Clienter
+CREATE INDEX IX_Clienter_PhoneNo ON Clienter(PhoneNo);
+CREATE INDEX IX_Clienter_ClienterName ON Clienter(ClienterName);
+
+--C提现单表
+--dbo.ClienterWithdrawForm
+CREATE INDEX IX_ClienterWithdrawForm_ClienterId ON ClienterWithdrawForm(ClienterId);
+CREATE INDEX IX_ClienterWithdrawForm_WithdrawNo ON ClienterWithdrawForm(WithdrawNo);
+--dbo.ClienterBalance
+CREATE INDEX IX_ClienterBalance_ClienterId ON ClienterBalance(ClienterId);
+--dbo.ClienterBalanceRecord
+CREATE INDEX IX_ClienterBalanceRecord_ClienterId ON ClienterBalanceRecord(ClienterId);
+
+--dbo.RenRenTask 任务表
+CREATE INDEX IX_RenRenTask_BusinessId ON RenRenTask(BusinessId);
+CREATE INDEX IX_RenRenTask_CreateTime ON RenRenTask(CreateTime);
+CREATE INDEX IX_RenRenTask_BeginTime ON RenRenTask(BeginTime);
+CREATE INDEX IX_RenRenTask_EndTime ON RenRenTask(EndTime);
+
+
+
+
+
+
+
