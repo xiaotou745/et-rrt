@@ -1,9 +1,11 @@
 package com.renrentui.renrenapi.service.inter;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Map; 
 
 import com.renrentui.renrenentity.PublicProvinceCity;
+import com.renrentui.renrenentity.domain.OpenCityModel;
+import com.renrentui.renrenentity.req.HotAndPublicCityReq;
 
 
 
@@ -21,7 +23,7 @@ public interface IPublicProvinceCityService {
 	 * @author CaoHeYang 
 	 * @param cityName 城市名称
 	 */
-	 List<PublicProvinceCity> getOpenCityList(String  cityName);
+	List<OpenCityModel> getOpenCityList(HotAndPublicCityReq hotAndPublicCityReq);
 	 
 	/**
 	 * 从Redis获取开放城市列表（非分页）

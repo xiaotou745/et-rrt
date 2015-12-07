@@ -2,13 +2,15 @@ package com.renrentui.renrenapi.dao.inter;
 import java.util.List;
 
 import com.renrentui.renrenentity.PublicProvinceCity;
+import com.renrentui.renrenentity.domain.OpenCityModel;
+import com.renrentui.renrenentity.req.HotAndPublicCityReq;
 
 public interface IPublicProvinceCityDao {    
 	/**
 	 * 获取开放城市列表（非分页）
 	 * @author CaoHeYang 
 	 */
-    List<PublicProvinceCity> getOpenCityList(String  cityName);
+	List<OpenCityModel> getOpenCityList(HotAndPublicCityReq  hotAndPublicCityReq);
 
    
 	/**
