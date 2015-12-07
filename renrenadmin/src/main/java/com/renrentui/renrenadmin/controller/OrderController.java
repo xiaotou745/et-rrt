@@ -60,8 +60,8 @@ public class OrderController {
 	@RequestMapping("auditorder")
 	public ModelAndView list(){		
 		ModelAndView model = new ModelAndView("adminView");
-		model.addObject("subtitle", "订单管理");
-		model.addObject("currenttitle", "订单审核");	
+		model.addObject("subtitle", "资料管理");
+		model.addObject("currenttitle", "资料审核");	
 		model.addObject("viewPath", "ordermanage/auditorder");
 		return model;
 	}	
