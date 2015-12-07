@@ -15,6 +15,7 @@ import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.OpenCityModel;
 import com.renrentui.renrenentity.req.HotAndPublicCityReq;
+import com.renrentui.renrenentity.req.ModifyCityReq;
 
 
 
@@ -103,5 +104,14 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 			}
 		}
 		return listnew;
+	}
+
+
+
+
+	@Override
+	public int modifyCity(ModifyCityReq modifyCityReq) {
+		return publicProvinceCityDao.modifyCity(modifyCityReq);
+		 
 	}
 }

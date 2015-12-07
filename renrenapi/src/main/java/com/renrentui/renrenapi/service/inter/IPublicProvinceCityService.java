@@ -6,6 +6,7 @@ import java.util.Map;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.OpenCityModel;
 import com.renrentui.renrenentity.req.HotAndPublicCityReq;
+import com.renrentui.renrenentity.req.ModifyCityReq;
 
 
 
@@ -46,5 +47,10 @@ public interface IPublicProvinceCityService {
 	 * @author zhaohailong
 	 */
 	 List<PublicProvinceCity> getOpenCityDistrict(int cityId);
+	 /*
+	  * 修改城市
+	  * wangchao
+	  */
+	int modifyCity(ModifyCityReq modifyCityReq);
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.OpenCityModel;
 import com.renrentui.renrenentity.req.HotAndPublicCityReq;
+import com.renrentui.renrenentity.req.ModifyCityReq;
 
 public interface IPublicProvinceCityDao {    
 	/**
@@ -21,5 +22,8 @@ public interface IPublicProvinceCityDao {
 	 */
 	
     List<PublicProvinceCity> getAllOpenCity();
+
+
+	int modifyCity(ModifyCityReq modifyCityReq);
 
 }

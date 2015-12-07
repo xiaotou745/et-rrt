@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;  
 
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService; 
 import com.renrentui.renrenentity.domain.OpenCityModel;
 import com.renrentui.renrenentity.req.HotAndPublicCityReq;
+import com.renrentui.renrenentity.req.ModifyCityReq;
 
 @Controller
 @RequestMapping("region")
@@ -41,5 +43,13 @@ public class RegionController {
 		model.addObject("listData", citys);
 		return model; 
 	}
+	
+	@RequestMapping("modifycity")
+	@ResponseBody
+	public int modifyCity(ModifyCityReq modifyCityReq) { 
+		int result= iPublicProvinceCityService.modifyCity(modifyCityReq); 
+		return result; 
+	}
+	
 	
 }

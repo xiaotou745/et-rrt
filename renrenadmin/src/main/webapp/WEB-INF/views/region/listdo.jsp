@@ -22,12 +22,12 @@
 			<th>区县编号</th>
 			<th>区县名称</th>
 			<th id='ispubliccity'>是否开放
-			<input type="checkbox" name="checkPublicCityAll"
-				id="selectHotCityAll" onclick="checkPublicCityAll()" />全选/取消
+			<input type="checkbox" name="checkPublicCityAllRadio"
+				id="selectPublicCityAll" onclick="checkPublicCityAll()" value="" />全选/取消
 			</th>
 			<th id='ishotcity'>是否热门
-			<input type="checkbox" name="checkHotCityAll" id="selecHotCitytAll"
-				onclick="checkHotCityAll()" />全选/取消
+			<input type="checkbox" name="checkHotCityAllRadio" id="selecHotCitytAll"
+				onclick="checkHotCityAll()" value=""  />全选/取消
 			</th>
 		</tr>
 	</thead>
@@ -52,7 +52,7 @@
 				<%
 					String checkIsPublicStr = data.get(i).getIsPublic() == 1 ? "checked=\"checked\""
 								: "";
-				%> <input type="checkbox" name="checkPublicCityAll"
+				%> <input type="checkbox" name="checkPublicCityAllRadio"
 				id="<%=data.get(i).getDistrictCode()%>" <%=checkIsPublicStr%>
 				value=<%=data.get(i).getDistrictCode()%> />
 			</td>
@@ -60,7 +60,7 @@
 				<%
 					String checkIsHotStr = data.get(i).getIsHot() == 1 ? "checked=\"checked\""
 								: "";
-				%> <input type="checkbox" name="checkHotCityAll"
+				%> <input type="checkbox" name="checkHotCityAllRadio"
 				id="<%=data.get(i).getDistrictCode()%>" <%=checkIsHotStr%>
 				value=<%=data.get(i).getDistrictCode()%> />
 			</td>
@@ -70,3 +70,15 @@
 		%>
 	</tbody>
 </table>
+<script>
+//开放城市选择
+function checkPublicCityAll() {
+	var checkedOfAll = $("#selectPublicCityAll").prop("checked");
+	$("input[name='checkPublicCityAllRadio']").prop("checked", checkedOfAll);
+}
+//热门城市选择
+function checkHotCityAll() {
+	var checkedOfAll = $("#selecHotCitytAll").prop("checked");
+	$("input[name='checkHotCityAllRadio']").prop("checked", checkedOfAll);
+}
+</script>
