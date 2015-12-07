@@ -29,7 +29,7 @@ var add2 = '<div class="copy2">'
 var add3 = '<tr class="copy3"><td><label>1</label></td>'
 			+'<td><input type="text"  style="width:200px;" class="eltitle"></td>'
 			+'<td><input type="text"  style="width:200px;" class="elurl"></td>'
-			+'<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a><a href="javascript:void(0)" >新建页面</a></td>'
+			+'<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a></td>'
 			+'</tr>';
 //文本组
 var txtgroup='<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">'
