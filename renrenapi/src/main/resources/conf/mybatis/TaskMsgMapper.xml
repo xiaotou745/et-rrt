@@ -64,7 +64,7 @@ VALUES  ( ${title} ,
          update TaskMsg
     <set >
       <if test="opType =1" >
-        Status = 1,
+        isDel = 1,
       </if>
       <if test="opType =2" >
         HasRead=1, ReadDate=getdate()
