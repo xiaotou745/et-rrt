@@ -13,6 +13,8 @@ import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrenentity.PublicProvinceCity;
+import com.renrentui.renrenentity.domain.OpenCityModel;
+import com.renrentui.renrenentity.req.HotAndPublicCityReq;
 
 
 
@@ -29,8 +31,8 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	 * @author CaoHeYang
 	 */
 	@Override
-	public List<PublicProvinceCity> getOpenCityList(String cityName) {
-		return publicProvinceCityDao.getOpenCityList(cityName);
+	public List<OpenCityModel> getOpenCityList(HotAndPublicCityReq hotAndPublicCityReq) {
+		return publicProvinceCityDao.getOpenCityList(hotAndPublicCityReq);
 	};
 
 	

@@ -1,1 +1,7 @@
 sp_rename MenuInfo,AuthorityMenuClass
+
+UPDATE  dbo.AuthorityMenuClass  SET MenuName='资料管理' WHERE MenuName='订单管理'
+UPDATE  dbo.AuthorityMenuClass  SET MenuName='资料列表' WHERE MenuName='订单列表'
+UPDATE  dbo.AuthorityMenuClass  SET belock=1 WHERE MenuName='模板管理'
+UPDATE  dbo.AuthorityMenuClass  SET belock=1 WHERE MenuName='新建模板'
+UPDATE  dbo.AuthorityMenuClass  SET belock=1 WHERE MenuName='审核模板'

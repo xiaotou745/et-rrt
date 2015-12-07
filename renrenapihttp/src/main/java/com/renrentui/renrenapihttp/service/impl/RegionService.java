@@ -41,7 +41,8 @@ public class RegionService implements IRegionService{
 		String cityVersion = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Version,String.class);
 		if(cityVersion == null || cityVersion == ""){
 			SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,df.toString()); //初始化
+			 
+			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,df); //初始化
 			rModel.setVersion(df.toString());
 		} 
 		if(req.getVersion().equals(cityVersion)){  //版本一致，直接从缓存中取出
