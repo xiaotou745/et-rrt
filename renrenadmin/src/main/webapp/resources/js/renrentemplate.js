@@ -85,7 +85,7 @@ function getWenbenzu(title,list)
 	for(var i=0;i<list.length;i++){
 		str+='<input type="text" placeholder="'+list[i].title+'" class="form-control" />'
 		}
-	str+='<div>';
+	str+='</div>';
 	return str; 
 }
 //预览创建图片组
@@ -95,7 +95,7 @@ function getTupianzu(title,list)
 	for(var i=0;i<list.length;i++){
 		str+='<label>'+list[i].title+':</label> <img src="'+imgPath+'"><br>';
 		}
-	str+='<div>';
+	str+='</div>';
 	return str; 
 }
 //预览创建多图组
@@ -105,6 +105,6 @@ function getDuotu(title,num)
 	for(var i=0;i<num;i++){
 		str+='<img src="'+imgPath+'">';
 		}
-	str+='<div>';
+	str+='</div>';
 	return str; 
 }
