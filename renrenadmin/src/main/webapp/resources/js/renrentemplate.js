@@ -81,7 +81,7 @@ function getMuban(templateGroup)
 //预览创建文本组
 function getWenbenzu(title,list)
 {
-	var str='<h4>'+title+'</h4><div>';
+	var str='<h4>'+title+'</h4><div style="border: 1px solid #DDDDDD;margin-top: 8px;">';
 	for(var i=0;i<list.length;i++){
 		str+='<input type="text" placeholder="'+list[i].title+'" class="form-control" />'
 		}
@@ -91,9 +91,9 @@ function getWenbenzu(title,list)
 //预览创建图片组
 function getTupianzu(title,list)
 {
-	var str='<h4>'+title+'</h4><div>';
+	var str='<h4>'+title+'</h4><div style="border: 1px solid #DDDDDD;margin-top: 8px;">';
 	for(var i=0;i<list.length;i++){
-		str+='<label>'+list[i].title+'</label><img src="'+imgPath+'"><br>';
+		str+='<label>'+list[i].title+':</label> <img src="'+imgPath+'"><br>';
 		}
 	str+='<div>';
 	return str; 
@@ -101,7 +101,7 @@ function getTupianzu(title,list)
 //预览创建多图组
 function getDuotu(title,num)
 {
-	var str='<h4>'+title+'</h4><div>';
+	var str='<h4>'+title+'</h4><div style="border: 1px solid #DDDDDD;margin-top: 8px;">';
 	for(var i=0;i<num;i++){
 		str+='<img src="'+imgPath+'">';
 		}
