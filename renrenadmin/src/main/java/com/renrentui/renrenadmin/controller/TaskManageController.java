@@ -85,9 +85,12 @@ public class TaskManageController {
 			//2.获取步骤信息
 			ArrayList<TaskSetp> taskSetps =renRenTaskService.getTaskSetps(taskId);
 			//3 获取控件信息
-			List<TemplateGroup> groups=renRenTaskService.getTemplateGroups(taskId);
+			if(taskInfo.getTaskType()==1)
+			{
+				List<TemplateGroup> groups=renRenTaskService.getTemplateGroups(taskId);
+				model.addObject("groups", groups);
+			}
 			model.addObject("taskSetps", taskSetps);
-			model.addObject("groups", groups);
 			model.addObject("taskInfo", taskInfo);
 			model.addObject("taskID", taskId);
 			
@@ -274,6 +277,7 @@ public class TaskManageController {
 		if (taskId==null||taskId<0) {
 			throw new RuntimeException("taskId不能为空");
 		}
+		ModelAndView model = new ModelAndView("adminView");
 		//1获取任务信息
 		RenRenTask taskInfo=renRenTaskService.getTaskInfo(taskId);
 		if (taskInfo==null) {
@@ -282,13 +286,21 @@ public class TaskManageController {
 		//2.获取步骤信息
 		ArrayList<TaskSetp> taskSetps =renRenTaskService.getTaskSetps(taskId);
 		//3 获取控件信息
-		List<TemplateGroup> groups=renRenTaskService.getTemplateGroups(taskId);
-		ModelAndView model = new ModelAndView("adminView");
+		List<TemplateGroup> groups=null;
+		if(taskInfo.getTaskType()==1)
+		{
+			 groups=renRenTaskService.getTemplateGroups(taskId);
+			
+		}
+		else {
+			groups=new ArrayList<TemplateGroup>();
+		}
+		model.addObject("groups", groups);
 		model.addObject("subtitle", "任务管理");
 		model.addObject("currenttitle", "任务详情");
 		model.addObject("viewPath", "taskmanage/detail");
 		model.addObject("taskSetps", taskSetps);
-		model.addObject("groups", groups);
+		
 		model.addObject("taskInfo", taskInfo);
 		//4 获取投放放范围
 		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份

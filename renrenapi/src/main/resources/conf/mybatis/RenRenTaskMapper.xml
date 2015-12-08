@@ -4,7 +4,7 @@
   <sql id="Base_Column_List" >
     Id, TaskTitle, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
     ModifyName, ModifyTime, BeginTime, EndTime,  Amount, status, 
-      PaymentMethod,AuditCycle,TargetPeople,TaskType,HotLine
+      PaymentMethod,AuditCycle,TargetPeople,TaskType,HotLine,DownUrl,ScanTip,Reminder
   </sql>
   <select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
     select 
@@ -33,7 +33,10 @@
       status, 
       AuditCycle,
       HotLine,
-      TaskType)
+      TaskType,
+      DownUrl,
+      ScanTip,
+      Reminder)
     values (
       #{taskTitle,jdbcType=NVARCHAR},
       #{taskGeneralInfo,jdbcType=NVARCHAR},
@@ -49,7 +52,10 @@
       #{status,jdbcType=INTEGER},
       #{auditCycle,jdbcType=BIGINT}, 
       #{hotLine,jdbcType=NVARCHAR},
-       #{taskType,jdbcType=INTEGER})
+       #{taskType,jdbcType=INTEGER},
+       #{downUrl,jdbcType=NVARCHAR},
+       #{scanTip,jdbcType=NVARCHAR},
+       #{reminder,jdbcType=NVARCHAR})
   </insert>
   <!-- 获取任务详情接口  2015年11月19日11:24:46 V1.0.2 茹化肖  -->
    <select id="getTaskDetail" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
@@ -101,7 +107,7 @@ WHERE   EndTime > GETDATE()
 			and status=${status}
 		</if>
 		<if test="taskType != null and taskType>0">
-			and status=${status}
+			and taskType=${taskType}
 		</if>
 		<if test="taskTitle != null and taskTitle!=''">
 			and taskTitle like ''%${taskTitle}%''
@@ -414,19 +420,54 @@ DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
     <!-- 修改任务 更新任务信息 -->
   <update id="updateTaskInfo" parameterType="com.renrentui.renrenentity.RenRenTask">
   UPDATE dbo.RenRenTask	SET
-	  TaskTitle= #{taskTitle,jdbcType=NVARCHAR},
-      TaskGeneralInfo=#{taskGeneralInfo,jdbcType=NVARCHAR},
-      BusinessId=#{businessId,jdbcType=BIGINT}, 
-      Pusher=#{pusher,jdbcType=NVARCHAR}, 
-      ModifyName= #{modifyName,jdbcType=NVARCHAR}, 
+      <trim suffixOverrides="," > 
       ModifyTime=getdate(),
+      <if test="taskTitle != null" >
+       TaskTitle=#{taskTitle,jdbcType=NVARCHAR},
+      </if>
+	  <if test="taskGeneralInfo != null" >
+       TaskGeneralInfo=#{taskGeneralInfo,jdbcType=NVARCHAR},
+      </if>
+      <if test="businessId != null" >
+       BusinessId=#{businessId,jdbcType=BIGINT}, 
+      </if>
+      <if test="pusher != null" >
+      Pusher=#{pusher,jdbcType=NVARCHAR}, 
+      </if>
+      <if test="modifyName != null" >
+      ModifyName= #{modifyName,jdbcType=NVARCHAR}, 
+      </if>
+ 	  <if test="beginTime != null" >
       BeginTime= #{beginTime,jdbcType=TIMESTAMP},
-      EndTime= #{endTime,jdbcType=TIMESTAMP}, 
-      Amount=#{amount,jdbcType=DECIMAL},
-      status=#{status,jdbcType=INTEGER}, 
-      AuditCycle=#{auditCycle,jdbcType=BIGINT}, 
-      HotLine=#{hotLine,jdbcType=NVARCHAR},
-      TaskType=#{taskType,jdbcType=INTEGER}
+      </if>
+      <if test="endTime != null" >
+        EndTime= #{endTime,jdbcType=TIMESTAMP}, 
+      </if>
+      <if test="amount != null" >
+           Amount=#{amount,jdbcType=DECIMAL}, 
+      </if>
+      <if test="status != null" >
+           status=#{status,jdbcType=INTEGER}, 
+      </if>
+      <if test="auditCycle != null" >
+          AuditCycle=#{auditCycle,jdbcType=BIGINT}, 
+      </if>
+      <if test="hotLine != null" >
+          HotLine=#{hotLine,jdbcType=NVARCHAR}, 
+      </if>
+      <if test="taskType != null" >
+          TaskType=#{taskType,jdbcType=INTEGER},
+      </if>
+      <if test="downUrl!= null" >
+         DownUrl=#{downUrl,jdbcType=NVARCHAR},
+      </if>
+       <if test="scanTip!= null" >
+          ScanTip=#{scanTip,jdbcType=NVARCHAR},
+      </if>
+      <if test="reminder != null" >
+        Reminder=#{reminder,jdbcType=NVARCHAR},
+      </if>
+      </trim>
       WHERE id=#{id,jdbcType=BIGINT}
   </update>
   <!--  获取任务下面所有骑士ID -->

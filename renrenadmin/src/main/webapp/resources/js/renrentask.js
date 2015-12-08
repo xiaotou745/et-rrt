@@ -23,7 +23,14 @@ function CheckSave(){
 		alert('单次佣金必须大于0元');
 		return false;
 	}
-	
+	if($('input[name="rTaskType"]:checked').val()!=1)
+	{
+		if($('#downUrl').val=='')
+			{
+			alert('下载链接不能为空');
+			return false;
+			}
+	}
 	//开始日期结束日期验证
 	  var startDate = $('#beginDate').val();
 	  var endDate = $('#endDate').val();
@@ -84,9 +91,14 @@ function CheckSave(){
 	   			}
 	   		//if(!flag) return flag;
 	   	});
+		
 		if(!flag) return flag;
 		
-		
+		//不是签约任务 后面的就不继续验证了
+		if($('input[name="rTaskType"]:checked').val()!=1)
+		{
+			return true;
+		}
 		$('#templateBox .template').each(function(id,el){
 			if($(el).attr("class").indexOf("templateGroupText")>=0){
 				if($(el).find('.cltxt').val().length<1){

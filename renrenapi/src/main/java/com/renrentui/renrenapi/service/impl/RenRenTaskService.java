@@ -375,6 +375,10 @@ public class RenRenTaskService implements IRenRenTaskService {
 		}
 	    //3.插入模板组信息
 	    ArrayList<TemplateGroup> groups=taskreq.getTemplateGroup();
+	    if(task.getTaskType()!=1)//非签约任务 没有模板信息
+	    {
+	    	groups=new ArrayList<TemplateGroup>();
+	    }
 	    for (int i = 0; i < groups.size(); i++) {
 	    	TemplateGroup group=groups.get(i);
 	    	group.setTaskId(task.getId());//设置任务ID

@@ -23,10 +23,14 @@ List<TaskSetp> taskSetps=request.getAttribute("taskSetps")==null?null:(List<Task
 List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<TemplateGroup>)request.getAttribute("groups");
 
 %>
+<script>
+var imgPath="<%=basePath%>/img/11235.png";
+</script>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
  <script src="<%=basePath%>/js/renrentask.js"></script> 
 <script src="<%=basePath%>/js/renrentemplate.js"></script>
+
 <div class="wrapper wrapper-content animated fadeInRight">
 	<form method="POST" action="#" class="form-horizontal" id="searchForm">
 		<input type="hidden" id="hdtaskid" value="<%=taskID%>"/>
@@ -126,7 +130,33 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="row" id="tasktype2">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">下载地址: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="downUrl" id="downUrl" value="<%=taskInfo==null?"":taskInfo.getDownUrl()%>"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">扫码说明: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="scanTip" id="scanTip" value="<%=taskInfo==null?"":taskInfo.getScanTip()%>"/>
+								</div>
+							</div>
 						</div>
+					</div>
+					<div class="row" id="tasktype3">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">温馨提示: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="reminder" id="reminder" value="<%=taskInfo==null?"":taskInfo.getReminder()%>"/>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</fieldset>
@@ -210,6 +240,7 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 			<span style="color:red;">*</span><span>完成步骤（请详细说明完成任务需要哪几个步骤，方便地推员按要求完成任务）</span>
 			<a href="javascript:void(0);" class="fl add" id="setpadd">添加</a>
 			<a href="javascript:void(0);" class="fl del" id="setpdel">删除</a> 
+			
 			<div class="orderBox dn" id="setpbox">
 			<%  int num=0;
 				for(int i=0;i<taskSetps.size();i++)
@@ -265,7 +296,8 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 			<hr align="center" width="50%" style="color:#333333;">
 			<span>细则（添加超链接，打开新页面）</span>
 			<a href="javascript:void(0);" class="fl add" id="setpadd3">添加</a>
-			<a href="javascript:void(0);" class="fl del" id="setpdel3">删除</a> 
+			<a href="javascript:void(0);" class="fl del" id="setpdel3">删除</a>
+			<a target="_blank" href="<%=basePath%>/article/new" >新建页面</a> 
 			<div class="orderBox dn" id="setpbox3" >
 			<table class="table table-striped table-bordered table-hover dataTables-example" style="width:40%;">
 				<thead>
@@ -282,7 +314,7 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 						<td><label><%=num%></label></td>
 						<td><input type="text"  style="width:200px;" class="eltitle" value="<%=taskSetps.get(i).getLinkTitle()%>"></td>
 						<td><input type="text"  style="width:200px;" class="elurl" value="<%=taskSetps.get(i).getContent()%>"></td>
-						<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a><a href="javascript:void(0)" >新建页面</a></td>
+						<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a></td>
 						</tr>
 						<%
 					}
@@ -297,7 +329,7 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 		<%if(taskID==0)
 		{
 			%>
-			<fieldset>
+			<fieldset id="mubanbox">
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
 				<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
@@ -329,12 +361,15 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 			<a href="javascript:void(0);"  id="addtxtgroup">添加文本组</a>
 			<a href="javascript:void(0);"  id="addimggroup">添加图片组</a>
 			<a href="javascript:void(0);"  id="addmoreimggroup">添加多图组</a>
+			<a href="javascript:void(0);"  id="yulan">预览模板</a>
 		</fieldset>
 			<%
 		}
 		else{
+			if(taskInfo.getTaskType()==1){
 			%>
-			<fieldset>
+			
+			<fieldset id="mubanbox">
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
 				<% int num2=0; 
@@ -404,9 +439,10 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 			<a href="javascript:void(0);"  id="addtxtgroup">添加文本组</a>
 			<a href="javascript:void(0);"  id="addimggroup">添加图片组</a>
 			<a href="javascript:void(0);"  id="addmoreimggroup">添加多图组</a>
+			<a href="javascript:void(0);"  id="yulan">预览模板</a>
 		</fieldset>
 			<%
-			}%>
+			}}%>
 		
 		<fieldset>
 			<legend>关联设置</legend>
@@ -502,7 +538,58 @@ List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<Templ
 	</div>
 	<small class="font-bold"> </small>	
 </div>
+<div tabindex="-1" class="modal inmodal" id="yulanbox" role="dialog" aria-hidden="true" style="display: none;">	
+	
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h1>预览模板</h1>		
+			</div>
+			<small class="font-bold">
+				<div class="modal-body" id="aaabody">
+				
+					
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>	
+</div>
+
 <script>  
+//任务类型切换事件
+$('input:radio[name="rTaskType"]').change(function(){
+		var id=$('input[name="rTaskType"]:checked').val();
+		if(id==1){
+			$('#tasktype2').hide();
+			$('#tasktype3').hide();
+			$('#mubanbox').show();
+		}
+		else{
+			$('#tasktype2').show();
+			$('#tasktype3').show();
+			$('#mubanbox').hide();
+		}	
+});
+<%if(taskInfo==null){
+	%>
+	$('input:radio[name="rTaskType"]').change();
+	<%}
+else{
+	%>
+	$('input:radio[name="rTaskType"]').attr('disabled','disabled');
+	<%
+}
+%>
+
 //省市联动
 $('#provinceCode').on('change',function(){
 	 try{  
@@ -708,6 +795,9 @@ function createTaskPar(){
 	task.auditCycle=$('#auditCycle').val();
 	task.hotLine=$('#hotline').val();
 	task.taskType=$('input[name="rTaskType"]:checked').val();
+	task.downUrl=$('#downUrl').val();
+	task.scanTip=$('#scanTip').val();
+	task.reminder=$('#reminder').val();
 	return task;
 }
 //创建任务步骤表数据
@@ -844,5 +934,12 @@ function savetask(){
 					}
 		});
 }
-
+//预览模板
+$('#yulan').click(function(){
+	var templateGroup=createGroupPar();
+	var html= getMuban(templateGroup);
+	$('#aaabody').html(html);
+	console.log(templateGroup);
+	$('#yulanbox').modal('show');
+});
 </script>

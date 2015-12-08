@@ -61,3 +61,50 @@ var moreimggroup='<div class="templateGroupMoreImg template"  style="border: 3px
 	+'<div class="imgitemnum">图片数量:<input type="text" class="imgitemnumn"></div>'
 	+'</div>'
 	+'</div>';
+
+function getMuban(templateGroup)
+{
+	var str='';
+	for(var i=0;i<templateGroup.length;i++){
+		if(templateGroup[i].groupType==1){//文本组
+			str+= getWenbenzu(templateGroup[i].title,templateGroup[i].templateList)
+			}
+		if(templateGroup[i].groupType==2){//图片组
+			str+= getTupianzu(templateGroup[i].title,templateGroup[i].templateList)
+			}
+		if(templateGroup[i].groupType==3){//多图组
+			str+= getDuotu(templateGroup[i].title,templateGroup[i].templateList.length)
+			}
+	}
+	return str;
+}
+//预览创建文本组
+function getWenbenzu(title,list)
+{
+	var str='<h4>'+title+'</h4><div>';
+	for(var i=0;i<list.length;i++){
+		str+='<input type="text" placeholder="'+list[i].title+'" class="form-control" />'
+		}
+	str+='<div>';
+	return str; 
+}
+//预览创建图片组
+function getTupianzu(title,list)
+{
+	var str='<h4>'+title+'</h4><div>';
+	for(var i=0;i<list.length;i++){
+		str+='<label>'+list[i].title+'</label><img src="'+imgPath+'"><br>';
+		}
+	str+='<div>';
+	return str; 
+}
+//预览创建多图组
+function getDuotu(title,num)
+{
+	var str='<h4>'+title+'</h4><div>';
+	for(var i=0;i<num;i++){
+		str+='<img src="'+imgPath+'">';
+		}
+	str+='<div>';
+	return str; 
+}

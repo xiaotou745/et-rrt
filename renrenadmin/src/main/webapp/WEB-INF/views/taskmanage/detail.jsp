@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
@@ -210,6 +211,7 @@ String pro_city = (String) request.getAttribute("pro_city");//城市字符串
 			</table>
 			</div>
 		</fieldset>
+		<%if(groups!=null){ %>
 		<fieldset>
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
@@ -271,6 +273,7 @@ String pro_city = (String) request.getAttribute("pro_city");//城市字符串
 
 			</div>
 		</fieldset>
+		<%} %>
 		<fieldset>
 			<legend>关联设置</legend>
 			<div class="row">
@@ -322,6 +325,7 @@ String pro_city = (String) request.getAttribute("pro_city");//城市字符串
 </div>
 
 <script>
+$('input').attr('disabled','disabled');
 //省市联动
 function provinceChange(){  
     try{  
