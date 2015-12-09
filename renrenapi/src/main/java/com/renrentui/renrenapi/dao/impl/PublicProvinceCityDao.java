@@ -1,5 +1,6 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IPublicProvinceCityDao;
 import com.renrentui.renrenentity.PublicProvinceCity;
+import com.renrentui.renrenentity.domain.ModifyCityDomain;
 import com.renrentui.renrenentity.domain.OpenCityModel;
 import com.renrentui.renrenentity.req.HotAndPublicCityReq;
 import com.renrentui.renrenentity.req.ModifyCityReq;
@@ -33,12 +35,21 @@ public class PublicProvinceCityDao extends DaoBase implements
 
 	@Override
 	public int modifyCity(ModifyCityReq modifyCityReq) {
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("openPublicCityCodeList", modifyCityReq.getOpenPublicCityCodeList());
-		paramMap.put("closePublicCityCodeList", modifyCityReq.getClosePublicCityCodeList());
-		paramMap.put("openHotCityCodeList", modifyCityReq.getOpenHotCityCodeList());
-		paramMap.put("closeHotCityCodeList", modifyCityReq.getCloseHotCityCodeList());
-		return getMasterSqlSessionUtil().update("IPublicProvinceCityDao.modifyCity", paramMap);
+		 
+		 ModifyCityDomain modifyCityDomain = new ModifyCityDomain();
+		 if(modifyCityReq.getOpenPublicCityCodeList().length()>0){
+			 modifyCityDomain.setOpenPublicCityCodeList(Arrays.asList(modifyCityReq.getOpenPublicCityCodeList().split(",")));
+		 }
+		 if(modifyCityReq.getClosePublicCityCodeList().length()>0){
+			 modifyCityDomain.setClosePublicCityCodeList(Arrays.asList(modifyCityReq.getClosePublicCityCodeList().split(",")));
+		 }
+		 if(modifyCityReq.getOpenHotCityCodeList().length()>0){
+			 modifyCityDomain.setOpenHotCityCodeList(Arrays.asList(modifyCityReq.getOpenHotCityCodeList().split(",")));
+		 }
+		 if(modifyCityReq.getCloseHotCityCodeList().length()>0){
+			 modifyCityDomain.setCloseHotCityCodeList(Arrays.asList(modifyCityReq.getCloseHotCityCodeList().split(",")));
+		 }
+		return getMasterSqlSessionUtil().update("IPublicProvinceCityDao.modifyCity", modifyCityDomain);
 	}
 
 }
