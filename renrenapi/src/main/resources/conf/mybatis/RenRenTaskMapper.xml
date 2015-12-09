@@ -208,49 +208,38 @@ select
 	<if test="itemsCount != 0" >
 		top  ${itemsCount} 
 	</if>
-	mt.taskId,
-	mt.taskGeneralInfo,
-	mt.taskName ,
-	mt.tasktype,
-	mt.amount,
-	mt.logo,
-	isnull(mb.auditStatus,0) as  auditStatus,
-	isnull(mb.auditNum,0) as  auditNum,
-	CASE mt.TaskType
-	  WHEN 1 THEN 0
-	  ELSE mt.CompleteNum
-	END AS complateNum
-	from ( 
-		  select 
-		        a.Id as taskId ,
-		        a.taskGeneralInfo ,
-		        a.taskTitle as taskName ,
-		        a.tasktype,
-		        a.amount,
-		        a.status as taskStatus,
-		        m.logo,
-		        c.id,
-		        c.CompleteNum
-		  FROM      RenRenTask a WITH(nolock)
-		            JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
-		            JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId
-		  WHERE     c.ClienterId =  ${userId} 
-					<if test="taskStatus == 3" >
-					       and  a.status in (3,4)
-					</if>
-					<if test="taskStatus == 1" >
-					       and  a.status =1
-					</if>
-		  			) mt
-	LEFT JOIN ( SELECT CtId,Status as auditStatus ,COUNT(0) AS auditNum FROM TaskDatum WITH(nolock)
-	            WHERE     ClienterId =  ${userId} 
-	            GROUP BY CtId,Status) mb
-	ON mt.id=mb.ctid
-	<if test="nextId != 0" >
-	       where  mt.taskId > ${nextId}
-	</if>
-	order by mt.taskId asc;
-  </select>   
+ rrt.ID AS TaskId,
+ rrt.TaskGeneralInfo,
+ rrt.TaskTitle AS taskName,
+ rrt.TaskType,
+ rrt.Amount,
+ b.Logo,
+ ct.CompleteNum,
+ CTD.auditWaitNum,
+ CTD.auditPassNum,
+ CTD.auditRefuseNum
+FROM dbo.ClienterTask AS ct  (NOLOCK)
+INNER JOIN dbo.RenRenTask AS rrt(NOLOCK) ON ct.TaskId=rrt.id
+INNER JOIN dbo.Business AS b (NOLOCK) ON rrt.BusinessId=b.id
+LEFT JOIN (SELECT  CtId ,
+SUM(CASE [Status] WHEN 1 THEN 1 ELSE 0 END) AS auditWaitNum,
+SUM(CASE [Status] WHEN 2 THEN 1 ELSE 0 END) AS auditPassNum,
+SUM(CASE [Status] WHEN 3 THEN 1 ELSE 0 END) AS auditRefuseNum
+                    FROM    TaskDatum AS TD( NOLOCK )
+                    WHERE   ClienterId = ${userId} 
+                    GROUP BY CtId) AS CTD ON ctd.CtId=ct.id 
+WHERE ct.ClienterId= ${userId} 
+<if test="taskStatus == 3" >
+	and  rrt.status in (3,4)
+</if>
+<if test="taskStatus == 1" >
+	and  rrt.status =1
+</if> 
+<if test="nextId != 0" >
+	and  rrt.id > ${nextId}
+</if>
+	order by rrt.Id asc;
+</select>   
     <!--  我的任务  已领取表头数量 -->
    <select id="getMyReceivedTaskListTotal" resultType="com.renrentui.renrenentity.domain.ReceiveNum" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    SELECT  SUM(CASE WHEN rrt.Status = 1 THEN 1
