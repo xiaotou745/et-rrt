@@ -27,6 +27,7 @@ CREATE INDEX IX_RenRenTask_BusinessId ON RenRenTask(BusinessId);
 CREATE INDEX IX_RenRenTask_CreateTime ON RenRenTask(CreateTime);
 CREATE INDEX IX_RenRenTask_BeginTime ON RenRenTask(BeginTime);
 CREATE INDEX IX_RenRenTask_EndTime ON RenRenTask(EndTime);
+CREATE INDEX IX_Business_CityCode ON Business(CityCode);
 
 
 

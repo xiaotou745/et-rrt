@@ -251,15 +251,17 @@ select
 	</if>
 	order by mt.taskId asc;
   </select>   
-    <!--  我的任务  已领取 -->
-   <select id="getMyReceivedTaskListTotal" resultType="java.util.HashMap" parameterType="com.renrentui.renrenentity.req.TaskReq" >
-   	select  a.status,
-            count(*) as totalNum 
-    from RenRenTask a WITH(nolock) 
-   	join ClienterTask rt ( nolock )
-   	on a.id=rt.taskid
-   	where rt.ClienterId =  ${userId} and a.status in (1,3,4)
-   	group by a.status
+    <!--  我的任务  已领取表头数量 -->
+   <select id="getMyReceivedTaskListTotal" resultType="com.renrentui.renrenentity.domain.ReceiveNum" parameterType="com.renrentui.renrenentity.req.TaskReq" >
+   SELECT  SUM(CASE WHEN rrt.Status = 1 THEN 1
+                 ELSE 0
+            END) AS passTotal ,
+        SUM(CASE WHEN rrt.Status != 1 THEN 1
+                 ELSE 0
+            END) AS refuseTotal
+FROM    dbo.ClienterTask AS ct ( NOLOCK )
+        JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON ct.ClienterId = ${userId}
+                                                 AND ct.TaskId = rrt.id
   </select> 
   <!-- 我的任务  审核中  未通过 -->
    <select id="getSubmittedTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >

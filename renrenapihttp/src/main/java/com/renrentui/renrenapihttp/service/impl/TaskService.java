@@ -23,6 +23,7 @@ import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
+import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskModel;
@@ -146,24 +147,15 @@ public class TaskService implements ITaskService{
 		TabModel<MyReceiveTask> td = new TabModel<MyReceiveTask>();
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
-		List<Map<String, Integer>> totalResult=rrTaskServcie.getMyReceivedTaskListTotal(req);
-		for (Map<String, Integer> map : totalResult) {
-			TaskStatus datumStatus=TaskStatus.getEnum(map.get("status"));
-			if (datumStatus==TaskStatus.Audited) {
-				td.setPassTotal(map.get("totalNum"));
-			}
-			else if(datumStatus==TaskStatus.Expired){
-				td.setRefuseTotal(td.getRefuseTotal()+map.get("totalNum"));
-			}
-			else if(datumStatus==TaskStatus.Stop){
-				td.setRefuseTotal(td.getRefuseTotal()+map.get("totalNum"));
-			}
-		}
+		//查询进行中和已过期的数量
+		ReceiveNum totalResult=rrTaskServcie.getMyReceivedTaskListTotal(req);
+		td.setPassTotal(totalResult.getPassTotal());
+		td.setRefuseTotal(totalResult.getRefuseTotal());
 		if (req.getTaskStatus()==TaskStatus.Audited.value()) {
-			td.setTitle("进行中("+td.getCount()+")");
+			td.setTitle("进行中("+totalResult.getPassTotal()+")");
 		}
 		else if(req.getTaskStatus()==TaskStatus.Expired.value()){
-			td.setTitle("已过期("+td.getCount()+")");
+			td.setTitle("已过期("+totalResult.getRefuseTotal()+")");
 		}
 		if(taskModelList!=null && taskModelList.size()>0){
 			td.setNextId(taskModelList.get(taskModelList.size()-1).getTaskId());

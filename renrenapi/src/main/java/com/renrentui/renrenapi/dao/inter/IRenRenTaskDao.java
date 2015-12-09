@@ -8,6 +8,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
+import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
@@ -43,7 +44,7 @@ public interface IRenRenTaskDao {
 
 	List<MyReceiveTask> getMyReceivedTaskList(TaskReq req);
 
-	List<Map<String, Integer>>  getMyReceivedTaskListTotal(TaskReq req);
+	ReceiveNum  getMyReceivedTaskListTotal(TaskReq req);
 
 	List<TaskModel> getSubmittedTaskList(TaskReq req);
 

@@ -73,6 +73,7 @@ import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
+import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDatum;
@@ -566,7 +567,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	}
 
 	@Override
-	public List<Map<String, Integer>>  getMyReceivedTaskListTotal(TaskReq req) {
+	public ReceiveNum  getMyReceivedTaskListTotal(TaskReq req) {
 		return renRenTaskDao.getMyReceivedTaskListTotal(req);
 	}
 

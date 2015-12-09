@@ -13,6 +13,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
+import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
@@ -124,11 +125,14 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		List<MyReceiveTask> taskModels = getMasterSqlSessionUtil().selectList(statement, req);
 		return taskModels;
 	}
-
+	/**
+	 * 查询已接任务各种数量
+	 * 茹化肖 修改
+	 */
 	@Override
-	public List<Map<String, Integer>>  getMyReceivedTaskListTotal(TaskReq req) {
+	public ReceiveNum  getMyReceivedTaskListTotal(TaskReq req) {
 		String statement = "IRenRenTaskDao.getMyReceivedTaskListTotal";
-		return getMasterSqlSessionUtil().selectList(statement, req);
+		return getMasterSqlSessionUtil().selectOne(statement, req);
 	}
 
 	@Override

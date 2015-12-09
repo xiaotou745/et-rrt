@@ -4,6 +4,7 @@ package com.renrentui.renrenapi.service.inter;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
+import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -15,6 +16,7 @@ import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.RenRenTask;
+
 
 
 
@@ -79,7 +81,7 @@ public interface IRenRenTaskService {
 	 int getNewTaskTotal(TaskReq req); 
 
 	 List<MyReceiveTask> getMyReceivedTaskList(TaskReq req); 
-	 List<Map<String, Integer>> getMyReceivedTaskListTotal(TaskReq req);
+	 ReceiveNum getMyReceivedTaskListTotal(TaskReq req);
 
 	 List<TaskModel> getSubmittedTaskList(TaskReq req); 
 	 int getSubmittedTaskListTotal(TaskReq req);
