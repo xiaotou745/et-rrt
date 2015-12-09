@@ -200,7 +200,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	 * V1.0.2
 	 */
 	@Override
-	public int insertClienterTask(ClienterTask task) {
+	public Long insertClienterTask(ClienterTask task) {
 		return getMasterSqlSessionUtil().selectOne("IRenRenTaskDao.insertClienterTask", task);
 	}
 	/**

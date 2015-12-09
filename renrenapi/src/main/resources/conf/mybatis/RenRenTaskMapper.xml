@@ -370,7 +370,7 @@ VALUES  ( ${taskId} ,
         )
   </insert>
   <!-- 参与任务 茹化肖 2015年11月19日14:40:41 -->
-  <select id="insertClienterTask" parameterType="com.renrentui.renrenentity.domain.ClienterTask" resultType="java.lang.Integer">
+  <select id="insertClienterTask" parameterType="com.renrentui.renrenentity.domain.ClienterTask" resultType="java.lang.Long">
   IF NOT EXISTS (SELECT id FROM ClienterTask WHERE TaskId=${taskId} AND ClienterId=${clienterId})
 	BEGIN
 		INSERT INTO dbo.ClienterTask	
@@ -386,11 +386,11 @@ VALUES  ( ${taskId} ,
 		          ${amount} , 
 		          ${taskType} 
 		        ); 
-	SELECT 1
+	SELECT @@IDENTITY
 	END
 ELSE
 	BEGIN
-	SELECT 2
+	SELECT -1
 	END
   
   </select>

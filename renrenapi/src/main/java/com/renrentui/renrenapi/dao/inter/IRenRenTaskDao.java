@@ -83,7 +83,7 @@ public interface IRenRenTaskDao {
 	 * @param task
 	 * @return
 	 */
-	int insertClienterTask(ClienterTask task);
+	Long insertClienterTask(ClienterTask task);
 	/**
 	 * 提交资料将完成数量加1
 	 * @param ctId

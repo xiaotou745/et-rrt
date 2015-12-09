@@ -177,9 +177,10 @@ public class RenRenTaskService implements IRenRenTaskService {
 		cTask.setClienterId(req.getUserId());
 		cTask.setTaskId(req.getTaskId());
 		cTask.setTaskType(detail.getTaskType());
-		int res =renRenTaskDao.insertClienterTask(cTask);
-		if(res==1)//成功插入
+		Long res =renRenTaskDao.insertClienterTask(cTask);
+		if(res>-1)//成功插入
 		{
+			model.setOrderId(res);
 			model.setCode(GetTaskCode.Success);
 		}
 		else {//该任务已经存在
