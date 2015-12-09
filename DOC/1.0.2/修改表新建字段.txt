@@ -23,6 +23,43 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description',
   @level2type=N'COLUMN',
   @level2name=N'TaskType'
 GO
+alter table dbo.RenRenTask add DownUrl NVARCHAR(250) NOT NULL default('') 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'下载地址' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'DownUrl'
+GO
+alter table dbo.RenRenTask add ScanTip NVARCHAR(250) NOT NULL default('') 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'扫码说明' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'ScanTip'
+GO
+
+alter table dbo.RenRenTask add Reminder NVARCHAR(250) NOT NULL default('') 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'温馨提示' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'Reminder'
+GO
+
+
+
 --模板详情添加一个组ID
 USE RenRenDB
 alter table dbo.TemplateDetail add TemplateGroupId BIGINT NOT NULL default(0) 

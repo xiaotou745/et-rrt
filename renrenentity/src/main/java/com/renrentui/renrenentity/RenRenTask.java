@@ -38,6 +38,33 @@ public class RenRenTask {
     private String logo;
     private Integer isHad;
     private Long ctId;
+    private String downUrl;
+    private String scanTip;
+    private String reminder;
+	public String getReminder() {
+		return reminder;
+	}
+
+	public void setReminder(String reminder) {
+		this.reminder = reminder;
+	}
+
+	public String getScanTip() {
+		return scanTip;
+	}
+
+	public void setScanTip(String scanTip) {
+		this.scanTip = scanTip;
+	}
+
+	public String getDownUrl() {
+		return downUrl;
+	}
+
+	public void setDownUrl(String downUrl) {
+		this.downUrl = downUrl;
+	}
+
 	public Long getCtId() {
 		return ctId;
 	}
