@@ -70,7 +70,10 @@ SELECT TOP 1  rrt.id,
         HotLine,
         CASE WHEN ct.id is NULL THEN 0 ELSE 1 END AS IsHad,
         ISNULL(ct.id,0) AS CtId,
-        rrt.pusher
+        rrt.pusher,
+        rrt.DownUrl,
+        rrt.ScanTip,
+        rrt.Reminder
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
         JOIN dbo.Business AS b ( NOLOCK ) ON rrt.BusinessId = b.id
         LEFT JOIN dbo.ClienterTask AS ct ON ct.TaskId=rrt.id AND ct.ClienterId=${userId}
