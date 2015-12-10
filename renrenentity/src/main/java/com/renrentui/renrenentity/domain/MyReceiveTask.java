@@ -11,8 +11,15 @@ private long auditWaitNum;
 private long auditPassNum;
 private long auditRefuseNum;
 private long complateNum;
+private long ctId;
 
 
+public long getCtId() {
+	return ctId;
+}
+public void setCtId(long ctId) {
+	this.ctId = ctId;
+}
 public int getAuditStatus() {
 	return auditStatus;
 }
