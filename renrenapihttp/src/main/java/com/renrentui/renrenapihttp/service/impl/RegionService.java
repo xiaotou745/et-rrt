@@ -31,7 +31,7 @@ public class RegionService implements IRegionService{
 	@Autowired
 	IPublicProvinceCityService iPublicProvinceCityService;
 	@Override
-	public HttpResultModel<RegionModel> getHotRegionAndAll(RegionReq req) {  
+	public HttpResultModel<RegionModel> getHotRegionAndAll(RegionReq req) {   
 		if (req.getVersion()==null||req.getVersion().trim().isEmpty()) {
 			return new HttpResultModel<RegionModel>().setCode(RegionCode.Version.value()).setMsg(RegionCode.Version.desc());
 		} 
@@ -39,11 +39,10 @@ public class RegionService implements IRegionService{
 		//返回给app的结果Model
 		RegionModel rModel = new RegionModel();  
 		String cityVersion = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Version,String.class);
-		if(cityVersion == null || cityVersion == ""){
-			SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-			 
-			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,df); //初始化
-			rModel.setVersion(df.toString());
+		if(cityVersion == null || cityVersion == ""){ 
+		  String kkString=	ParseHelper.ToDateString(new Date(),"yyyyMMdd" );
+			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,kkString); //初始化
+			rModel.setVersion(kkString);
 		} 
 		if(req.getVersion().equals(cityVersion)){  //版本一致，直接从缓存中取出
 			rModel = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Hot,RegionModel.class);  //获取热门城市和26个字母排序城市 
