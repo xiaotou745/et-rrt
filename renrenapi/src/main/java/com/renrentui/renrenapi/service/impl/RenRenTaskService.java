@@ -362,10 +362,24 @@ public class RenRenTaskService implements IRenRenTaskService {
 	    	renRenTaskDao.clearTaskInfo(task.getId());
 	    	//更新任务信息
 	    	renRenTaskDao.updateTaskInfo(task);
+	    	//更新日志
+	    	RenRenTaskLog logRecord = new RenRenTaskLog();
+			logRecord.setRenrenTaskId(task.getId());
+			logRecord.setOptName(task.getCreateName());
+			logRecord.setOptType((short) TaskOpType.Modify.value());
+			logRecord.setRemark(TaskOpType.Modify.desc());
+			renRenTaskLogDao.insert(logRecord);
 	    }
 	    else {
 	    	 //插入任务信息
 	    	 int result = renRenTaskDao.insert(task);
+	    	//插入操作日志
+	    	RenRenTaskLog logRecord = new RenRenTaskLog();
+	 		logRecord.setRenrenTaskId(task.getId());
+	 		logRecord.setOptName(task.getCreateName());
+	 		logRecord.setOptType((short) TaskOpType.NewTask.value());
+	 		logRecord.setRemark(TaskOpType.NewTask.desc());
+	 		renRenTaskLogDao.insert(logRecord);
 		}
 	   
 	    //2. 插入步骤信息
@@ -396,13 +410,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	    //4.任务投放区域
 	    List<TaskCityRelation> recordList = getCityRelationList(task, regionCodes);
 		int relationResult = taskCityRelationDao.insertList(recordList);
-	    //5.记录任务操作日志
-	    RenRenTaskLog logRecord = new RenRenTaskLog();
-		logRecord.setRenrenTaskId(task.getId());
-		logRecord.setOptName(task.getCreateName());
-		logRecord.setOptType((short) TaskOpType.NewTask.value());
-		logRecord.setRemark(TaskOpType.NewTask.desc());
-		renRenTaskLogDao.insert(logRecord);
+	    
 	    return 1;
 	}
 
