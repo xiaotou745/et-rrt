@@ -105,9 +105,7 @@ width: 100%;
 				</div>
 			</small>
 		</div>
-		<small class="font-bold"> </small>
 	</div>
-	<small class="font-bold"> </small>	
 </div>
 
 <script>

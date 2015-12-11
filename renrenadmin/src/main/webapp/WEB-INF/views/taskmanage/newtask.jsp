@@ -586,6 +586,7 @@ $('input:radio[name="rTaskType"]').change(function(){
 else{
 	%>
 	$('input:radio[name="rTaskType"]').attr('disabled','disabled');
+	$("#businessId").val(<%=taskInfo.getBusinessId()%>);
 	<%
 }
 %>

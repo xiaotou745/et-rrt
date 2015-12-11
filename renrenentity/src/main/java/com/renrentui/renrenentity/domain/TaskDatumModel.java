@@ -21,7 +21,14 @@ public class TaskDatumModel {
     private Date auditTime;
     private int groupType;
     private List<String> titlesList;
-	 public long getTaskId() {
+    private long ctId;
+	 public long getCtId() {
+		return ctId;
+	}
+	public void setCtId(long ctId) {
+		this.ctId = ctId;
+	}
+	public long getTaskId() {
 		return taskId;
 	}
 	public void setTaskId(long taskId) {
