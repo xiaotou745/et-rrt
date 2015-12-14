@@ -64,9 +64,10 @@ VALUES  ( ${taskDatumId} ,
             a.id AS taskDatumId ,
             a.Status AS auditStatus ,
             a.CreateDate ,
-            a.AuditTime
-  FROM      TaskDatum a
-            JOIN RenRenTask b ON a.TaskId = b.id
+            a.AuditTime,
+            a.CtId
+  FROM      TaskDatum a (nolock)
+            JOIN RenRenTask b (nolock) ON a.TaskId = b.id
   where a.ClienterId = ${userId} 
   		and a.status=${auditStatus}
   	<if test="taskId > 0" >

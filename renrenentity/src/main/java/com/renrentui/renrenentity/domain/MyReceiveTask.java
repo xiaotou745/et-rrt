@@ -12,8 +12,29 @@ private long auditPassNum;
 private long auditRefuseNum;
 private long complateNum;
 private long ctId;
+private String downUrl;
+private String scanTip;
+private String reminder;
 
 
+public String getDownUrl() {
+	return downUrl;
+}
+public void setDownUrl(String downUrl) {
+	this.downUrl = downUrl;
+}
+public String getScanTip() {
+	return scanTip;
+}
+public void setScanTip(String scanTip) {
+	this.scanTip = scanTip;
+}
+public String getReminder() {
+	return reminder;
+}
+public void setReminder(String reminder) {
+	this.reminder = reminder;
+}
 public long getCtId() {
 	return ctId;
 }

@@ -3,14 +3,23 @@
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
+
 <div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="row">
 				<div class="col-lg-3">
 					<div class="form-group">
+					<label class="col-sm-4 control-label">文章标题:</label>
 						<div class="col-sm-7">
 							<input type="text" placeholder="文章标题" class="form-control" id="title" />
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<div class="form-group">
+					<label class="col-sm-4 control-label">文章编号:</label>
+						<div class="col-sm-7">
 							<input type="text" placeholder="文章编号" class="form-control" id="id" />
 						</div>
 					</div>

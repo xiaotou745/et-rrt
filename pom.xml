@@ -382,12 +382,6 @@
                 <version>6.0</version>
                 <scope>test</scope>
             </dependency>
-
-            <dependency>
-                <groupId>org.quartz-scheduler</groupId>
-                <artifactId>quartz</artifactId>
-                <version>2.1.0</version>
-            </dependency>
             <dependency>
                 <groupId>org.directwebremoting</groupId>
                 <artifactId>dwr</artifactId>
