@@ -184,9 +184,9 @@ select
 		   	   AND c.id IS NULL
 		   	</if> 
 			 <if test="nextId != 0" >
-		         and a.Id > ${nextId}
+		         and ${nextId} > a.Id
 		     </if>
-   order by a.Id asc;
+   order by a.Id desc;
   </select>   
   
    <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
