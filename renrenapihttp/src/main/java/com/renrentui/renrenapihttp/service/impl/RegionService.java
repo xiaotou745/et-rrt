@@ -31,7 +31,7 @@ public class RegionService implements IRegionService{
 	@Autowired
 	IPublicProvinceCityService iPublicProvinceCityService;
 	@Override
-	public HttpResultModel<RegionModel> getHotRegionAndAll(RegionReq req) {   
+	public HttpResultModel<RegionModel> getHotRegionAndAll(RegionReq req) {  
 		if (req.getVersion()==null||req.getVersion().trim().isEmpty()) {
 			return new HttpResultModel<RegionModel>().setCode(RegionCode.Version.value()).setMsg(RegionCode.Version.desc());
 		} 
@@ -63,7 +63,7 @@ public class RegionService implements IRegionService{
 		//调用接口返回的数据库原始结果集
 		List<PublicProvinceCity> prcList = new ArrayList<PublicProvinceCity>();
 		prcList = iPublicProvinceCityService.getOpenCityByJiBie(3);
-		
+		prcList =  prcList.stream().filter(k->k.getIsPublic().equals(1)).collect(Collectors.toList());
 		//过滤热门城市,ishot为1且开放
 		hotRegionModel = prcList.stream().filter(k->k.getIsHot().equals(1) && k.getIsPublic().equals(1)).collect(Collectors.toList());
 		rModel.setHotRegionModel(hotRegionModel);
