@@ -33,7 +33,7 @@ var add3 = '<tr class="copy3"><td><label>1</label></td>'
 			+'</tr>';
 //文本组
 var txtgroup='<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">'
-	+'<label class="boxno">1.</label><span>文本组标题:</span><input type="text" value="文本组标题" class="cltxt">	'
+	+'<label class="boxno">1.</label><span>文本组标题:</span><input type="text" value="" class="cltxt">	'
 	+'<a href="javascript:void(0);" onclick="addTxtControl(this)">添加文本控件</a>'
 	+'<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> '
 	+'<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本组</a>'
@@ -44,7 +44,7 @@ var txtgroup='<div class="templateGroupText template" style="border: 3px solid #
 
 //图片组
 var imggroup='<div class="templateGroupImg template"  style="border: 3px solid #DDDDDD;margin-top: 8px;width: 40%;">'
-	+'<label class="boxno">2.</label><span>图片组标题</span><input type="text" value="图片组标题" class="climg">'
+	+'<label class="boxno">2.</label><span>图片组标题</span><input type="text" value="" class="climg">'
 	+'<a href="javascript:void(0);" onclick="addImgControl(this)" >添加图片控件</a>'
 	+'<a href="javascript:void(0);" onclick="delImgControl(this)" >删除图片控件</a>'
 	+'<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该图片组</a>'
@@ -55,7 +55,7 @@ var imggroup='<div class="templateGroupImg template"  style="border: 3px solid #
 
 //多图组
 var moreimggroup='<div class="templateGroupMoreImg template"  style="border: 3px solid #DDDDDD;margin-top: 8px;width: 40%;">'
-	+'<label class="boxno">3.</label><span>多图组标题</span><input type="text" value="多图组标题" class="clmoreimg">'
+	+'<label class="boxno">3.</label><span>多图组标题</span><input type="text" value="" class="clmoreimg">'
 	+'<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该多图组</a>'
 	+'<div class="imgGroup">'
 	+'<div class="imgitemnum">图片数量:<input type="text" class="imgitemnumn"></div>'
