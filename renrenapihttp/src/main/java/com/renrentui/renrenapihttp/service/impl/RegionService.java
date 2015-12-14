@@ -31,9 +31,7 @@ public class RegionService implements IRegionService{
 	@Autowired
 	IPublicProvinceCityService iPublicProvinceCityService;
 	@Override
-	public HttpResultModel<RegionModel> getHotRegionAndAll(RegionReq req) { 
-		
-		redisService.remove(RedissCacheKey.RR_PublicProvinceCity_Version);
+	public HttpResultModel<RegionModel> getHotRegionAndAll(RegionReq req) {  
 		if (req.getVersion()==null||req.getVersion().trim().isEmpty()) {
 			return new HttpResultModel<RegionModel>().setCode(RegionCode.Version.value()).setMsg(RegionCode.Version.desc());
 		} 
