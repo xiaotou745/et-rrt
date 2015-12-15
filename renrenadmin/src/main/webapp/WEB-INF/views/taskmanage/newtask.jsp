@@ -223,7 +223,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 					<tr class="copy3">
 					<td><label>1</label></td>
 					<td><input type="text"  style="width:200px;" class="eltitle"></td>
-					<td><input type="text"  style="width:200px;" class="elurl"></td>
+					<td><input type="text"  style="width:200px;" class="elurl" onBlur="HttpC(this)"></td>
 					<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a></td>
 					</tr>
 				</tbody>
@@ -313,7 +313,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 						<tr class="copy3">
 						<td><label><%=num%></label></td>
 						<td><input type="text"  style="width:200px;" class="eltitle" value="<%=taskSetps.get(i).getLinkTitle()%>"></td>
-						<td><input type="text"  style="width:200px;" class="elurl" value="<%=taskSetps.get(i).getContent()%>"></td>
+						<td><input type="text"  style="width:200px;" class="elurl" value="<%=taskSetps.get(i).getContent()%> " onBlur="HttpC(this)"></td>
 						<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a></td>
 						</tr>
 						<%
@@ -564,7 +564,16 @@ var imgPath="<%=basePath%>/img/11235.png";
 	<small class="font-bold"> </small>	
 </div>
 
-<script>  
+<script>
+//失去焦点
+function HttpC(obj){
+	var str=$(obj).val();
+	if(str.indexOf('http://')<0)
+	{
+		str="http://"+str;
+	}
+	$(obj).val(str);
+}
 //任务类型切换事件
 $('input:radio[name="rTaskType"]').change(function(){
 		var id=$('input[name="rTaskType"]:checked').val();

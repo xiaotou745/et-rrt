@@ -28,7 +28,7 @@ var add2 = '<div class="copy2">'
 //细则
 var add3 = '<tr class="copy3"><td><label>1</label></td>'
 			+'<td><input type="text"  style="width:200px;" class="eltitle"></td>'
-			+'<td><input type="text"  style="width:200px;" class="elurl"></td>'
+			+'<td><input type="text"  style="width:200px;" class="elurl" onBlur="HttpC(this)"></td>'
 			+'<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a></td>'
 			+'</tr>';
 //文本组
