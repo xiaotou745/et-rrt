@@ -151,14 +151,17 @@ public class TaskService implements ITaskService{
 		td.setCount(taskModelList.size());
 		//查询进行中和已过期的数量
 		ReceiveNum totalResult=rrTaskServcie.getMyReceivedTaskListTotal(req);
-		td.setPassTotal(totalResult.getPassTotal());
-		td.setRefuseTotal(totalResult.getRefuseTotal());
-		if (req.getTaskStatus()==TaskStatus.Audited.value()) {
-			td.setTitle("进行中("+totalResult.getPassTotal()+")");
+		if (totalResult!=null) {
+			td.setPassTotal(totalResult.getPassTotal());
+			td.setRefuseTotal(totalResult.getRefuseTotal());
+			if (req.getTaskStatus()==TaskStatus.Audited.value()) {
+				td.setTitle("进行中("+totalResult.getPassTotal()+")");
+			}
+			else if(req.getTaskStatus()==TaskStatus.Expired.value()){
+				td.setTitle("已过期("+totalResult.getRefuseTotal()+")");
+			}
 		}
-		else if(req.getTaskStatus()==TaskStatus.Expired.value()){
-			td.setTitle("已过期("+totalResult.getRefuseTotal()+")");
-		}
+
 		if(taskModelList!=null && taskModelList.size()>0){
 			td.setNextId(taskModelList.get(taskModelList.size()-1).getTaskId());
 		}

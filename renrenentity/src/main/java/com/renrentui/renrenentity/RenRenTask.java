@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.renrentui.renrencore.enums.TaskType;
+import com.renrentui.renrencore.util.PropertyUtils;
 
 public class RenRenTask {
     private String taskNotice;
@@ -82,6 +83,8 @@ public class RenRenTask {
 	}
 
 	public String getLogo() {
+		if (this.logo != null && !this.logo.equals(""))
+			return PropertyUtils.getProperty("ImgShowUrl") + this.logo;
 		return logo;
 	}
 
