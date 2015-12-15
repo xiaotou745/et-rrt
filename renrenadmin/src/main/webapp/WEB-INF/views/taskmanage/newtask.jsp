@@ -565,15 +565,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 </div>
 
 <script>
-//失去焦点
-function HttpC(obj){
-	var str=$(obj).val();
-	if(str.indexOf('http://')<0)
-	{
-		str="http://"+str;
-	}
-	$(obj).val(str);
-}
+
 //任务类型切换事件
 $('input:radio[name="rTaskType"]').change(function(){
 		var id=$('input[name="rTaskType"]:checked').val();
@@ -596,10 +588,28 @@ else{
 	%>
 	$('input:radio[name="rTaskType"]').attr('disabled','disabled');
 	$("#businessId").val(<%=taskInfo.getBusinessId()%>);
+	var id=$('input[name="rTaskType"]:checked').val();
+	if(id==1){
+		$('#tasktype2').hide();
+		$('#tasktype3').hide();
+		$('#mubanbox').show();
+	}else{
+		$('#tasktype2').show();
+		$('#tasktype3').show();
+		$('#mubanbox').hide();
+	}	
 	<%
 }
 %>
-
+//失去焦点
+function HttpC(obj){
+	var str=$(obj).val();
+	if(str.indexOf('http://')<0)
+	{
+		str="http://"+str;
+	}
+	$(obj).val(str);
+}
 //省市联动
 $('#provinceCode').on('change',function(){
 	 try{  

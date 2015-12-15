@@ -407,8 +407,8 @@ ELSE
   </update>
   <!-- 修改任务删除任务下的信息 茹化肖 2015年11月26日17:01:15 -->
   <delete id="clearTaskInfo" parameterType="java.lang.Long">
-  DELETE dbo.TemplateDetail  WHERE TemplateGroupId IN (
-	SELECT TemplateGroupId FROM dbo.TemplateGroup (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT})
+DELETE dbo.TemplateDetail  WHERE TemplateGroupId IN (
+SELECT Id FROM dbo.TemplateGroup (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT})
 DELETE dbo.TemplateGroup WHERE TaskId=#{taskId,jdbcType=BIGINT}
 DELETE dbo.TaskSetp WHERE TaskId=#{taskId,jdbcType=BIGINT}
 DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
