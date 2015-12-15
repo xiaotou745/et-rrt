@@ -3,12 +3,12 @@
 function CheckSave(){
 	 
 	//任务基本信息校验
-	if($('#taskTitle').val().length<=5||$('#taskTitle').val().length>50)
+	if($('#taskTitle').val().length<5||$('#taskTitle').val().length>50)
 	{
 		alert('任务标题必须在5-50个字符之间');
 		return false;
 	}
-	if($('#taskGeneralInfo').val().length<=5||$('#taskGeneralInfo').val().length>200)
+	if($('#taskGeneralInfo').val().length<5||$('#taskGeneralInfo').val().length>200)
 	{
 		alert('任务描述必须在5-200个字符之间');
 		return false;
