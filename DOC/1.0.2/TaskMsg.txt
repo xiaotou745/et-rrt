@@ -1,0 +1,89 @@
+USE [RenRenDB]
+GO
+
+/****** Object:  Table [dbo].[TaskMsg]    Script Date: 12/15/2015 09:28:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[TaskMsg](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[Title] [nvarchar](50) NOT NULL,
+	[Msg] [nvarchar](max) NOT NULL,
+	[CreateName] [nvarchar](50) NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+	[HasRead] [bit] NOT NULL,
+	[ReadDate] [datetime] NULL,
+	[isDel] [int] NOT NULL,
+	[MsgType] [int] NOT NULL,
+	[ClienterId] [bigint] NOT NULL,
+	[TaskId] [bigint] NOT NULL,
+	[TaskDatumId] [bigint] NOT NULL,
+ CONSTRAINT [PK_TaskMsg] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'消息标题' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'Title'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'消息内容' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'Msg'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'消息创建人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'CreateName'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'消息创建时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'CreateDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'用户是否已经读过该消息,默认0，没读，1是已经阅读' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'HasRead'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'阅读日期' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'ReadDate'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否删除：0表示没删除（默认），1表示已删除' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'isDel'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'消息类型，默认0，' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'MsgType'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'消息的骑士id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'ClienterId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'任务id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TaskMsg', @level2type=N'COLUMN',@level2name=N'TaskId'
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_Title]  DEFAULT ('') FOR [Title]
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_Msg]  DEFAULT ('') FOR [Msg]
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_CreateName]  DEFAULT ('') FOR [CreateName]
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_HasRead]  DEFAULT ((0)) FOR [HasRead]
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_Status]  DEFAULT ((0)) FOR [isDel]
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_MsgType]  DEFAULT ((0)) FOR [MsgType]
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_TaskId]  DEFAULT ((0)) FOR [TaskId]
+GO
+
+ALTER TABLE [dbo].[TaskMsg] ADD  CONSTRAINT [DF_TaskMsg_TaskDatumId]  DEFAULT ((0)) FOR [TaskDatumId]
+GO
+
+
