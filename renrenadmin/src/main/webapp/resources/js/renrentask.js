@@ -8,9 +8,9 @@ function CheckSave(){
 		alert('任务标题必须在5-50个字符之间');
 		return false;
 	}
-	if($('#taskGeneralInfo').val().length<5||$('#taskGeneralInfo').val().length>200)
+	if($('#taskGeneralInfo').val().length<5||$('#taskGeneralInfo').val().length>20)
 	{
-		alert('任务描述必须在5-200个字符之间');
+		alert('任务描述必须在5-20个字符之间');
 		return false;
 	}
 	if(parseInt($('#auditCycle').val())<1||isNaN(parseInt($('#auditCycle').val())))
@@ -30,6 +30,16 @@ function CheckSave(){
 			alert('下载链接不能为空');
 			return false;
 			}
+		if($('#scanTip').val.length>30)
+		{
+		alert('扫码说明不能大于30个字符');
+		return false;
+		}
+		if($('#reminder').val.length>100)
+		{
+		alert('温馨提示不能大于100个字符');
+		return false;
+		}
 	}
 	//开始日期结束日期验证
 	  var startDate = $('#beginDate').val();

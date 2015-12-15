@@ -229,7 +229,7 @@ WHERE id=${orderId}
   <!-- 验证合同是否可以提交  2015年9月30日13:36:59茹化肖 -->
   <select id="checkOrderSubmit" parameterType="com.renrentui.renrenentity.req.SubmitTaskReq" resultType="com.renrentui.renrenentity.domain.CheckSubmitTask">
 SELECT TOP 1
-        CASE WHEN rrt.EndTime > GETDATE() THEN 1
+        CASE WHEN  GETDATE()> rrt.EndTime THEN 1
              ELSE 0
         END AS TaskClosed
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
