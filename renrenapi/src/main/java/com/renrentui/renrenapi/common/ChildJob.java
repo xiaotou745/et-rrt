@@ -60,7 +60,7 @@ public class ChildJob implements Job {
 			logEngity.setRequestTime(ParseHelper.ToDateString(requestTime, ""));
 			logEngity.setRequestEndTime(ParseHelper.ToDateString(endDate, ""));
 			LogServiceBLL obj = (LogServiceBLL)SpringBeanHelper.getCustomBean("logServiceBLL");
-			//obj.ServiceActionLog(logEngity);
+			obj.ServiceActionLog(logEngity);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
