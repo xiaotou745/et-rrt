@@ -18,7 +18,8 @@ public enum SubmitTaskCode {
 	
 	ReSubmit(1165, "任务待审核不可重复提交"),
 	UserIdError(1166, "用户ID错误"),
-	OrderIdError(1167, "OrderID错误"),
+	CtIdError(1167, "CtID错误"),
+	TaskIdError(1168, "TaskID错误"),
 	
 	Fail(1164, "提交失败");
 

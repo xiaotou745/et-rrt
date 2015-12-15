@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
@@ -93,8 +94,9 @@ public abstract class StreamUtils {
 	 * 
 	 * @param in
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static String copyToStringNoclose(InputStream in) {
+	public static String copyToStringNoclose(InputStream in) throws UnsupportedEncodingException {
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream(BUFFER_SIZE);
 		try {
@@ -102,7 +104,7 @@ public abstract class StreamUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return out.toString();
+		return out.toString("utf-8");
 	}
 
 	/**

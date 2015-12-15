@@ -270,6 +270,12 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public SubmitTaskCode submitTask(SubmitTaskReq req) {
+		//验证订单是否可以提交
+		CheckSubmitTask check = orderDao.checkOrderSubmit(req);
+		if (check == null)
+			return SubmitTaskCode.CantSubmit;
+		if (check.getTaskClosed() == 1)// 任务已关闭 不可提交
+			return SubmitTaskCode.TaskClosed;
 		//1.插入TaskDatum 任务资料表
 		TaskDatum taskDatum=new TaskDatum();
 		taskDatum.setCtId(req.getCtId());
@@ -288,62 +294,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 		return SubmitTaskCode.Success;
 		
 		
-//		CheckSubmitTask check = orderDao.checkOrderSubmit(req);
-//		int deleInt = 0;
-//		if (check == null)
-//			return SubmitTaskCode.CantSubmit;
-//		if (check.getSubmitCan() == 0)// 订单不可提交
-//		{
-//			if (check.getIsCancel() == 1)// 订单已经取消
-//				return SubmitTaskCode.OrderCancel;
-//			if (check.getTaskClosed() == 1)// 任务已关闭 且不是修改后提交
-//				return SubmitTaskCode.TaskClosed;
-//			if (check.getReSubmit() == 1)// 任务已经提交待审核 不可重复提交
-//				return SubmitTaskCode.ReSubmit;
-//			return SubmitTaskCode.CantSubmit;
-//		}
-//		OrderLog orderLog = new OrderLog();
-//		orderLog.setOrderNo("");
-//		orderLog.setOrderId(req.getOrderId());
-//		orderLog.setOptType(Short.valueOf("2"));
-//		orderLog.setOptName("地推员:" + req.getUserId());
-//		orderLog.setRemark("地推员:" + req.getUserId() + "提交订单ID:"
-//				+ req.getOrderId());
-//		if (check.getSubmitCan() == 1 && check.getIsAgainSubmit() == 1) {
-//			// 再次提交合同信息..删除之前提交的合同
-//			deleInt = orderChildDaoDao.deleteOrderChild(req.getOrderId());
-//			if (deleInt <= 0) {
-//				// 清除旧数据失败
-//				Error error = new Error("清除旧合同信息错误");
-//				throw new RuntimeErrorException(error);
-//			}
-//			orderLog.setOptType(Short.valueOf("3"));
-//			orderLog.setRemark("地推员:" + req.getUserId() + "审核拒绝后再次提交订单ID:"
-//					+ req.getOrderId());
-//		}
-//		// 更新订单状态00
-//		int resSubmit = orderDao.submitOrder(req);
-//		// 插入订单操作记录
-//		int orderlogres = orderLogDao.addOrderLog(orderLog);// 记录订单操作日志
-//		// 插入子订单信息
-//		int childres = 0;
-//		for (int i = 0; i < req.getValueInfo().size(); i++) {
-//			OrderChild child = new OrderChild();
-//			child.setOrderId(req.getOrderId());
-//			child.setControlName(req.getValueInfo().get(i).getControlName());
-//			child.setControlValue(req.getValueInfo().get(i).getControlValue());
-//			child.setTemplateSnapshotId(req.getTemplateId());
-//			childres += orderChildDaoDao.insert(child);
-//		}
-//		if (resSubmit > 0 && orderlogres > 0
-//				&& (childres == req.getValueInfo().size())) {
-//			// 返回订单提交成功
-//			return SubmitTaskCode.Success;
-//		} else {
-//			// 提交合同失败
-//			Error error = new Error("提交合同信息失败");
-//			throw new RuntimeErrorException(error);
-//		}
+
 	}
 	/**
 	 * 保存任务
