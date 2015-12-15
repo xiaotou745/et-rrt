@@ -315,17 +315,17 @@ order by o.Id asc;
          and o.Id > ${nextId}
      </if>
   </select> 
-  <!-- 超时取消任务服务  add by caoheyang 20151010 -->
+  <!-- 超时关闭任务服务  茹化肖 -->
 	<update id="outTimeCanelTask">
-		update dbo.RenRenTask set Status=3
-		output inserted.Id,3,'系统服务','超时任务自动过期' into RenRenTasklog (RenRenTaskId,
-		OptType,
-		OptName,
-		Remark)
-		where EndTime 
-<![CDATA[<]]>
-		=GETDATE()
-		   and Status=1
+	      UPDATE  dbo.RenRenTask
+        SET     Status = 3
+        OUTPUT  inserted.Id ,
+                3 ,
+                '系统服务' ,
+                '超时任务自动过期'
+                INTO RenRenTasklog ( RenRenTaskId, OptType, OptName, Remark )
+        WHERE   GETDATE()>=EndTime
+                AND Status = 1
 	</update>
 	  <update id="update" parameterType="com.renrentui.renrenentity.RenRenTask" >
     update RenRenTask
@@ -472,4 +472,18 @@ DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
   <select id="getClinerIdList" parameterType="java.lang.Long" resultType="java.lang.Long">
   SELECT ClienterId FROM dbo.ClienterTask AS ct (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT}
   </select>
+   <!--  获取已经还有一天就过期的任务信息 -->
+  <select id="getTaskSendList"  resultType="com.renrentui.renrenentity.RenRenTask">
+SELECT  id ,
+        TaskTitle
+FROM    dbo.RenRenTask AS rrt ( NOLOCK )
+WHERE   rrt.Status = 1
+        AND IsSend = 0
+        AND GETDATE() > DATEADD(DAY, -1, rrt.EndTime)
+        AND rrt.EndTime > GETDATE()
+  </select>
+  <!-- 设置任务为已经发过消息 -->
+  <update id="setTaskSend" parameterType="java.lang.Long">
+  UPDATE dbo.RenRenTask SET IsSend=1 WHERE id =#{taskId,jdbcType=BIGINT}
+  </update>
 </mapper>

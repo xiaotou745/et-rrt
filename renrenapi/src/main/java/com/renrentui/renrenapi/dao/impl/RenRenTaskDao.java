@@ -152,7 +152,7 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	
 	/**
 	 * 超时取消任务服务
-	 * 
+	 * 服务.茹化肖修改
 	 * @author CaoHeYang
 	 * @date 20151009
 	 */
@@ -237,6 +237,27 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	public List<Long> getClinerIdList(Long taskId) {
 		return getMasterSqlSessionUtil().selectList("IRenRenTaskDao.getClinerIdList", taskId);
 	}
+	/**
+	 * 服务.获取还有一天过期任务
+	 * 茹化肖
+	 * 2015年12月15日13:02:19
+	 * 
+	 * @return
+	 */
+	@Override
+	public List<RenRenTask> getTaskSendList() {
+		return getMasterSqlSessionUtil().selectList("IRenRenTaskDao.getTaskSendList");
+	}
+	/**
+	 * 服务.设置任务为已经发送过站内信
+	 * @param taskId
+	 * @return
+	 */
+	@Override
+	public int setTaskSend(Long taskId) {
+		return getMasterSqlSessionUtil().update("IRenRenTaskDao.setTaskSend", taskId);
+	}
+
 	
 	
 }

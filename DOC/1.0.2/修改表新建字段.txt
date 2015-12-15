@@ -74,3 +74,14 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description',
   @level2type=N'COLUMN',
   @level2name=N'TemplateGroupId'
 GO
+alter table dbo.RenRenTask add IsSend int NOT NULL default(0) 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'是否已经发送过期站内信 1 是 0否 默认0' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'IsSend'
+GO

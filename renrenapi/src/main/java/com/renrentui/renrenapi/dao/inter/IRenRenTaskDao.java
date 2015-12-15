@@ -112,4 +112,19 @@ public interface IRenRenTaskDao {
 	 * @return
 	 */
 	List<Long> getClinerIdList(Long taskId);
+	/**
+	 * 服务.获取还有一天过期任务
+	 * 茹化肖
+	 * 2015年12月15日13:02:19
+	 * 
+	 * @return
+	 */
+	List<RenRenTask> getTaskSendList();
+	/**
+	 * 设置任务为已经发送过站内信
+	 * @param taskId
+	 * @return
+	 */
+	int setTaskSend(Long taskId);
+	
 }
