@@ -24,7 +24,6 @@ public class MenuInfoDao extends DaoBase implements
 	public List<MenuInfo> getMenuListByUserID(int accountId) {
 		String key=RedissCacheKey.Menu_Auth+accountId;
 		List<MenuInfo> result=redisService.get(key, List.class);
-		result=null;
 		if (result==null||result.size()==0) {
 			List<MenuInfo> list = getReadOnlySqlSessionUtil()
 					.selectList(
