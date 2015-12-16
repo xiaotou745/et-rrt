@@ -33,6 +33,7 @@ import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.ClienterLog;
+import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
@@ -127,7 +128,33 @@ public class ClienterService implements IClienterService {
 	 */
 	@Override
 	public Clienter queryClienter(SignInReq req) {
-		return clienterDao.queryClienter(req);
+		Clienter clienter= clienterDao.queryClienter(req);
+		ClienterLoginLog log=new ClienterLoginLog();//登录日志
+		log.setSSID(req.getsSID());
+		log.setOperSystem(req.getOperSystem());
+		log.setOperSystemModel(req.getOperSystemModel());
+		log.setPhoneType(req.getPhoneType());
+		log.setPhoneNo(req.getPhoneNo());
+		log.setAppVersion(req.getAppVersion());
+		if (clienter == null || clienter.getId() <= 0)// 手机号或密码错误
+		{
+			log.setClienterId(0);
+			log.setDescription("登录失败");
+			log.setIsSuccess(0);
+		}
+		else {//登录成功
+			log.setClienterId(Integer.valueOf(clienter.getId().toString()));
+			log.setDescription("登录成功");
+			log.setIsSuccess(1);
+		}
+		try {
+			//不能因为插入日志出错影响正常登录流程
+			clienterDao.insertLoginLog(log);
+		} catch (Exception e) {
+			
+		}
+		
+		return clienter;
 	}
 
 	/**

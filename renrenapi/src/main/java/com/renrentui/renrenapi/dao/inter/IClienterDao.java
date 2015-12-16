@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterReq;
@@ -98,4 +99,10 @@ public interface IClienterDao {
 	* @Return
 	*/
 	boolean editClienterStatus(ModifyClienterStatusReq req);
+	/**
+	 * 
+	 * @param log
+	 * @return
+	 */
+	boolean insertLoginLog(ClienterLoginLog log);
 }

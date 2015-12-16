@@ -1,0 +1,38 @@
+USE RenRenDB
+go
+
+
+CREATE TABLE [dbo].[ClienterLoginLog]
+(
+[Id] [bigint] NOT NULL IDENTITY(1, 1),
+[ClienterId] [int] NULL,
+[PhoneNo] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NOT NULL,
+[SSID] [nvarchar] (100) COLLATE Chinese_PRC_CI_AS NULL,
+[OperSystem] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL,
+[OperSystemModel] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL,
+[PhoneType] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL,
+[AppVersion] [nvarchar] (20) COLLATE Chinese_PRC_CI_AS NULL,
+[CreateTime] [datetime] NOT NULL CONSTRAINT [DF__ClienterL__Creat__2CC890AD] DEFAULT (getdate()),
+[Description] [nvarchar] (255) COLLATE Chinese_PRC_CI_AS NOT NULL,
+[IsSuccess] [smallint] NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[ClienterLoginLog] ADD CONSTRAINT [PK__Clienter__3214EC072AE0483B] PRIMARY KEY CLUSTERED  ([Id]) ON [PRIMARY]
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'骑士登录日志表', 'SCHEMA', N'dbo', 'TABLE', N'ClienterLoginLog', NULL, NULL
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'电话', 'SCHEMA', N'dbo', 'TABLE', N'ClienterLoginLog', 'COLUMN', N'PhoneNo'
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'手机操作系统android,ios', 'SCHEMA', N'dbo', 'TABLE', N'ClienterLoginLog', 'COLUMN', N'OperSystem'
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'手机具体型号5.0', 'SCHEMA', N'dbo', 'TABLE', N'ClienterLoginLog', 'COLUMN', N'OperSystemModel'
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'手机类型,三星、苹果', 'SCHEMA', N'dbo', 'TABLE', N'ClienterLoginLog', 'COLUMN', N'PhoneType'
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'创建时间', 'SCHEMA', N'dbo', 'TABLE', N'ClienterLoginLog', 'COLUMN', N'CreateTime'
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'描述信息', 'SCHEMA', N'dbo', 'TABLE', N'ClienterLoginLog', 'COLUMN', N'Description'
+GO
+EXEC sp_addextendedproperty N'MS_Description', N'是否成功   1 成功   0失败', 'SCHEMA', N'dbo', 'TABLE', N'ClienterLoginLog', 'COLUMN', N'IsSuccess'
+GO
+

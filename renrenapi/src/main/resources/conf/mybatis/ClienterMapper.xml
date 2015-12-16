@@ -344,4 +344,30 @@
   <update  id="editClienterStatus" parameterType="com.renrentui.renrenentity.req.ModifyClienterStatusReq" >
     UPDATE dbo.Clienter SET Status=${status},LastOptTime=GETDATE(),LastOptName='${lastOptName}' WHERE id =#{userId}
   </update>
+  <!-- 插入登录日志  茹化肖 2015年12月16日19:12:15-->
+  <insert  id="insertLoginLog" parameterType="com.renrentui.renrenentity.ClienterLoginLog" >
+    INSERT INTO dbo.ClienterLoginLog
+        ( ClienterId ,
+          PhoneNo ,
+          SSID ,
+          OperSystem ,
+          OperSystemModel ,
+          PhoneType ,
+          AppVersion ,
+          CreateTime ,
+          Description ,
+          IsSuccess
+        )
+VALUES  ( ${clienterId} , -- ClienterId - int
+          N'${phoneNo}' , -- PhoneNo - nvarchar(20)
+          N'${sSID}' , -- SSID - nvarchar(100)
+          N'${operSystem}' , -- OperSystem - nvarchar(20)
+          N'${operSystemModel}' , -- OperSystemModel - nvarchar(20)
+          N'${phoneType}' , -- PhoneType - nvarchar(20)
+          N'${appVersion}' , -- AppVersion - nvarchar(20)
+          GETDATE() , -- CreateTime - datetime
+          N'${description}' , -- Description - nvarchar(255)
+          ${isSuccess}  -- IsSuccess - smallint
+        )
+  </insert>
 </mapper>

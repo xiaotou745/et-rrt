@@ -14,6 +14,7 @@ import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.ClienterReq;
@@ -182,6 +183,17 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	public boolean editClienterStatus(ModifyClienterStatusReq req) {
 		String statement = "IClienterDao.editClienterStatus";
 		int res = getMasterSqlSessionUtil().update(statement, req);
+		return res > 0;
+	}
+	/**
+	 * 
+	 * 插入登录日志
+	 * 
+	 */
+	@Override
+	public boolean insertLoginLog(ClienterLoginLog log) {
+		String statement = "IClienterDao.insertLoginLog";
+		int res = getMasterSqlSessionUtil().insert(statement, log);
 		return res > 0;
 	}
 
