@@ -21,4 +21,5 @@ public interface IQuartzServiceDao {
 	 * @date 2015年12月10日 10:18:44 修改服务状态
 	 * */
 	int updateStatus(QuartzUpdateReq req);
+	List<QuartzServiceModel> queryStartList();
 }

@@ -12,7 +12,7 @@ public interface IQuartzService {
 	 * @date 2015年12月10日 10:15:58 获取所有服务列表
 	 * */
 	PagedResponse<QuartzServiceModel> pagedQuery(PagedQuartzServiceReq req);
-
+	void startAllDBList(String userName);
 	int insert(QuartzServiceModel record);
 	int update(QuartzServiceModel record);
 	boolean checkCron(String cron);
