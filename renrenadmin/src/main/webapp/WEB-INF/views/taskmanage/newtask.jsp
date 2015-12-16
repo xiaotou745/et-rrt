@@ -740,7 +740,7 @@ var jss={
   function addTxtControl(obj){
 	  var div=$(obj).parent().find('.textGroup');
 	  //console.log(div);
-	  var item='<div class="textitem">说明文本:<input type="text" class="cltitle">默认值:<input type="text" class="cldefval"></div>';
+	  var item='<div class="textitem">说明文本:<input type="text" class="cltitle"  maxlength="30" >默认值:<input type="text" class="cldefval" maxlength="30" ></div>';
 	  div.append(item);
 	  orderByGroup()
   }
@@ -758,7 +758,7 @@ var jss={
   function addImgControl(obj){
 	  var div=$(obj).parent().find('.imgGroup');
 	  //console.log(div);
-	  var item='<div class="imgitem">图片说明:<input type="text" class="cltitle"></div>';
+	  var item='<div class="imgitem">图片说明:<input type="text" class="cltitle"  maxlength="30" ></div>';
 	  div.append(item);
   }
   //删除图片控件

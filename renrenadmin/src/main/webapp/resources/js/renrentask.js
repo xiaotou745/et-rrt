@@ -153,7 +153,8 @@ function CheckSave(){
 				}
 				if(!flag) return flag;
 				var num=$(el).find('.imgitemnumn').val();
-				if(Number(num)<1){
+				if(Number(num)<1||parseInt(num)<1||isNaN(parseInt(num)))
+				{
 					alert('多图组图片控件数量不能小于0');
 					flag=false;
 					return false;
