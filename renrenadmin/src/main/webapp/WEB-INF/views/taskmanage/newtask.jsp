@@ -176,7 +176,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 							<div class="form-group">
 								<label class="col-sm-4 control-label">步骤1: </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" />
+									<input type="text" class="form-control" maxlength="999" />
 								</div>
 							</div>
 						</div>
@@ -199,7 +199,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 							<div class="form-group">
 								<label class="col-sm-4 control-label">1、 </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" />
+									<input type="text" class="form-control" maxlength="999"/>
 								</div>
 							</div>
 						</div>
@@ -254,7 +254,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 									<div class="form-group">
 										<label class="col-sm-4 control-label">步骤<%=num%>: </label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" value="<%=taskSetps.get(i).getContent()%>"/>
+											<input type="text" maxlength="999" class="form-control" value="<%=taskSetps.get(i).getContent()%>"/>
 										</div>
 									</div>
 								</div>
@@ -282,7 +282,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 									<div class="form-group">
 										<label class="col-sm-4 control-label"><%=num%>、 </label>
 										<div class="col-sm-8">
-											<input type="text" class="form-control" value="<%=taskSetps.get(i).getContent()%>" />
+											<input type="text"  maxlength="999" class="form-control" value="<%=taskSetps.get(i).getContent()%>" />
 										</div>
 									</div>
 								</div>
@@ -333,25 +333,25 @@ var imgPath="<%=basePath%>/img/11235.png";
 			<legend>提交审核模板</legend>
 			<div id="templateBox">
 				<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
-					<label class="boxno">1.</label><span>文本组标题:</span><input type="text" value="" class="cltxt">	
+					<label class="boxno">1.</label><span>文本组标题:</span><input type="text" value="" class="cltxt" maxlength="30" >	
 					<a href="javascript:void(0);" onclick="addTxtControl(this)">添加文本控件</a>
 					<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> 
 					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本组</a>
 					<div class="textGroup">
-						<div class="textitem">说明文本:<input type="text" class="cltitle">默认值:<input type="text" class="cldefval"></div>
+						<div class="textitem">说明文本:<input type="text" class="cltitle" maxlength="30" >默认值:<input type="text" class="cldefval" maxlength="30" ></div>
 					</div>
 				</div>
 				<div class="templateGroupImg template"  style="border: 3px solid #DDDDDD;margin-top: 8px;width: 40%;">
-					<label class="boxno">2.</label><span>图片组标题</span><input type="text" value="" class="climg">
+					<label class="boxno">2.</label><span>图片组标题</span><input type="text" value="" class="climg" maxlength="30" >
 					<a href="javascript:void(0);" onclick="addImgControl(this)" >添加图片控件</a>
 					<a href="javascript:void(0);" onclick="delImgControl(this)" >删除图片控件</a>
 					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该图片组</a>
 					<div class="imgGroup">
-						<div class="imgitem">图片说明:<input type="text" class="cltitle"></div>
+						<div class="imgitem">图片说明:<input type="text" class="cltitle" maxlength="30" ></div>
 					</div>
 				</div>
 				<div class="templateGroupMoreImg template"  style="border: 3px solid #DDDDDD;margin-top: 8px;width: 40%;">
-					<label class="boxno">3.</label><span>多图组标题</span><input type="text" value="" class="clmoreimg">
+					<label class="boxno">3.</label><span>多图组标题</span><input type="text" value="" class="clmoreimg" maxlength="30" >
 					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该多图组</a>
 					<div class="imgGroup">
 						<div class="imgitemnum">图片数量:<input type="text" class="imgitemnumn"></div>
@@ -379,7 +379,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 					{
 						%>
 						<div class="templateGroupText template" style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
-							<label class="boxno"><%=num2%>.</label><span>文本组标题:</span><input type="text" value="<%=groups.get(i).getTitle()%>" class="cltxt">
+							<label class="boxno"><%=num2%>.</label><span>文本组标题:</span><input type="text" value="<%=groups.get(i).getTitle()%>" class="cltxt" maxlength="30" >
 							<a href="javascript:void(0);" onclick="addTxtControl(this)">添加文本控件</a>
 							<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> 
 							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本组</a>	
@@ -389,8 +389,8 @@ var imgPath="<%=basePath%>/img/11235.png";
 									{
 										%>
 											<div class="textitem">
-											说明文本:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>">
-											默认值:<input type="text" class="cldefval" value="<%=groups.get(i).getTemplateList().get(j).getDefaultValue()%>">
+											说明文本:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>" maxlength="30" >
+											默认值:<input type="text" class="cldefval" value="<%=groups.get(i).getTemplateList().get(j).getDefaultValue()%>" maxlength="30" >
 											</div>
 										<%
 									}
@@ -404,7 +404,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 					{
 						%>
 						<div class="templateGroupImg template"  style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
-							<label class="boxno"><%=num2%>.</label><span>图片组标题</span><input type="text" value="<%=groups.get(i).getTitle()%>"  class="climg">
+							<label class="boxno"><%=num2%>.</label><span>图片组标题</span><input type="text" value="<%=groups.get(i).getTitle()%>"  class="climg" maxlength="30" >
 							<a href="javascript:void(0);" onclick="addImgControl(this)" >添加图片控件</a>
 							<a href="javascript:void(0);" onclick="delImgControl(this)" >删除图片控件</a>
 							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该图片组</a>
@@ -413,7 +413,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 									for(int j=0;j<groups.get(i).getTemplateList().size();j++)
 									{
 										%>
-											<div class="imgitem">图片说明:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>"></div>
+											<div class="imgitem">图片说明:<input type="text"  maxlength="30" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>"></div>
 										<%
 									}
 								%>
@@ -425,7 +425,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 					{
 						%>		
 						<div class="templateGroupMoreImg template"  style="border: 3px solid #DDDDDD;margin-top: 2px;width: 40%;">
-							<label class="boxno"><%=num2%>.</label><span>多图组标题</span><input type="text" value="多图组标题" class="clmoreimg" value="<%=groups.get(i).getTitle()%>">
+							<label class="boxno"><%=num2%>.</label><span>多图组标题</span><input type="text" value="多图组标题"  maxlength="30" class="clmoreimg" value="<%=groups.get(i).getTitle()%>">
 							<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该多图组</a>
 							<div class="imgGroup">
 								<div class="imgitemnum">图片数量:<input type="text" class="imgitemnumn" value="<%=groups.get(i).getTemplateList().size()%>"></div>
