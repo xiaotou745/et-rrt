@@ -97,7 +97,6 @@ public class TaskManageController {
 		}
 		List<Business> datalist=businessService.getAllList();
 		model.addObject("businessData", datalist);
-		model.addObject("templatelist", getTemplateList());
 		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
 		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
 		model.addObject("pro_city", getCityStr(citylistlist));//构建城市字符串
