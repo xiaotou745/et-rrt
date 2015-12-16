@@ -338,7 +338,9 @@ var imgPath="<%=basePath%>/img/11235.png";
 					<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> 
 					<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本组</a>
 					<div class="textGroup">
-						<div class="textitem">说明文本:<input type="text" class="cltitle" maxlength="30" >默认值:<input type="text" class="cldefval" maxlength="30" ></div>
+						<div class="textitem">说明文本:<input type="text" class="cltitle" maxlength="30" >
+<!-- 						默认值:<input type="text" class="cldefval" maxlength="30" > -->
+						</div>
 					</div>
 				</div>
 				<div class="templateGroupImg template"  style="border: 3px solid #DDDDDD;margin-top: 8px;width: 40%;">
@@ -390,7 +392,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 										%>
 											<div class="textitem">
 											说明文本:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>" maxlength="30" >
-											默认值:<input type="text" class="cldefval" value="<%=groups.get(i).getTemplateList().get(j).getDefaultValue()%>" maxlength="30" >
+<%-- 											默认值:<input type="text" class="cldefval" value="<%=groups.get(i).getTemplateList().get(j).getDefaultValue()%>" maxlength="30" > --%>
 											</div>
 										<%
 									}
@@ -740,7 +742,7 @@ var jss={
   function addTxtControl(obj){
 	  var div=$(obj).parent().find('.textGroup');
 	  //console.log(div);
-	  var item='<div class="textitem">说明文本:<input type="text" class="cltitle"  maxlength="30" >默认值:<input type="text" class="cldefval" maxlength="30" ></div>';
+	  var item='<div class="textitem">说明文本:<input type="text" class="cltitle"  maxlength="30" >';
 	  div.append(item);
 	  orderByGroup()
   }
@@ -870,7 +872,7 @@ function createGroupPar(){
 				detail.name="key"+id+id2;//key
 				detail.orderNum=id2+1;//排序
 				detail.controlId=1;//控件类型
-				detail.defaultValue=$(el2).find('.cldefval').val();//默认是
+				detail.defaultValue='';//$(el2).find('.cldefval').val();//默认是
 				detail.controlData='';
 				detailArr.push(detail);//添加到数组中
 			});
@@ -949,7 +951,7 @@ function savetask(){
 							alert("操作成功");
 							window.location.href = window.location.href;
 						} else {
-							alert("操作失败:当前商户账户余额不足，不能新建任务");
+							alert("操作失败");
 						}
 					}
 		});

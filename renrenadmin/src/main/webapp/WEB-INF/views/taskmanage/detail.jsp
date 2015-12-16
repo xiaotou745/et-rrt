@@ -230,7 +230,7 @@ String pro_city = (String) request.getAttribute("pro_city");//城市字符串
 										%>
 											<div class="textitem">
 											说明文本:<input type="text" class="cltitle" value="<%=groups.get(i).getTemplateList().get(j).getTitle()%>">
-											默认值:<input type="text" class="cldefval" value="<%=groups.get(i).getTemplateList().get(j).getDefaultValue()%>">
+<%-- 											默认值:<input type="text" class="cldefval" value="<%=groups.get(i).getTemplateList().get(j).getDefaultValue()%>"> --%>
 											</div>
 										<%
 									}

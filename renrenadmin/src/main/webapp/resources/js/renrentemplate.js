@@ -38,7 +38,7 @@ var txtgroup='<div class="templateGroupText template" style="border: 3px solid #
 	+'<a href="javascript:void(0);" onclick="delTxtControl(this)" >删除文本控件</a> '
 	+'<a href="javascript:void(0);" onclick="delThisGroup(this)" >删除该文本组</a>'
 	+'<div class="textGroup">'
-	+'<div class="textitem">说明文本:<input type="text" class="cltitle" maxlength="30" >默认值:<input type="text" class="cldefval" maxlength="30" ></div>'
+	+'<div class="textitem">说明文本:<input type="text" class="cltitle" maxlength="30" ></div>'
 	+'</div>'
 	+'</div>';
 
