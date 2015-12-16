@@ -1,6 +1,8 @@
 package com.renrentui.renrenapi.dao.impl;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -45,5 +47,8 @@ public class QuartzServiceDao extends DaoBase implements IQuartzServiceDao {
 		return getMasterSqlSessionUtil().update(
 				"IQuartzServiceDao.update", record);
 	}
-
+	@Override
+	public List<QuartzServiceModel> queryStartList() {
+		return getReadOnlySqlSessionUtil().selectList("IQuartzServiceDao.queryStartList");
+	}
 }

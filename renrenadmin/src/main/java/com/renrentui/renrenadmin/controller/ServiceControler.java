@@ -37,7 +37,8 @@ public class ServiceControler {
 		model.addObject("subtitle", "服务管理");
 		model.addObject("currenttitle", "服务管理");
 		model.addObject("viewPath", "service/list");
-
+		UserContext context=UserContext.getCurrentContext(request);
+		quartzService.startAllDBList(context.getUserName());
 		return model;
 	}
 
