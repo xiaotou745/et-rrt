@@ -115,7 +115,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 							<div class="form-group">
 								<label class="col-sm-4 control-label">咨询热线: </label>
 								<div class="col-sm-8">
-									<input type="text" class="form-control" name="hotline" id="hotline" value="<%=taskInfo==null?"":taskInfo.getHotLine()%>"/>
+									<input type="text" class="form-control" name="hotline" id="hotline"  maxlength="12" value="<%=taskInfo==null?"":taskInfo.getHotLine()%>"/>
 								</div>
 							</div>
 							<div class="form-group">
