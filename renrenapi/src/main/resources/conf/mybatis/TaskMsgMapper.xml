@@ -55,9 +55,9 @@ VALUES  ( ${title} ,
   FROM      TaskMsg  with (nolock)        
   where ClienterId = ${userId}
     <if test="nextId != 0" >
-	       and   id > ${nextId}
+	       and  ${nextId} > id 
 	</if>
-	order by CreateDate asc;
+	order by id desc;
   </select> 
    <!--  删除消息或已读消息，zhaohl,20151125 -->
     <update id="updateMsg" parameterType="com.renrentui.renrenentity.req.TaskMsgUpdateReq" >

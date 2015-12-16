@@ -243,9 +243,9 @@ WHERE ct.ClienterId= ${userId}
 	and  rrt.status =1
 </if> 
 <if test="nextId != 0" >
-	and  rrt.id > ${nextId}
+	and   ${nextId}>rrt.id
 </if>
-	order by rrt.Id asc;
+	order by rrt.Id desc;
 </select>   
     <!--  我的任务  已领取表头数量 -->
    <select id="getMyReceivedTaskListTotal" resultType="com.renrentui.renrenentity.domain.ReceiveNum" parameterType="com.renrentui.renrenentity.req.TaskReq" >

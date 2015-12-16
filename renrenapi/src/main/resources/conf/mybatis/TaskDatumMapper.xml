@@ -74,9 +74,9 @@ VALUES  ( ${taskDatumId} ,
 	      AND a.TaskId = ${taskId}
 	</if>
     <if test="nextId > 0" >
-	       and   a.id > ${nextId}
+	       and   ${nextId}> a.id 
 	</if>
-	order by a.CreateDate asc;
+	order by a.id desc;
   </select> 
    <!--  查询我的资料审核列表中每个资料需要显示的内容，zhaohl,20151125 -->
     <select id="getMyTaskDatumTitleList" resultType="com.renrentui.renrenentity.domain.TaskDatumTitle" parameterType="com.renrentui.renrenentity.req.TaskDatumReq" >
