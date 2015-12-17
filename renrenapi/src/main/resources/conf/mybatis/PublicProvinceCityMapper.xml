@@ -50,17 +50,17 @@
 	           ${item}
 	     </foreach> ;
 	     update dbo.PublicProvinceCity set IsPublic = 1 where Code in (
-	      SELECT Code FROM dbo.PublicProvinceCity WHERE code in( SELECT  ParentCode  FROM PublicProvinceCity WHERE code in 
+	       SELECT  ParentCode  FROM PublicProvinceCity WHERE code in 
 	      <foreach collection="openPublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
-	     </foreach> ));
+	     </foreach> );
 	     update dbo.PublicProvinceCity set IsPublic = 1 where Code in (
-	      SELECT Code FROM dbo.PublicProvinceCity WHERE code in( SELECT c.ParentCode  FROM  PublicProvinceCity d WITH(NOLOCK) 
+	      SELECT c.ParentCode  FROM  PublicProvinceCity d WITH(NOLOCK) 
 	      JOIN PublicProvinceCity c ON c.code=d.ParentCode
                                         WHERE d.code in
 	      <foreach collection="openPublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
-	     </foreach>));
+	     </foreach>);
      </if>
      <!-- 热门城市 打开设置 -->
      <if test="openHotCityCodeList != null">
@@ -69,17 +69,17 @@
 	           ${item}
 	     </foreach> ;
 	     update dbo.PublicProvinceCity set IsHot = 1 where Code in (
-	      SELECT Code FROM dbo.PublicProvinceCity WHERE code in( SELECT  ParentCode  FROM PublicProvinceCity WHERE code in 
+	     SELECT  ParentCode  FROM PublicProvinceCity WHERE code in 
 	      <foreach collection="openHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
-	     </foreach> ));
+	     </foreach> );
 	     update dbo.PublicProvinceCity set IsHot = 1 where Code in (
-	      SELECT Code FROM dbo.PublicProvinceCity WHERE code in( SELECT c.ParentCode  FROM  PublicProvinceCity d WITH(NOLOCK) 
+	     SELECT c.ParentCode  FROM  PublicProvinceCity d WITH(NOLOCK) 
 	      JOIN PublicProvinceCity c ON c.code=d.ParentCode
                                         WHERE d.code in
 	      <foreach collection="openHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
-	     </foreach>));
+	     </foreach>);
      </if> 
      <!-- 开放城市 关闭设置 -->
      <if test="closePublicCityCodeList != null">
@@ -87,6 +87,11 @@
 	     <foreach collection="closePublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
 	     </foreach> ;
+	     update dbo.PublicProvinceCity set IsPublic = 0 where Code in (
+	      SELECT  ParentCode  FROM PublicProvinceCity WHERE code in 
+	      <foreach collection="closePublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
+	           ${item}
+	     </foreach> );
 	 </if>
 	 <!-- 热门城市 关闭设置 -->
      <if test="closeHotCityCodeList != null">
@@ -94,6 +99,11 @@
 	     <foreach collection="closeHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
 	     </foreach> ;
+	     update dbo.PublicProvinceCity set IsHot = 0 where Code in (
+	       SELECT  ParentCode  FROM PublicProvinceCity WHERE code in 
+	      <foreach collection="closeHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
+	           ${item}
+	     </foreach> );
 	 </if>
   </update>
 </mapper>
