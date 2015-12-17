@@ -76,33 +76,6 @@ function CheckSave(){
 			}
 	   	});
 		if(!flag) return flag;
-		//遍历补充说明
-		$('#setpbox2 input').each(function(id,el){
-			if($(el).val().length<1)
-			{
-				flag=false;
-				alert('补充说明不能为空');
-				return false;
-			}
-	   	});
-		if(!flag) return flag;
-		//遍历细则
-		$('#setpbox3 tbody tr').each(function(id,el){
-	   		if($(el).find('.eltitle').val().length<1){
-	   			alert('细则链接标题不能为空');
-	   			flag=false;
-				return false;
-	   			}
-	   		if($(el).find('.elurl').val().length<1)
-	   			{
-	   			flag=false;
-	   			alert('细则链接地址不能为空');
-				return false;
-	   			}
-	   		//if(!flag) return flag;
-	   	});
-		
-		if(!flag) return flag;
 		
 		//不是签约任务 后面的就不继续验证了
 		if($('input[name="rTaskType"]:checked').val()!=1)

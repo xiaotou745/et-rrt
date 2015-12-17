@@ -313,7 +313,7 @@ public class RenRenTask {
 	}
 
 	public String getTaskTypeName() {
-		return TaskType.getEnum(taskType.intValue()).desc();
+		return TaskType.getEnum(taskType.intValue()).desc().replace("任务", "");
 	}
 
 	public void setTaskTypeName(String taskTypeName) {
