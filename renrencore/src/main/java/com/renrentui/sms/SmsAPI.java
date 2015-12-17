@@ -16,7 +16,7 @@ public class SmsAPI {
 
 	//易淘短信
 	public static String SendSms(String mobile, String content) {
-		return port.speedSend(mobile, content, "人人地推", 0, "RRDT");
+		return port.speedSend(mobile, content, "人人推", 0, "RRDT");
 	}
 
 }
