@@ -101,7 +101,7 @@ WHERE   EndTime > GETDATE()
 			and ''${createTimeEnd} 23:59:59''>createTime
 		</if>
 	    <if test="beginTime != null and beginTime!=''">
-			and endTime>''${beginTime}''
+			and endTime>=''${beginTime}''
 		</if>
 		<if test="endTime != null and endTime != ''">
 			and ''${endTime} 23:59:59''>=beginTime
