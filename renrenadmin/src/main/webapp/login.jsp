@@ -21,7 +21,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
-<title>人人地推管理后台</title>
+<title>人人推管理后台</title>
 <link href="<%=basePath%>/css/bootstrap.min.css" rel="stylesheet" />
 <link href="<%=basePath%>/css/font-awesome.css" rel="stylesheet" />
 <link href="<%=basePath%>/css/animate.css" rel="stylesheet" />
@@ -45,7 +45,7 @@
 			<!-- 			<div>
 				<h1 class="logo-name">H+</h1>
 			</div> -->
-			<h2>人人地推管理后台</h2>
+			<h2>人人推管理后台</h2>
 			<form class="m-t" role="form" action="<%=basePath%>/account/login"
 				method="post">
 				<div class="form-group">
