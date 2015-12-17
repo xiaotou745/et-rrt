@@ -80,6 +80,16 @@ VALUES  ( ${taskDatumId} ,
   </select> 
    <!--  查询我的资料审核列表中每个资料需要显示的内容，zhaohl,20151125 -->
     <select id="getMyTaskDatumTitleList" resultType="com.renrentui.renrenentity.domain.TaskDatumTitle" parameterType="com.renrentui.renrenentity.req.TaskDatumReq" >
+            SELECT   g1.taskid ,MIN(g1.id) AS groupid
+                           INTO #TB
+                           FROM     TemplateGroup g1 WITH ( NOLOCK )
+                           join ClienterTask c2 WITH ( NOLOCK ) on g1.taskid=c2.taskid
+                           WHERE   c2.ClienterId = ${userId}
+							<if test="taskId > 0" >
+							    AND c2.TaskId = ${taskId}
+							</if>
+                           GROUP BY g1.taskid            
+            
             SELECT  b.id AS taskDatumId ,
                     g.groupType ,
                     k.controlName ,
@@ -87,17 +97,8 @@ VALUES  ( ${taskDatumId} ,
                     m.orderNum
             FROM    ClienterTask a WITH ( NOLOCK )
                     JOIN TaskDatum b WITH ( NOLOCK ) ON b.TaskId = a.TaskId
-                    JOIN ( SELECT   g1.taskid ,
-                                    MIN(g1.id) AS groupid
-                           FROM     TemplateGroup g1 WITH ( NOLOCK )
-                           join ClienterTask c2 WITH ( NOLOCK ) on g1.taskid=c2.taskid
-                           WHERE   c2.ClienterId = ${userId}
-							<if test="taskId > 0" >
-							    AND c2.TaskId = ${taskId}
-							</if>
-                           GROUP BY g1.taskid
-                         ) TB ON b.TaskId = tb.taskid
-                    JOIN TemplateGroup g WITH ( NOLOCK ) ON tb.groupid = g.id
+                    JOIN #TB ON b.TaskId = #TB.taskid
+                    JOIN TemplateGroup g WITH ( NOLOCK ) ON #TB.groupid = g.id
                     JOIN TemplateDetail m WITH ( NOLOCK ) ON m.templategroupid = g.id
                     JOIN TaskDatumChild k WITH ( NOLOCK ) ON m.NAME = k.controlname
                                              AND k.taskdatumid = b.id
@@ -105,7 +106,7 @@ VALUES  ( ${taskDatumId} ,
 	                <if test="taskId > 0" >
 					    AND a.TaskId = ${taskId}
 					</if>
-         
+          DROP TABLE #TB
   </select> 
   <!--  查询(资料对应的任务或某个任务)的模板的分组信息列表，zhaohl,20151126 -->
     <select id="getTaskDatumGroupList" resultType="com.renrentui.renrenentity.domain.TaskDatumDetailGroup" 
