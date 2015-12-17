@@ -40,7 +40,7 @@
     <select id="getAllOpenCity"  resultType="com.renrentui.renrenentity.PublicProvinceCity" >
 	select  * 
 	from    dbo.PublicProvinceCity a ( nolock )
-	where ispublic=1  AND a.Jibie=2 OR Jibie=3
+	where a.ispublic=1  AND (a.Jibie=2 OR a.Jibie=3)
   </select>
   <update id="modifyCity" parameterType="com.renrentui.renrenentity.domain.ModifyCityDomain" >
   <!-- 开放城市 打开设置 -->
