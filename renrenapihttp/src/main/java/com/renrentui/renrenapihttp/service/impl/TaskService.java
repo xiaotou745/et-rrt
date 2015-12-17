@@ -84,6 +84,8 @@ public class TaskService implements ITaskService{
 			return new HttpResultModel<Object>().setCode(SubmitTaskCode.TaskIdError.value()).setMsg(SubmitTaskCode.TaskIdError.desc());
 		if(req.getCtId()==null||req.getCtId()==0)
 			return new HttpResultModel<Object>().setCode(SubmitTaskCode.CtIdError.value()).setMsg(SubmitTaskCode.CtIdError.desc());
+		if(req.getValueInfo()==null||req.getValueInfo().size()==0)
+		return new HttpResultModel<Object>().setCode(SubmitTaskCode.ValueInfoNull.value()).setMsg(SubmitTaskCode.ValueInfoNull.desc());
 		SubmitTaskCode code=rrTaskServcie.submitTask(req);
 		return new HttpResultModel<Object>().setCode(code.value()).setMsg(code.desc());
 	}

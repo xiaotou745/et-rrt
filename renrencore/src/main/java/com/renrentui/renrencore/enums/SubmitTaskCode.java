@@ -20,7 +20,7 @@ public enum SubmitTaskCode {
 	UserIdError(1166, "用户ID错误"),
 	CtIdError(1167, "CtID错误"),
 	TaskIdError(1168, "TaskID错误"),
-	
+	ValueInfoNull(1169, "资料数据最少有一项"),
 	Fail(1164, "提交失败");
 
 	private int value = 0;
