@@ -18,6 +18,7 @@ alter table dbo.RenRenTask drop column TaskNote--注意事项
 ALTER TABLE RenRenTask DROP CONSTRAINT DF_RenRenTask_CompanySummary
 alter table dbo.RenRenTask drop column CompanySummary--公司介绍
 GO 
+ALTER TABLE TemplateDetail DROP CONSTRAINT DF_TemplateDetail_TemplateId
 alter table dbo.TemplateDetail drop column TemplateId--控件详情表中的模板ID
 
 PRINT +@@ERROR
