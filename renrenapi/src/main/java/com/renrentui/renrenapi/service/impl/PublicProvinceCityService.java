@@ -110,7 +110,12 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 
 	@Override
 	public int modifyCity(ModifyCityReq modifyCityReq) {
-		return publicProvinceCityDao.modifyCity(modifyCityReq);
-		 
+		int result= publicProvinceCityDao.modifyCity(modifyCityReq);
+		if (result>0) {
+			redisService.remove(RedissCacheKey.RR_PublicProvinceCity_Hot);
+			redisService.remove(RedissCacheKey.RR_PublicProvinceCity);
+		}
+
+		return result;
 	}
 }
