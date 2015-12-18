@@ -1,4 +1,3 @@
-<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrenentity.QuartzServiceModel"%>
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
