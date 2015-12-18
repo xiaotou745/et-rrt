@@ -103,7 +103,7 @@ public class TaskDatumModel {
 		this.taskName = taskName;
 	}
 	public String getTaskTypeName() {
-		return TaskType.getEnum(taskType).desc();
+		return TaskType.getEnum(taskType).desc().replace("任务", "");
 	}
 	public void setTaskTypeName(String taskTypeName) {
 		this.taskTypeName = taskTypeName;
