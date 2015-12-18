@@ -30,14 +30,14 @@ function CheckSave(){
 			alert('下载链接不能为空');
 			return false;
 			}
-		if($('#scanTip').val.length>30)
+		if($('#scanTip').val.length>20)
 		{
-		alert('扫码说明不能大于30个字符');
+		alert('扫码说明不能大于20个字符');
 		return false;
 		}
-		if($('#reminder').val.length>100)
+		if($('#reminder').val.length>40)
 		{
-		alert('温馨提示不能大于100个字符');
+		alert('温馨提示不能大于40个字符');
 		return false;
 		}
 	}
