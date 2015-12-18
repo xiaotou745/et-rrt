@@ -32,7 +32,7 @@
 	from    PublicProvinceCity d with ( nolock )
 	        join PublicProvinceCity c with ( nolock ) on d.ParentCode = c.code
 	        join PublicProvinceCity p with ( nolock ) on c.ParentCode = p.code
-	 where   1 = 1  
+	 where   1 = 1  and d.jibie=4 
 	 <if test="cityName != null" >
 	     and c.name like '%${cityName}%'
      </if>
@@ -40,60 +40,83 @@
     <select id="getAllOpenCity"  resultType="com.renrentui.renrenentity.PublicProvinceCity" >
 	select  * 
 	from    dbo.PublicProvinceCity a ( nolock )
-	where ispublic=1  AND a.Jibie=2 OR Jibie=3
+	where a.ispublic=1  AND (a.Jibie=2 OR a.Jibie=3)
   </select>
   <update id="modifyCity" parameterType="com.renrentui.renrenentity.domain.ModifyCityDomain" >
   <!-- 开放城市 打开设置 -->
   	 <if test="openPublicCityCodeList != null">
+  	 	 DECLARE @cityCode INT
+	     
 	     update dbo.PublicProvinceCity set IsPublic = 1 where Code in 
 	     <foreach collection="openPublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
 	     </foreach> ;
-	     update dbo.PublicProvinceCity set IsPublic = 1 where Code in (
-	      SELECT Code FROM dbo.PublicProvinceCity WHERE code in( SELECT  ParentCode  FROM PublicProvinceCity WHERE code in 
+	     SELECT  @cityCode=ParentCode  FROM PublicProvinceCity WHERE code in 
 	      <foreach collection="openPublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
-	     </foreach> ));
+	     </foreach>;
+	     
+	     update dbo.PublicProvinceCity set IsPublic = 1 where Code =@cityCode;
+	     
 	     update dbo.PublicProvinceCity set IsPublic = 1 where Code in (
-	      SELECT Code FROM dbo.PublicProvinceCity WHERE code in( SELECT c.ParentCode  FROM  PublicProvinceCity d WITH(NOLOCK) 
-	      JOIN PublicProvinceCity c ON c.code=d.ParentCode
-                                        WHERE d.code in
-	      <foreach collection="openPublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
-	           ${item}
-	     </foreach>));
+	      SELECT d.ParentCode  FROM  PublicProvinceCity d WITH(NOLOCK) where d.code=@cityCode
+	      );
      </if>
-     <!-- 热门城市 打开设置 -->
-     <if test="openHotCityCodeList != null">
-	     update dbo.PublicProvinceCity set IsHot = 1 where Code in 
-	     <foreach collection="openHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
-	           ${item}
-	     </foreach> ;
-	     update dbo.PublicProvinceCity set IsHot = 1 where Code in (
-	      SELECT Code FROM dbo.PublicProvinceCity WHERE code in( SELECT  ParentCode  FROM PublicProvinceCity WHERE code in 
-	      <foreach collection="openHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
-	           ${item}
-	     </foreach> ));
-	     update dbo.PublicProvinceCity set IsHot = 1 where Code in (
-	      SELECT Code FROM dbo.PublicProvinceCity WHERE code in( SELECT c.ParentCode  FROM  PublicProvinceCity d WITH(NOLOCK) 
-	      JOIN PublicProvinceCity c ON c.code=d.ParentCode
-                                        WHERE d.code in
-	      <foreach collection="openHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
-	           ${item}
-	     </foreach>));
-     </if> 
      <!-- 开放城市 关闭设置 -->
      <if test="closePublicCityCodeList != null">
+     	 DECLARE @closePublicCityCode INT
+     	 DECLARE @closePublicProvenceCode INT
 	     update dbo.PublicProvinceCity set IsPublic = 0 where Code in 
 	     <foreach collection="closePublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
 	     </foreach> ;
+	      SELECT  @closePublicCityCode=ParentCode  FROM PublicProvinceCity WHERE code in 
+	      <foreach collection="closePublicCityCodeList" index="index" item="item" open="(" separator="," close=")">
+	           ${item}
+	     </foreach>;
+	     IF not EXISTS(select 1 from PublicProvinceCity where IsPublic=1 and ParentCode=@closePublicCityCode)
+	     update dbo.PublicProvinceCity set IsPublic = 0 where Code =@closePublicCityCode;
+	     
+	     SELECT @closePublicProvenceCode=ParentCode  FROM  PublicProvinceCity  WITH(NOLOCK) where code=@closePublicCityCode;
+	  	IF not EXISTS(select 1 from PublicProvinceCity where IsPublic=1 and ParentCode=@closePublicProvenceCode)
+	    update dbo.PublicProvinceCity set IsPublic = 0 where Code =@closePublicProvenceCode;
 	 </if>
+     <!-- 热门城市 打开设置 -->
+     <if test="openHotCityCodeList != null">
+     	 DECLARE @hotCityCode INT
+	     update dbo.PublicProvinceCity set IsHot = 1 where Code in 
+	     <foreach collection="openHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
+	           ${item}
+	     </foreach> ;
+	     SELECT  @hotCityCode=ParentCode  FROM PublicProvinceCity WHERE code in 
+	      <foreach collection="openHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
+	           ${item}
+	     </foreach>;
+	     update dbo.PublicProvinceCity set IsHot = 1 where Code =@hotCityCode;
+
+	     update dbo.PublicProvinceCity set IsHot = 1 where Code in (
+	     SELECT d.ParentCode  FROM  PublicProvinceCity d WITH(NOLOCK) where d.code=@hotCityCode
+	     );
+     </if> 
+     
 	 <!-- 热门城市 关闭设置 -->
      <if test="closeHotCityCodeList != null">
+             DECLARE @closeHotCityCode INT
+           	 DECLARE @closeHotProvenceCode INT
 	     update dbo.PublicProvinceCity set IsHot = 0 where Code in 
 	     <foreach collection="closeHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
 	     </foreach> ;
+	      SELECT  @closeHotCityCode=ParentCode  FROM PublicProvinceCity WHERE code in 
+	      <foreach collection="closeHotCityCodeList" index="index" item="item" open="(" separator="," close=")">
+	           ${item}
+	     </foreach>;
+	     IF not EXISTS(select 1 from PublicProvinceCity where IsHot=1 and ParentCode=@closeHotCityCode)
+	     update dbo.PublicProvinceCity set IsHot = 0 where Code =@closeHotCityCode;
+	    
+	    SELECT @closeHotProvenceCode=ParentCode  FROM  PublicProvinceCity  WITH(NOLOCK) where code=@closeHotCityCode;
+	  	IF not EXISTS(select 1 from PublicProvinceCity where IsHot=1 and ParentCode=@closeHotProvenceCode)
+	    update dbo.PublicProvinceCity set IsHot = 0 where Code =@closeHotProvenceCode;
 	 </if>
   </update>
 </mapper>

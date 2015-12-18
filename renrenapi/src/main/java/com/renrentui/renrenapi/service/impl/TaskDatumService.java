@@ -37,7 +37,7 @@ private IRenRenTaskDao renRenTaskDao;
  */
 	@Override
 	public List<TaskDatumModel> getMyTaskDatumList(TaskDatumReq req) {
-		List<TaskDatumModel> result=taskDatumDao.getMyTaskDatumList(req);
+		List<TaskDatumModel> result=taskDatumDao.getMyTaskDatumList(req);//查询资料列表
 		List<TaskDatumTitle> titlesList=taskDatumDao.getMyTaskDatumTitleList(req);
 		String imagePath= PropertyUtils.getProperty("ImgShowUrl");
 		for (TaskDatumModel datumModel : result) {

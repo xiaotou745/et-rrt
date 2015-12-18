@@ -14,6 +14,7 @@ public class TaskDatumModel {
     private int taskType;
     private String taskTypeName;
     private String taskStatus;
+    private String taskStatusName;
     private int auditCycle;
     private long taskDatumId;
     private int auditStatus;
@@ -48,11 +49,7 @@ public class TaskDatumModel {
 		this.taskType = taskType;
 	}
 	public String getTaskStatus() {
-		if (Integer.parseInt(taskStatus)==TaskStatus.Audited.value()) {
-			return "进行中";
-		}else {
-			return "已过期";
-		}
+		return taskStatus;
 	}
 	public void setTaskStatus(String taskStatus) {
 		this.taskStatus = taskStatus;
@@ -106,10 +103,20 @@ public class TaskDatumModel {
 		this.taskName = taskName;
 	}
 	public String getTaskTypeName() {
-		return TaskType.getEnum(taskType).desc();
+		return TaskType.getEnum(taskType).desc().replace("任务", "");
 	}
 	public void setTaskTypeName(String taskTypeName) {
 		this.taskTypeName = taskTypeName;
+	}
+	public String getTaskStatusName() {
+		if (Integer.parseInt(taskStatus)==TaskStatus.Audited.value()) {
+			return "进行中";
+		}else {
+			return "已过期";
+		}
+	}
+	public void setTaskStatusName(String taskStatusName) {
+		this.taskStatusName = taskStatusName;
 	}
 	
 }

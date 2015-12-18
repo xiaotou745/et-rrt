@@ -16,7 +16,7 @@ public class TaskModel implements Serializable {
 	private int taskType;
 	private String taskTypeName;
 	private String logo;
-
+	private int status;
 	public long getTaskId() {
 		return taskId;
 	}
@@ -74,5 +74,13 @@ public class TaskModel implements Serializable {
 
 	public void setTaskTypeName(String taskTypeName) {
 		this.taskTypeName = taskTypeName;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }
