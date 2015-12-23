@@ -67,7 +67,7 @@ public class LogServiceBLL {
 				if (isSendMail.equals("1")) {
 					String alertBody = getAlertBody(logEngity);
 					if (alertBody != null && !alertBody.isEmpty()) {
-						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_serivce_java项目预警", alertBody);
+						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_ServiceActionLog_java项目预警", alertBody);
 					}
 				}
 			}
