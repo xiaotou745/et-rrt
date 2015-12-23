@@ -25,5 +25,7 @@ public interface IPublicProvinceCityDao {
 
 
 	int modifyCity(ModifyCityReq modifyCityReq);
+	
+	 PublicProvinceCity getTaskCity(Long taskId);
 
 }

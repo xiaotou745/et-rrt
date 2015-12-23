@@ -119,4 +119,10 @@
 	    update dbo.PublicProvinceCity set IsHot = 0 where Code =@closeHotProvenceCode;
 	 </if>
   </update>
+  <!-- 获取任务投放区域 -->
+  <select id="getTaskCity"  resultType="com.renrentui.renrenentity.PublicProvinceCity" parameterType="java.lang.Long"  >
+	SELECT TOP 1 tcr.CityName AS Name,tcr.CityCode AS Code,ppc.Jibie FROM dbo.TaskCityRelation AS tcr  (NOLOCK)
+JOIN dbo.PublicProvinceCity AS ppc (NOLOCK) ON tcr.CityCode=ppc.Code
+WHERE taskid=#{taskId,jdbcType=BIGINT}
+  </select>
 </mapper>
