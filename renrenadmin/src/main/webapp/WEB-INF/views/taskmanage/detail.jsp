@@ -17,13 +17,15 @@
 <%@page import="com.renrentui.renrenadmin.common.UserContext"%>
 <%@page import="com.renrentui.renrenentity.domain.TaskSetp"%>
 <%@page import="com.renrentui.renrenentity.domain.TemplateGroup"%>
+<%@page import="com.renrentui.renrenentity.PublicProvinceCity"%>
+
 <%
 String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 RenRenTask taskInfo = (RenRenTask) request.getAttribute("taskInfo");
 List<TaskSetp> taskSetps=(List<TaskSetp>) request.getAttribute("taskSetps");
 List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
-List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");//省份
-String pro_city = (String) request.getAttribute("pro_city");//城市字符串
+
+PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvinceCity) request.getAttribute("pro_city");
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -297,59 +299,56 @@ String pro_city = (String) request.getAttribute("pro_city");//城市字符串
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="row">
+					<% 
+					if(city==null)
+					{
+						%>
+						<div class="col-lg-3">
+								<div class="form-group">
+									<label class="col-sm-4 control-label">区域: </label>
+									<div class="col-sm-8">
+										<input type="text" value="全部区域"/>
+									</div>
+								</div>
+							</div>
+						<%
+					}
+					else if(city.getJiBie()==2)
+					{
+						%>
 						<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">省份: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("provinceCode", provincelist, "name", "code", null,-1, "全部")%> 
+								<input type="text" value="<%=city.getName() %>"/>
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-3">
+						<%
+					}
+					else
+					{
+					%>
+					<div class="col-lg-3">
 							<div class="form-group">
 								<label class="col-sm-4 control-label">城市: </label>
 								<div class="col-sm-8">
-									<select id="cityCode" name="cityCode"  class="form-control m-b">
-										<option value="-1">全部城市</option>
-									</select>
+									<input type="text" value="<%=city.getName() %>"/>
 								</div>
 							</div>
 						</div>
+					<%
+						
+					}%>
 					</div>
 				</div>
 			</div>
 
 		</fieldset>
 	</form>
-<input type="hidden" id="pro_city" value="<%=pro_city %>" />
 </div>
 
 <script>
 $('input').attr('disabled','disabled');
-//省市联动
-function provinceChange(){  
-    try{  
-        var pro=$(this).val();  
-        var pro_city=$("#pro_city").val().split("#");
-        
-        var i,j,tmpprocity=new Array();  
-        var tmpkeyvalue=new Array();  
-        for(i=0;i<pro_city.length;i++){
-        	tmpcity=pro_city[i].split("=");
-            if(pro==tmpcity[0]){  
-                tmpcity=tmpcity[1].split(";");  
-                $("#cityCode").html("<option value='-1'>全部城市</option>");  
-                for(j=0;j<tmpcity.length;j++){  
-                	tmpkeyvalue=tmpcity[j].split("|");
-                    $("#cityCode").append("<option value='"+tmpkeyvalue[0]+"'>"+tmpkeyvalue[1]+"</option>");     
-                }
-                break;
-            }  
-        }
-        $("#divregion").html(""); 
-        $("#selectAll").prop("checked",false);
-    }catch(e){  
-        alert(e);     
-    }  
-};
+
 </script>
