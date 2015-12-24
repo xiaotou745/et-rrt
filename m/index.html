@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="css/down.css?v=2">
+    </head>
+    <body>
+        <script>
+        var u = navigator.userAgent;
+        var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+            if(isIOS){
+                document.getElementsByTagName('body')[0].className = 'ios';
+            }
+        </script>
+
+        <img src="img/top.png" alt="" class="top">
+        <div class="title">
+            为企业推波助澜
+        </div>
+        <div class="txt">
+            海量任务  随时领取</div>
+        <div class="txt">高额佣金  安全保障</div>
+        <div class="down-wrap">
+            <a href="http://www.pgyer.com/5XJG" class="downBtn ibtn" target="_blank">马上下载</a>
+            <a href="http://admin.edaisong.com/Content/app/renrenditui/110/dt.apk" id="downAndroid" class="downBtn abtn" target="_blank"> <img src="img/cloud.png" /> 点击安装</a>
+        </div>
+        <div class="mask tips" id="tips" style="display:none">
+            <img src="img/tips.png?v=1" alt=""></div>
+
+        <script>
+            (function(){
+                function isWeiXin(){
+                    var ua = window.navigator.userAgent.toLowerCase();
+                    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+                if(isWeiXin()){
+                    var tips = document.getElementById('tips');
+                    tips.onclick = function(){
+                        tips.style.display = 'none'
+                    };
+                    document.getElementById('downAndroid').onclick = function(e){
+                        tips.style.display = 'block';
+
+                       e.stopPropagation && e.stopPropagation();
+                       e.preventDefault && e.preventDefault();
+                        return false;
+                    }
+                }
+            }())
+        </script>
+    </body>
+</html>
