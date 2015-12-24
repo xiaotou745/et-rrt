@@ -313,7 +313,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 						<tr class="copy3">
 						<td><label><%=num%></label></td>
 						<td><input type="text"  style="width:200px;" class="eltitle" value="<%=taskSetps.get(i).getLinkTitle()%>"></td>
-						<td><input type="text"  style="width:200px;" class="elurl" value="<%=taskSetps.get(i).getContent()%> " onBlur="HttpC(this)"></td>
+						<td><input type="text"  style="width:200px;" class="elurl" value="<%=taskSetps.get(i).getContent()%>" onBlur="HttpC(this)"></td>
 						<td><a href="javascript:void(0)" onclick="chooseArticle(this)">选择文章</a></td>
 						</tr>
 						<%

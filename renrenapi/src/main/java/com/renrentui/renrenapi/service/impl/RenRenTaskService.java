@@ -338,6 +338,10 @@ public class RenRenTaskService implements IRenRenTaskService {
 	    for (int i = 0; i < setplist.size(); i++) {
 	    	TaskSetp setp=setplist.get(i);
 	    	setp.setTaskId(task.getId());//设置任务ID
+	    	if(setp.getSetpType()==3)//细则
+	    	{
+	    		setp.setContent(setp.getContent().trim());
+	    	}
 	    	renRenTaskDao.insertTaskSetp(setp);
 		}
 	    //3.插入模板组信息

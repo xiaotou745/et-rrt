@@ -33,7 +33,7 @@ public class LogConsumerMessageListener implements MessageListener {
 			String isSendMail = PropertyUtils.getProperty("IsSendMail");
 			if (isSendMail.equals("1")) {
 				String stackTrace = StringUtils.getStackTrace(e);
-				SystemUtils.sendAlertEmail("Mongo_java项目预警", e.getMessage()+"\n"+stackTrace);
+				SystemUtils.sendAlertEmail("Mongo_actionLog_java项目预警", e.getMessage()+"\n"+stackTrace);
 			}
         }   
     }

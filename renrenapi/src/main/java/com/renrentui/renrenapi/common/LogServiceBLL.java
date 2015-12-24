@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.common;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
@@ -11,6 +12,7 @@ import com.renrentui.renrenentity.domain.ServiceLog;
 import com.renrentui.renrenapi.activemq.ActiveMqService;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.PropertyUtils;
+import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.util.SystemUtils;
 import com.renrentui.renrenentity.domain.ActionLog;
 
@@ -29,9 +31,10 @@ public class LogServiceBLL {
 	 * @param
 	 */
 	public void SystemActionLog(ActionLog logEngity) {
+		String isSendMail = PropertyUtils.getProperty("IsSendMail");
 		try {
 			if (logEngity.getStackTrace()!=null&&!logEngity.getStackTrace().isEmpty()) {
-				String isSendMail = PropertyUtils.getProperty("IsSendMail");
+
 				if (isSendMail.equals("1")) {
 					String alertBody=getAlertBody(logEngity);
 					if (alertBody!=null&&!alertBody.isEmpty()) {
@@ -41,9 +44,14 @@ public class LogServiceBLL {
 			}
 			//initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
-			activeMqService.asynSendMessage(jsonMsg);
 			writeFile(logEngity.getSourceSys(), jsonMsg);
+			activeMqService.asynSendMessage(logEngity.getSourceSys(),jsonMsg);
 		} catch (Exception e) {
+			if (isSendMail.equals("1")) {
+				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
+				String appServerIP = JsonUtil.obj2string(ipinfoList);
+				SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_SystemActionLog_java项目预警", "appServerIP:"+appServerIP+"\n"+e.getMessage()+StringUtils.getStackTrace(e));
+			}
 		}
 
 	}
@@ -53,21 +61,26 @@ public class LogServiceBLL {
 	 * @param
 	 */
 	public void ServiceActionLog(ServiceLog logEngity) {
+		String isSendMail = PropertyUtils.getProperty("IsSendMail");
 		try {
 			if (logEngity.getStackTrace() != null&& !logEngity.getStackTrace().isEmpty()) {
-				String isSendMail = PropertyUtils.getProperty("IsSendMail");
 				if (isSendMail.equals("1")) {
 					String alertBody = getAlertBody(logEngity);
 					if (alertBody != null && !alertBody.isEmpty()) {
-						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_serivce_java项目预警", alertBody);
+						SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_java项目预警", alertBody);
 					}
 				}
 			}
 			// initLog4DB(logEngity);
 			String jsonMsg = JsonUtil.obj2string(logEngity);
-			activeMqService.asynSendServiceLogMessage(jsonMsg);
 			writeFile(logEngity.getSourceSys(), jsonMsg);
+			activeMqService.asynSendServiceLogMessage(jsonMsg);
 		} catch (Exception e) {
+			if (isSendMail.equals("1")) {
+				List<String> ipinfoList = SystemUtils.getLocalIpInfo();
+				String appServerIP = JsonUtil.obj2string(ipinfoList);
+				SystemUtils.sendAlertEmail(logEngity.getSourceSys()+ "_ServiceActionLog_java项目预警", "appServerIP:"+appServerIP+"\n"+e.getMessage()+StringUtils.getStackTrace(e));
+			}
 		}
 	}
 	private void writeFile(String sourceSys, String jsonMsg) {

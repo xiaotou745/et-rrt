@@ -301,10 +301,10 @@ public class TaskManageController {
 		model.addObject("taskSetps", taskSetps);
 		
 		model.addObject("taskInfo", taskInfo);
-		//4 获取投放放范围
-		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
-		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
-		model.addObject("pro_city", getCityStr(citylistlist));
+//		//4 获取投放放范围
+//		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
+//		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
+		model.addObject("pro_city", publicProvinceCityService.getTaskCity(taskId));
 		return model;
 	}
 	
