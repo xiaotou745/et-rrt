@@ -349,6 +349,6 @@ PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvi
 </div>
 
 <script>
-$('input').attr('disabled','disabled');
+//$('input').attr('disabled','disabled');
 
 </script>
