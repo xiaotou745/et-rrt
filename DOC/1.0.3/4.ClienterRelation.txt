@@ -1,0 +1,71 @@
+USE [RenRenDB]
+GO
+
+/****** Object:  Table [dbo].[ClienterRelation]    Script Date: 12/29/2015 13:19:30 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ClienterRelation](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[ClienterId] [bigint] NOT NULL,
+	[OtherClienterId] [bigint] NOT NULL,
+	[OcJibie] [int] NOT NULL,
+	[ClienterLevel] [int] NOT NULL,
+	[CreateDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_ClienterRelation] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterRelation', @level2type=N'COLUMN',@level2name=N'Id'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'地推员ID(Self)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterRelation', @level2type=N'COLUMN',@level2name=N'ClienterId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'上级地推员ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterRelation', @level2type=N'COLUMN',@level2name=N'OtherClienterId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'OtheClienterId 相对Clienter的级别(向上级别)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterRelation', @level2type=N'COLUMN',@level2name=N'OcJibie'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'当前ClienterID相对于根的层级' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterRelation', @level2type=N'COLUMN',@level2name=N'ClienterLevel'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterRelation', @level2type=N'COLUMN',@level2name=N'CreateDate'
+GO
+
+ALTER TABLE [dbo].[ClienterRelation] ADD  CONSTRAINT [DF_ClienterRelation_ClienterId]  DEFAULT ((0)) FOR [ClienterId]
+GO
+
+ALTER TABLE [dbo].[ClienterRelation] ADD  CONSTRAINT [DF_ClienterRelation_OtherClienterId]  DEFAULT ((0)) FOR [OtherClienterId]
+GO
+
+ALTER TABLE [dbo].[ClienterRelation] ADD  CONSTRAINT [DF_ClienterRelation_OcJibie]  DEFAULT ((0)) FOR [OcJibie]
+GO
+
+ALTER TABLE [dbo].[ClienterRelation] ADD  CONSTRAINT [DF_Table_1_Level]  DEFAULT ((1)) FOR [ClienterLevel]
+GO
+
+ALTER TABLE [dbo].[ClienterRelation] ADD  CONSTRAINT [DF_ClienterRelation_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+INSERT INTO dbo.ClienterRelation
+        ( ClienterId ,
+          OtherClienterId ,
+          OcJibie ,
+          ClienterLevel ,
+          CreateDate
+        )
+VALUES  ( 0 , -- ClienterId - bigint
+          0 , -- OtherClienterId - bigint
+          0 , -- OcJibie - int
+          0 , -- ClienterLevel - int
+          '2015-12-29 05:20:25'  -- CreateDate - datetime
+        )
