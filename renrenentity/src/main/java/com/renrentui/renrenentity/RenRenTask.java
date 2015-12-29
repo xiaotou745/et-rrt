@@ -42,6 +42,33 @@ public class RenRenTask {
     private String downUrl;
     private String scanTip;
     private String reminder;
+    private Double totalAmount;
+    private Integer estimatedTime;
+    private Integer strategyId;
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public Integer getEstimatedTime() {
+		return estimatedTime;
+	}
+
+	public void setEstimatedTime(Integer estimatedTime) {
+		this.estimatedTime = estimatedTime;
+	}
+
+	public Integer getStrategyId() {
+		return strategyId;
+	}
+
+	public void setStrategyId(Integer strategyId) {
+		this.strategyId = strategyId;
+	}
+
 	public String getReminder() {
 		return reminder;
 	}

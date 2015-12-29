@@ -306,6 +306,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int insert(SaveTaskReq taskreq, List<Integer> regionCodes,List<Attachment> attachments) {
 	    RenRenTask	task=taskreq.getRenRenTask();
+	    task.setStrategyId(0);//TODO 茹化肖暂时将分佣ID设置为0;
 	    //1.插入任务信息
 	    if(task.getId()>0)
 	    {

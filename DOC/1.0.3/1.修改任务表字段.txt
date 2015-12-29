@@ -1,0 +1,36 @@
+USE RenRenDB
+alter table dbo.RenRenTask add TotalAmount DECIMAL(18,2) NOT NULL default(0.00) 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'任务总价格(商家给平台的价格)' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'TotalAmount'
+GO
+alter table dbo.RenRenTask add  EstimatedTime int NOT NULL default(0) 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'预计完成时间(小时)排序用' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'EstimatedTime'
+GO
+
+
+alter table dbo.RenRenTask add  StrategyId int NOT NULL default(0) 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'分佣策略ID' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'StrategyId'
+GO

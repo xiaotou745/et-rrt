@@ -71,12 +71,36 @@ PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvi
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">单次佣金: </label>
+								<label class="col-sm-4 control-label">地推员佣金: </label>
 								<div class="col-sm-6">
 									<input type="text" class="form-control" name="amount" id="amount" value="<%=ParseHelper.digitsNum(taskInfo.getAmount(),2) %>" />
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
 	  							   元
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">任务总佣金: </label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="totalAmount" id="totalAmount" value="<%=ParseHelper.digitsNum(taskInfo.getTotalAmount(),2) %>"/>
+								</div>
+								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
+	  							   元
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">预计完成消耗: </label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="estimatedTime" id="estimatedTime" value="<%=taskInfo.getEstimatedTime() %>"/>
+								</div>
+								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
+	  							   小时
 								</div>
 							</div>
 						</div>

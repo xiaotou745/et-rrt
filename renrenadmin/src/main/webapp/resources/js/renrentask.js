@@ -20,9 +20,26 @@ function CheckSave(){
 	}
 	if(parseFloat($('#amount').val())<=0||isNaN(parseFloat($('#amount').val())))
 	{
-		alert('单次佣金必须大于0元');
+		alert('地推员佣金必须大于0元');
 		return false;
 	}
+	if(parseInt($('#estimatedTime').val())<0||isNaN(parseInt($('#estimatedTime').val())))
+	{
+		alert('预计完成消耗必须大于等于0小时');
+		return false;
+	}
+	if(parseFloat($('#totalAmount').val())<=0||isNaN(parseFloat($('#totalAmount').val())))
+	{
+		alert('任务总佣金必须大于0元');
+		return false;
+	}
+	if(parseFloat($('#totalAmount').val())<parseFloat($('#amount').val()))
+	{
+		alert('任务总佣金必须大于等于地推员佣金');
+		return false;
+	}
+	//task.totalAmount=$('#totalAmount').val();
+	//task.estimatedTime=$('#estimatedTime').val();
 	if($('input[name="rTaskType"]:checked').val()!=1)
 	{
 		if($('#downUrl').val=='')

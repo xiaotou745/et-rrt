@@ -71,12 +71,36 @@ var imgPath="<%=basePath%>/img/11235.png";
 						</div>
 						<div class="col-lg-3">
 							<div class="form-group">
-								<label class="col-sm-4 control-label">单次佣金: </label>
+								<label class="col-sm-4 control-label">地推员佣金: </label>
 								<div class="col-sm-6">
 									<input type="text" class="form-control" name="amount" id="amount" value="<%=taskInfo==null?"":taskInfo.getAmount()%>"/>
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
 	  							   元
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">任务总佣金: </label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="totalAmount" id="totalAmount" value="<%=taskInfo==null?"":taskInfo.getTotalAmount() %>"/>
+								</div>
+								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
+	  							   元
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">预计完成消耗: </label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" name="estimatedTime" id="estimatedTime" value="<%=taskInfo==null?"":taskInfo.getEstimatedTime() %>"/>
+								</div>
+								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
+	  							   小时
 								</div>
 							</div>
 						</div>
@@ -820,6 +844,8 @@ function createTaskPar(){
 	task.downUrl=$('#downUrl').val();
 	task.scanTip=$('#scanTip').val();
 	task.reminder=$('#reminder').val();
+	task.totalAmount=$('#totalAmount').val();
+	task.estimatedTime=$('#estimatedTime').val();
 	return task;
 }
 //创建任务步骤表数据
