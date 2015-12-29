@@ -1,7 +1,7 @@
 USE [RenRenDB]
 GO
 
-/****** Object:  Table [dbo].[Strategy]    Script Date: 12/29/2015 12:36:34 ******/
+/****** Object:  Table [dbo].[Strategy]    Script Date: 12/29/2015 17:21:33 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -18,6 +18,7 @@ CREATE TABLE [dbo].[Strategy](
 	[OptTime] [datetime] NOT NULL,
 	[Remark] [nvarchar](200) NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
+	[Status] [int] NOT NULL,
  CONSTRAINT [PK_Strategy] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -53,6 +54,9 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Strategy', @level2type=N'COLUMN',@level2name=N'CreateDate'
 GO
 
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'1 禁用 2 启用 3删除' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Strategy', @level2type=N'COLUMN',@level2name=N'Status'
+GO
+
 ALTER TABLE [dbo].[Strategy] ADD  CONSTRAINT [DF_Strategy_StrategyName]  DEFAULT ('') FOR [StrategyName]
 GO
 
@@ -75,6 +79,9 @@ ALTER TABLE [dbo].[Strategy] ADD  CONSTRAINT [DF_Strategy_Remark]  DEFAULT ('') 
 GO
 
 ALTER TABLE [dbo].[Strategy] ADD  CONSTRAINT [DF_Strategy_CreateDate]  DEFAULT (getdate()) FOR [CreateDate]
+GO
+
+ALTER TABLE [dbo].[Strategy] ADD  CONSTRAINT [DF_Strategy_Status]  DEFAULT ((1)) FOR [Status]
 GO
 
 

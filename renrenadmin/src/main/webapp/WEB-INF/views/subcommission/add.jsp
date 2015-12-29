@@ -165,6 +165,14 @@ function ItemCheck(obj){
 		$(obj)[0].focus();//获取焦点 
 		return;
 	}
+	var parStr=$(obj).parent().parent().parent().parent().prev().find('.StrategyChildItem').val();
+	var parStr=parseFloat(parStr,100);
+	if(parseFloat(Percentage)>=parStr){
+		alert('下级分佣比例必须小于上级分佣比例!');
+		$(obj).val('');
+		$(obj)[0].focus();//获取焦点 
+		return;
+		}
 	//数字验证通过计算总额
 	var totalPercentage=0;
 	$('.StrategyChildItem').each(function(index,el){
@@ -185,13 +193,62 @@ function ItemCheck(obj){
 	$('#Percentage').html(totalPercentage.toFixed(2));
 }
 //计算总百分比END
+//构建策略参数
+function CreateStrategy(){
+	var strategy=new Object();
+	strategy.strategyName=$('#StrategyName').val();
+	strategy.remark=$('#Remark').val();
+	strategy.levalCount=parseInt($('#LevalCount').html());
+	strategy.percentage=parseFloat($('#Percentage').html());
+	return strategy;
+}
+//构建策略参数END
+//构建Child参数 
+function CreateChildList(){
+	var childList=new Array();
+	$('.StrategyChildItem').each(function(index,el){
+		var str=parseFloat($(el).val());
+		if(str>0)
+		{
+			var strategyChild=new Object();
+			strategyChild.levalNo=(index+1);
+			strategyChild.percentage=str;
+			childList.push(strategyChild);
+		}
+	});
+	return childList;
+}
+
+//构建Child参数 END
 //保存及验证
 $('#save').click(function(){
 	if(!SaveCheck())
 		return;
 	
 	//验证通过
-	alert('页面验证通过!');
+	var strategy=CreateStrategy();
+	strategy.childList=CreateChildList();
+	var url = "<%=basePath%>/subcommission/save";
+	var json_data =JSON.stringify(strategy);
+	console.log(json_data);
+	var par={"data":json_data};
+	$.post(url,par,function(d){
+		//alert(d);
+		if(d==1)
+		{
+			alert('添加分佣策略成功');
+		}else if(d==-2)
+		{
+			alert('当前设置的分佣总比例大于系统设定的比例');
+		}else if(d==-3)
+		{
+			alert('提交数据中层级不一致');
+		}
+		else
+		{
+			alert('添加分佣策略失败,请重试');
+		}
+	});
 });
 function SaveCheck(){
 	if($('#StrategyName').val()==''){

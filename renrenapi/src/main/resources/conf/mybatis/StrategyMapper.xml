@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.IStrategyDao" >
-
+<!-- 添加一个策略 茹化肖 2015年12月29日17:06:29 -->
+<insert id="insertStrategy" parameterType="com.renrentui.renrenentity.Strategy" >
+ <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+	select @@IDENTITY as id
+ </selectKey>
+ INSERT INTO dbo.Strategy
+        ( StrategyName ,
+          LevalCount ,
+          MaxPercentage ,
+          Percentage ,
+          OptName ,
+          Remark 
+        )
+VALUES  ( #{strategyName,jdbcType=NVARCHAR} , -- StrategyName - nvarchar(50)
+          #{levalCount,jdbcType=INTEGER} , -- LevalCount - int
+          #{maxPercentage,jdbcType=DECIMAL} , -- MaxPercentage - decimal
+          #{percentage,jdbcType=DECIMAL} , -- Percentage - decimal
+          #{optName,jdbcType=NVARCHAR} , -- OptName - nvarchar(50)
+          #{remark,jdbcType=NVARCHAR}  -- Remark - nvarchar(200)
+        )
+</insert>
+<!-- 插入一个策略子层级 茹化肖 2015年12月29日17:18:11-->
+<insert id="insertStrategyChild" parameterType="com.renrentui.renrenentity.StrategyChild" >
+INSERT INTO dbo.StrategyChild
+        ( StrategyId, LevalNo, Percentage )
+VALUES  ( #{strategyId,jdbcType=BIGINT}, -- StrategyId - bigint
+          #{levalNo,jdbcType=INTEGER}, -- LevalNo - int
+          #{percentage,jdbcType=DECIMAL}  -- Percentage - decimal
+          )
+</insert>
 </mapper>
