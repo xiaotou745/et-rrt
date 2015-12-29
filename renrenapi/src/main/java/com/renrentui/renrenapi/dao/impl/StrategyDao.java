@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -28,6 +30,20 @@ public class StrategyDao extends DaoBase implements IStrategyDao{
 	@Override
 	public int insertStrategyChild(StrategyChild model) {
 		return getMasterSqlSessionUtil().insert("IStrategyDao.insertStrategyChild", model);
+	}
+	/**
+	 * 获取策略列表
+	 */
+	@Override
+	public List<Strategy> getStrategyList(Strategy req) {
+		return getReadOnlySqlSessionUtil().selectList("IStrategyDao.getStrategyList", req);
+	}
+	/**
+	 * 更新策略状态
+	 */
+	@Override
+	public int updateStatus(Strategy req) {
+		return getMasterSqlSessionUtil().insert("IStrategyDao.updateStatus", req);
 	}
 
 }

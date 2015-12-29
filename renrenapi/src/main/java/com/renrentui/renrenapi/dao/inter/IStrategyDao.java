@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.dao.inter;
 
+import java.util.List;
+
 import com.renrentui.renrenentity.Strategy;
 import com.renrentui.renrenentity.StrategyChild;
 
@@ -23,4 +25,16 @@ public interface IStrategyDao {
 	 * @return
 	 */
 	int insertStrategyChild(StrategyChild model);
+	/**
+	 * 获取策略列表
+	 * @param req
+	 * @return
+	 */
+	List<Strategy> getStrategyList(Strategy req);
+	/**
+	 * 更新策略状态
+	 * @param req
+	 * @return
+	 */
+	int updateStatus(Strategy req);
 }

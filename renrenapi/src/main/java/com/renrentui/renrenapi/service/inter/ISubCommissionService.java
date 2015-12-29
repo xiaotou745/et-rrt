@@ -1,5 +1,8 @@
 package com.renrentui.renrenapi.service.inter;
 
+import java.util.List;
+
+import com.renrentui.renrenentity.Strategy;
 import com.renrentui.renrenentity.req.StrategyModelReq;
 
 /**
@@ -16,4 +19,17 @@ public interface ISubCommissionService {
 	 * @return
 	 */
 	int addStrategy(StrategyModelReq req);
+	
+	/**
+	 * 获取策略列表
+	 * @param req
+	 * @return
+	 */
+	List<Strategy> getStrategyList(Strategy req);
+	/**
+	 * 边更状态
+	 * @param req
+	 * @return
+	 */
+	int updateStatus(Strategy req);
 }

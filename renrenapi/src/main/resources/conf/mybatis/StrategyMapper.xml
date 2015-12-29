@@ -31,4 +31,29 @@ VALUES  ( #{strategyId,jdbcType=BIGINT}, -- StrategyId - bigint
           #{percentage,jdbcType=DECIMAL}  -- Percentage - decimal
           )
 </insert>
+<!-- 查询策略列表 茹化肖 2015年12月29日18:44:27 -->
+<select id="getStrategyList" resultType="com.renrentui.renrenentity.Strategy" parameterType="com.renrentui.renrenentity.Strategy" >
+SELECT  Id ,
+        StrategyName ,
+        LevalCount ,
+        MaxPercentage ,
+        Percentage ,
+        OptName ,
+        OptTime ,
+        Remark ,
+        CreateDate ,
+        Status FROM dbo.Strategy AS s(NOLOCK)
+        WHERE s.Status!=3
+        <if test="strategyName != null and strategyName!=''">
+			AND s.StrategyName LIKE '%${strategyName}%'
+		</if>	
+        ORDER BY s.Status DESC,CreateDate DESC
+</select>
+<!-- 更新策略状态 -->
+<update id="updateStatus" parameterType="com.renrentui.renrenentity.Strategy" >
+	<if test="status==2">
+		UPDATE dbo.Strategy SET Status=1  where Status!=3
+	</if>
+	UPDATE dbo.Strategy SET Status=${status} WHERE id=${id} 
+</update>
 </mapper>

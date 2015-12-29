@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,20 @@ public class SubCommissionService implements ISubCommissionService{
 			strategyDao.insertStrategyChild(child);
 		}
 		return 1;
+	}
+	/**
+	 * 获取策略列表
+	 */
+	@Override
+	public List<Strategy> getStrategyList(Strategy req) {
+		return strategyDao.getStrategyList(req);
+	}
+	/**
+	 * 更新策略状态
+	 */
+	@Override
+	public int updateStatus(Strategy req) {
+		return strategyDao.updateStatus(req);
 	}
 
 }

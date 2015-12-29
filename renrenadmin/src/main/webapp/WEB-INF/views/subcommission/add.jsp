@@ -237,6 +237,7 @@ $('#save').click(function(){
 		if(d==1)
 		{
 			alert('添加分佣策略成功');
+			window.location.href="<%=basePath%>/subcommission/list";
 		}else if(d==-2)
 		{
 			alert('当前设置的分佣总比例大于系统设定的比例');
