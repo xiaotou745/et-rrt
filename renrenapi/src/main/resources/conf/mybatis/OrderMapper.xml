@@ -231,7 +231,8 @@ WHERE id=${orderId}
 SELECT TOP 1
         CASE WHEN  GETDATE()> rrt.EndTime OR Status!=1 THEN 1
              ELSE 0
-        END AS TaskClosed
+        END AS TaskClosed,
+        rrt.Amount as taskAmount
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 WHERE   rrt.id = ${taskId}
   </select>
@@ -297,12 +298,12 @@ WHERE   id = ${orderId}
         rrt.id as TaskId  ,
         c.PhoneNo ,
         rrt.TotalAmount ,
-        ISNULL(s.Percentage, 0) * ct.Amount AS SubCommisson ,
-        CASE WHEN ( ct.Amount + ISNULL(s.Percentage, 0) * ct.Amount ) > rrt.TotalAmount
+        td.SubCommisson ,
+        CASE WHEN ( ct.Amount + td.SubCommisson) > rrt.TotalAmount
              THEN -1
              ELSE 1
         END AS Profit,
-        (rrt.TotalAmount-( ct.Amount + ISNULL(s.Percentage, 0) * ct.Amount )) AS ProfitAmount
+        (rrt.TotalAmount-( ct.Amount + td.SubCommisson)) AS ProfitAmount
 		',
 		' dbo.TaskDatum AS td ( NOLOCK )
         LEFT JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid

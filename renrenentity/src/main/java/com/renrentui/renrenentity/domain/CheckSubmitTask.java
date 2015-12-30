@@ -8,6 +8,13 @@ public class CheckSubmitTask {
 private int submitCan;
 private int isCancel;
 private int taskClosed;
+private Double taskAmount;
+public Double getTaskAmount() {
+	return taskAmount;
+}
+public void setTaskAmount(Double taskAmount) {
+	this.taskAmount = taskAmount;
+}
 public int getIsAgainSubmit() {
 	return isAgainSubmit;
 }

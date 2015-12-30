@@ -25,4 +25,9 @@ VALUES  ( #{clienterId,jdbcType=BIGINT} , -- ClienterId - bigint
           #{clienterLevel,jdbcType=INTEGER} 
         )
 </insert>
+<!-- 根据骑士ID查询自己的层级 -->
+<select id="getLevelByClienterId" resultType="java.lang.Integer" parameterType="java.lang.Long">
+SELECT DISTINCT ClienterLevel FROM dbo.ClienterRelation AS cr(NOLOCK)
+WHERE ClienterId=#{clienterId,jdbcType=BIGINT}
+</select>
 </mapper>

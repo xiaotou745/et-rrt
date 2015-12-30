@@ -24,5 +24,12 @@ public class ClienterRelationDao extends DaoBase implements IClienterRelationDao
 	public int insertClienterRelation(ClienterRelation model) {
 		return getMasterSqlSessionUtil().insert("IClienterRelationDao.insertClienterRelation", model);
 	}
+	/**
+	 * 根据骑士ID查询自己的等级
+	 */
+	@Override
+	public int getLevelByClienterId(Long clienterId) {
+		return getMasterSqlSessionUtil().selectOne("IClienterRelationDao.getLevelByClienterId", clienterId);
+	}
 
 }

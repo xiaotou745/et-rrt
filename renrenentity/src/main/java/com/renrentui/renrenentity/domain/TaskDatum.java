@@ -10,6 +10,14 @@ public class TaskDatum {
 	 */
 
 	private Long id;
+	private Double subCommisson;
+	public Double getSubCommisson() {
+		return subCommisson;
+	}
+
+	public void setSubCommisson(Double subCommisson) {
+		this.subCommisson = subCommisson;
+	}
 
 	public Long getId() {
 
