@@ -64,5 +64,14 @@ public class SubCommissionService implements ISubCommissionService{
 	public int updateStatus(Strategy req) {
 		return strategyDao.updateStatus(req);
 	}
+	/**
+	 * 
+	 * 获取当前的策略
+	 */
+	@Override
+	public Strategy getCruuentStrategy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

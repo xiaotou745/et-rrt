@@ -56,4 +56,18 @@ SELECT  Id ,
 	</if>
 	UPDATE dbo.Strategy SET Status=${status} WHERE id=${id} 
 </update>
+<!-- 获取当前启用的策略 -->
+<select id="getCruuentStrategy">
+SELECT TOP 1   Id ,
+        StrategyName ,
+        LevalCount ,
+        MaxPercentage ,
+        Percentage ,
+        OptName ,
+        OptTime ,
+        Remark ,
+        CreateDate ,
+        Status FROM dbo.Strategy AS s(NOLOCK)
+        WHERE s.Status=2
+</select>
 </mapper>

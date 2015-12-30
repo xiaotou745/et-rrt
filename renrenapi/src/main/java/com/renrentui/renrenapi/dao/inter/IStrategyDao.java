@@ -37,4 +37,10 @@ public interface IStrategyDao {
 	 * @return
 	 */
 	int updateStatus(Strategy req);
+	/**
+	 * 
+	 * 获取当前启用的策略
+	 * @return
+	 */
+	Strategy getCruuentStrategy();
 }

@@ -32,4 +32,9 @@ public interface ISubCommissionService {
 	 * @return
 	 */
 	int updateStatus(Strategy req);
+	/**
+	 * 获取当前的策略
+	 * @return
+	 */
+	Strategy getCruuentStrategy();
 }
