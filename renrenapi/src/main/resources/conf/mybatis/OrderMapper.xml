@@ -254,6 +254,21 @@ WHERE   id = ${orderId}
 	    <if test="auditStatus != -1">
 			AND td.Status=${auditStatus}
 		</if>
+		
+		<if test="clienterPhone != null and clienterPhone!=''">
+			AND c.PhoneNo = ''${clienterPhone}''
+		</if>
+		
+		<if test="beginDate != null and beginDate!=''">
+			AND td.CreateDate >''${beginDate}''
+		</if>
+		<if test="endDate != null and endDate!=''">
+			AND ''${endDate}''>td.CreateDate
+		</if>
+		
+		<if test="taskName != null and taskName!=''">
+			AND rrt.TaskTitle LIKE ''%${taskName}%''
+		</if>
 		<if test="companyName != null and companyName!=''">
 			AND rrt.pusher LIKE ''%${companyName}%''
 		</if>

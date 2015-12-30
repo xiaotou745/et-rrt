@@ -7,7 +7,8 @@
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
-
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
+<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <style type="text/css">
 #map_contain {
     height: 90%;
@@ -28,6 +29,14 @@ width: 100%;
 		<div class="col-lg-12">
 			<form method="POST" action="#" class="form-horizontal" id="searchForm">
 				<div class="row">
+				<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">地推员手机号:</label>
+							<div class="col-sm-8">						
+								<input type="text" class="form-control" name="clienterPhone"  id="clienterPhone" />
+							</div>
+						</div>
+					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">地推员名称:</label>
@@ -38,7 +47,7 @@ width: 100%;
 					</div>
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">订单号:</label>
+							<label class="col-sm-4 control-label">资料编号:</label>
 							<div class="col-sm-8">								
 								<input type="text" class="form-control" name="orderNo"  id="orderNo" />
 							</div>
@@ -53,6 +62,9 @@ width: 100%;
 							</div>
 						</div>
 					</div>
+					
+				</div>
+				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">审核状态</label>
@@ -66,8 +78,41 @@ width: 100%;
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">任务名称:</label>
+							<div class="col-sm-8">								
+								<input type="text" class="form-control" name="taskName"  id="taskName" />
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">提交开始日期:</label>
+								<div class="col-sm-8">
+									<div class="input-group date">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span> 
+										<input type="text" class="form-control"  name="beginDate" id="beginDate" value=""/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">结束日期:</label>
+								<div class="col-sm-8">
+									<div class="input-group date">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span> 
+										<input type="text"	class="form-control" name="endDate" id="endDate" value=""/>
+									</div>
+								</div>
+							</div>
+						</div>
 				</div>
-
 
 			    <div class="row">
 						<div class="col-lg-3">
@@ -109,19 +154,37 @@ width: 100%;
 </div>
 
 <script>
-
+$(function(){
+	  //初始化时间控件
+	  $(' .input-group.date').datepicker({
+	        todayBtn: "linked",
+	        keyboardNavigation: false,
+	        forceParse: false,
+	        calendarWeeks: true,
+	        autoclose: true
+	    });
+	
+});
 var jss={
 		search:function(currentPage){	
 			 var clienterName = $("#clienterName").val();				   
 			 var orderNo = $("#orderNo").val();
 			 var companyName = $("#companyName").val();
 			 var auditStatus = $("#auditStatus").val();
+			 var clienterPhone=$('#clienterPhone').val();
+			 var taskName=$('#taskName').val();
+			 var beginDate=$('#beginDate').val();
+			 var endDate=$('#endDate').val();
 			 var paramaters = { 
 					 "currentPage":currentPage,					 
 					 "clienterName":clienterName,
 					 "orderNo":orderNo,
 					 "companyName":companyName,
 					 "auditStatus":auditStatus,
+					 "clienterPhone":clienterPhone,
+					 "taskName":taskName,
+					 "beginDate":beginDate,
+					 "endDate":endDate==''?'':endDate+' 23:59:59',
 					 m:Math.round()
 					 };
 		        var url = "<%=basePath%>/ordermanage/auditorderdo";
