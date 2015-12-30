@@ -30,6 +30,14 @@ public enum SignUpCode {
 	 * 系统错误
 	 */
 	SystemError(1016, "系统错误"), 
+	/*
+	 * 系统错误
+	 */
+	RecommendPhoneNoExist(1018, "推荐人不存在"), 
+	/*
+	 * 系统错误
+	 */
+	RecommendPhoneNoRelation (1019, "推荐人没有层级关系"), 
 	/**
 	 * 
 	 */

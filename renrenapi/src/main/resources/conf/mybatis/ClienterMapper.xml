@@ -38,9 +38,8 @@
 				order="AFTER">
 				select @@IDENTITY as id
 	  </selectKey>
-	    insert into Clienter (ClienterName, PhoneNo, Password,[Status])
-	    values (#{name,jdbcType=NVARCHAR}, #{phoneNo,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR},1);
-<!-- 		values('1','1','1') -->
+	    insert into Clienter (ClienterName, PhoneNo, Password,[Status],RecommendPhone)
+	    values (#{name,jdbcType=NVARCHAR}, #{phoneNo,jdbcType=VARCHAR}, #{passWord,jdbcType=VARCHAR},1,#{recommendPhone,jdbcType=VARCHAR});
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.Clienter" >
     insert into Clienter
@@ -370,4 +369,10 @@ VALUES  ( ${clienterId} , -- ClienterId - int
           ${isSuccess}  -- IsSuccess - smallint
         )
   </insert>
+  <!-- 通过手机号查询用户信息 -->
+  <select id="getClienterByPhoneNo" resultType="com.renrentui.renrenentity.Clienter" parameterType="java.lang.String">
+  SELECT TOP 1  * FROM 
+dbo.Clienter AS c (NOLOCK)
+WHERE PhoneNo=#{phoneNo,jdbcType=VARCHAR}
+  </select>
 </mapper>

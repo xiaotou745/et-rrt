@@ -6,7 +6,13 @@ public class SignUpReq {
 	private String passWord;//密码
 	private String verifyCode;//验证码
 	private String name;  //用户名
-	 
+	private String recommendPhone;//推荐人手机号 
+	public String getRecommendPhone() {
+		return recommendPhone;
+	}
+	public void setRecommendPhone(String recommendPhone) {
+		this.recommendPhone = recommendPhone;
+	}
 	public long getId() {
 		return id;
 	}
