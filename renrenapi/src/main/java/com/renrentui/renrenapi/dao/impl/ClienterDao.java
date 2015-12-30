@@ -30,24 +30,6 @@ import com.renrentui.renrenentity.resp.MyIncomeResp;
 @Repository
 public class ClienterDao extends DaoBase implements IClienterDao {
 
-	@Override
-	public int deleteByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
- 
-	@Override
-	public int insertSelective(Clienter record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Clienter selectByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
     /**
      *C端 修改骑士信息
      * @author CaoHeYang
@@ -59,12 +41,6 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	public int updateByPrimaryKeySelective(Clienter record) {
 		String statement = "IClienterDao.updateByPrimaryKeySelective";
 		return getMasterSqlSessionUtil().update(statement, record);
-	}
-
-	@Override
-	public int updateByPrimaryKey(Clienter record) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	/**
@@ -195,6 +171,11 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		String statement = "IClienterDao.insertLoginLog";
 		int res = getMasterSqlSessionUtil().insert(statement, log);
 		return res > 0;
+	}
+
+	@Override
+	public Clienter selectByPhoneNo(String phoneNo) {
+return getReadOnlySqlSessionUtil().selectOne("IClienterDao.selectByPhoneNo", phoneNo);
 	}
 
 }

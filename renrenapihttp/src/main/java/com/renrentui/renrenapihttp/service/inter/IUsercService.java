@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.FileUploadReq;
@@ -115,5 +116,13 @@ public interface IUsercService {
 /*	@POST
 	@Path("/fileupload")
 	public HttpResultModel<Object> FileUpload(FileUploadReq req); */
-	
+	/**
+	 * C端绑定支付宝
+	 * @author 赵海龙
+	 * @date 20151230
+	 * @return
+	 */
+	@POST
+	@Path("/bindalipay")
+	 public HttpResultModel<Object> bindAliPay(BindAliPayReq req);
 }

@@ -5,8 +5,8 @@ public enum SendSmsType {
 	PhoneError(1001, "手机号码无效"),
 	Fail(1002,"发送失败"),
 	PhoneExists(1003,"该账号已经存在"),
-	PhoneNotExists(1004,"该账号不存在");
-	
+	PhoneNotExists(1004,"该账号不存在"),
+	CodeTypeError(1005,"验证码类型错误");
 	private int value = 0;
 	private String desc;
 	private SendSmsType(int value, String desc) { 

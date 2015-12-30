@@ -23,11 +23,11 @@
     Id, ClienterName, PhoneNo, Password, LoginName, HeadImage, CityName, CityCode, Sex, 
     Age, Education, LastLoginTime, CreateTime, Status, LastOptName, LastOptTime
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+  <select id="selectByPhoneNo" resultType="com.renrentui.renrenentity.Clienter" parameterType="java.lang.String" >
+    select top 1 
     <include refid="Base_Column_List" />
     from Clienter
-    where Id = #{id,jdbcType=BIGINT}
+    where PhoneNo=#{phoneNo,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from Clienter
