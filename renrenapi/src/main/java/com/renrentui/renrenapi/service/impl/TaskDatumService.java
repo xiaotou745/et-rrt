@@ -17,6 +17,7 @@ import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.domain.TaskDatumDetail;
 import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
+import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TaskDatumTitle;
 import com.renrentui.renrenentity.domain.TemplateInfo;
@@ -96,6 +97,10 @@ private IRenRenTaskDao renRenTaskDao;
 	@Override
 	public List<Map<String, Integer>> getMyTaskDatumListTotal(TaskDatumReq req) {
 		return taskDatumDao.getMyTaskDatumListTotal(req);
+	}
+	@Override
+	public List<TaskDatumGroup> getMyTaskDatumGroupList(TaskDatumReq req) {
+		return taskDatumDao.getMyTaskDatumGroupList(req);
 	}
 
 }

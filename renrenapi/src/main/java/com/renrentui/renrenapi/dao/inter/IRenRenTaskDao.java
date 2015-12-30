@@ -126,5 +126,10 @@ public interface IRenRenTaskDao {
 	 * @return
 	 */
 	int setTaskSend(Long taskId);
-	
+	/**
+	 * 任务参与人加1
+	 * @param taskId
+	 * @return
+	 */
+	int updatePartnerNum(Long taskId);
 }

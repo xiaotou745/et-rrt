@@ -165,36 +165,56 @@ WHERE   EndTime > GETDATE()
     </set>
      where Id = #{reocrdId,jdbcType=BIGINT} and status=#{oldStatus,jdbcType=BIGINT}
   </update>
-<select id="getNewTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" parameterType="com.renrentui.renrenentity.req.TaskReq" >
-select 
-<if test="itemsCount != 0" >
-	top  ${itemsCount} 
-</if>
-  a.Id as taskId ,
-        a.taskGeneralInfo ,
-        a.taskTitle as taskName ,
-        a.tasktype,
-        a.amount,
-        m.logo,
-        a.status
-  FROM      RenRenTask a WITH(nolock)
-            JOIN TaskCityRelation b WITH(nolock) ON a.Id = b.TaskId
-            JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
-            <if test="userId != 0" >
-            LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
-  			</if> 
-  WHERE     a.Status = 1
-  			and getdate()>=a.BeginTime and a.EndTime>getdate()  
-            AND (b.CityCode = ${cityCode} or b.CityCode =${provinceCode} or b.CityCode=-1)
-		    <if test="userId != 0" >
-		   	   AND c.id IS NULL
-		   	</if> 
-			 <if test="nextId != 0" >
-		         and ${nextId} > a.Id
-		     </if>
-   order by a.Id desc;
+
+<sql id="getNewTaskListWhere">	
+	a.Status = 1
+ 	and getdate()>=a.BeginTime and a.EndTime>getdate()  
+    AND (b.CityCode = ${cityCode} or b.CityCode =${provinceCode} or b.CityCode=-1)
+    <if test="userId != 0" >
+   	   AND c.id IS NULL
+   	</if> 
+</sql>
+<sql id="getNewTaskListTable">	
+	RenRenTask a WITH(nolock)
+    JOIN TaskCityRelation b WITH(nolock) ON a.Id = b.TaskId
+    JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
+    <if test="userId != 0" >
+       LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
+	</if> 
+</sql>
+<sql id="getNewTaskListOrderBy">	
+	<if test="orderBy == 1" >
+			 a.amount desc,a.id desc
+ 	</if> 
+ 	<if test="orderBy == 2" >
+			a.AuditCycle asc,a.id desc
+ 	</if>
+ 	<if test="orderBy == 3" >
+			a.EstimatedTime asc,a.id desc
+ 	</if>
+ 	<if test="orderBy == 4" >
+			a.PartnerNum desc,a.id desc
+ 	</if>
+ 	 <if test="orderBy == 5" >
+			a.id desc
+ 	</if>
+</sql>
+<select id="getNewTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" 
+parameterType="com.renrentui.renrenentity.req.TaskReq" 
+statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		'<include refid="getNewTaskListOrderBy" />',
+		'a.Id as taskId ,a.taskGeneralInfo ,a.taskTitle as taskName ,a.tasktype,
+        a.amount,a.AuditCycle,a.EstimatedTime,a.status,a.PartnerNum,m.logo',
+		'<include refid="getNewTaskListTable" />',
+		'<include refid="getNewTaskListWhere" />',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
   </select>   
-  
    <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select count(1) 
    	FROM      RenRenTask a WITH(nolock)
@@ -498,5 +518,9 @@ WHERE   rrt.Status = 1
   <!-- 设置任务为已经发过消息 -->
   <update id="setTaskSend" parameterType="java.lang.Long">
   UPDATE dbo.RenRenTask SET IsSend=1 WHERE id =#{taskId,jdbcType=BIGINT}
+  </update>
+    <!-- 任务参与人加1 -->
+  <update id="updatePartnerNum" parameterType="java.lang.Long">
+  UPDATE dbo.RenRenTask SET PartnerNum=PartnerNum+1 WHERE id =#{taskId,jdbcType=BIGINT}
   </update>
 </mapper>

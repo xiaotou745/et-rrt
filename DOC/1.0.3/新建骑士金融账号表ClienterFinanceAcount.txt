@@ -1,0 +1,136 @@
+USE [RenRenDB]
+GO
+
+/****** Object:  Table [dbo].[ClienterFinanceAcount]    Script Date: 12/30/2015 17:49:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[ClienterFinanceAcount](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ClienterId] [int] NOT NULL,
+	[TrueName] [nvarchar](50) NOT NULL,
+	[AccountNo] [varchar](50) NOT NULL,
+	[IsEnable] [bit] NOT NULL,
+	[AccountType] [smallint] NOT NULL,
+	[BelongType] [smallint] NOT NULL,
+	[OpenBank] [nvarchar](256) NULL,
+	[OpenSubBank] [nvarchar](256) NULL,
+	[CreateBy] [nvarchar](50) NOT NULL,
+	[CreateTime] [datetime] NOT NULL,
+	[UpdateBy] [nvarchar](50) NOT NULL,
+	[UpdateTime] [datetime] NOT NULL,
+	[IDCard] [varchar](90) NULL,
+	[OpenProvince] [varchar](45) NULL,
+	[OpenCity] [varchar](45) NULL,
+	[YeepayKey] [varchar](45) NULL,
+	[YeepayStatus] [smallint] NULL,
+	[OpenProvinceCode] [int] NULL,
+	[OpenCityCode] [int] NULL,
+ CONSTRAINT [PK_ClienterFinanceAcount] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'自增ID（PK）' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'Id'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'骑士ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'ClienterId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'户名' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'TrueName'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'卡号(DES加密)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'AccountNo'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否有效(1：有效 0：无效）' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'IsEnable'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'账号类型：(1网银 2支付宝 3微信 4财付通 5百度钱包）' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'AccountType'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'账号类别  0 个人账户 1 公司账户  ' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'BelongType'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'开户行' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'OpenBank'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'开户支行' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'OpenSubBank'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'CreateBy'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'创建时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'CreateTime'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'最后更新人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'UpdateBy'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'最后更新时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'UpdateTime'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'个人账户时是身份证号，公司账户时候是营业执照号' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'IDCard'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'开户省' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'OpenProvince'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'开户市' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'OpenCity'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'易宝key' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'YeepayKey'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'易宝账户状态  0正常 1失败' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'YeepayStatus'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'开户省Code' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'OpenProvinceCode'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'开户市区Code' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterFinanceAcount', @level2type=N'COLUMN',@level2name=N'OpenCityCode'
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_IsEnable]  DEFAULT ((1)) FOR [IsEnable]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_AccountType]  DEFAULT ((1)) FOR [AccountType]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_BelongType]  DEFAULT ((0)) FOR [BelongType]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_CreateTime]  DEFAULT (getdate()) FOR [CreateTime]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_UpdateTime]  DEFAULT (getdate()) FOR [UpdateTime]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_IDCard]  DEFAULT ('') FOR [IDCard]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_OpenProvince]  DEFAULT ('') FOR [OpenProvince]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_OpenCity]  DEFAULT ('') FOR [OpenCity]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_YeepayKey]  DEFAULT ('') FOR [YeepayKey]
+GO
+
+ALTER TABLE [dbo].[ClienterFinanceAcount] ADD  CONSTRAINT [DF_ClienterFinanceAcount_YeepayStatus]  DEFAULT ((1)) FOR [YeepayStatus]
+GO
+
+

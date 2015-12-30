@@ -1,6 +1,5 @@
 package com.renrentui.renrenapihttp.service.inter;
 
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -12,7 +11,6 @@ import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskModel;
-import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskReq;

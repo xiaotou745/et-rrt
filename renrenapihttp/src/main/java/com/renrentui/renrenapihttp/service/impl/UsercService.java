@@ -1,12 +1,14 @@
 package com.renrentui.renrenapihttp.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.redis.RedisService;
+import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterFinanceAcountService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
@@ -19,6 +21,7 @@ import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.ModifyUserCReturnCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
+import com.renrentui.renrencore.enums.MyRecordCode;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.enums.SignUpCode;
 import com.renrentui.renrencore.enums.WithdrawState;
@@ -28,6 +31,8 @@ import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.domain.BalanceRecordModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
@@ -66,6 +71,8 @@ public class UsercService implements IUsercService {
 	@Autowired
 	private IClienterFinanceAcountService clienterFinanceAcountService;
 
+	@Autowired
+	private IClienterBalanceRecordService clienterBalanceRecordService;
 	/**
 	 * C端忘记密码 茹化肖 2015年9月28日10:44:52
 	 * 
@@ -383,6 +390,39 @@ public class UsercService implements IUsercService {
 					ForgotPwdCode.Success.desc());
 		return resultModel.setCode(ForgotPwdCode.Fail.value()).setMsg(
 				ForgotPwdCode.Fail.desc());// 设置失败
+	}
+
+	@Override
+	public HttpResultModel<BalanceRecordModel> getRecordList(GetUserCReq req) {
+		HttpResultModel<BalanceRecordModel> hrm = new HttpResultModel<BalanceRecordModel>();
+
+		if (req.getUserId() <= 0) {
+			return hrm.setCode(MyRecordCode.UserIdInValid.value()).setMsg(
+					MyRecordCode.UserIdInValid.desc());
+		}
+		if (!clienterService.isExistUserC(req.getUserId())) {
+			return hrm.setCode(MyRecordCode.UserIdUnexist.value()).setMsg(
+					MyRecordCode.UserIdUnexist.desc());
+		}
+
+		List<ClienterBalanceRecord> records = clienterBalanceRecordService
+				.getRecordList(req.getUserId());
+		List<ClienterBalanceRecord> incomeList = records.stream()
+				.filter(t -> t.getAmount() >= 0).collect(Collectors.toList());
+		List<ClienterBalanceRecord> expensesList = records.stream()
+				.filter(t -> t.getAmount() < 0).collect(Collectors.toList());
+
+		incomeList.sort((b, a) -> {
+			return a.getOperateTime().compareTo(b.getOperateTime());
+		});
+		expensesList.sort((b, a) -> {
+			return a.getOperateTime().compareTo(b.getOperateTime());
+		});
+		BalanceRecordModel resp = new BalanceRecordModel();
+		resp.setExpensesList(expensesList);
+		resp.setInComeList(incomeList);
+		hrm.setData(resp);
+		return hrm;
 	}
 
 	/**

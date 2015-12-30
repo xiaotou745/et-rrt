@@ -1,16 +1,17 @@
 package com.renrentui.renrenentity.req;
 
-public class TaskReq {
+import com.renrentui.renrenentity.common.PagedRequestBase;
+
+
+
+public class TaskReq extends PagedRequestBase{
 	private int userId;
-	
-	private long nextId;
-	
-	private int itemsCount;
 	
 	private long cityCode;
 	private long provinceCode;
 	
 	private int taskStatus;
+	private int orderBy;
 
 	public int getUserId() {
 		return userId;
@@ -18,23 +19,6 @@ public class TaskReq {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
-	}
-
-
-	public long getNextId() {
-		return nextId;
-	}
-
-	public void setNextId(long nextId) {
-		this.nextId = nextId;
-	}
-
-	public int getItemsCount() {
-		return itemsCount;
-	}
-
-	public void setItemsCount(int itemsCount) {
-		this.itemsCount = itemsCount;
 	}
 
 	public long getCityCode() {
@@ -59,5 +43,13 @@ public class TaskReq {
 
 	public void setProvinceCode(long provinceCode) {
 		this.provinceCode = provinceCode;
+	}
+
+	public int getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(int orderBy) {
+		this.orderBy = orderBy;
 	}
 }

@@ -18,6 +18,13 @@
     Id, ClienterId, Amount, AfterAmount, RecordType, OptName, OperateTime, OrderId, RelationNo, 
     Remark,Status
   </sql>
+
+    <select id="getRecordList" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+  	Id, Amount,RecordType,OperateTime,Remark
+    from ClienterBalanceRecord with(nolock)
+    where ClienterId = #{clienterId,jdbcType=BIGINT}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

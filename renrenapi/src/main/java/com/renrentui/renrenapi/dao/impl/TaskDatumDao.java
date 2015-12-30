@@ -11,6 +11,7 @@ import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
 import com.renrentui.renrenentity.domain.TaskDatumDetail;
 import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
+import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TaskDatumTitle;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
@@ -58,6 +59,11 @@ return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getTaskDatumDetailL
 	@Override
 	public List<Map<String, Integer>> getMyTaskDatumListTotal(TaskDatumReq req) {
 return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getMyTaskDatumListTotal", req);
+	}
+
+	@Override
+	public List<TaskDatumGroup> getMyTaskDatumGroupList(TaskDatumReq req) {
+return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getMyTaskDatumGroupList", req);
 	}
 
 }

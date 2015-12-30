@@ -180,6 +180,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 		Long res =renRenTaskDao.insertClienterTask(cTask);
 		if(res>-1)//成功插入
 		{
+			renRenTaskDao.updatePartnerNum(req.getTaskId());
 			model.setOrderId(res);
 			model.setCode(GetTaskCode.Success);
 		}
@@ -484,6 +485,12 @@ public class RenRenTaskService implements IRenRenTaskService {
 
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
+		if (req.getCurrentPage()<=0) {
+			req.setCurrentPage(1);  //默认第一页
+		}
+		if(req.getPageSize()<=0){
+			req.setPageSize(15);  //默认页容量
+		}
 		return renRenTaskDao.getNewTaskList(req);
 	}
 

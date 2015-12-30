@@ -21,4 +21,25 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description',
   @level2type=N'COLUMN',
   @level2name=N'EstimatedTime'
 GO
+alter table dbo.RenRenTask add  PartnerNum int NOT NULL default(0) 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'任务参与人个数(排序用)' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'PartnerNum'
+GO
+
+--更新现有任务的参与人字段的值
+ UPDATE d
+ SET    d.PartnerNum = s.num
+ FROM   RenRenTask AS d
+        INNER JOIN ( SELECT TaskId ,
+                            COUNT(*) AS num
+                     FROM   dbo.ClienterTask
+                     GROUP BY TaskId
+                   ) AS s ON s.TaskId = d.id
 

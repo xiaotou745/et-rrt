@@ -108,6 +108,10 @@ public class TaskService implements ITaskService{
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
 		} 
+		if(req.getOrderBy()<=0||req.getOrderBy()>5){
+			hrm.setCode(TaskCode.OrderByErr.value()).setMsg(TaskCode.OrderByErr.desc());			
+			return hrm;
+		}  
 		if(req.getCityCode()<=0){
 			hrm.setCode(TaskCode.CityCode.value()).setMsg(TaskCode.CityCode.desc());			
 			return hrm;
@@ -129,9 +133,9 @@ public class TaskService implements ITaskService{
 		TabModel<TaskModel> td = new TabModel<TaskModel>();
 		td.setContent(taskModelList);
 		td.setCount(taskModelList.size());
-		if(taskModelList!=null && taskModelList.size()>0){
-			td.setNextId(taskModelList.get(taskModelList.size()-1).getTaskId());
-		}
+//		if(taskModelList!=null && taskModelList.size()>0){
+//			td.setNextId(taskModelList.get(taskModelList.size()-1).getTaskId());
+//		}
 		hrm.setData(td); 
 		return hrm;
 	}

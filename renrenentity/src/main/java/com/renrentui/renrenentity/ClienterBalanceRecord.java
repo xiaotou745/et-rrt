@@ -3,6 +3,8 @@ package com.renrentui.renrenentity;
 
 import java.util.Date;
 
+import com.renrentui.renrencore.enums.CBalanceRecordType;
+
 public class ClienterBalanceRecord {
     private Long id;
 
@@ -13,7 +15,7 @@ public class ClienterBalanceRecord {
     private Double afterAmount;
 
     private Short recordType;
-
+    private String recordTypeName;
     private String optName;
 
     private Date operateTime;
@@ -117,4 +119,8 @@ public class ClienterBalanceRecord {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	public String getRecordTypeName() {
+		return CBalanceRecordType.getEnum(recordType).desc();
+	}
 }
