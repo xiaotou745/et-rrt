@@ -8,6 +8,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
+<%@page import="com.renrentui.renrencore.util.*"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
@@ -16,13 +17,16 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr class="tdbg">
-			<th width="%10">编号</th>
+			<th width="%10">资料编号</th>
 			<th >地推员</th>
 			<th >公司名称</th>
 			<th >任务名称</th>
 			<th >任务状态</th>
 			<th>该地推员<br/>完成次数</th>
-			<th >佣金/次</th>
+			<th >总佣金/次</th>
+			<th >地推员佣金/次</th>
+			<th >上级累计分佣</th>
+			<th >盈亏</th>
 			<th >提交时间</th>
 			<th >终审时间</th>
 			<th >审核状态</th>
@@ -39,12 +43,24 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		<tr>
 			<td><%=data.get(i).getId()%></td>
 
-			<td><%=data.get(i).getClienterName()%></td>	
+			<td><%=data.get(i).getPhoneNo()%>,<%=data.get(i).getClienterName()%></td>	
 			<td><%=data.get(i).getPusher()%></td>
 			<td><%=data.get(i).getTaskTitle()%></td>	
 			<td><%=data.get(i).getTaskStatus()%></td>	
-			<td><%=data.get(i).getCompleteNum()%></td>	
+			<td><%=data.get(i).getCompleteNum()%></td>
+			<td><%=ParseHelper.digitsNum(data.get(i).getTotalAmount(), 2)%></td>	
 			<td><%=data.get(i).getAmountStr()%></td>
+			<td><%=ParseHelper.digitsNum(data.get(i).getSubCommisson(), 2)%></td>
+			<td><%
+			if(data.get(i).getProfit()>0)
+			{%>
+			<span style="color:red;">
+			<%}
+			else
+			{%>
+				<span style="color:green;">
+			<%}
+			%><%=ParseHelper.digitsNum(data.get(i).getProfitAmount(), 2)%></span></td>
 			<td><%=data.get(i).getFinishTime()%></td>	
 			<td><%=data.get(i).getAuditTime()%></td>	
 			<td><%=data.get(i).getAuditStatus()%></td>

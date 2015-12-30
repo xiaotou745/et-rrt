@@ -294,12 +294,21 @@ WHERE   id = ${orderId}
         td.CreateDate AS finishTime,
         td.AuditTime ,
         td.Status AS auditStatus,
-        rrt.id as TaskId 
+        rrt.id as TaskId  ,
+        c.PhoneNo ,
+        rrt.TotalAmount ,
+        ISNULL(s.Percentage, 0) * ct.Amount AS SubCommisson ,
+        CASE WHEN ( ct.Amount + ISNULL(s.Percentage, 0) * ct.Amount ) > rrt.TotalAmount
+             THEN -1
+             ELSE 1
+        END AS Profit,
+        (rrt.TotalAmount-( ct.Amount + ISNULL(s.Percentage, 0) * ct.Amount )) AS ProfitAmount
 		',
 		' dbo.TaskDatum AS td ( NOLOCK )
         LEFT JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
         LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
-        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id ',
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id 
+        LEFT JOIN dbo.Strategy AS s ( NOLOCK ) ON s.id = td.StrategyId',
 		'
 		<include refid="getOrderAuditListWhere" />
 		',
