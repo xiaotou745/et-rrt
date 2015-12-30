@@ -19,6 +19,12 @@ public interface ITaskMsgDao {
 	 */
 	List<TaskMsg> getMyMsgList(TaskMsgReq req);
 	/**
+	 * 查询我的消息列表未读消息的个数
+	 * @param req
+	 * @return
+	 */
+	Integer getMyMsgCount(Integer userId);
+	/**
 	 * 删除消息或将消息置为已读状态
 	 * @param req
 	 * @return
