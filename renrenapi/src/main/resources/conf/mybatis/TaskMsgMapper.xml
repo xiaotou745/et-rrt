@@ -53,11 +53,17 @@ VALUES  ( ${title} ,
           TaskId,
           TaskDatumId
   FROM      TaskMsg  with (nolock)        
-  where ClienterId = ${userId}
+  where ClienterId = ${userId} and HasRead=0 and isDel=0 
     <if test="nextId != 0" >
 	       and  ${nextId} > id 
 	</if>
 	order by id desc;
+  </select> 
+   <!--  查询是否有未读消息，zhaohl,20151125 -->
+  <select id="getMyMsgCount" resultType="java.lang.Integer" parameterType="java.lang.Integer" >  
+  SELECT  count(*) as num 
+  FROM      TaskMsg  with (nolock)        
+  where ClienterId = #{userId} and HasRead=0  and isDel=0 
   </select> 
    <!--  删除消息或已读消息，zhaohl,20151125 -->
     <update id="updateMsg" parameterType="com.renrentui.renrenentity.req.TaskMsgUpdateReq" >

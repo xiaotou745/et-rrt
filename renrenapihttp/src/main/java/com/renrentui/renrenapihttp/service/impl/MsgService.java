@@ -70,6 +70,18 @@ public HttpResultModel<String> updateMsg(TaskMsgUpdateReq req) {
 	}
 	return hrm;
 }
+@Override
+public HttpResultModel<Integer> getMyMsgCount(TaskMsgReq req) {
+	HttpResultModel<Integer> hrm = new HttpResultModel<Integer>();
+	hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+	if(req.getUserId()<=0){
+		hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
+		return hrm;
+	} 
+	Integer num=taskMsgService.getMyMsgCount(req.getUserId());
+	hrm.setData(num);
+	return hrm;
+}
 
 
 }

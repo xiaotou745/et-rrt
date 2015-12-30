@@ -24,6 +24,14 @@ public interface IMsgService {
 	@Path("/getmymsglist")
 	HttpResultModel<TabModel<TaskMsg>> getMyMsgList(TaskMsgReq req);
 	/**
+	 * 查询我的消息列表的个数
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/getmymsgcount")
+	HttpResultModel<Integer> getMyMsgCount(TaskMsgReq req);
+	/**
 	 * 删除消息或将消息置为已读状态
 	 * @param req
 	 * @return

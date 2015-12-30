@@ -39,4 +39,9 @@ public class TaskMsgService implements ITaskMsgService {
 		req.setTaskDatumId(taskDatumId);
 		return taskMsgDao.insert(req);
 	}
+
+	@Override
+	public Integer getMyMsgCount(Integer userId) {
+		return taskMsgDao.getMyMsgCount(userId);
+	}
 }
