@@ -9,12 +9,14 @@ select @@IDENTITY as id
 INSERT INTO dbo.TaskDatum
         ( CtId ,
           ClienterId ,
-          TaskId 
+          TaskId,
+          StrategyId 
 
         )
 VALUES  ( ${ctId} , 
           ${clienterId} , 
-          ${taskId}
+          ${taskId},
+          ${strategyId}
         )	
 </insert>
 <!-- 插入任务详细资料数据 茹化肖 2015年11月19日23:41:17 -->

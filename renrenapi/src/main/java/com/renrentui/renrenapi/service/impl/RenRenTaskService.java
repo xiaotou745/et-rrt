@@ -28,6 +28,7 @@ import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
+import com.renrentui.renrenapi.dao.inter.IStrategyDao;
 import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
 import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
 import com.renrentui.renrenapi.dao.inter.ITaskMsgDao;
@@ -63,6 +64,7 @@ import com.renrentui.renrenentity.OrderLog;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.RenRenTaskLog;
+import com.renrentui.renrenentity.Strategy;
 import com.renrentui.renrenentity.TaskCityRelation;
 import com.renrentui.renrenentity.TaskMsg;
 import com.renrentui.renrenentity.Template;
@@ -138,7 +140,8 @@ public class RenRenTaskService implements IRenRenTaskService {
 	private ITaskDatumDao taskDatumDao;
 	@Autowired
 	private ITaskMsgDao taskMsgDao;
-
+	@Autowired
+	private IStrategyDao strategyDao;
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:00:35
 	 * 修改时间 2015年11月19日11:20:38
@@ -281,6 +284,13 @@ public class RenRenTaskService implements IRenRenTaskService {
 		taskDatum.setCtId(req.getCtId());
 		taskDatum.setClienterId(req.getUserId());
 		taskDatum.setTaskId(req.getTaskId());
+		//查询当前分佣策略
+		Strategy stra=strategyDao.getCruuentStrategy();
+		if(stra!=null){
+			taskDatum.setStrategyId(stra.getId());
+		}else {
+			taskDatum.setStrategyId(Long.valueOf("0"));
+		}
 		taskDatumDao.insertTaskDatum(taskDatum);
 		//2.插入合同详细数据
 		for (int i = 0; i < req.getValueInfo().size(); i++) {

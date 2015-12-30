@@ -84,10 +84,13 @@
 		<div class="row">
 			<div class="col-lg-4">
 				<button type="button" class="btn btn-w-m btn-primary" id="save" style="margin-left: 3px; height: 30px;">保存</button>
+				<button type="button" class="btn btn-w-m btn-primary" id="jisuanqi" style="margin-left: 3px; height: 30px;">分佣计算器</button>
 			</div>
 		</div>
 	</form>
 </div>
+
+
 <script type="text/javascript">
 //控件模板
 var itemTemp='<div class="row">'

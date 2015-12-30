@@ -22,9 +22,16 @@ public class TaskDatum {
 		this.id = id;
 
 	}
+	private Long strategyId;
 
 
+	public Long getStrategyId() {
+		return strategyId;
+	}
 
+	public void setStrategyId(Long strategyId) {
+		this.strategyId = strategyId;
+	}
 	/**
 
 	 * 客户任务关系表Id(ClienterTask)
