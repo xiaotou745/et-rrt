@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.service.inter;
 import java.util.List;
 
 import com.renrentui.renrenentity.Strategy;
+import com.renrentui.renrenentity.StrategyChild;
 import com.renrentui.renrenentity.req.StrategyModelReq;
 
 /**
@@ -37,4 +38,16 @@ public interface ISubCommissionService {
 	 * @return
 	 */
 	Strategy getCruuentStrategy();
+	/**
+	 * 根据ID获取策略信息
+	 * @param id
+	 * @return
+	 */
+	Strategy getStrategyById(Long id);
+	/**
+	 * 根据ID获取策略子集信息
+	 * @param id
+	 * @return
+	 */
+	List<StrategyChild> getStrategyChildById(Long id);
 }

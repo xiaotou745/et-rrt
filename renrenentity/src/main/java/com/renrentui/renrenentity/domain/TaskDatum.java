@@ -10,6 +10,14 @@ public class TaskDatum {
 	 */
 
 	private Long id;
+	private Double subCommisson;
+	public Double getSubCommisson() {
+		return subCommisson;
+	}
+
+	public void setSubCommisson(Double subCommisson) {
+		this.subCommisson = subCommisson;
+	}
 
 	public Long getId() {
 
@@ -22,9 +30,16 @@ public class TaskDatum {
 		this.id = id;
 
 	}
+	private Long strategyId;
 
 
+	public Long getStrategyId() {
+		return strategyId;
+	}
 
+	public void setStrategyId(Long strategyId) {
+		this.strategyId = strategyId;
+	}
 	/**
 
 	 * 客户任务关系表Id(ClienterTask)

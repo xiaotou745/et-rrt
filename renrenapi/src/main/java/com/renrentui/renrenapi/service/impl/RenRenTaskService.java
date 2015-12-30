@@ -23,11 +23,13 @@ import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
+import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
+import com.renrentui.renrenapi.dao.inter.IStrategyDao;
 import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
 import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
 import com.renrentui.renrenapi.dao.inter.ITaskMsgDao;
@@ -57,12 +59,15 @@ import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.BusinessBalanceRecord;
 import com.renrentui.renrenentity.ClienterLog;
+import com.renrentui.renrenentity.ClienterRelation;
 import com.renrentui.renrenentity.Order;
 import com.renrentui.renrenentity.OrderChild;
 import com.renrentui.renrenentity.OrderLog;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.RenRenTaskLog;
+import com.renrentui.renrenentity.Strategy;
+import com.renrentui.renrenentity.StrategyChild;
 import com.renrentui.renrenentity.TaskCityRelation;
 import com.renrentui.renrenentity.TaskMsg;
 import com.renrentui.renrenentity.Template;
@@ -138,7 +143,10 @@ public class RenRenTaskService implements IRenRenTaskService {
 	private ITaskDatumDao taskDatumDao;
 	@Autowired
 	private ITaskMsgDao taskMsgDao;
-
+	@Autowired
+	private IStrategyDao strategyDao;
+	@Autowired
+	private IClienterRelationDao clienterRelationDao;
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:00:35
 	 * 修改时间 2015年11月19日11:20:38
@@ -282,6 +290,29 @@ public class RenRenTaskService implements IRenRenTaskService {
 		taskDatum.setCtId(req.getCtId());
 		taskDatum.setClienterId(req.getUserId());
 		taskDatum.setTaskId(req.getTaskId());
+		//查询当前分佣策略
+		Strategy stra=strategyDao.getCruuentStrategy();
+		if(stra!=null){
+			taskDatum.setStrategyId(stra.getId());
+		}else {
+			taskDatum.setStrategyId(Long.valueOf("0"));
+		}
+		//计算上级累计分佣
+		//1.查找我的层级
+		int  ClienterLevel=clienterRelationDao.getLevelByClienterId(req.getUserId());
+		//查找我绑定的分佣关系
+		List<StrategyChild> strChilds=strategyDao.getStrategyChildById(stra.getId());
+		Double SubCommisson=0.00;//累计分佣金额
+		if(ClienterLevel>1&&strChilds!=null&&strChilds.size()>0)
+		{
+			//取等级 或者 层级 最小的进行循环 上级分佣人次数应该是 我的层级-1 或者分佣等级(取两个中的最小)
+			int size=ClienterLevel-1>strChilds.size()?strChilds.size():ClienterLevel-1;
+			for (int i = 0; i < size; i++) {
+				//任务累计分佣+=等级比例*任务金额*0.01 因为比例存的是0-99.99 Doule
+				SubCommisson+=(strChilds.get(i).getPercentage()*check.getTaskAmount()*0.01);
+			}
+		}
+		taskDatum.setSubCommisson(SubCommisson);
 		taskDatumDao.insertTaskDatum(taskDatum);
 		//2.插入合同详细数据
 		for (int i = 0; i < req.getValueInfo().size(); i++) {

@@ -19,5 +19,7 @@ public interface IClienterRelationDao {
 	 * @return
 	 */
 	int insertClienterRelation(ClienterRelation model);
+	
+	int getLevelByClienterId(Long clienterId);
 
 }

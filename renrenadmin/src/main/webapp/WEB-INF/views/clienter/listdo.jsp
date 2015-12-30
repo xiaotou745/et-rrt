@@ -21,7 +21,7 @@
 						<th width="%5">姓名</th>
 						<th width="%5">电话</th>
 						<th width="%5">余额</th>
-						<th width="%5">可提现</th>
+						<th width="%5">累计获得分佣</th>
 						<th width="%5">已提现</th>
 				</tr>
 			</thead>
@@ -32,8 +32,11 @@
 			    <td><%=i+1 %></td>
                 <td><%=list.get(i).getClienterName() %></td>
                 <td><%=list.get(i).getPhoneNo() %></td>
-                <td><%=ParseHelper.digitsNum( list.get(i).getBalance(), 2)%></td>
-                <td><%=ParseHelper.digitsNum(list.get(i).getWithdraw(), 2)%></td>
+                <td>
+                <a href="<%=basePath%>/clienter/recordlist?phoneNo=<%=list.get(i).getPhoneNo()%>&name=<%=list.get(i).getClienterName()%>&blance=<%=ParseHelper.digitsNum(list.get(i).getBalance(), 2)%>&hadWithdraw=<%=ParseHelper.digitsNum(list.get(i).getHadWithdraw(),2) %>&id=<%=list.get(i).getId()%>" target="_blank" >
+                <%=ParseHelper.digitsNum( list.get(i).getBalance(), 2)%></a>
+                </td>
+                <td><%=ParseHelper.digitsNum(list.get(i).getSubAmount(), 2)%></td>
                 <td><%=ParseHelper.digitsNum(list.get(i).getHadWithdraw(), 2)%></td>
 			</tr>
 		 <%}%> 	 	

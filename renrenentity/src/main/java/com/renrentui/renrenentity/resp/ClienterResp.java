@@ -11,6 +11,13 @@ public class ClienterResp extends Clienter {
 	private Double balance;
 	private Double withdraw;
 	private Double hadWithdraw;
+	private Double subAmount;
+	public Double getSubAmount() {
+		return subAmount;
+	}
+	public void setSubAmount(Double subAmount) {
+		this.subAmount = subAmount;
+	}
 	public Double getBalance() {
 		return balance;
 	}

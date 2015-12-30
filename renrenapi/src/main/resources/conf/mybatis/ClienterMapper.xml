@@ -301,7 +301,12 @@
       ,c.[LastOptTime]
       ,ISNULL(cb.Balance,0) Balance 
       ,ISNULL(cb.Withdraw,0) Withdraw
-      ,ISNULL(cb.HadWithdraw,0) HadWithdraw 
+      ,ISNULL(cb.HadWithdraw,0) HadWithdraw,
+        ( SELECT    ISNULL(SUM(Amount), 0)
+          FROM      dbo.ClienterBalanceRecord AS cbr ( NOLOCK )
+          WHERE     cbr.RecordType = 5
+                    AND cbr.ClienterId = c.id
+        ) AS SubAmount
 	</sql>
 	
 	<!-- 获取地推员列表的分页存储过程_条件 WangXuDan 2015年9月29日16:30:34 -->

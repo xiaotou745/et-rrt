@@ -10,3 +10,14 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description',
   @level2type=N'COLUMN',
   @level2name=N'StrategyId'
 GO
+alter table dbo.TaskDatum add  SubCommisson DECIMAL(18,2) NOT NULL default(0.00) 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'上级累计分佣金额' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'TaskDatum', 
+  @level2type=N'COLUMN',
+  @level2name=N'SubCommisson'
+GO

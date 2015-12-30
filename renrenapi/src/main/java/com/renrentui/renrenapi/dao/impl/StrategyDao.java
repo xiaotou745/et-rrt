@@ -50,7 +50,22 @@ public class StrategyDao extends DaoBase implements IStrategyDao{
 	 */
 	@Override
 	public Strategy getCruuentStrategy() {
-		return getReadOnlySqlSessionUtil().selectOne("IStrategyDao.getCruuentStrategy");
+		return getMasterSqlSessionUtil().selectOne("IStrategyDao.getCruuentStrategy");
+	}
+	/**
+	 * 根据ID获取策略信息
+	 */
+	@Override
+	public Strategy getStrategyById(Long id) {
+		return getReadOnlySqlSessionUtil().selectOne("IStrategyDao.getStrategyById",id);
+	}
+	/**
+	 * 根据ID获取策略子层信息
+	 * 
+	 */
+	@Override
+	public List<StrategyChild> getStrategyChildById(Long id) {
+		return getMasterSqlSessionUtil().selectList("IStrategyDao.getStrategyChildById",id);
 	}
 
 }

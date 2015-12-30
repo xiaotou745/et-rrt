@@ -30,6 +30,41 @@ public class OrderAudit {
 	private int orderStatus;
 	private Long clienterId;
 	private Long taskId;
+	private String phoneNo;
+	private Double totalAmount;
+	private Double subCommisson;
+	private int profit;
+	private Double profitAmount;
+	public Double getProfitAmount() {
+		return profitAmount;
+	}
+	public void setProfitAmount(Double profitAmount) {
+		this.profitAmount = profitAmount;
+	}
+	public String getPhoneNo() {
+		return phoneNo;
+	}
+	public void setPhoneNo(String phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+	public Double getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(Double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public Double getSubCommisson() {
+		return subCommisson;
+	}
+	public void setSubCommisson(Double subCommisson) {
+		this.subCommisson = subCommisson;
+	}
+	public int getProfit() {
+		return profit;
+	}
+	public void setProfit(int profit) {
+		this.profit = profit;
+	}
 	public Long getTaskId() {
 		return taskId;
 	}
