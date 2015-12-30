@@ -17,11 +17,6 @@ import com.renrentui.renrenentity.resp.ClienterResp;
 import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 public interface IClienterDao {
-    int deleteByPrimaryKey(Long id);
- 
-    int insertSelective(Clienter record);
-
-    Clienter selectByPrimaryKey(Long id);
 
     /**
      * 修改骑士信息
@@ -32,7 +27,6 @@ public interface IClienterDao {
      */
     int updateByPrimaryKeySelective(Clienter record);
 
-    int updateByPrimaryKey(Clienter record);
     
 	/**
 	 * 验证手机号是否存在

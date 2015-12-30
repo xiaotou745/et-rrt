@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
+import com.renrentui.renrenapi.service.inter.IClienterFinanceAcountService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IUsercService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
+import com.renrentui.renrencore.enums.CodeType;
 import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.ModifyUserCReturnCode;
@@ -27,6 +29,7 @@ import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
@@ -49,7 +52,7 @@ import com.renrentui.renrenentity.req.SignInReq;
 public class UsercService implements IUsercService {
 
 	@Autowired
-	IClienterService clienterService;
+	private IClienterService clienterService;
 
 	@Autowired
 	private IClienterBalanceService clienterBalanceService;
@@ -58,7 +61,10 @@ public class UsercService implements IUsercService {
 	private IClienterWithdrawFormService clienterWithdrawFormService;
 
 	@Autowired
-	RedisService redisService;
+	private RedisService redisService;
+	
+	@Autowired
+	private IClienterFinanceAcountService clienterFinanceAcountService;
 
 	/**
 	 * C端忘记密码 茹化肖 2015年9月28日10:44:52
@@ -221,51 +227,55 @@ public class UsercService implements IUsercService {
 			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
 			String key = "";
 			String phoneNo = req.getPhoneNo();
-			String Content = "";// "欢迎您的使用，验证码：#验证码#，请妥善保管相关信息。若非您本人操作，请忽略。";
+			String content = "";// "欢迎您的使用，验证码：#验证码#，请妥善保管相关信息。若非您本人操作，请忽略。";
 			// 类型 1注册 2修改密码 3忘记密码
+			CodeType codeType=CodeType.getEnum(req.getsType());
+			if (codeType==null) {
+				return resultModel.setCode(SendSmsType.CodeTypeError.value()).setMsg(SendSmsType.CodeTypeError.desc());
+			}
 			boolean checkPhoneNo = clienterService.isExistPhoneC(phoneNo);
-			if (req.getsType() == 1) { // 注册
+			if (codeType!=CodeType.Register&&!checkPhoneNo) {
+				return resultModel.setCode(SendSmsType.PhoneNotExists.value())
+						.setMsg(SendSmsType.PhoneNotExists.desc());// 该手机号不存在，不能修改或忘记密码
+			}
+			switch (codeType) {
+			case Register:
 				if (checkPhoneNo) { // 手机号存在
 					return resultModel.setCode(SendSmsType.PhoneExists.value())
 							.setMsg(SendSmsType.PhoneExists.desc());// 该手机号已经存在，不能注册
 				}
 				key = RedissCacheKey.RR_Clienter_sendcode_register + phoneNo;
-				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于注册，如非本人操作，请不要理会";
-			} else if (!checkPhoneNo) { // 修改密码 忘记密码 手机号不存在
-				return resultModel.setCode(SendSmsType.PhoneNotExists.value())
-						.setMsg(SendSmsType.PhoneNotExists.desc());// 该手机号不存在，不能修改或忘记密码
+				content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于注册，如非本人操作，请不要理会";
+				break;
+			case UpdatePasswrd:
+				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd+ phoneNo;
+				content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
+				break;
+			case ForgetPassword:
+				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword+ phoneNo;
+				content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于找回密码，如非本人操作，请不要理会";
+				break;
+			case BindAliPay:
+				key = RedissCacheKey.RR_Clienter_sendcode_bindAliPay+ phoneNo;
+				content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于绑定支付宝，如非本人操作，请不要理会";
+				break;
+			default:
+				break;
 			}
-			if (req.getsType() == 2) {
-				// 修改密码
-				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd
-						+ phoneNo;
-				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
-			} else if (req.getsType() == 3) {
-				// 忘记密码
-				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword
-						+ phoneNo;
-				Content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于找回密码，如非本人操作，请不要理会";
-			}
-			if (key == "")
-				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
-						SendSmsType.Fail.desc());// 发送失败
+
 			String code = RandomCodeStrGenerator.generateCodeNum(6);// 获取随机数
-			Content = Content.replace("#验证码#", code);
+			content = content.replace("#验证码#", code);
 			redisService.set(key, code, 60 * 5);
-			long resultValue = SmsUtils.sendSMS(phoneNo, Content);
+			long resultValue = SmsUtils.sendSMS(phoneNo, content);
 			if (resultValue <= 0) {
 				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
 						SendSmsType.Fail.desc());// 发送失败
 			}
 			return resultModel.setCode(SendSmsType.Success.value()).setMsg(
 					SendSmsType.Success.desc());// 设置成功
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 
@@ -348,6 +358,31 @@ public class UsercService implements IUsercService {
 		}
 		return resultModel.setCode(ModifyUserCReturnCode.Success.value())
 				.setMsg(ModifyUserCReturnCode.Success.desc());
+	}
+
+	@Override
+	public HttpResultModel<Object> bindAliPay(BindAliPayReq req) {
+		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+		if (req.getPhoneNo() == null || req.getPhoneNo().equals(""))// 手机号为空
+			return resultModel.setCode(ForgotPwdCode.PhoneNull.value()).setMsg(
+					ForgotPwdCode.PhoneNull.desc());
+		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
+			return resultModel.setCode(ForgotPwdCode.PhoneError.value())
+					.setMsg(ForgotPwdCode.PhoneError.desc());
+		if (req.getVerifyCode() == null || req.getVerifyCode().equals(""))// 验证码为空
+			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value())
+					.setMsg(ForgotPwdCode.VerCodeNull.desc());
+		String key = RedissCacheKey.RR_Clienter_sendcode_bindAliPay
+				+ req.getPhoneNo();// RedisKey
+		String redisValueString = redisService.get(key, String.class);
+		if (!req.getVerifyCode().equals(redisValueString))// 验证码不正确
+			return resultModel.setCode(ForgotPwdCode.VerCodeError.value())
+					.setMsg(ForgotPwdCode.VerCodeError.desc());
+		if (clienterFinanceAcountService.bindAliPay(req))// 修改密码成功
+			return resultModel.setCode(ForgotPwdCode.Success.value()).setMsg(
+					ForgotPwdCode.Success.desc());
+		return resultModel.setCode(ForgotPwdCode.Fail.value()).setMsg(
+				ForgotPwdCode.Fail.desc());// 设置失败
 	}
 
 	/**

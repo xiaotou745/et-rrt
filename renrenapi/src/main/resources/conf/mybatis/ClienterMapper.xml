@@ -23,12 +23,6 @@
     Id, ClienterName, PhoneNo, Password, LoginName, HeadImage, CityName, CityCode, Sex, 
     Age, Education, LastLoginTime, CreateTime, Status, LastOptName, LastOptTime
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from Clienter
-    where Id = #{id,jdbcType=BIGINT}
-  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from Clienter
     where Id = #{id,jdbcType=BIGINT}
@@ -371,7 +365,23 @@ VALUES  ( ${clienterId} , -- ClienterId - int
   </insert>
   <!-- 通过手机号查询用户信息 -->
   <select id="getClienterByPhoneNo" resultType="com.renrentui.renrenentity.Clienter" parameterType="java.lang.String">
-  SELECT TOP 1  * FROM 
+  SELECT TOP 1   Id ,
+        ClienterName ,
+        PhoneNo ,
+        Password ,
+        LoginName ,
+        HeadImage ,
+        CityName ,
+        CityCode ,
+        Sex ,
+        Age ,
+        Education ,
+        LastLoginTime ,
+        CreateTime ,
+        Status ,
+        LastOptName ,
+        LastOptTime ,
+        RecommendPhone FROM 
 dbo.Clienter AS c (NOLOCK)
 WHERE PhoneNo=#{phoneNo,jdbcType=VARCHAR}
   </select>

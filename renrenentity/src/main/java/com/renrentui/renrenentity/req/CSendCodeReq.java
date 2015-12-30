@@ -3,7 +3,7 @@ package com.renrentui.renrenentity.req;
 public class CSendCodeReq {
 	
 	private String phoneNo;//账号
-	private int sType;//类型 1注册 2修改密码 3忘记密码
+	private int sType;//类型 1注册 2修改密码 3忘记密码4绑定支付宝
 	public String getPhoneNo() {
 		return phoneNo;
 	}
