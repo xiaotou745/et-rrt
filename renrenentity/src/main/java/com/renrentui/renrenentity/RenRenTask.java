@@ -44,7 +44,6 @@ public class RenRenTask {
     private String reminder;
     private Double totalAmount;
     private Integer estimatedTime;
-    private Integer strategyId;
 	public Double getTotalAmount() {
 		return totalAmount;
 	}
@@ -61,13 +60,6 @@ public class RenRenTask {
 		this.estimatedTime = estimatedTime;
 	}
 
-	public Integer getStrategyId() {
-		return strategyId;
-	}
-
-	public void setStrategyId(Integer strategyId) {
-		this.strategyId = strategyId;
-	}
 
 	public String getReminder() {
 		return reminder;

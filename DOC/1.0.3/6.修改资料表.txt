@@ -1,0 +1,12 @@
+
+alter table dbo.TaskDatum add  StrategyId int NOT NULL default(0) 
+--添加列注释
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'分佣策略ID' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'TaskDatum', 
+  @level2type=N'COLUMN',
+  @level2name=N'StrategyId'
+GO

@@ -4,7 +4,7 @@
   <sql id="Base_Column_List" >
     Id, TaskTitle, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
     ModifyName, ModifyTime, BeginTime, EndTime,  Amount, status, 
-      PaymentMethod,AuditCycle,TargetPeople,TaskType,HotLine,DownUrl,ScanTip,Reminder,TotalAmount,EstimatedTime,StrategyId
+      PaymentMethod,AuditCycle,TargetPeople,TaskType,HotLine,DownUrl,ScanTip,Reminder,TotalAmount,EstimatedTime
   </sql>
   <select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
     select 
@@ -38,8 +38,7 @@
       ScanTip,
       Reminder,
       TotalAmount,
-      EstimatedTime,
-      StrategyId)
+      EstimatedTime)
     values (
       #{taskTitle,jdbcType=NVARCHAR},
       #{taskGeneralInfo,jdbcType=NVARCHAR},
@@ -60,8 +59,7 @@
        #{scanTip,jdbcType=NVARCHAR},
        #{reminder,jdbcType=NVARCHAR},
        #{totalAmount,jdbcType=DECIMAL},
-       #{estimatedTime,jdbcType=INTEGER},
-       #{strategyId,jdbcType=INTEGER})
+       #{estimatedTime,jdbcType=INTEGER})
   </insert>
   <!-- 获取任务详情接口  2015年11月19日11:24:46 V1.0.2 茹化肖  -->
    <select id="getTaskDetail" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
@@ -479,9 +477,6 @@ DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
       </if>
        <if test="estimatedTime != null" >
         EstimatedTime=#{estimatedTime,jdbcType=INTEGER},
-      </if>
-       <if test="strategyId != null" >
-        StrategyId=#{strategyId,jdbcType=INTEGER},
       </if>
       </trim>
       WHERE id=#{id,jdbcType=BIGINT}

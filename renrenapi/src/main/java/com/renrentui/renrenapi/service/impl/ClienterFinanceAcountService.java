@@ -22,7 +22,7 @@ public class ClienterFinanceAcountService implements
 
 	@Override
 	public boolean bindAliPay(BindAliPayReq req) {
-		Clienter clienter = clienterDao.selectByPhoneNo(req.getPhoneNo());
+		Clienter clienter = clienterDao.getClienterByPhoneNo(req.getPhoneNo());
 		ClienterFinanceAcount record = new ClienterFinanceAcount();
 		record.setClienterid(clienter.getId().intValue());
 		record.setTruename(req.getAliName());

@@ -99,6 +99,10 @@ public interface IClienterDao {
 	 * @return
 	 */
 	boolean insertLoginLog(ClienterLoginLog log);
-	
-	Clienter selectByPhoneNo(String phoneNo);
+	/**
+	 * 通过手机号查询信息
+	 * @param phoneNo
+	 * @return
+	 */
+	Clienter getClienterByPhoneNo(String phoneNo);
 }

@@ -70,8 +70,7 @@ public class SubCommissionService implements ISubCommissionService{
 	 */
 	@Override
 	public Strategy getCruuentStrategy() {
-		// TODO Auto-generated method stub
-		return null;
+		return strategyDao.getCruuentStrategy();
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
+import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrencore.enums.CBalanceRecordStatus;
@@ -34,6 +36,7 @@ import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.ClienterLoginLog;
+import com.renrentui.renrenentity.ClienterRelation;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
@@ -58,7 +61,8 @@ public class ClienterService implements IClienterService {
 	private IClienterWithdrawFormDao clienterWithdrawFormDao;
 	@Autowired
 	private IClienterLogDao clienterLogDao;
-
+	@Autowired
+	private IClienterRelationDao clienterRelationDao;
 	/**
 	 * C端忘记密码
 	 */
@@ -103,18 +107,79 @@ public class ClienterService implements IClienterService {
 		return clienterDao.modifyPwdUserc(req);
 	}
 
-	/*
-	 * 注册 WangChao
+	/**
+	 * 
+	 * 注册 茹化肖修改
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public long signup(SignUpReq req) {
+		//1.判断有没有填写推荐人
+		List<ClienterRelation> creRelations =null;
+		Clienter recomClienter=null;
+		if(req.getRecommendPhone()!=null&&!req.getRecommendPhone().equals(""))
+		{
+			//查询推荐人ID
+			 recomClienter=clienterDao.getClienterByPhoneNo(req.getRecommendPhone());
+			if(recomClienter==null)
+			{
+				return -1;//推荐人不存在
+			}
+			//推荐人存在 查询推荐人的关系
+			creRelations=clienterRelationDao.getRelastionListByClienterId(recomClienter.getId());
+			if(creRelations==null||creRelations.size()==0)
+			{
+				return -2;//推荐人没有推荐关系
+			}
+		}
+		else {
+			//设置推荐人为空
+			req.setRecommendPhone("");
+		}
+		//2.注册骑士
 		clienterDao.signup(req);
+		//3.添加层级关系
+		if(creRelations==null||creRelations.size()==0||req.getRecommendPhone()==null||req.getRecommendPhone().equals(""))
+		{
+			//没有推荐人 或者没有推荐人关系
+			ClienterRelation cRelation=new ClienterRelation();
+			cRelation.setClienterId(req.getId());
+			cRelation.setOtherClienterId(Long.valueOf("0"));//自己相对于根0 
+			cRelation.setOcJibie(1);//相对与根  0  0 是自己的向上1级
+			cRelation.setClienterLevel(1);//自己所处的树 层为1 层  这里标注 0为根 为0层
+			clienterRelationDao.insertClienterRelation(cRelation);
+		}
+		else {
+			//自己的推荐人有层级关系,遍历推荐人的关系
+			for(int  i=0;i<creRelations.size();i++)
+			{
+				ClienterRelation cRelation=new ClienterRelation();
+				cRelation.setClienterId(req.getId());
+				cRelation.setOtherClienterId(creRelations.get(i).getOtherClienterId());//别人的ID
+				cRelation.setOcJibie((creRelations.get(i).getOcJibie()+1));//自己和别人的级别关系 就是 自己推荐人的级别关系+1
+				cRelation.setClienterLevel(creRelations.size()+1);//自己所处的树 层为推荐人所有关系总和 (因为算了0这个ID了)
+				clienterRelationDao.insertClienterRelation(cRelation);
+			}
+			//插入完自己和推荐人上级的关系
+			ClienterRelation cRelation=new ClienterRelation();
+			cRelation.setClienterId(req.getId());
+			cRelation.setOtherClienterId(recomClienter.getId());//推荐人的ID
+			cRelation.setOcJibie(1);//推荐人是自己的向上1级
+			cRelation.setClienterLevel(creRelations.size()+1);
+			clienterRelationDao.insertClienterRelation(cRelation);
+		}
 		long id = req.getId();
-		if (id > 0) {
-			if (clienterBalanceDao.insert(id) <= 0) {
+		if (id > 0)
+		{
+			//注册成功 初始化账户余额
+			if (clienterBalanceDao.insert(id) <= 0) 
+			{
 				throw new TransactionalRuntimeException("添加新用户余额记录失败");
 			}
-		} else {
+			
+		} 
+		else
+		{
 			throw new TransactionalRuntimeException("添加新用户失败");
 		}
 		return id;

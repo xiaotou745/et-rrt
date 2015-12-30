@@ -172,10 +172,13 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		int res = getMasterSqlSessionUtil().insert(statement, log);
 		return res > 0;
 	}
-
+	/**
+	 * 通过手机号查询信息
+	 */
 	@Override
-	public Clienter selectByPhoneNo(String phoneNo) {
-return getReadOnlySqlSessionUtil().selectOne("IClienterDao.selectByPhoneNo", phoneNo);
+	public Clienter getClienterByPhoneNo(String phoneNo) {
+		return getMasterSqlSessionUtil().selectOne("IClienterDao.getClienterByPhoneNo", phoneNo);
 	}
+
 
 }

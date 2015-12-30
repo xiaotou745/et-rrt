@@ -34,8 +34,16 @@ public class Clienter {
     private String lastOptName;
 
     private Date lastOptTime;
+    private String recommendPhone;
+    public String getRecommendPhone() {
+		return recommendPhone;
+	}
 
-    public Long getId() {
+	public void setRecommendPhone(String recommendPhone) {
+		this.recommendPhone = recommendPhone;
+	}
+
+	public Long getId() {
         return id;
     }
 
