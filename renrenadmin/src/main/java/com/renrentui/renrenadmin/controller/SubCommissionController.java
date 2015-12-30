@@ -14,6 +14,7 @@ import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.ISubCommissionService;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrenentity.Strategy;
+import com.renrentui.renrenentity.StrategyChild;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
@@ -92,5 +93,22 @@ public class SubCommissionController {
 		UserContext context=UserContext.getCurrentContext(request);
 		req.setOptName(context.getUserName());
 		return subCommissionService.updateStatus(req);
+	}
+	/**
+	 * 分佣策略详情
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("detail")
+	public ModelAndView detail(Long id) {
+		ModelAndView model = new ModelAndView("adminView");
+		Strategy  strategy=subCommissionService.getStrategyById(id);
+		List<StrategyChild> childs=subCommissionService.getStrategyChildById(id);
+		model.addObject("strategy", strategy);
+		model.addObject("childs", childs);
+		model.addObject("subtitle", "分佣管理");
+		model.addObject("currenttitle", "分佣策略详情");
+		model.addObject("viewPath", "subcommission/detail");
+		return model;
 	}
 }

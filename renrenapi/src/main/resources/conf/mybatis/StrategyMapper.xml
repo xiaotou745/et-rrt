@@ -70,4 +70,29 @@ SELECT TOP 1   Id ,
         Status FROM dbo.Strategy AS s(NOLOCK)
         WHERE s.Status=2
 </select>
+
+<!-- 根据ID获取策略 -->
+<select id="getStrategyById" resultType="com.renrentui.renrenentity.Strategy" parameterType="java.lang.Long" >
+SELECT  Id ,
+        StrategyName ,
+        LevalCount ,
+        MaxPercentage ,
+        Percentage ,
+        OptName ,
+        OptTime ,
+        Remark ,
+        CreateDate ,
+        Status FROM dbo.Strategy AS s(NOLOCK)
+        WHERE id=#{id,jdbcType=BIGINT}
+</select>
+<!-- 根据ID获取策略 -->
+<select id="getStrategyChildById" resultType="com.renrentui.renrenentity.StrategyChild" parameterType="java.lang.Long" >
+SELECT  Id ,
+        StrategyId ,
+        LevalNo ,
+        Percentage FROM dbo.StrategyChild AS sc(NOLOCK)
+        WHERE sc.StrategyId=#{id,jdbcType=BIGINT}
+        order BY sc.LevalNo ASC 
+</select>
+
 </mapper>

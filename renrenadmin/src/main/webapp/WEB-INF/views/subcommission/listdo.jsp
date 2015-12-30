@@ -34,7 +34,7 @@
 				%>
 				<tr>
 				<td><%=list.get(i).getId()%></td>
-				<td><%=list.get(i).getStrategyName()%></td>
+				<td><a href="<%=basePath+"/subcommission/detail?id="+list.get(i).getId()%>" target="_blank"><%=list.get(i).getStrategyName()%></a></td>
 				<td><%=list.get(i).getLevalCount()%></td>
 				<td><%=list.get(i).getPercentage()%></td>
 				<td><%=ParseHelper.ToDateString(list.get(i).getCreateDate())%></td>

@@ -43,4 +43,17 @@ public interface IStrategyDao {
 	 * @return
 	 */
 	Strategy getCruuentStrategy();
+	
+	/**
+	 * 根据ID获取策略信息
+	 * @param id
+	 * @return
+	 */
+	Strategy getStrategyById(Long id);
+	/**
+	 * 根据ID获取策略子集信息
+	 * @param id
+	 * @return
+	 */
+	List<StrategyChild> getStrategyChildById(Long id);
 }

@@ -72,5 +72,19 @@ public class SubCommissionService implements ISubCommissionService{
 	public Strategy getCruuentStrategy() {
 		return strategyDao.getCruuentStrategy();
 	}
+	/**
+	 * 获取指定策略信息
+	 */
+	@Override
+	public Strategy getStrategyById(Long id) {
+		return strategyDao.getStrategyById(id);
+	}
+	/**
+	 * 获取策略子层信息
+	 */
+	@Override
+	public List<StrategyChild> getStrategyChildById(Long id) {
+		return strategyDao.getStrategyChildById(id);
+	}
 
 }
