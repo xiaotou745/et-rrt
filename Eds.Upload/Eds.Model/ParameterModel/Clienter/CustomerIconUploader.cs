@@ -21,6 +21,15 @@ namespace Ets.Model.ParameterModel.Clienter
         {
             get { return 150; }
         }
+        public int PartnerWidth
+        {
+            get { return 95; }
+        }
+
+        public int PartnerHeight
+        {
+            get { return 95; }
+        }
 
         /// <summary>
         /// 50k

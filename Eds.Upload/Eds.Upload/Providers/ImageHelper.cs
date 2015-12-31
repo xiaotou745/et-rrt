@@ -64,6 +64,17 @@ namespace Eds.Upload.Providers
             //保存到数据库的图片路径
             var destFullFileName = System.IO.Path.Combine(fullFileDir, fileName);
             transformer.Transform(fullFilePath, destFullFileName);
+
+            if (uploadFrom==UploadFrom.Clienter)
+            {
+                //裁图：人人地推任务参与人的小头像
+                //保存到数据库的图片路径
+                string partnerFileName = string.Format("{0}{1}{2}", fileName.Substring(0, fileNameLastDot), SystemConst.TaskPartnerSize, Path.GetExtension(fileName));
+                var partnerDestFullFileName = System.IO.Path.Combine(fullFileDir, partnerFileName);
+                var partnerTransformer = new ETS.Compress.FixedDimensionTransformerAttribute(Ets.Model.ParameterModel.Clienter.CustomerIconUploader.Instance.PartnerWidth, Ets.Model.ParameterModel.Clienter.CustomerIconUploader.Instance.PartnerHeight, Ets.Model.ParameterModel.Clienter.CustomerIconUploader.Instance.MaxBytesLength / 1024);
+                partnerTransformer.Transform(fullFilePath, partnerDestFullFileName);
+            }
+
              
             var picUrl = saveDbFilePath + fileName; 
             imgInfo.RelativePath = EnumUtils.GetEnumDescription(uploadFrom) + picUrl;

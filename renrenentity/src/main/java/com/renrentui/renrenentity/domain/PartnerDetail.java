@@ -21,7 +21,13 @@ public class PartnerDetail {
 	}
 	public String getHeadImage() {
 		if (headImage!=null&&!headImage.isEmpty()) {
-			return PropertyUtils.getProperty("ImgShowUrl")+ headImage;
+			int index=headImage.lastIndexOf(".");
+			if (index<=0) {
+				return "";
+			}
+			String fileName=headImage.substring(0, index);
+			String extension=headImage.substring(index);
+			return PropertyUtils.getProperty("ImgShowUrl")+ fileName+"_95_95"+extension;
 		}
 		return headImage;
 	}
