@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
+import com.renrentui.renrenapi.service.inter.IClienterRelationService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.ITaskShareStatisticsService;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
@@ -156,3 +157,4 @@ public class ClienterController {
 		taskShareStatisticsService.insert(record);
 		response.sendRedirect(req.getDownUrl());
 	}
+}
