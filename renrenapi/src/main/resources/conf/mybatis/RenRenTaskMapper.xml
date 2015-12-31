@@ -78,7 +78,8 @@ SELECT TOP 1  rrt.id,
         rrt.DownUrl,
         rrt.ScanTip,
         rrt.Reminder,
-		rrt.status
+		rrt.status,
+		rrt.estimatedTime
 		FROM    dbo.RenRenTask AS rrt ( NOLOCK )
         JOIN dbo.Business AS b ( NOLOCK ) ON rrt.BusinessId = b.id
         LEFT JOIN dbo.ClienterTask AS ct ON ct.TaskId=rrt.id AND ct.ClienterId=${userId}

@@ -5,9 +5,11 @@ public enum TaskDetailCode {
 	 * 成功
 	 */
 	Success(200, "success"),
+	Fail(1101, "系统错误"),
 	UserIdErr(1102, "用户ID错误"),
 	TaskIdErr(1103, "任务ID错误"),
-	Fail(1101, "系统错误");
+	TaskIdNotEXISTS(1104, "任务ID不存在");
+
 	private int value = 0;
 	private String desc;
 	private TaskDetailCode(int value, String desc) { 

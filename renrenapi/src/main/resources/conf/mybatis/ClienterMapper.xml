@@ -408,4 +408,15 @@ VALUES  ( ${clienterId} , -- ClienterId - int
 dbo.Clienter AS c (NOLOCK)
 WHERE PhoneNo=#{phoneNo,jdbcType=VARCHAR}
   </select>
+  <!-- 查询某个任务的参与人20151231,zhaohl-->
+  <select id="getClienterListByTaskId" resultType="com.renrentui.renrenentity.domain.PartnerDetail" parameterType="java.lang.Long">
+SELECT  a.id as ClienterId,
+        a.ClienterName ,
+        a.PhoneNo ,
+        a.HeadImage
+FROM    dbo.Clienter a WITH ( NOLOCK )
+        JOIN dbo.ClienterTask b WITH ( NOLOCK ) ON a.id = b.ClienterId
+WHERE b.taskid=#{taskId,jdbcType=BIGINT}
+order by b.id desc
+  </select>
 </mapper>

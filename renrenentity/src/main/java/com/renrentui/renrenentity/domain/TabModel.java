@@ -19,7 +19,7 @@ public class TabModel<T> {
 	private long waitTotal;
 	private long passTotal;
 	private long refuseTotal;
-
+	private List<T> content;
 	public long getWaitTotal() {
 		return waitTotal;
 	}
@@ -44,7 +44,7 @@ public class TabModel<T> {
 		this.refuseTotal = refuseTotal;
 	}
 
-	private List<T> content;
+
 
 	public int getCount() {
 		return count;

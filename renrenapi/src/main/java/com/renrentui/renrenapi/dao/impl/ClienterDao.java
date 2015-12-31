@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,7 @@ import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
@@ -178,6 +180,11 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public Clienter getClienterByPhoneNo(String phoneNo) {
 		return getMasterSqlSessionUtil().selectOne("IClienterDao.getClienterByPhoneNo", phoneNo);
+	}
+
+	@Override
+	public List<PartnerDetail> getClienterListByTaskId(long taskId) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterDao.getClienterListByTaskId", taskId);
 	}
 
 

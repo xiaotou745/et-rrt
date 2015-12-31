@@ -53,7 +53,7 @@ public class TaskService implements ITaskService{
 			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.TaskIdErr.value()).setMsg(TaskDetailCode.TaskIdErr.desc());
 		TaskDetail detail= rrTaskServcie.getTaskDetail(req);
 		if(detail==null)
-			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.Fail.value()).setMsg(TaskDetailCode.Fail.desc());
+			return new HttpResultModel<TaskDetail>().setCode(TaskDetailCode.TaskIdNotEXISTS.value()).setMsg(TaskDetailCode.TaskIdNotEXISTS.desc());
 		return new HttpResultModel<TaskDetail>().setData(detail).setCode(TaskDetailCode.Success.value()).setMsg(TaskDetailCode.Success.desc());
 	}
 	/**

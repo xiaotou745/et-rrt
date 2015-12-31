@@ -1,11 +1,14 @@
 package com.renrentui.renrenapi.dao.inter;
 
 
+import java.util.List;
+
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
@@ -105,4 +108,13 @@ public interface IClienterDao {
 	 * @return
 	 */
 	Clienter getClienterByPhoneNo(String phoneNo);
+	
+	/**
+	 * 查询参与了某个任务的所有骑士信息
+	 * @author hailongzhao
+	 * @date 20151231
+	 * @param taskId
+	 * @return
+	 */
+	List<PartnerDetail> getClienterListByTaskId(long taskId);
 }
