@@ -57,7 +57,7 @@ Long id = (Long)request.getAttribute("id");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">交易类型:</label>
 							<div class="col-sm-8">
-								 <%=HtmlHelper.getSelect("forzenstatus", EnumHelper.GetEnumItems(CBalanceRecordType.class),"desc", "value", null, "0", "全部")%>
+								 <%=HtmlHelper.getSelect("recordType", EnumHelper.GetEnumItems(CBalanceRecordType.class),"desc", "value", null, "0", "全部")%>
 							</div>
 						</div>
 					</div>
@@ -65,7 +65,7 @@ Long id = (Long)request.getAttribute("id");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">资料ID/提现单ID:</label>
 							<div class="col-sm-8">								
-								<input id="txtPhoneNo" type="text" name="txtPhoneNo"  class="form-control"/>
+								<input id="orderId" type="text" name="orderId" id="orderId" class="form-control"/>
 							</div>
 						</div>
 					</div>
@@ -127,32 +127,33 @@ $(function(){
 	    });
 	
 });
-// 	var jss={
-// 			search:function(currentPage){	
-//                  var clienterName = $("#txtClienterName").val();
-//                  var status = $("#clienterStatus").val();          
-//                  var phoneNo=$("#txtPhoneNo").val();  
-// 				 var paramaters = { 
-// 						 "currentPage":currentPage,
-// 						 "clienterName": clienterName,
-// 						 "status": status,
-// 						 "phoneNo": phoneNo,	
-// 						 };        
-<%-- 			        var url = "<%=basePath%>/clienter/listdo"; --%>
-// 			        $.ajax({
-// 			            type: 'POST',
-// 			            url: url,
-// 			            data: paramaters,
-// 			            success: function (result) {   			            
-// 			            	$("#content").html(result);               
-// 			            }
-// 			        });
-// 			}
-// 		}	
+	var jss={
+			search:function(currentPage){	
+				 var paramaters = { 
+						 "recordType":$('#recordType').val(),
+						 "orderId": $('#orderId').val()==''?0:$('#orderId').val(),
+						 "beginDate":$('#beginDate').val(),
+						 "endDate": $('#endDate').val()==''?'':$('#endDate').val()+' 23:59:59',
+						 "clienterId":<%=id%>,
+						 "currentPage":currentPage,
+						 };  
+
+				 console.log(paramaters);
+			        var url = "<%=basePath%>/clienter/recordlistdo";
+			        $.ajax({
+			            type: 'POST',
+			            url: url,
+			            data: paramaters,
+			            success: function (result) {   			            
+			            	$("#content").html(result);               
+			            }
+			        });
+			}
+		}	
 		
-// 	jss.search(1);
-// 	$("#btnSearch").click(function(){
-// 		jss.search(1);
-// 	});	
+	jss.search(1);
+	$("#btnSearch").click(function(){
+		jss.search(1);
+	});	
 	
 </script>

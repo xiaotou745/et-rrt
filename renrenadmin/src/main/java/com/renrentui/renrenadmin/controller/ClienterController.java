@@ -10,9 +10,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
+import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
+import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
+import com.renrentui.renrenapi.service.inter.IClienterRelationService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.resp.ClienterResp;
@@ -22,6 +27,8 @@ import com.renrentui.renrenentity.resp.ClienterResp;
 public class ClienterController {
 	@Autowired
 	private IClienterService clienterService;
+	@Autowired
+	private IClienterBalanceRecordService clienterBalanceRecordService;
 	/**
 	* @Des 地推员管理 
 	* @Author WangXuDan
@@ -78,6 +85,18 @@ public class ClienterController {
 		model.addObject("blance", blance);
 		model.addObject("hadWithdraw", hadWithdraw);
 		model.addObject("id", id);
+		return model;
+	}
+	/**
+	 * 地推员交易列表分页
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("recordlistdo")
+	public ModelAndView recordlistdo(ClienterBlanceRecordReq req){	
+		ModelAndView model = new ModelAndView("clienter/recordlistdo");
+		PagedResponse<ClienterBalanceRecord> list= clienterBalanceRecordService.getRecordList(req);
+		model.addObject("listData", list);
 		return model;
 	}
 

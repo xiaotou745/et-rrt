@@ -3,6 +3,8 @@ package com.renrentui.renrenapi.dao.inter;
 import java.util.List;
 
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
 
 
 public interface IClienterBalanceRecordDao {
@@ -19,4 +21,6 @@ public interface IClienterBalanceRecordDao {
     
     int updateStatusByOrderId(ClienterBalanceRecord record); 
 	List<ClienterBalanceRecord> getRecordList(Long clienterId);
+	
+	PagedResponse<ClienterBalanceRecord> getRecordList(ClienterBlanceRecordReq req);
 }
