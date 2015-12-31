@@ -1,5 +1,7 @@
 package com.renrentui.renrenadmin.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
-import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
 import com.renrentui.renrenapi.service.inter.IClienterRelationService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenentity.domain.ClienterRelationModel;
+import com.renrentui.renrenentity.req.CRelationReq;
 import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
@@ -29,6 +32,8 @@ public class ClienterController {
 	private IClienterService clienterService;
 	@Autowired
 	private IClienterBalanceRecordService clienterBalanceRecordService;
+	@Autowired
+	private IClienterRelationService clienterRelationService;
 	/**
 	* @Des 地推员管理 
 	* @Author WangXuDan
@@ -99,5 +104,31 @@ public class ClienterController {
 		model.addObject("listData", list);
 		return model;
 	}
-
+	
+	/**
+	 * 地推员推荐关系
+	 * @return
+	 */
+	@RequestMapping("clientercelation")
+	public ModelAndView clientertelation(){	
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "地推员管理");
+		model.addObject("currenttitle", "地推员交易列表");
+		model.addObject("viewPath", "clienter/clientercelation");
+		return model;
+	}
+	/**
+	 * 
+	 * 推荐关系列表
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("rcelationdo")
+	public ModelAndView rcelationdo(CRelationReq req){	
+		ModelAndView model = new ModelAndView("clienter/rcelationdo");
+		List<ClienterRelationModel> list=clienterRelationService.getClienterRelationModelsByPhone(req);
+		model.addObject("listData", list);
+		return model;
+	}
+	
 }

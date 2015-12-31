@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenentity.ClienterRelation;
+import com.renrentui.renrenentity.domain.ClienterRelationModel;
+import com.renrentui.renrenentity.req.CRelationReq;
 @Repository
 public class ClienterRelationDao extends DaoBase implements IClienterRelationDao {
 	/**
@@ -30,6 +32,14 @@ public class ClienterRelationDao extends DaoBase implements IClienterRelationDao
 	@Override
 	public int getLevelByClienterId(Long clienterId) {
 		return getMasterSqlSessionUtil().selectOne("IClienterRelationDao.getLevelByClienterId", clienterId);
+	}
+	/**
+	 * 通过手机号查询
+	 */
+	@Override
+	public List<ClienterRelationModel> getClienterRelationModelsByPhone(
+			CRelationReq req) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterRelationDao.getClienterRelationModelsByPhone", req);
 	}
 
 }

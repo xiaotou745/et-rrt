@@ -30,4 +30,71 @@ VALUES  ( #{clienterId,jdbcType=BIGINT} , -- ClienterId - bigint
 SELECT DISTINCT ClienterLevel FROM dbo.ClienterRelation AS cr(NOLOCK)
 WHERE ClienterId=#{clienterId,jdbcType=BIGINT}
 </select>
+<!-- 通过推荐人手机号查询下面的骑士 -->
+<select id="getClienterRelationModelsByPhone"
+resultType="com.renrentui.renrenentity.domain.ClienterRelationModel"
+ parameterType="com.renrentui.renrenentity.req.CRelationReq">
+DECLARE @Myid BIGINT= 0;
+
+SELECT  @Myid = id
+FROM    dbo.Clienter AS c ( NOLOCK )
+WHERE   C.PhoneNo = '${phoneNo}'
+
+SELECT  *
+INTO    #CR
+FROM    ClienterRelation(NOLOCK)
+WHERE   ClienterId = @Myid
+        OR OtherClienterId = @Myid
+
+DECLARE @MyLevel INT= 0;
+
+SELECT  @MyLevel = MAX(ClienterLevel)
+FROM    #CR AS cr
+WHERE   cr.ClienterId = @Myid
+
+SELECT  cr.ClienterId ,
+        ( cr.ClienterLevel - @MyLevel ) AS ClienterLevel
+INTO    #T2
+FROM    #CR AS cr
+WHERE   cr.OtherClienterId = @Myid
+        
+
+SELECT  #T2.ClienterId ,
+        COUNT(td.id) AS CompleteCount ,
+        SUM(CASE WHEN cbr.RecordType = 1 THEN cbr.Amount
+                 ELSE 0
+            END) AS TotalAmount ,
+        SUM(CASE WHEN cbr.RecordType = 5 THEN cbr.Amount
+                 ELSE 0
+            END) AS TotalSubAmount ,
+        #T2.ClienterLevel
+INTO    #T5
+FROM    #T2
+        LEFT JOIN dbo.TaskDatum AS td ( NOLOCK ) ON td.ClienterId = #T2.ClienterId
+                                                    AND TD.Status = 2
+                                                    <if test="beginDate != null and beginDate!= ''" >
+ 													AND td.CreateDate>'${beginDate}'
+     												</if>
+                                                    <if test="endDate != null and endDate!= ''" >
+ 													AND '${endDate}'>td.CreateDate
+     												</if>
+        LEFT JOIN dbo.ClienterBalanceRecord AS cbr ON td.id = cbr.OrderId
+                                                      AND ( RecordType = 1
+                                                            OR RecordType = 5
+                                                          )
+GROUP BY #T2.ClienterId ,
+        #T2.ClienterLevel
+
+SELECT  ClienterLevel ,
+        SUM(TotalAmount) AS TotalAmount ,
+        COUNT(ClienterId) AS ClienterCount ,
+        SUM(CompleteCount) AS CompleteCount ,
+        SUM(#T5.TotalSubAmount) AS TotalSubAmount
+FROM    #T5
+GROUP BY #T5.ClienterLevel
+
+DROP TABLE #T5
+DROP TABLE #T2
+DROP TABLE #CR
+</select>
 </mapper>
