@@ -57,7 +57,7 @@ Long id = (Long)request.getAttribute("id");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">交易类型:</label>
 							<div class="col-sm-8">
-								 <%=HtmlHelper.getSelect("status", EnumHelper.GetEnumItems(CBalanceRecordType.class),"desc", "value", null, "0", "全部")%>
+								 <%=HtmlHelper.getSelect("recordType", EnumHelper.GetEnumItems(CBalanceRecordType.class),"desc", "value", null, "0", "全部")%>
 							</div>
 						</div>
 					</div>
@@ -130,7 +130,7 @@ $(function(){
 	var jss={
 			search:function(currentPage){	
 				 var paramaters = { 
-						 "status":$('#status').val(),
+						 "recordType":$('#recordType').val(),
 						 "orderId": $('#orderId').val()==''?0:$('#orderId').val(),
 						 "beginDate":$('#beginDate').val(),
 						 "endDate": $('#endDate').val()==''?'':$('#endDate').val()+' 23:59:59',

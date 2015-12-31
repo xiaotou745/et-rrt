@@ -175,8 +175,8 @@
      <!-- 获取地推员余额流水列表的分页 -->
   	<sql id="getRecordListPage_Where">
 		cbr.ClienterId=${clienterId}
-		<if test="status !=0">
-			AND cbr.Status=${status}
+		<if test="recordType !=0">
+			AND cbr.recordType=${recordType}
 		</if>
 		<if test="orderId != 0">
 			AND cbr.orderId=${orderId}

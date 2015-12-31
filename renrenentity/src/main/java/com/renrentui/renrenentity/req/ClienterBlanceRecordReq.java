@@ -4,16 +4,17 @@ import com.renrentui.renrenentity.common.PagedRequestBase;
 
 public class ClienterBlanceRecordReq extends PagedRequestBase{
 
-	private int status;
+	private int recordType;
 	private int orderId;
 	private String beginDate;
 	private String endDate;
 	private Long clienterId;
-	public int getStatus() {
-		return status;
+
+	public int getRecordType() {
+		return recordType;
 	}
-	public void setStatus(int status) {
-		this.status = status;
+	public void setRecordType(int recordType) {
+		this.recordType = recordType;
 	}
 	public int getOrderId() {
 		return orderId;
