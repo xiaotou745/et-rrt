@@ -166,6 +166,14 @@ public class RenRenTaskService implements IRenRenTaskService {
 	 	if (task==null) {
 			return null;
 		}
+	 	if (req.getUserId()>0&&
+	 		task.getTaskType().intValue()!=TaskType.ContractTask.value()&&
+	 		task.getDownUrl()!=null&&
+	 		!task.getDownUrl().isEmpty()) {
+	 		String downUrl="%s/clienter/sharetask?taskId=%s&clienterId=%s&downUrl=%s";
+	 		downUrl=String.format(downUrl,PropertyUtils.getProperty("java.renrenadmin.url"),req.getTaskId(),req.getUserId(),task.getDownUrl());
+	 		task.setDownUrl(downUrl);
+		}
 	 	//获取任务步骤 等信息
 	 	List<TaskSetp> taskSetps=taskSetpDao.getSetpsByTaskId(req.getTaskId());
 	 	PartnerListReq partnerReq=new PartnerListReq();
