@@ -3,6 +3,7 @@ package com.renrentui.renrenentity.domain;
 import com.renrentui.renrencore.util.PropertyUtils;
 
 public class PartnerDetail {
+	private long ctId;
     private Long clienterId;
 	private String clienterName;
     private String headImage;
@@ -39,6 +40,12 @@ public class PartnerDetail {
 	}
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
+	}
+	public long getCtId() {
+		return ctId;
+	}
+	public void setCtId(long ctId) {
+		this.ctId = ctId;
 	}
 
 }

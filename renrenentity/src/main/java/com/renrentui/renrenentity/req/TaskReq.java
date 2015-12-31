@@ -6,7 +6,8 @@ import com.renrentui.renrenentity.common.PagedRequestBase;
 
 public class TaskReq extends PagedRequestBase{
 	private int userId;
-	
+	private long nextId;
+	private int itemsCount;
 	private long cityCode;
 	private long provinceCode;
 	
@@ -51,5 +52,21 @@ public class TaskReq extends PagedRequestBase{
 
 	public void setOrderBy(int orderBy) {
 		this.orderBy = orderBy;
+	}
+
+	public int getItemsCount() {
+		return itemsCount;
+	}
+
+	public void setItemsCount(int itemsCount) {
+		this.itemsCount = itemsCount;
+	}
+
+	public long getNextId() {
+		return nextId;
+	}
+
+	public void setNextId(long nextId) {
+		this.nextId = nextId;
 	}
 }

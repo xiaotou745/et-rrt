@@ -15,7 +15,7 @@ public class TabModel<T> {
 	private int count;
 
 	private long nextId;
-
+	private long total;
 	private long waitTotal;
 	private long passTotal;
 	private long refuseTotal;
@@ -76,5 +76,13 @@ public class TabModel<T> {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public long getTotal() {
+		return total;
+	}
+
+	public void setTotal(long total) {
+		this.total = total;
 	}
 }

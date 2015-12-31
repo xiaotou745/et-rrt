@@ -11,6 +11,7 @@ import com.renrentui.renrenentity.RenRenTask;
 public class TaskDetail {
 	private RenRenTask task;
 	private List<TaskSetp> taskSetps;
+	private long partnerTotal;
 	private List<PartnerDetail> partnerList;
 	public RenRenTask getTask() {
 		return task;
@@ -29,6 +30,12 @@ public class TaskDetail {
 	}
 	public void setPartnerList(List<PartnerDetail> partnerList) {
 		this.partnerList = partnerList;
+	}
+	public long getPartnerTotal() {
+		return partnerTotal;
+	}
+	public void setPartnerTotal(long partnerTotal) {
+		this.partnerTotal = partnerTotal;
 	}
 	
 }

@@ -4,7 +4,6 @@ package com.renrentui.renrenapihttp.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.jdt.internal.compiler.ast.ReturnStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +24,7 @@ import com.renrentui.renrencore.enums.MyIncomeCode;
 import com.renrentui.renrencore.enums.MyRecordCode;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.enums.SignUpCode;
+import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
@@ -35,12 +35,15 @@ import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.domain.BalanceRecordModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.resp.SignInResp;
@@ -401,6 +404,29 @@ public class UsercService implements IUsercService {
 		resp.setExpensesList(expensesList);
 		resp.setInComeList(incomeList);
 		hrm.setData(resp);
+		return hrm;
+	}
+
+	@Override
+	public HttpResultModel<TabModel<PartnerDetail>> getClienterListByTaskId(
+			PartnerListReq req) {
+		HttpResultModel<TabModel<PartnerDetail>> hrm = new HttpResultModel<TabModel<PartnerDetail>>();
+		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+		if(req.getTaskId()<=0){
+			hrm.setCode(TaskCode.TaskId.value()).setMsg(TaskCode.TaskId.desc());			
+			return hrm;
+		} 
+
+		List<PartnerDetail> result=clienterService.getClienterListByTaskId(req);
+		long partnerTotal=clienterService.getClienterListByTaskIdTotal(req.getTaskId());
+		TabModel<PartnerDetail> td = new TabModel<PartnerDetail>();
+		td.setContent(result);
+		td.setCount(result.size());
+		td.setTotal(partnerTotal);
+		if(result!=null && result.size()>0){
+			td.setNextId(result.get(result.size()-1).getCtId());
+		}
+		hrm.setData(td); 
 		return hrm;
 	}
 

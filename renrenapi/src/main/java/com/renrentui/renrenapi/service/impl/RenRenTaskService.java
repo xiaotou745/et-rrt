@@ -94,6 +94,7 @@ import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
@@ -167,7 +168,13 @@ public class RenRenTaskService implements IRenRenTaskService {
 		}
 	 	//获取任务步骤 等信息
 	 	List<TaskSetp> taskSetps=taskSetpDao.getSetpsByTaskId(req.getTaskId());
-		List<PartnerDetail> partnerList= clienterDao.getClienterListByTaskId(req.getTaskId());//获取任务参与人
+	 	PartnerListReq partnerReq=new PartnerListReq();
+	 	partnerReq.setItemsCount(5);
+	 	partnerReq.setNextId(0);
+	 	partnerReq.setTaskId(req.getTaskId());
+		List<PartnerDetail> partnerList= clienterDao.getClienterListByTaskId(partnerReq);//获取任务参与人
+		long partnerTotal= clienterDao.getClienterListByTaskIdTotal(req.getTaskId());//获取任务参与人总数
+		detail.setPartnerTotal(partnerTotal);
 	 	detail.setTask(task);
 	 	detail.setTaskSetps(taskSetps);
 	 	detail.setPartnerList(partnerList);

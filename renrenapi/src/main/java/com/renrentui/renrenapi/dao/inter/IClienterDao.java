@@ -13,6 +13,7 @@ import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -116,5 +117,13 @@ public interface IClienterDao {
 	 * @param taskId
 	 * @return
 	 */
-	List<PartnerDetail> getClienterListByTaskId(long taskId);
+	List<PartnerDetail> getClienterListByTaskId(PartnerListReq req);
+	/**
+	 * 查询参与了某个任务的骑士总数
+	 * @author hailongzhao
+	 * @date 20151231
+	 * @param taskId
+	 * @return
+	 */
+	long getClienterListByTaskIdTotal(long taskId);
 }

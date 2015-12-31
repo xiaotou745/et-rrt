@@ -23,6 +23,7 @@ import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -183,8 +184,13 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	}
 
 	@Override
-	public List<PartnerDetail> getClienterListByTaskId(long taskId) {
-		return getReadOnlySqlSessionUtil().selectList("IClienterDao.getClienterListByTaskId", taskId);
+	public List<PartnerDetail> getClienterListByTaskId(PartnerListReq req) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterDao.getClienterListByTaskId", req);
+	}
+
+	@Override
+	public long getClienterListByTaskIdTotal(long taskId) {
+		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getClienterListByTaskIdTotal", taskId);
 	}
 
 

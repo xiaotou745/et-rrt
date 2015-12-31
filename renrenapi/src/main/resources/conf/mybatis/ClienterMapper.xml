@@ -408,15 +408,31 @@ VALUES  ( ${clienterId} , -- ClienterId - int
 dbo.Clienter AS c (NOLOCK)
 WHERE PhoneNo=#{phoneNo,jdbcType=VARCHAR}
   </select>
-  <!-- 查询某个任务的参与人20151231,zhaohl-->
-  <select id="getClienterListByTaskId" resultType="com.renrentui.renrenentity.domain.PartnerDetail" parameterType="java.lang.Long">
-SELECT  a.id as ClienterId,
+  <!-- 查询某个任务的所有参与人20151231,zhaohl-->
+  <select id="getClienterListByTaskId" resultType="com.renrentui.renrenentity.domain.PartnerDetail" 
+  parameterType="com.renrentui.renrenentity.req.PartnerListReq" >
+	select 
+	<if test="itemsCount != 0" >
+		top  ${itemsCount} 
+	</if>
+		b.id as ctId,
+ 		a.id as ClienterId,
         a.ClienterName ,
         a.PhoneNo ,
         a.HeadImage
 FROM    dbo.Clienter a WITH ( NOLOCK )
         JOIN dbo.ClienterTask b WITH ( NOLOCK ) ON a.id = b.ClienterId
 WHERE b.taskid=#{taskId,jdbcType=BIGINT}
-order by b.id desc
-  </select>
+<if test="nextId != 0" >
+	and   ${nextId}>b.id
+</if>
+order by b.id desc;
+</select>
+<select id="getClienterListByTaskIdTotal" resultType="java.lang.Long" 
+  parameterType="java.lang.Long" >
+select  count(0) as num 
+FROM    dbo.Clienter a WITH ( NOLOCK )
+        JOIN dbo.ClienterTask b WITH ( NOLOCK ) ON a.id = b.ClienterId
+WHERE b.taskid=#{taskId,jdbcType=BIGINT}
+</select>   
 </mapper>

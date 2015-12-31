@@ -1,21 +1,22 @@
 package com.renrentui.renrenapihttp.service.inter;
+
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.domain.BalanceRecordModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
-import com.renrentui.renrenentity.req.FileUploadReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -131,4 +132,15 @@ public interface IUsercService {
 	@POST
 	@Path("/getbalancerecordlist")
 	 public HttpResultModel<BalanceRecordModel> getRecordList(GetUserCReq req);
+	
+	/**
+	 * 查询参与了某个任务的所有骑士信息
+	 * @author hailongzhao
+	 * @date 20151231
+	 * @param taskId
+	 * @return
+	 */
+	@POST
+	@Path("/getclienterlistbytaskid")
+	public HttpResultModel<TabModel<PartnerDetail>> getClienterListByTaskId(PartnerListReq req);
 }
