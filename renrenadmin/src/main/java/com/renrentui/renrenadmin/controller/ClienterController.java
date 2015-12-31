@@ -1,6 +1,7 @@
 package com.renrentui.renrenadmin.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,16 +11,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
-import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
-import com.renrentui.renrenapi.service.inter.IClienterRelationService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrenapi.service.inter.ITaskShareStatisticsService;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.TaskShareStatistics;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
+import com.renrentui.renrenentity.req.ShareTaskReq;
 import com.renrentui.renrenentity.resp.ClienterResp;
 
 @Controller
@@ -29,6 +31,8 @@ public class ClienterController {
 	private IClienterService clienterService;
 	@Autowired
 	private IClienterBalanceRecordService clienterBalanceRecordService;
+	@Autowired
+	private ITaskShareStatisticsService taskShareStatisticsService;
 	/**
 	* @Des 地推员管理 
 	* @Author WangXuDan
@@ -99,5 +103,25 @@ public class ClienterController {
 		model.addObject("listData", list);
 		return model;
 	}
-
+	/**
+	 * 地推员分享或下载一个任务
+	 * @param req
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("sharetask")
+	public void recordlistdo(ShareTaskReq req,HttpServletResponse response) throws Exception{	
+		if (req==null||
+			req.getClienterId()<=0||
+			req.getTaskId()<=0||
+			req.getDownUrl()==null||
+			req.getDownUrl().isEmpty()) {
+			return;
+		}
+		TaskShareStatistics record=new TaskShareStatistics();
+		record.setClienterid(req.getClienterId());
+		record.setTaskid(req.getTaskId());
+		taskShareStatisticsService.insert(record);
+		response.sendRedirect(req.getDownUrl());
+	}
 }

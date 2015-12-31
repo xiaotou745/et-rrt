@@ -29,6 +29,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				!request.getServletPath().equals("/account/login") &&
 				!request.getServletPath().equals("/ordermanage/orderchildInfo")&&
 				!request.getServletPath().equals("/article/detail")&&
+				!request.getServletPath().equals("/clienter/sharetask")&&
 				!request.getServletPath().equals("/account/code")) {
 				if(isAjax(request)){
 					throw new AjaxNotLoginRunTimeException("请重新登录");
