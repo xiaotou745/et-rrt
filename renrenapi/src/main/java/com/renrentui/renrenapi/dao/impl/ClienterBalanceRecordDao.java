@@ -4,11 +4,14 @@ package com.renrentui.renrenapi.dao.impl;
 import java.util.List;
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
 
 
 @Repository
@@ -47,5 +50,10 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	@Override
 	public List<ClienterBalanceRecord> getRecordList(Long clienterId) {
 		return getReadOnlySqlSessionUtil().selectList("IClienterBalanceRecordDao.getRecordList", clienterId);
+	}
+
+	@Override
+	public PagedResponse<ClienterBalanceRecord> getRecordList(ClienterBlanceRecordReq req) {
+		return getReadOnlySqlSessionUtil().selectPageList("IClienterBalanceRecordDao.getRecordListPage", req);
 	}
 }
