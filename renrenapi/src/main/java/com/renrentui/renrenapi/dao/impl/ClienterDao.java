@@ -19,6 +19,7 @@ import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
@@ -191,6 +192,11 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public long getClienterListByTaskIdTotal(long taskId) {
 		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getClienterListByTaskIdTotal", taskId);
+	}
+
+	@Override
+	public PartnerModel getPartnerInfo(long userId) {
+		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getPartnerInfo", userId);
 	}
 
 

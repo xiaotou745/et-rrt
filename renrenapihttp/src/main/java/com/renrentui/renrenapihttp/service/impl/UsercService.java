@@ -36,6 +36,7 @@ import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.domain.BalanceRecordModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
@@ -427,6 +428,19 @@ public class UsercService implements IUsercService {
 			td.setNextId(result.get(result.size()-1).getCtId());
 		}
 		hrm.setData(td); 
+		return hrm;
+	}
+
+	@Override
+	public HttpResultModel<PartnerModel> getPartnerInfo(GetUserCReq req) {
+		HttpResultModel<PartnerModel> hrm = new HttpResultModel<PartnerModel>();
+		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+		if(req.getUserId()<=0){
+			return hrm.setCode(MyIncomeCode.UserIdError.value()).setMsg(
+					MyIncomeCode.UserIdError.desc());
+		} 
+		PartnerModel detail=clienterService.getPartnerInfo(req.getUserId());
+		hrm.setData(detail);
 		return hrm;
 	}
 

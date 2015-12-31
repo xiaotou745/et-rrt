@@ -31,6 +31,7 @@ import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
@@ -309,5 +310,10 @@ public class ClienterService implements IClienterService {
 	@Override
 	public long getClienterListByTaskIdTotal(long taskID) {
 		return clienterDao.getClienterListByTaskIdTotal(taskID);
+	}
+
+	@Override
+	public PartnerModel getPartnerInfo(long userId) {
+		return clienterDao.getPartnerInfo(userId);
 	}
 }

@@ -7,6 +7,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
@@ -118,4 +119,5 @@ public interface IClienterService {
 	 * @return
 	 */
 	long getClienterListByTaskIdTotal(long taskId);
+	PartnerModel getPartnerInfo(long userId);
 }

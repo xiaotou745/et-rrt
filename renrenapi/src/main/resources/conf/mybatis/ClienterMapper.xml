@@ -434,5 +434,28 @@ select  count(0) as num
 FROM    dbo.Clienter a WITH ( NOLOCK )
         JOIN dbo.ClienterTask b WITH ( NOLOCK ) ON a.id = b.ClienterId
 WHERE b.taskid=#{taskId,jdbcType=BIGINT}
-</select>   
+</select>
+<select id="getPartnerInfo" resultType="com.renrentui.renrenentity.domain.PartnerModel" 
+  parameterType="java.lang.Long" >
+        DECLARE @RecommendPhone VARCHAR(50)
+        DECLARE @PartnerNum INT
+        DECLARE @BonusTotal DECIMAL
+        
+        SELECT  @RecommendPhone = RecommendPhone
+        FROM    Clienter with(nolock)
+        WHERE   id = #{userId,jdbcType=BIGINT}
+        
+        SELECT  @PartnerNum = COUNT(0)
+        FROM    dbo.ClienterRelation with(nolock)
+        WHERE   OtherClienterId = #{userId,jdbcType=BIGINT}
+        
+        SELECT  @BonusTotal = ISNULL(SUM(amount), 0)
+        FROM    dbo.ClienterBalanceRecord with(nolock)
+        WHERE   ClienterId = #{userId,jdbcType=BIGINT}
+                AND RecordType = 5
+                
+        SELECT  @RecommendPhone AS recommendPhone ,
+                @PartnerNum AS partnerNum ,
+                @BonusTotal AS bonusTotal
+</select>    
 </mapper>

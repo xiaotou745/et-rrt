@@ -9,6 +9,7 @@ import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.domain.BalanceRecordModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
@@ -143,4 +144,14 @@ public interface IUsercService {
 	@POST
 	@Path("/getclienterlistbytaskid")
 	public HttpResultModel<TabModel<PartnerDetail>> getClienterListByTaskId(PartnerListReq req);
+	/**
+	 *查询骑士的合伙人信息
+	 * @author hailongzhao
+	 * @date 20151231
+	 * @param userid
+	 * @return
+	 */
+	@POST
+	@Path("/getpartnerinfo")
+	public HttpResultModel<PartnerModel> getPartnerInfo(GetUserCReq req);
 }
