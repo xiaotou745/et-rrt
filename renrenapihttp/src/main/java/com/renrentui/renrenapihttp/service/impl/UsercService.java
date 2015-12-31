@@ -4,6 +4,7 @@ package com.renrentui.renrenapihttp.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.jdt.internal.compiler.ast.ReturnStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,6 @@ import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
-import com.renrentui.renrenentity.resp.GetUserCResp;
 import com.renrentui.renrenentity.resp.SignInResp;
 import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -293,47 +293,26 @@ public class UsercService implements IUsercService {
 	 * @Return
 	 */
 	@Override
-	public HttpResultModel<GetUserCResp> getuserc(GetUserCReq req) {
-		HttpResultModel<GetUserCResp> hrm = new HttpResultModel<GetUserCResp>();
-		GetUserCResp resp = new GetUserCResp();
-		if (!clienterService.isExistUserC(req.getUserId()))// 用户不存在
+	public HttpResultModel<ClienterDetail> getuserc(GetUserCReq req) {
+		HttpResultModel<ClienterDetail> hrm = new HttpResultModel<ClienterDetail>();
+		if (req.getUserId()<=0) {
+			return hrm.setCode(MyIncomeCode.UserIdError.value()).setMsg(
+					MyIncomeCode.UserIdError.desc());
+		}
+		if (!clienterService.isExistUserC(req.getUserId())){// 用户不存在
 			return hrm.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(
 					MyIncomeCode.UserIdUnexist.desc());
-		ClienterDetail clienterModel = clienterService
-				.getUserC(req.getUserId());
-		if (clienterModel == null || clienterModel.getId() <= 0)// 获取信息失败
+		}
+		ClienterDetail clienterModel = clienterService.getUserC(req.getUserId());
+		if (clienterModel == null || clienterModel.getId() <= 0){// 获取信息失败
 			return hrm.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(
 					MyIncomeCode.QueryIncomeError.desc());
-
-		// 这里写的很恶心啊，本来是想改的，但是app端已经开始调和接口了，没法改列属性，由于本次上线急，暂时不改，
-		// 改的时候要和APP把属性从新更新，全啊以数据库列为准
-
-		resp.setUserId(clienterModel.getId());
-		resp.setUserName(clienterModel.getClienterName());
-		resp.setPhoneNo(clienterModel.getPhoneNo());
-		resp.setHeadImage(clienterModel.getHeadImage());
-		// 全路径
-		String fullHeadImage = "";
-		if (!StringUtils.isEmpty(clienterModel.getHeadImage()))
-			fullHeadImage = PropertyUtils.getProperty("ImgShowUrl")
-					+ clienterModel.getHeadImage();
-		resp.setFullHeadImage(fullHeadImage);
-
-		resp.setCityCode(clienterModel.getCityCode());
-		resp.setCityName(clienterModel.getCityName());
-		resp.setSex(clienterModel.getSex());
-		resp.setAge(clienterModel.getAge());
-		resp.setEducation(clienterModel.getEducation());
-		resp.setStatus(clienterModel.getStatus());
-		resp.setBalance(clienterModel.getBalance());
-		resp.setWithdraw(clienterModel.getWithdraw());
-		resp.setHadWithdraw(clienterModel.getHadWithdraw());
-		resp.setChecking(clienterModel.getChecking());
-		resp.setWithdrawing(clienterModel.getWithdrawing());
-		resp.setTotalAmount(clienterModel.getTotalAmount());
+		}
+		if (!StringUtils.isEmpty(clienterModel.getHeadImage())){
+		clienterModel.setFullHeadImage(PropertyUtils.getProperty("ImgShowUrl")+ clienterModel.getHeadImage());
+		}
 		return hrm.setCode(MyIncomeCode.Success.value())
-				.setMsg(MyIncomeCode.Success.desc()).setData(resp);
-
+				.setMsg(MyIncomeCode.Success.desc()).setData(clienterModel);
 	}
 
 	/**

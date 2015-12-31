@@ -253,33 +253,51 @@
     SELECT COUNT(1) FROM  dbo.Clienter AS C (NOLOCK)
 	WHERE C.Id=#{userId}
   </select>
-  <!-- 获取用户信息  2015年9月28日17:37:27 WangXuDan -->
+  <!-- 获取用户信息  2015年9月28日17:37:27 WangXuDan，20151231，zhaohl修改 -->
   <select id="getUserC" resultType="com.renrentui.renrenentity.domain.ClienterDetail" parameterType="java.util.HashMap" >
-    SELECT     c.[Id]
-		      ,c.[ClienterName]
-		      ,c.[PhoneNo]
-		      ,c.[Password]
-		      ,c.[LoginName]
-		      ,c.[HeadImage]
-		      ,c.[CityName]
-		      ,c.[CityCode]
-		      ,c.[Sex]
-		      ,c.[Age]
-		      ,c.[Education]
-		      ,c.[LastLoginTime]
-		      ,c.[CreateTime]
-		      ,c.[Status]
-		      ,c.[LastOptName]
-		      ,c.[LastOptTime]
-		      ,ISNULL(cb.Balance,0) Balance 
-		      ,ISNULL(cb.Withdraw,0) Withdraw
-		      ,ISNULL(cb.HadWithdraw,0) HadWithdraw
-		      ,ISNULL((SELECT SUM(o.Amount) FROM dbo.[Order] o WITH(NOLOCK) WHERE o.OrderStatus=1 AND o.AuditStatus=0 AND ClienterId=#{userId}),0)  checking
-		      ,ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) Withdrawing
-		      ,ISNULL(cb.Balance,0)+ISNULL(cb.HadWithdraw,0) +ISNULL((SELECT SUM(Amount) FROM dbo.ClienterWithdrawForm cwf WITH(NOLOCK) WHERE Status=0 AND ClienterId=#{userId}),0) TotalAmount
-    FROM  dbo.Clienter c WITH(NOLOCK)
-  	JOIN  dbo.ClienterBalance cb WITH(NOLOCK) ON c.Id=cb.ClienterId
-	WHERE c.Id=#{userId}
+DECLARE @checkingTotal DECIMAL
+DECLARE @WithdrawingTotal DECIMAL
+
+SELECT  @checkingTotal = ISNULL(SUM(o.Amount), 0)
+FROM    dbo.[Order] o WITH ( NOLOCK )
+WHERE   o.OrderStatus = 1
+        AND o.AuditStatus = 0
+        AND ClienterId = #{userId}
+        
+SELECT  @WithdrawingTotal = ISNULL(SUM(Amount), 0)
+FROM    dbo.ClienterWithdrawForm cwf WITH ( NOLOCK )
+WHERE   Status = 0
+        AND ClienterId = #{userId}
+        
+SELECT  c.[Id] ,
+        c.[ClienterName] ,
+        c.[PhoneNo] ,
+        c.[Password] ,
+        c.[LoginName] ,
+        c.[HeadImage] ,
+        c.[CityName] ,
+        c.[CityCode] ,
+        c.[Sex] ,
+        c.[Age] ,
+        c.[Education] ,
+        c.[LastLoginTime] ,
+        c.[CreateTime] ,
+        c.[Status] ,
+        c.[LastOptName] ,
+        c.[LastOptTime] ,
+        ISNULL(cb.Balance, 0) Balance ,
+        ISNULL(cb.Withdraw, 0) Withdraw ,
+        ISNULL(cb.HadWithdraw, 0) HadWithdraw ,
+        @checkingTotal checking ,
+        @WithdrawingTotal Withdrawing ,
+        ( ISNULL(cb.Balance, 0) + ISNULL(cb.HadWithdraw, 0)+ @WithdrawingTotal ) TotalAmount ,
+        ISNULL(k.AccountNo, '') AccountNo ,
+        ISNULL(k.TrueName, '') TrueName ,
+        ISNULL(k.AccountType, -1) AccountType
+FROM    dbo.Clienter c WITH ( NOLOCK )
+        JOIN dbo.ClienterBalance cb WITH ( NOLOCK ) ON c.Id = cb.ClienterId
+        LEFT JOIN ClienterFinanceAcount k WITH ( NOLOCK ) ON k.ClienterId = c.id
+WHERE   c.Id = #{userId}
   </select>
   <!-- 获取地推员列表的分页存储过程_列名 WangXuDan 2015年9月29日16:30:06 -->
   <sql id="getClienterList_Column">
