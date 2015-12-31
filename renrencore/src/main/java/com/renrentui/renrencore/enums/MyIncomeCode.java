@@ -12,7 +12,11 @@ public enum MyIncomeCode {
 	/**
 	 * 获取收入信息失败
 	 */
-	QueryIncomeError(1202, "获取收入信息失败");
+	QueryIncomeError(1202, "获取收入信息失败"),
+	/**
+	 * 用户ID必须大于0
+	 */
+	UserIdError(1203, "用户ID必须大于0");
 	private int value = 0;
 	private String desc;
 	private MyIncomeCode(int value, String desc) { 

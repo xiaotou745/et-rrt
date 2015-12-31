@@ -19,10 +19,6 @@ import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
-import com.renrentui.renrenentity.resp.GetUserCResp;
-
-
-
 /**
  * C端用户模块
  * @author 茹化肖
@@ -94,7 +90,7 @@ public interface IUsercService {
 	*/
 	@POST
 	@Path("/getuserc")
-	public HttpResultModel<GetUserCResp> getuserc(GetUserCReq req);
+	public HttpResultModel<ClienterDetail> getuserc(GetUserCReq req);
 	
 	/**
 	* @Des  C端修改个人基础信息

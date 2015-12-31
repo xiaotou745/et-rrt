@@ -3,7 +3,6 @@ package com.renrentui.renrenentity.domain;
 import com.renrentui.renrenentity.Clienter;
 
 public class ClienterDetail extends Clienter {
-	private Long clienterId;
 
     private Double balance;
 
@@ -19,6 +18,35 @@ public class ClienterDetail extends Clienter {
 
     private String fullHeadImage;
     
+    private String accountNo;
+    private String trueName;
+    private int accountType;
+    
+    
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
+	}
+
+	public String getTrueName() {
+		return trueName;
+	}
+
+	public void setTrueName(String trueName) {
+		this.trueName = trueName;
+	}
+
+	public int getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(int accountType) {
+		this.accountType = accountType;
+	}
+
 	public String getFullHeadImage() {
 		return fullHeadImage;
 	}
@@ -59,13 +87,6 @@ public class ClienterDetail extends Clienter {
 		this.checking = checking;
 	}
 
-	public Long getClienterId() {
-		return clienterId;
-	}
-
-	public void setClienterId(Long clienterId) {
-		this.clienterId = clienterId;
-	}
 
 	public Double getWithdrawing() {
 		return withdrawing;
