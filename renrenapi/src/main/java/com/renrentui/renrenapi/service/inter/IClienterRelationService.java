@@ -2,6 +2,7 @@ package com.renrentui.renrenapi.service.inter;
 
 import java.util.List;
 
+import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.ClienterRelationModel;
 import com.renrentui.renrenentity.req.CRelationReq;
 
@@ -17,5 +18,12 @@ public interface IClienterRelationService {
 	 * @return
 	 */
 	List<ClienterRelationModel> getClienterRelationModelsByPhone(CRelationReq req);
+	/**
+	 * 
+	 * 按照级别查询推荐信息
+	 * @param req
+	 * @return
+	 */
+	List<ClienterRelationLevelModel> getClienterRelationModelsByJibie(CRelationReq req);
 
 }

@@ -7,6 +7,13 @@ private Double totalAmount;
 private Double totalSubAmount;
 private int clienterCount ;
 private int completeCount;
+private int myId;
+public int getMyId() {
+	return myId;
+}
+public void setMyId(int myId) {
+	this.myId = myId;
+}
 public Integer getClienterLevel() {
 	return clienterLevel;
 }

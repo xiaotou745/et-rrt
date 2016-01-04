@@ -199,5 +199,10 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getPartnerInfo", userId);
 	}
 
+	@Override
+	public Clienter getClienterById(Long cid) {
+		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getClienterById", cid);
+	}
+
 
 }

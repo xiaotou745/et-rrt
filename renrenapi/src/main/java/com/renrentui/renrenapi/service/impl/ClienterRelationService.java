@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.service.inter.IClienterRelationService;
+import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.ClienterRelationModel;
 import com.renrentui.renrenentity.req.CRelationReq;
 @Service
@@ -17,6 +18,14 @@ public class ClienterRelationService implements IClienterRelationService{
 	public List<ClienterRelationModel> getClienterRelationModelsByPhone(
 			CRelationReq req) {
 		return clienterRelationDao.getClienterRelationModelsByPhone(req);
+	}
+	/**
+	 * 按照级别查询推荐信息
+	 */
+	@Override
+	public List<ClienterRelationLevelModel> getClienterRelationModelsByJibie(
+			CRelationReq req) {
+		return clienterRelationDao.getClienterRelationModelsByJibie(req);
 	}
 
 }

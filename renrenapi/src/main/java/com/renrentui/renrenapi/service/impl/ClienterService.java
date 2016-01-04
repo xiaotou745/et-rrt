@@ -316,4 +316,12 @@ public class ClienterService implements IClienterService {
 	public PartnerModel getPartnerInfo(long userId) {
 		return clienterDao.getPartnerInfo(userId);
 	}
+	/**
+	 * 
+	 * 根据id查询地推员信息
+	 */
+	@Override
+	public Clienter getClienterById(Long cid) {
+		return clienterDao.getClienterById(cid);
+	}
 }

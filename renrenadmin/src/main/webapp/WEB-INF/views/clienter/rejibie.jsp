@@ -3,9 +3,11 @@
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%@page import="com.renrentui.renrencore.util.EnumHelper"%>
-<%@page import="com.renrentui.renrencore.enums.CBalanceRecordType"%>
+<%@page import="com.renrentui.renrenentity.Clienter;"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
+Clienter c =(Clienter)request.getAttribute("clienter");
+int JIEBIE =(int)request.getAttribute("JIEBIE");
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -16,9 +18,30 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
-							<label class="col-sm-4 control-label">推荐人手机号</label>
+							<label class="col-sm-4 control-label">推荐人电话</label>
 							<div class="col-sm-8">								
-								<input  type="text" name="PhoneNo" id="PhoneNo" class="form-control"/>
+								<input readonly="readonly"  type="text" class="form-control" value="<%=c.getPhoneNo()%>"/>
+								<input id= "CID" type="hidden" class="form-control" value="<%=c.getId()%>"/>
+								<input id= "JIEBIE" type="hidden" class="form-control" value="<%=JIEBIE%>"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">推荐人名称</label>
+							<div class="col-sm-8">								
+								<input readonly="readonly"  type="text" class="form-control" value="<%=c.getClienterName()%>"/>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">被推荐人电话</label>
+							<div class="col-sm-8">								
+								<input id="PhoneNo" type="text" class="form-control"/>
 							</div>
 						</div>
 					</div>
@@ -78,20 +101,17 @@ $(function(){
 	    });
 	
 });
-	$('#btnSearch').click(function(){
-		if($('#PhoneNo').val()=='')
-		{
-			alert('请输入推荐人手机号!');
-			return;
-		}
-		var url='<%=basePath%>/clienter/rcelationdo';
-		var par={"phoneNo":$('#PhoneNo').val(),
-				"beginDate":$('#beginDate').val(),
-				"endDate":$('#endDate').val()==''?'':$('#endDate').val()+' 23:59:59',
-				}
-		$.post(url,par,function(d){
-			$('#content').html(d);
-		});
+$('#btnSearch').click(function(){
+	var url='<%=basePath%>/clienter/rejibiedo';
+	var par={"phoneNo":$('#PhoneNo').val(),
+			"beginDate":$('#beginDate').val(),
+			"endDate":$('#endDate').val()==''?'':$('#endDate').val()+' 23:59:59',
+			"jiBie":$('#JIEBIE').val(),
+			"myId":$('#CID').val()
+			}
+	$.post(url,par,function(d){
+		$('#content').html(d);
 	});
-
+});
+$('#btnSearch').click();
 </script>

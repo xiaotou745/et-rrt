@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenentity.ClienterRelation;
+import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.ClienterRelationModel;
 import com.renrentui.renrenentity.req.CRelationReq;
 @Repository
@@ -40,6 +41,11 @@ public class ClienterRelationDao extends DaoBase implements IClienterRelationDao
 	public List<ClienterRelationModel> getClienterRelationModelsByPhone(
 			CRelationReq req) {
 		return getReadOnlySqlSessionUtil().selectList("IClienterRelationDao.getClienterRelationModelsByPhone", req);
+	}
+	@Override
+	public List<ClienterRelationLevelModel> getClienterRelationModelsByJibie(
+			CRelationReq req) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterRelationDao.getClienterRelationModelsByJibie", req);
 	}
 
 }

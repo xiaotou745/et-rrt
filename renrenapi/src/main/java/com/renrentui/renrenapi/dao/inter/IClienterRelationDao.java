@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.dao.inter;
 import java.util.List;
 
 import com.renrentui.renrenentity.ClienterRelation;
+import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.ClienterRelationModel;
 import com.renrentui.renrenentity.req.CRelationReq;
 
@@ -30,5 +31,12 @@ public interface IClienterRelationDao {
 	 * @return
 	 */
 	List<ClienterRelationModel> getClienterRelationModelsByPhone(CRelationReq req);
+	/**
+	 * 
+	 * 按照级别查询信息
+	 * @param req
+	 * @return
+	 */
+	List<ClienterRelationLevelModel> getClienterRelationModelsByJibie(CRelationReq req);
 
 }

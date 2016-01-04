@@ -120,4 +120,10 @@ public interface IClienterService {
 	 */
 	long getClienterListByTaskIdTotal(long taskId);
 	PartnerModel getPartnerInfo(long userId);
+	/**
+	 * 根据ID查询地推员信息
+	 * @param cid
+	 * @return
+	 */
+	Clienter getClienterById(Long cid);
 }

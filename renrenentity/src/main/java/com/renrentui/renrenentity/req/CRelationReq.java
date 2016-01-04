@@ -5,6 +5,13 @@ private String phoneNo;
 private String beginDate;
 private String endDate;
 private Integer jiBie;
+private Long myId;
+public Long getMyId() {
+	return myId;
+}
+public void setMyId(Long myId) {
+	this.myId = myId;
+}
 public Integer getJiBie() {
 	return jiBie;
 }
