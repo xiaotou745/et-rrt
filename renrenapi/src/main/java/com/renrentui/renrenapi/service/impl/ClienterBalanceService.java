@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenentity.ClienterBalance;
+import com.renrentui.renrenentity.domain.SubmissionTip;
 
 
 
@@ -25,4 +26,6 @@ public class ClienterBalanceService implements IClienterBalanceService{
 
 		return model;	
 	}
+
+
 }

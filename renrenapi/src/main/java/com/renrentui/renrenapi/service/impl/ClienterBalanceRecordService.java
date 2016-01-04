@@ -9,6 +9,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.SubmissionTip;
 import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
 
 @Service
@@ -28,4 +29,15 @@ return clienterBalanceRecordDao.getRecordList(clienterId);
 		return clienterBalanceRecordDao.getRecordList(req);
 	}
 
+	@Override
+	public String getSubmissionTip(Long orderId) {
+		List<SubmissionTip> list=clienterBalanceRecordDao.getSubmissionTip(orderId);
+		if(list==null||list.size()==0)
+		return "无";
+		StringBuilder sBuilder=new StringBuilder();
+		for (SubmissionTip tip : list) {
+			sBuilder.append(tip.getClienterName()+","+tip.getPhoneNo()+",分佣:"+tip.getAmount()+"元<br>");
+		}
+		return sBuilder.toString();
+	}
 }

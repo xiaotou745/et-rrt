@@ -1,9 +1,11 @@
 package com.renrentui.renrenapi.dao.inter;
 
+import java.util.List;
 import java.util.Map;
 
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.domain.SubmissionTip;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 
 public interface IClienterBalanceDao {
@@ -53,6 +55,7 @@ public interface IClienterBalanceDao {
     int updateByPrimaryKeySelective(ClienterBalance record);
 
     int updateByPrimaryKey(ClienterBalance record);
+   
     
 
 }

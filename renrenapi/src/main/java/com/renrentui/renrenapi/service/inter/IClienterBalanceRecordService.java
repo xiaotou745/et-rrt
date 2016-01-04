@@ -14,4 +14,11 @@ public interface IClienterBalanceRecordService {
 	 * @return
 	 */
 	PagedResponse<ClienterBalanceRecord> getRecordList (ClienterBlanceRecordReq req);
+	
+	/**
+	 * 获取分佣提示
+	 * @param orderId
+	 * @return
+	 */
+	String getSubmissionTip(Long orderId);
 }

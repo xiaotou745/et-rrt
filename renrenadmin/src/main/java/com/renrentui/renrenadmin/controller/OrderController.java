@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
+import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
+import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IOrderService;
 import com.renrentui.renrenapi.service.inter.ITaskDatumService;
 import com.renrentui.renrencore.util.HttpRequestUtil;
@@ -50,6 +52,7 @@ public class OrderController {
 	private IOrderService orderService;
 	@Autowired
 	private ITaskDatumService taskDatumService;
+	@Autowired IClienterBalanceRecordService clienterBalanceRecordService;
 	/**
 	 * 订单管理页面 
 	 * @author 茹化肖
@@ -168,5 +171,15 @@ public class OrderController {
 	        } catch (IOException ex) {
 	            ex.printStackTrace();
 	        }		
+	}
+	
+	/**
+	 * 获取分佣TipHtml
+	 * @param orderId
+	 */
+	@RequestMapping("getsubtip")
+	@ResponseBody
+	public String  getsubtip(Long orderId){			
+		return  clienterBalanceRecordService.getSubmissionTip(orderId);
 	}
 }

@@ -109,5 +109,5 @@
       HadWithdraw =HadWithdraw+ #{amount,jdbcType=DECIMAL}          
     where ClienterId = #{clienterId,jdbcType=BIGINT}    
   </update>
-  
+
 </mapper>

@@ -210,4 +210,14 @@
 #{totalPage,mode=OUT,jdbcType=VARCHAR}
 )} 
   </select>
+  
+  <select id="getSubmissionTip" parameterType="java.lang.Long" resultType="com.renrentui.renrenentity.domain.SubmissionTip">
+  SELECT  c.ClienterName ,
+        c.PhoneNo ,
+        cbr.Amount
+FROM    dbo.ClienterBalanceRecord AS cbr ( NOLOCK )
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON cbr.ClienterId = c.id
+WHERE   cbr.RecordType = 5
+        AND cbr.OrderId = #{orderId,jdbcType=BIGINT}
+  </select>
 </mapper>

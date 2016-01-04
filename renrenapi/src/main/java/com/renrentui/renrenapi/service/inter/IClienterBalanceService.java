@@ -9,4 +9,5 @@ public interface IClienterBalanceService {
 	
 
 	ClienterBalance selectByPrimaryKey(Long id);
+	
 }
