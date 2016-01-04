@@ -37,7 +37,7 @@ WHERE ClienterId=#{clienterId,jdbcType=BIGINT}
 <select id="getClienterRelationModelsByPhone"
 resultType="com.renrentui.renrenentity.domain.ClienterRelationModel"
  parameterType="com.renrentui.renrenentity.req.CRelationReq">
-DECLARE @Myid BIGINT= 0;
+DECLARE @Myid BIGINT= -1;
 
 SELECT  @Myid = id
 FROM    dbo.Clienter AS c ( NOLOCK )
@@ -107,7 +107,7 @@ resultType="com.renrentui.renrenentity.domain.ClienterRelationLevelModel"
  parameterType="com.renrentui.renrenentity.req.CRelationReq">
 --按照级别查询下面所有的骑士以及统计
 DECLARE @Myid BIGINT= ${myId};
-DECLARE @MyLevel INT= 0;
+DECLARE @MyLevel INT= -1;
 SELECT  *
 INTO    #CR
 FROM    ClienterRelation(NOLOCK)
