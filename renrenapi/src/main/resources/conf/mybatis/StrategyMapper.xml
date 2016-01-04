@@ -57,7 +57,7 @@ SELECT  Id ,
 	UPDATE dbo.Strategy SET Status=${status} WHERE id=${id} 
 </update>
 <!-- 获取当前启用的策略 -->
-<select id="getCruuentStrategy">
+<select id="getCruuentStrategy"  resultType="com.renrentui.renrenentity.Strategy" >
 SELECT TOP 1   Id ,
         StrategyName ,
         LevalCount ,

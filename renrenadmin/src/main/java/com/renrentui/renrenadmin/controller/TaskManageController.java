@@ -19,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
+import com.renrentui.renrenapi.dao.inter.IStrategyDao;
 import com.renrentui.renrenapi.service.inter.IBusinessBalanceService;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
+import com.renrentui.renrenapi.service.inter.ISubCommissionService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.enums.TemplateStatus;
@@ -60,6 +62,8 @@ public class TaskManageController {
 	private IRenRenTaskService renRenTaskService;
 	@Autowired
 	private IBusinessBalanceService businessBalanceService;
+	@Autowired
+	private ISubCommissionService  subCommissionService;
 	
 	/**
 	 * 新建任务页面
@@ -100,6 +104,7 @@ public class TaskManageController {
 		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
 		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
 		model.addObject("pro_city", getCityStr(citylistlist));//构建城市字符串
+		model.addObject("childs",subCommissionService.getCruuentStrategyChild());
 		return model;
 	}
 
