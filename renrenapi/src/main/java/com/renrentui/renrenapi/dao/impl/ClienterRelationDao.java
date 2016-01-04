@@ -1,6 +1,8 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +19,11 @@ public class ClienterRelationDao extends DaoBase implements IClienterRelationDao
 	 * (事务中 写串)
 	 */
 	@Override
-	public List<ClienterRelation> getRelastionListByClienterId(Long clienterId) {
-		return getMasterSqlSessionUtil().selectList("IClienterRelationDao.getRelastionListByClienterId", clienterId);
+	public List<ClienterRelation> getRelastionListByClienterId(Long clienterId,int flag) {
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("clienterId", clienterId);
+		map.put("flag", flag);
+		return getMasterSqlSessionUtil().selectList("IClienterRelationDao.getRelastionListByClienterId", map);
 	}
 	/**
 	 * 插入一个层级关系

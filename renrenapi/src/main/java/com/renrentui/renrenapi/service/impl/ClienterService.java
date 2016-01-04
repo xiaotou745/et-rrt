@@ -129,7 +129,7 @@ public class ClienterService implements IClienterService {
 				return -1;//推荐人不存在
 			}
 			//推荐人存在 查询推荐人的关系
-			creRelations=clienterRelationDao.getRelastionListByClienterId(recomClienter.getId());
+			creRelations=clienterRelationDao.getRelastionListByClienterId(recomClienter.getId(),1);
 			if(creRelations==null||creRelations.size()==0)
 			{
 				return -2;//推荐人没有推荐关系

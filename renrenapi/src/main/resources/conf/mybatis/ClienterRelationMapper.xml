@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterRelationDao" >
-<select id="getRelastionListByClienterId" resultType="com.renrentui.renrenentity.ClienterRelation" parameterType="java.lang.Long">
+<select id="getRelastionListByClienterId" resultType="com.renrentui.renrenentity.ClienterRelation" parameterType="java.util.Map">
 SELECT  Id ,
         ClienterId ,
         OtherClienterId ,
@@ -9,6 +9,9 @@ SELECT  Id ,
         ClienterLevel ,
         CreateDate FROM dbo.ClienterRelation AS cr(NOLOCK)
         WHERE cr.ClienterId=#{clienterId,jdbcType=BIGINT}
+		<if test="0 > flag" >
+			AND  cr.OtherClienterId!=0
+		</if>
         ORDER BY OcJibie ASC
 </select>
 <!-- 插入一个层级关系 茹化肖 2015年12月30日11:02:29 -->

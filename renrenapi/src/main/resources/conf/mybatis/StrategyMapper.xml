@@ -94,5 +94,14 @@ SELECT  Id ,
         WHERE sc.StrategyId=#{id,jdbcType=BIGINT}
         order BY sc.LevalNo ASC 
 </select>
-
+<!-- 根据订单ID获取策略 -->
+<select id="getStrategyChildByOrderId" resultType="com.renrentui.renrenentity.StrategyChild" parameterType="java.lang.Long" >
+SELECT  sc.Id ,
+        sc.StrategyId ,
+        sc.LevalNo ,
+        sc.Percentage FROM dbo.StrategyChild AS sc (NOLOCK)
+JOIN dbo.TaskDatum AS td(NOLOCK) ON sc.StrategyId=td.StrategyId
+WHERE td.id=#{id,jdbcType=BIGINT}
+ORDER BY sc.LevalNo ASC
+</select>
 </mapper>
