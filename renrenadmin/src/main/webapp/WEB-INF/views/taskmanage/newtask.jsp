@@ -11,6 +11,7 @@
 <%@page import="com.renrentui.renrenentity.domain.TaskSetp"%>
 <%@page import="com.renrentui.renrenentity.domain.TemplateGroup"%>
 <%@page import="com.renrentui.renrenentity.RenRenTask"%>
+<%@page import="com.renrentui.renrenentity.StrategyChild"%>
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%
 String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
@@ -21,7 +22,7 @@ Long taskID=request.getAttribute("taskID")==null?0:(Long)request.getAttribute("t
 RenRenTask taskInfo =request.getAttribute("taskInfo")==null?null:(RenRenTask)request.getAttribute("taskInfo");
 List<TaskSetp> taskSetps=request.getAttribute("taskSetps")==null?null:(List<TaskSetp>)request.getAttribute("taskSetps");
 List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<TemplateGroup>)request.getAttribute("groups");
-
+List<StrategyChild> chiList=request.getAttribute("childs")==null?null:(List<StrategyChild>)request.getAttribute("childs");
 %>
 <script>
 var imgPath="<%=basePath%>/img/11235.png";
@@ -530,7 +531,8 @@ var imgPath="<%=basePath%>/img/11235.png";
 			<div class="col-lg-4">
 				<button type="button" class="btn btn-w-m btn-primary" id="save" onclick="savetask()"
 					style="margin-left: 3px; height: 30px;">保存</button>
-
+				<button type="button" class="btn btn-w-m btn-primary" id="jisuanqi"
+					style="margin-left: 3px; height: 30px;">分佣计算</button>
 			</div>
 		</div>
 	</form> 
@@ -589,7 +591,65 @@ var imgPath="<%=basePath%>/img/11235.png";
 	</div>
 	<small class="font-bold"> </small>	
 </div>
-
+<!-- 开始 --------------------------------------------------------------------------------------------------------------------->
+	<div tabindex="-1" class="modal inmodal" id="jisuanqiBox" role="dialog" aria-hidden="true" style="display: none;">	
+	
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<h5 class="modal-title" >分佣计算器</h5>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					 <div class="ibox-content">
+                            <form class="form-horizontal">
+                                <div class="form-group" >
+                                	<label class="col-lg-3 control-label ">地推员佣金</label>
+									<div class="col-lg-6">
+										<input type="佣金" placeholder="金额" class="form-control brokerage">
+                                    </div>
+                                    <label class="col-lg-0 control-label">元</label>
+									<button class="btn btn-sm btn-white control-label total" type="button">计算</button>
+                                </div>
+                            </form>
+                            
+                            <table class="table">
+	                            <thead>
+	                            <tr>
+	                                <th>级别</th>
+	                                <th>分佣比例</th>
+	                                <th>可获得分红</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody id="fenyong">
+	                            
+	                            </tbody>
+	                            
+	                            <!----------------------------------- 这是要clone复制的对象 级别列表 ----------------------------------------------->
+	                            <tbody id="copy" style="display:none;" >
+	                            	<tr>
+		                                <td></td>
+		                                <td></td>
+		                                <td></td>
+		                           	 </tr>
+	                            </tbody>
+	                            <!----------------------------------- 这是要clone复制的对象 ----------------------------------------------->
+	                        </table>
+                        
+                        </div>
+						
+				
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>	
+</div>
+	<!-- 结束 -------------------------------------------------------------------------------------------------- -->
 <script>
 
 //任务类型切换事件
@@ -989,5 +1049,47 @@ $('#yulan').click(function(){
 	$('#aaabody').html(html);
 	console.log(templateGroup);
 	$('#yulanbox').modal('show');
+});
+//点击计算器
+$('#jisuanqi').click(function(){
+	$(".total").unbind("click");
+	$('#fenyong').html('');
+	 var arr = new Array();
+	 arr=[];
+	 <%
+	 if(chiList!=null)
+	 {
+		 for(int i=0;i<chiList.size();i++)
+		 {%>
+		 arr.push({"levalNo":"<%=chiList.get(i).getLevalNo()%>级","percentage":"<%=chiList.get(i).getPercentage()%>%"});	 
+		<%}
+	 }
+	 %>
+	 for(var i=0;i<arr.length;i++){
+		 var levalNo = arr[i].levalNo;
+		 var percentage = arr[i].percentage;
+		 var obj = $("#copy").clone(true).show();
+		 obj.find("tr td").eq(0).html(levalNo);
+		 obj.find("tr td").eq(1).html(percentage);
+		 $("#fenyong").append(obj.html());
+	 }
+	  $(".total").click(function() {
+		  	var brokerage = $(".brokerage").val();//获取佣金
+		  	if(brokerage==""){ 
+		  		alert("请填写佣金！");
+		  		return false;
+		  	}
+	  		if(isNaN(brokerage)){
+				alert("佣金必须是数字！");
+				return false;
+			}
+	  		$("#fenyong td:nth-child(2)").each(function(i){
+				var  scale= parseFloat($(this).text())*0.01; //获取比例
+				var  CenCommission = (brokerage * scale).toFixed(2)+"元";  //分佣
+				$(this).next().html(CenCommission);
+			});
+			
+		});
+	  $('#jisuanqiBox').modal('show');
 });
 </script>

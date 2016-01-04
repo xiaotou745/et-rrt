@@ -50,4 +50,9 @@ public interface ISubCommissionService {
 	 * @return
 	 */
 	List<StrategyChild> getStrategyChildById(Long id);
+	/**
+	 * 获取当前策略信息
+	 * @return
+	 */
+	List<StrategyChild> getCruuentStrategyChild();
 }

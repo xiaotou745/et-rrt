@@ -457,5 +457,9 @@ WHERE b.taskid=#{taskId,jdbcType=BIGINT}
         SELECT  @RecommendPhone AS recommendPhone ,
                 @PartnerNum AS partnerNum ,
                 @BonusTotal AS bonusTotal
-</select>    
+</select> 
+<select id="getClienterById" resultType="com.renrentui.renrenentity.Clienter" 
+  parameterType="java.lang.Long" >
+  SELECT * FROM dbo.Clienter AS c (NOLOCK) WHERE id =#{cid,jdbcType=BIGINT}
+</select>   
 </mapper>

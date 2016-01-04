@@ -172,7 +172,7 @@ public class UsercService implements IUsercService {
 		}
 		String key = RedissCacheKey.RR_Clienter_sendcode_register
 				+ req.getPhoneNo();// 注册key
-		String redisValueString = "1234";//redisService.get(key, String.class); //todo 测试暂时把验证码设计1234
+		String redisValueString = redisService.get(key, String.class);
 		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
 			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
 					SignUpCode.VerCodeError.desc());

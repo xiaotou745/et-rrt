@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterRelationDao" >
-<select id="getRelastionListByClienterId" resultType="com.renrentui.renrenentity.ClienterRelation" parameterType="java.lang.Long">
+<select id="getRelastionListByClienterId" resultType="com.renrentui.renrenentity.ClienterRelation" parameterType="java.util.Map">
 SELECT  Id ,
         ClienterId ,
         OtherClienterId ,
@@ -9,6 +9,9 @@ SELECT  Id ,
         ClienterLevel ,
         CreateDate FROM dbo.ClienterRelation AS cr(NOLOCK)
         WHERE cr.ClienterId=#{clienterId,jdbcType=BIGINT}
+		<if test="0 > flag" >
+			AND  cr.OtherClienterId!=0
+		</if>
         ORDER BY OcJibie ASC
 </select>
 <!-- 插入一个层级关系 茹化肖 2015年12月30日11:02:29 -->
@@ -29,5 +32,131 @@ VALUES  ( #{clienterId,jdbcType=BIGINT} , -- ClienterId - bigint
 <select id="getLevelByClienterId" resultType="java.lang.Integer" parameterType="java.lang.Long">
 SELECT DISTINCT ClienterLevel FROM dbo.ClienterRelation AS cr(NOLOCK)
 WHERE ClienterId=#{clienterId,jdbcType=BIGINT}
+</select>
+<!-- 通过推荐人手机号查询下面的骑士 -->
+<select id="getClienterRelationModelsByPhone"
+resultType="com.renrentui.renrenentity.domain.ClienterRelationModel"
+ parameterType="com.renrentui.renrenentity.req.CRelationReq">
+DECLARE @Myid BIGINT= -1;
+
+SELECT  @Myid = id
+FROM    dbo.Clienter AS c ( NOLOCK )
+WHERE   C.PhoneNo = '${phoneNo}'
+
+SELECT  *
+INTO    #CR
+FROM    ClienterRelation(NOLOCK)
+WHERE   ClienterId = @Myid
+        OR OtherClienterId = @Myid
+
+DECLARE @MyLevel INT= 0;
+
+SELECT  @MyLevel = MAX(ClienterLevel)
+FROM    #CR AS cr
+WHERE   cr.ClienterId = @Myid
+
+SELECT  cr.ClienterId ,
+        ( cr.ClienterLevel - @MyLevel ) AS ClienterLevel
+INTO    #T2
+FROM    #CR AS cr
+WHERE   cr.OtherClienterId = @Myid
+        
+
+SELECT  #T2.ClienterId ,
+        COUNT(td.id) AS CompleteCount ,
+        SUM(CASE WHEN cbr.RecordType = 1 THEN cbr.Amount
+                 ELSE 0
+            END) AS TotalAmount ,
+        SUM(CASE WHEN cbr.RecordType = 5 THEN cbr.Amount
+                 ELSE 0
+            END) AS TotalSubAmount ,
+        #T2.ClienterLevel
+INTO    #T5
+FROM    #T2
+        LEFT JOIN dbo.TaskDatum AS td ( NOLOCK ) ON td.ClienterId = #T2.ClienterId
+                                                    AND TD.Status = 2
+                                                    <if test="beginDate != null and beginDate!= ''" >
+ 													AND td.CreateDate>'${beginDate}'
+     												</if>
+                                                    <if test="endDate != null and endDate!= ''" >
+ 													AND '${endDate}'>td.CreateDate
+     												</if>
+        LEFT JOIN dbo.ClienterBalanceRecord AS cbr ON td.id = cbr.OrderId
+                                                      AND ( RecordType = 1
+                                                            OR RecordType = 5
+                                                          )
+GROUP BY #T2.ClienterId ,
+        #T2.ClienterLevel
+
+SELECT  @Myid AS Myid,ClienterLevel ,
+        SUM(TotalAmount) AS TotalAmount ,
+        COUNT(ClienterId) AS ClienterCount ,
+        SUM(CompleteCount) AS CompleteCount ,
+        SUM(#T5.TotalSubAmount) AS TotalSubAmount
+FROM    #T5
+GROUP BY #T5.ClienterLevel
+
+DROP TABLE #T5
+DROP TABLE #T2
+DROP TABLE #CR
+</select>
+
+<!-- 通过推荐人手机号查询下面的骑士 -->
+<select id="getClienterRelationModelsByJibie"
+resultType="com.renrentui.renrenentity.domain.ClienterRelationLevelModel"
+ parameterType="com.renrentui.renrenentity.req.CRelationReq">
+--按照级别查询下面所有的骑士以及统计
+DECLARE @Myid BIGINT= ${myId};
+DECLARE @MyLevel INT= -1;
+SELECT  *
+INTO    #CR
+FROM    ClienterRelation(NOLOCK)
+WHERE   ClienterId = @Myid
+        OR OtherClienterId = @Myid 
+--查询我的等级
+SELECT  @MyLevel = MAX(ClienterLevel)
+FROM    #CR AS cr
+WHERE   cr.ClienterId = @Myid
+--查询我下面某个等级的骑士
+SELECT  ClienterId ,
+        c.ClienterName ,
+        c.PhoneNo
+INTO    #T1
+FROM    #CR AS cr
+        JOIN dbo.Clienter AS c ( NOLOCK ) ON c.id = cr.ClienterId
+WHERE   OtherClienterId = @Myid
+        AND cr.ClienterLevel = ( ${jiBie} + @MyLevel )
+        <if test="phoneNo != null and phoneNo!= ''"  >
+        AND c.PhoneNo='${phoneNo}'
+        </if>
+       
+--查询这些骑士累计完成次数,我获得的分佣
+SELECT  #T1.ClienterId ,
+        MAX(#T1.ClienterName) AS ClienterName ,
+        MAX(#T1.PhoneNo) AS PhoneNo ,
+        COUNT(td.id) AS CompleteCount ,
+        SUM(CASE WHEN cbr.RecordType = 1 THEN cbr.Amount
+                 ELSE 0
+            END) AS TotalAmount ,
+        SUM(CASE WHEN cbr.RecordType = 5 THEN cbr.Amount
+                 ELSE 0
+            END) AS TotalSubAmount
+FROM    #T1
+        LEFT JOIN dbo.TaskDatum AS td ( NOLOCK ) ON td.ClienterId = #T1.ClienterId
+                                                    AND TD.Status = 2
+                                                     <if test="beginDate != null and beginDate!= ''" >
+ 													AND td.CreateDate>'${beginDate}'
+     												</if>
+                                                    <if test="endDate != null and endDate!= ''" >
+ 													AND '${endDate}'>td.CreateDate
+     												</if>
+        LEFT JOIN dbo.ClienterBalanceRecord AS cbr ON td.id = cbr.OrderId
+                                                      AND ( RecordType = 1
+                                                            OR RecordType = 5
+                                                          )
+        
+GROUP BY #T1.ClienterId
+DROP TABLE #CR
+DROP TABLE #T1
 </select>
 </mapper>

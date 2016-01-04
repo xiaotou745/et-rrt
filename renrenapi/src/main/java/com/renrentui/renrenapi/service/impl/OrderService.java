@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.service.impl;
 
+import java.util.List;
+
 import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
+import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
+import com.renrentui.renrenapi.dao.inter.IStrategyDao;
 import com.renrentui.renrenapi.service.inter.IOrderService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.ClienterRelation;
 import com.renrentui.renrenentity.OrderLog;
+import com.renrentui.renrenentity.StrategyChild;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.OrderAudit;
@@ -39,6 +45,10 @@ public class OrderService implements IOrderService{
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
 	@Autowired
 	private IRenRenTaskDao renRenTaskDao;	
+	@Autowired
+	private IStrategyDao strategyDao;
+	@Autowired
+	private IClienterRelationDao clienterRelationDao;
 	/**
 	 * 获取订单审核列表
 	 * 茹化肖
@@ -68,7 +78,7 @@ public class OrderService implements IOrderService{
 		int orderlogres=orderLogDao.addOrderLog(orderLog);//记录订单操作日志
 		if(req.getAuditStatus()==2)//审核结果为审核通过
 		{
-			//审核通过 将合同的单价添加到骑士余额和可提现余额
+			//1.审核通过 将合同的单价添加到骑士余额和可提现余额
 			ClienterBalanceReq cBReq=new ClienterBalanceReq();
 			cBReq.setUserId(req.getUserId());
 			cBReq.setAmount(req.getAmount());
@@ -84,6 +94,10 @@ public class OrderService implements IOrderService{
 			clienterBalanceRecordModel.setRemark("合同审核通过增加佣金");
 			clienterBalanceRecordModel.setStatus((short)1);
 			int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);	
+			
+			//2.审核通过为上级分佣
+			this.SubmissionForAudit(req.getOrderId(), req.getUserId(), req.getAmount(), req.getAuditName());
+			//2.1获取订单上面的分佣策略
 			if(res>0&&orderlogres>0&&cbId>0&&cbrId>0)
 			{
 				//执行成功
@@ -170,5 +184,43 @@ public class OrderService implements IOrderService{
 	@Override
 	public Double getOrderTotalAmount(Long taskId) {
 		return orderDao.getOrderTotalAmount(taskId);
+	}
+	/**
+	 * 根据订单分佣
+	 * @param OrderId
+	 * @return
+	 */
+	public Boolean SubmissionForAudit(Long OrderId,Long clienterId,Double baseMoe,String OptName)
+	{	//获取分佣策略
+		List<StrategyChild> childs=strategyDao.getStrategyChildByOrderId(OrderId);
+		if(childs==null||childs.size()==0)//没有分佣策略
+			return true;
+		//获取自己的上级(-1 表示不查自己和0根的关系)
+		List<ClienterRelation> crlist=clienterRelationDao.getRelastionListByClienterId(clienterId,-1);
+		if(crlist==null||crlist.size()==0)
+			return true;
+		//取分佣层级 或者 自己上级 最少的 开始分佣.
+		int size=childs.size()>crlist.size()?crlist.size():childs.size();
+		for (int i = 0; i < size; i++) {
+				Long cid=crlist.get(i).getOtherClienterId();//分给谁
+				Double pre=childs.get(i).getPercentage();//百分比
+				Double SubMoney=baseMoe*pre*0.01;//分出去的金额
+				//1.审核通过 将合同的单价添加到骑士余额和可提现余额
+				ClienterBalanceReq cBReq=new ClienterBalanceReq();
+				cBReq.setUserId(cid);
+				cBReq.setAmount(SubMoney);
+				int cbId= clienterBalanceDao.updateMoneyByKey(cBReq);
+			    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
+				clienterBalanceRecordModel.setClienterId(cid);
+				clienterBalanceRecordModel.setAmount(SubMoney);		
+				clienterBalanceRecordModel.setRecordType((short)5);		
+				clienterBalanceRecordModel.setOptName(OptName);
+				clienterBalanceRecordModel.setOrderId(OrderId);
+				clienterBalanceRecordModel.setRelationNo(OrderId.toString());
+				clienterBalanceRecordModel.setRemark("合伙人成功完成任务后，根据分佣比例获得的奖励");
+				clienterBalanceRecordModel.setStatus((short)1);
+				int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);	
+		}
+		return true;
 	}
 }

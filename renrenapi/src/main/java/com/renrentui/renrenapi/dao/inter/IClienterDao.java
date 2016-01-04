@@ -128,4 +128,10 @@ public interface IClienterDao {
 	 */
 	long getClienterListByTaskIdTotal(long taskId);
 	PartnerModel getPartnerInfo(long userId);
+	/**
+	 * 通过ID查询骑士信息
+	 * @param cid
+	 * @return
+	 */
+	Clienter getClienterById(Long cid);
 }

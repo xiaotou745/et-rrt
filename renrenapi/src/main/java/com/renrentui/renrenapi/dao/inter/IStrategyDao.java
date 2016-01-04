@@ -56,4 +56,11 @@ public interface IStrategyDao {
 	 * @return
 	 */
 	List<StrategyChild> getStrategyChildById(Long id);
+	
+	/**
+	 * 根据订单ID获取策略子集信息
+	 * @param id
+	 * @return
+	 */
+	List<StrategyChild> getStrategyChildByOrderId(Long id);
 }

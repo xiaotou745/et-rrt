@@ -41,8 +41,8 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			for (int i = 0; i < data.size(); i++) {			
 		%>
 		<tr>
-			<td><%=data.get(i).getId()%></td>
-
+			<td><%=data.get(i).getId()%>
+			</td>
 			<td><%=data.get(i).getPhoneNo()%>,<%=data.get(i).getClienterName()%></td>	
 			<td><%=data.get(i).getPusher()%></td>
 			<td><%=data.get(i).getTaskTitle()%></td>	
@@ -50,7 +50,19 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getCompleteNum()%></td>
 			<td><%=ParseHelper.digitsNum(data.get(i).getTotalAmount(), 2)%></td>	
 			<td><%=data.get(i).getAmountStr()%></td>
-			<td><%=ParseHelper.digitsNum(data.get(i).getSubCommisson(), 2)%></td>
+			<td>
+			<%if(data.get(i).getAuditStatusCode()==2) 
+			{
+				%>
+				<a href="javascript:void(0)"onMouseOver="javascript:Myshow(this,<%=data.get(i).getId()%>);" onMouseOut="Myhide(this)"><%=ParseHelper.digitsNum(data.get(i).getSubCommisson(), 2)%></a>
+				<%
+			}else
+			{%>
+				<%=ParseHelper.digitsNum(data.get(i).getSubCommisson(), 2)%>
+				<%
+			}%>
+			
+			</td>
 			<td><%
 			if(data.get(i).getProfit()>0)
 			{%>
@@ -86,6 +98,24 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		responsePageList.getCurrentPage(), responsePageList.getTotalRecord(),
 		responsePageList.getTotalPage())%>
 <script type="text/javascript">
+//鼠标悬停显示
+function Myshow(obj,id) {
+	
+	var objDiv = $("#TipBox");
+	var url="<%=basePath%>/ordermanage/getsubtip";
+	var par={"orderId":id}
+	$.post(url,par,function(d){
+		$("#TipBox").html(d);
+	});
+		$(objDiv).css("display","block");
+		$(objDiv).css("left", event.clientX-200);
+		$(objDiv).css("top", event.clientY-100);
+	}
+//悬停隐藏
+function Myhide(obj) {
+var objDiv = $("#TipBox");
+$(objDiv).css("display", "none");
+} 
    //订单审核
    function Audit(orderId,auditStatus,userId,amount,orderNo){
 	   if(!confirm("确定操作该审核结果?")){
