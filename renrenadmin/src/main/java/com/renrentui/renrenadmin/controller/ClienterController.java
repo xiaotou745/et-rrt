@@ -121,7 +121,7 @@ public class ClienterController {
 	public ModelAndView clientertelation(){	
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "地推员管理");
-		model.addObject("currenttitle", "地推员交易列表");
+		model.addObject("currenttitle", "推荐关系查询");
 		model.addObject("viewPath", "clienter/clientercelation");
 		return model;
 	}
