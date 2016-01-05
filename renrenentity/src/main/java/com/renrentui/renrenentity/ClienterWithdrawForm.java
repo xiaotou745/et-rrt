@@ -25,7 +25,12 @@ public class ClienterWithdrawForm {
     private Date auditTime;
 
     private String auditName;
-
+    //实际支付给骑士的金额：骑士体现金额-扣除骑士付给我们的手续费金额
+    private double actualAmount;
+    //骑士付给我们的手续费金额
+    private double handCharge;
+    //我们付给支付宝的手续费
+    private double actualHandCharge;
     public Long getId() {
         return id;
     }
@@ -117,6 +122,30 @@ public class ClienterWithdrawForm {
 	public void setStatus(Short status) {
         this.status = status;
     }
+
+	public double getActualAmount() {
+		return actualAmount;
+	}
+
+	public void setActualAmount(double actualAmount) {
+		this.actualAmount = actualAmount;
+	}
+
+	public double getHandCharge() {
+		return handCharge;
+	}
+
+	public void setHandCharge(double handCharge) {
+		this.handCharge = handCharge;
+	}
+
+	public double getActualHandCharge() {
+		return actualHandCharge;
+	}
+
+	public void setActualHandCharge(double actualHandCharge) {
+		this.actualHandCharge = actualHandCharge;
+	}
 
     
 }

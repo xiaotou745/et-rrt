@@ -7,10 +7,12 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,9 +20,14 @@ import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IAdminToolsService;
 import com.renrentui.renrenapi.service.inter.IAppVersionService;
+import com.renrentui.renrenapi.service.inter.IGlobalConfigService;
 import com.renrentui.renrenentity.AppVersion;
+import com.renrentui.renrenentity.GlobalConfig;
 import com.renrentui.renrenentity.common.PagedRequestBase;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.GlobalConfigModel;
+import com.renrentui.renrenentity.req.ConfigSaveReq;
+import com.renrentui.renrenentity.req.PagedGlobalConfigReq;
 
 @Controller
 @RequestMapping("admintools")
@@ -33,6 +40,8 @@ public class AdminToolsController {
 	
 	@Autowired
 	IAppVersionService appVersionService;
+	@Autowired
+	private IGlobalConfigService globalConfigService;
 	/**
 	 * redis工具
 	 * 
@@ -116,6 +125,48 @@ public class AdminToolsController {
 		} else {
 			return appVersionService.update(version);
 		}
+	}
+	
+	/**
+	 * 公共配置
+	 * @param request
+	 * @param res
+	 * @return
+	 */
+	@RequestMapping("globalconfig")
+	public ModelAndView globalConfigManager(HttpServletRequest request, HttpServletResponse res){
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "管理员");
+		model.addObject("currenttitle", "公共配置管理");
+		model.addObject("viewPath", "admintools/globalconfig");
+		return model;
+	}
+	/**
+	 * 公共配置分页列表
+	 * @param searchWebReq
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("globalconfigmanagerlistdo")
+	public ModelAndView listdo(PagedGlobalConfigReq searchWebReq,HttpServletRequest request) {
+		ModelAndView view = new ModelAndView("admintools/globalconfigmanagerlistdo");
+		PagedResponse<GlobalConfigModel> resp = globalConfigService.getPagedGlobalConfigModels(searchWebReq);
+		view.addObject("listData", resp);
+		return view;
+	}
+	
+	/*保存修改全局变量值*/	
+	@RequestMapping(value="saveconfig",method = RequestMethod.POST)
+	@ResponseBody
+	public int saveConfig(ConfigSaveReq par){
+		return globalConfigService.update(par);
+	
+	}
+	/*添加全局变量值*/
+	@RequestMapping("addconfig")
+	@ResponseBody
+	public int addConfig(GlobalConfig par){
+		return globalConfigService.insert(par);
 	}
 }
 

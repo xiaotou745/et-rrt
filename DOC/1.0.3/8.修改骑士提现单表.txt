@@ -1,0 +1,40 @@
+
+use RenRenDB
+go
+alter table dbo.ClienterWithdrawForm
+add PayTime datetime null
+
+alter table dbo.ClienterWithdrawForm
+add PayFailedReason nvarchar(512) default ''
+
+alter table dbo.ClienterWithdrawForm
+add AlipayBatchNo nvarchar(100) default ''
+
+alter table dbo.ClienterWithdrawForm
+add ActualAmount decimal(9,2) default 0.00
+
+alter table dbo.ClienterWithdrawForm
+add HandCharge decimal(9,2) default 0.00
+
+alter table dbo.ClienterWithdrawForm
+add ActualHandCharge decimal(9,2) default 0.00
+go
+alter table dbo.ClienterWithdrawForm
+add CallBackTime datetime null
+
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'支付时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'PayTime'
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'打款失败原因' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'PayFailedReason'
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'支付宝批次号' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'AlipayBatchNo'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'支付给骑士的实际金额' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'ActualAmount'
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'骑士付给我们的手续费' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'HandCharge'
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'我们付给第三方平台手续费' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'ActualHandCharge'
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'第三方回调时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'CallBackTime'
+go

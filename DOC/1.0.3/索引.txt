@@ -1,0 +1,15 @@
+--任务表
+--SELECT * FROM dbo.RenRenTask AS rrt
+CREATE INDEX IX_RenRenTask_PartnerNum ON RenRenTask(PartnerNum);
+CREATE INDEX IX_RenRenTask_EstimatedTime ON RenRenTask(EstimatedTime);
+--关系表
+--SELECT * FROM ClienterRelation
+CREATE INDEX IX_ClienterRelation_ClienterId ON ClienterRelation(ClienterId);
+CREATE INDEX IX_ClienterRelation_OtherClienterId ON ClienterRelation(OtherClienterId);
+CREATE INDEX IX_ClienterRelation_ClienterIdOtherClienterId ON ClienterRelation(ClienterId,OtherClienterId);
+
+--骑士表
+CREATE INDEX IX_Clienter_RecommendPhone ON Clienter(RecommendPhone);
+
+--资料表
+CREATE INDEX IX_TaskDatum_StrategyId  ON TaskDatum(StrategyId);

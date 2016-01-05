@@ -69,3 +69,19 @@ VALUES  ( 0 , -- ClienterId - bigint
           0 , -- ClienterLevel - int
           '2015-12-29 05:20:25'  -- CreateDate - datetime
         )
+
+
+--初始化表数据
+INSERT  INTO dbo.ClienterRelation
+        ( ClienterId ,
+          OtherClienterId ,
+          OcJibie ,
+          ClienterLevel ,
+          CreateDate
+        )
+        SELECT  c.id ,
+                0 ,
+                1 ,
+                1 ,
+                GETDATE()
+        FROM    dbo.Clienter AS c ( NOLOCK )
