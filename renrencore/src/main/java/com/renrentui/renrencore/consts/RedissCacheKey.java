@@ -17,7 +17,7 @@ public class RedissCacheKey {
     public final static String GroupBusiness_LOGIN_COOKIE = "GroupBusiness_login_";
     public static final String Order_TimeSpan = "jOrder_TimeSpan_";//商家发单时间戳
     public static final String Menu_Auth = "Menu_Auth_";//用户有权限的菜单
-    public static final String GlobalConfig_Key = "GlobalConfig_Key_";
+    public static final String GlobalConfig_Key = "GlobalConfig_%s_0";//紧对于组为0 策略为-1
     
     public static final String RR_Clienter_sendcode_register ="RR_sendcode_register_";//C端注册
     public static final String RR_Celitner_sendcode_UpdatePasswrd="RR_Celitner_sendcode_UpdatePasswrd_";//C端修改密码

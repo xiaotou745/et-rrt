@@ -20,6 +20,7 @@ import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IAdminToolsService;
 import com.renrentui.renrenapi.service.inter.IAppVersionService;
+import com.renrentui.renrenapi.service.inter.IGlobalConfigService;
 import com.renrentui.renrenentity.AppVersion;
 import com.renrentui.renrenentity.GlobalConfig;
 import com.renrentui.renrenentity.common.PagedRequestBase;
@@ -39,6 +40,8 @@ public class AdminToolsController {
 	
 	@Autowired
 	IAppVersionService appVersionService;
+	@Autowired
+	private IGlobalConfigService globalConfigService;
 	/**
 	 * redis工具
 	 * 
@@ -135,7 +138,7 @@ public class AdminToolsController {
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "管理员");
 		model.addObject("currenttitle", "公共配置管理");
-		model.addObject("viewPath", "admintools/list");
+		model.addObject("viewPath", "admintools/globalconfig");
 		return model;
 	}
 	/**
@@ -147,8 +150,8 @@ public class AdminToolsController {
 	@RequestMapping("globalconfigmanagerlistdo")
 	public ModelAndView listdo(PagedGlobalConfigReq searchWebReq,HttpServletRequest request) {
 		ModelAndView view = new ModelAndView("admintools/globalconfigmanagerlistdo");
-		//PagedResponse<GlobalConfigModel> resp = globalConfigService.getPagedGlobalConfigModels(searchWebReq);
-		//view.addObject("listData", resp);
+		PagedResponse<GlobalConfigModel> resp = globalConfigService.getPagedGlobalConfigModels(searchWebReq);
+		view.addObject("listData", resp);
 		return view;
 	}
 	
@@ -156,15 +159,14 @@ public class AdminToolsController {
 	@RequestMapping(value="saveconfig",method = RequestMethod.POST)
 	@ResponseBody
 	public int saveConfig(ConfigSaveReq par){
-		//return globalConfigService.update(par);
-		return 0;
+		return globalConfigService.update(par);
+	
 	}
 	/*添加全局变量值*/
 	@RequestMapping("addconfig")
 	@ResponseBody
 	public int addConfig(GlobalConfig par){
-		//return globalConfigService.insert(par);
-		return 0;
+		return globalConfigService.insert(par);
 	}
 }
 
