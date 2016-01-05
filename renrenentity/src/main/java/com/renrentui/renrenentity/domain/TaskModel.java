@@ -1,10 +1,6 @@
 package com.renrentui.renrenentity.domain;
 
 import java.io.Serializable;
-import java.util.Date;
-
-import com.renrentui.renrencore.enums.OrderStatus;
-import com.renrentui.renrencore.enums.PaymentMethodType;
 import com.renrentui.renrencore.enums.TaskType;
 import com.renrentui.renrencore.util.PropertyUtils;
 
@@ -17,6 +13,34 @@ public class TaskModel implements Serializable {
 	private String taskTypeName;
 	private String logo;
 	private int status;
+	
+	private int auditCycle;
+	private int estimatedTime;
+	private int partnerNum;
+	public int getAuditCycle() {
+		return auditCycle;
+	}
+
+	public void setAuditCycle(int auditCycle) {
+		this.auditCycle = auditCycle;
+	}
+
+	public int getEstimatedTime() {
+		return estimatedTime;
+	}
+
+	public void setEstimatedTime(int estimatedTime) {
+		this.estimatedTime = estimatedTime;
+	}
+
+	public int getPartnerNum() {
+		return partnerNum;
+	}
+
+	public void setPartnerNum(int partnerNum) {
+		this.partnerNum = partnerNum;
+	}
+
 	public long getTaskId() {
 		return taskId;
 	}

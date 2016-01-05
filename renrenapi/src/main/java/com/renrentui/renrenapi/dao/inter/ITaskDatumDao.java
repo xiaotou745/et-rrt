@@ -7,6 +7,7 @@ import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
 import com.renrentui.renrenentity.domain.TaskDatumDetail;
 import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
+import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TaskDatumTitle;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
@@ -70,4 +71,13 @@ public interface ITaskDatumDao {
   	 * @return
   	 */
   	 List<TaskDatumDetail> getTaskDatumDetailList(TaskDatumDetailReq req);
+  	 
+		/**
+		 * 获取我的资料分组后列表
+		 * @author hailongzhao
+		 * @date 20151230
+		 * @param req
+		 * @return
+		 */
+	List<TaskDatumGroup> getMyTaskDatumGroupList(TaskDatumReq req);
 }

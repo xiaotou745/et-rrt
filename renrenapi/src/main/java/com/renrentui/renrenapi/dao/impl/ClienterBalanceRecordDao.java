@@ -1,17 +1,19 @@
 package com.renrentui.renrenapi.dao.impl;
 
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
+
+
 
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
-import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
-import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
-import com.renrentui.renrenentity.req.ClienterBalanceReq;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.SubmissionTip;
+import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
 
 
 @Repository
@@ -35,8 +37,6 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 				"IClienterBalanceRecordDao.selectByOrderId", orderId);
 	}
 	
-	
-	
 	@Override
 	public int updateByPrimaryKeySelective(ClienterBalanceRecord record) {
 		return getMasterSqlSessionUtil().update(
@@ -48,27 +48,19 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 		return getMasterSqlSessionUtil().update(
 				"IClienterBalanceRecordDao.updateStatusByOrderId", record);
 	}
+
+	@Override
+	public List<ClienterBalanceRecord> getRecordList(Long clienterId) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterBalanceRecordDao.getRecordList", clienterId);
+	}
+
+	@Override
+	public PagedResponse<ClienterBalanceRecord> getRecordList(ClienterBlanceRecordReq req) {
+		return getReadOnlySqlSessionUtil().selectPageList("IClienterBalanceRecordDao.getRecordListPage", req);
+	}
 	
 	@Override
-	public int deleteByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<SubmissionTip> getSubmissionTip(Long orderId) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterBalanceRecordDao.getSubmissionTip", orderId);
 	}
-
-	@Override
-	public int insertSelective(ClienterBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-
-
-
-	@Override
-	public int updateByPrimaryKey(ClienterBalanceRecord record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

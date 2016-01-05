@@ -57,7 +57,7 @@ SELECT  Id ,
 	UPDATE dbo.Strategy SET Status=${status} WHERE id=${id} 
 </update>
 <!-- 获取当前启用的策略 -->
-<select id="getCruuentStrategy">
+<select id="getCruuentStrategy"  resultType="com.renrentui.renrenentity.Strategy" >
 SELECT TOP 1   Id ,
         StrategyName ,
         LevalCount ,
@@ -94,5 +94,14 @@ SELECT  Id ,
         WHERE sc.StrategyId=#{id,jdbcType=BIGINT}
         order BY sc.LevalNo ASC 
 </select>
-
+<!-- 根据订单ID获取策略 -->
+<select id="getStrategyChildByOrderId" resultType="com.renrentui.renrenentity.StrategyChild" parameterType="java.lang.Long" >
+SELECT  sc.Id ,
+        sc.StrategyId ,
+        sc.LevalNo ,
+        sc.Percentage FROM dbo.StrategyChild AS sc (NOLOCK)
+JOIN dbo.TaskDatum AS td(NOLOCK) ON sc.StrategyId=td.StrategyId
+WHERE td.id=#{id,jdbcType=BIGINT}
+ORDER BY sc.LevalNo ASC
+</select>
 </mapper>

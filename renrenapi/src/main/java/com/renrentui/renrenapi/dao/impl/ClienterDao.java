@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.dao.impl;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.springframework.stereotype.Repository;
@@ -17,10 +18,13 @@ import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.req.MyIncomeReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -178,6 +182,26 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 	@Override
 	public Clienter getClienterByPhoneNo(String phoneNo) {
 		return getMasterSqlSessionUtil().selectOne("IClienterDao.getClienterByPhoneNo", phoneNo);
+	}
+
+	@Override
+	public List<PartnerDetail> getClienterListByTaskId(PartnerListReq req) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterDao.getClienterListByTaskId", req);
+	}
+
+	@Override
+	public long getClienterListByTaskIdTotal(long taskId) {
+		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getClienterListByTaskIdTotal", taskId);
+	}
+
+	@Override
+	public PartnerModel getPartnerInfo(long userId) {
+		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getPartnerInfo", userId);
+	}
+
+	@Override
+	public Clienter getClienterById(Long cid) {
+		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getClienterById", cid);
 	}
 
 

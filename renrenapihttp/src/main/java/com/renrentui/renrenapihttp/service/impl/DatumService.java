@@ -16,6 +16,7 @@ import com.renrentui.renrencore.enums.DatumAuditStatus;
 import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
+import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
@@ -98,6 +99,53 @@ public class DatumService implements IDatumService{
 		}
 		else if(auditStatus==DatumAuditStatus.Refuse){
 			td.setTitle("未通过("+td.getCount()+")");
+		}
+		hrm.setData(td); 
+		return hrm;
+	}
+	@Override
+	public HttpResultModel<TabModel<TaskDatumGroup>> getMyTaskDatumGroupList(TaskDatumReq req) {
+		HttpResultModel<TabModel<TaskDatumGroup>> hrm = new HttpResultModel<TabModel<TaskDatumGroup>>();
+		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+		if(req.getUserId()<=0){
+			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
+			return hrm;
+		} 
+		DatumAuditStatus auditStatus=DatumAuditStatus.getEnum(req.getAuditStatus());
+		if(auditStatus!=DatumAuditStatus.Audited&&
+				auditStatus!=DatumAuditStatus.WaitAudit&&
+						auditStatus!=DatumAuditStatus.Refuse){
+					hrm.setCode(TaskCode.DatumAuditStatus.value()).setMsg(TaskCode.DatumAuditStatus.desc());			
+					return hrm;
+				} 
+		List<TaskDatumGroup> result=taskDatumService.getMyTaskDatumGroupList(req);
+		TabModel<TaskDatumGroup> td = new TabModel<TaskDatumGroup>();
+		td.setContent(result);
+		td.setCount(result.size());
+		List<Map<String, Integer>> totalResult=taskDatumService.getMyTaskDatumListTotal(req);
+		for (Map<String, Integer> map : totalResult) {
+			DatumAuditStatus datumStatus=DatumAuditStatus.getEnum(map.get("status"));
+			if (datumStatus==DatumAuditStatus.Audited) {
+				td.setPassTotal(map.get("totalNum"));
+			}
+			else if(datumStatus==DatumAuditStatus.WaitAudit){
+				td.setWaitTotal(map.get("totalNum"));
+			}
+			else if(datumStatus==DatumAuditStatus.Refuse){
+				td.setRefuseTotal(map.get("totalNum"));
+			}
+		}
+		if(result!=null && result.size()>0){
+			td.setNextId(result.get(result.size()-1).getTaskId());
+		}
+		if (auditStatus==DatumAuditStatus.Audited) {
+			td.setTitle("已通过("+td.getPassTotal()+")");
+		}
+		else if(auditStatus==DatumAuditStatus.WaitAudit){
+			td.setTitle("审核中("+td.getWaitTotal()+")");
+		}
+		else if(auditStatus==DatumAuditStatus.Refuse){
+			td.setTitle("未通过("+td.getRefuseTotal()+")");
 		}
 		hrm.setData(td); 
 		return hrm;

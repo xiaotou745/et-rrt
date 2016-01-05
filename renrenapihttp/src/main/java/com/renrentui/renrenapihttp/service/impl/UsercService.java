@@ -1,12 +1,14 @@
 package com.renrentui.renrenapihttp.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.redis.RedisService;
+import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterFinanceAcountService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
@@ -19,8 +21,10 @@ import com.renrentui.renrencore.enums.ForgotPwdCode;
 import com.renrentui.renrencore.enums.ModifyPwdCode;
 import com.renrentui.renrencore.enums.ModifyUserCReturnCode;
 import com.renrentui.renrencore.enums.MyIncomeCode;
+import com.renrentui.renrencore.enums.MyRecordCode;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.enums.SignUpCode;
+import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
@@ -28,16 +32,21 @@ import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.domain.BalanceRecordModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
+import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
-import com.renrentui.renrenentity.resp.GetUserCResp;
 import com.renrentui.renrenentity.resp.SignInResp;
 import com.renrentui.renrenentity.resp.SignUpResp;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -66,6 +75,8 @@ public class UsercService implements IUsercService {
 	@Autowired
 	private IClienterFinanceAcountService clienterFinanceAcountService;
 
+	@Autowired
+	private IClienterBalanceRecordService clienterBalanceRecordService;
 	/**
 	 * C端忘记密码 茹化肖 2015年9月28日10:44:52
 	 * 
@@ -161,7 +172,7 @@ public class UsercService implements IUsercService {
 		}
 		String key = RedissCacheKey.RR_Clienter_sendcode_register
 				+ req.getPhoneNo();// 注册key
-		String redisValueString = "1234";//redisService.get(key, String.class); //todo 测试暂时把验证码设计1234
+		String redisValueString = redisService.get(key, String.class);
 		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
 			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
 					SignUpCode.VerCodeError.desc());
@@ -286,47 +297,26 @@ public class UsercService implements IUsercService {
 	 * @Return
 	 */
 	@Override
-	public HttpResultModel<GetUserCResp> getuserc(GetUserCReq req) {
-		HttpResultModel<GetUserCResp> hrm = new HttpResultModel<GetUserCResp>();
-		GetUserCResp resp = new GetUserCResp();
-		if (!clienterService.isExistUserC(req.getUserId()))// 用户不存在
+	public HttpResultModel<ClienterDetail> getuserc(GetUserCReq req) {
+		HttpResultModel<ClienterDetail> hrm = new HttpResultModel<ClienterDetail>();
+		if (req.getUserId()<=0) {
+			return hrm.setCode(MyIncomeCode.UserIdError.value()).setMsg(
+					MyIncomeCode.UserIdError.desc());
+		}
+		if (!clienterService.isExistUserC(req.getUserId())){// 用户不存在
 			return hrm.setCode(MyIncomeCode.UserIdUnexist.value()).setMsg(
 					MyIncomeCode.UserIdUnexist.desc());
-		ClienterDetail clienterModel = clienterService
-				.getUserC(req.getUserId());
-		if (clienterModel == null || clienterModel.getId() <= 0)// 获取信息失败
+		}
+		ClienterDetail clienterModel = clienterService.getUserC(req.getUserId());
+		if (clienterModel == null || clienterModel.getId() <= 0){// 获取信息失败
 			return hrm.setCode(MyIncomeCode.QueryIncomeError.value()).setMsg(
 					MyIncomeCode.QueryIncomeError.desc());
-
-		// 这里写的很恶心啊，本来是想改的，但是app端已经开始调和接口了，没法改列属性，由于本次上线急，暂时不改，
-		// 改的时候要和APP把属性从新更新，全啊以数据库列为准
-
-		resp.setUserId(clienterModel.getId());
-		resp.setUserName(clienterModel.getClienterName());
-		resp.setPhoneNo(clienterModel.getPhoneNo());
-		resp.setHeadImage(clienterModel.getHeadImage());
-		// 全路径
-		String fullHeadImage = "";
-		if (!StringUtils.isEmpty(clienterModel.getHeadImage()))
-			fullHeadImage = PropertyUtils.getProperty("ImgShowUrl")
-					+ clienterModel.getHeadImage();
-		resp.setFullHeadImage(fullHeadImage);
-
-		resp.setCityCode(clienterModel.getCityCode());
-		resp.setCityName(clienterModel.getCityName());
-		resp.setSex(clienterModel.getSex());
-		resp.setAge(clienterModel.getAge());
-		resp.setEducation(clienterModel.getEducation());
-		resp.setStatus(clienterModel.getStatus());
-		resp.setBalance(clienterModel.getBalance());
-		resp.setWithdraw(clienterModel.getWithdraw());
-		resp.setHadWithdraw(clienterModel.getHadWithdraw());
-		resp.setChecking(clienterModel.getChecking());
-		resp.setWithdrawing(clienterModel.getWithdrawing());
-		resp.setTotalAmount(clienterModel.getTotalAmount());
+		}
+		if (!StringUtils.isEmpty(clienterModel.getHeadImage())){
+		clienterModel.setFullHeadImage(PropertyUtils.getProperty("ImgShowUrl")+ clienterModel.getHeadImage());
+		}
 		return hrm.setCode(MyIncomeCode.Success.value())
-				.setMsg(MyIncomeCode.Success.desc()).setData(resp);
-
+				.setMsg(MyIncomeCode.Success.desc()).setData(clienterModel);
 	}
 
 	/**
@@ -383,6 +373,75 @@ public class UsercService implements IUsercService {
 					ForgotPwdCode.Success.desc());
 		return resultModel.setCode(ForgotPwdCode.Fail.value()).setMsg(
 				ForgotPwdCode.Fail.desc());// 设置失败
+	}
+
+	@Override
+	public HttpResultModel<BalanceRecordModel> getRecordList(GetUserCReq req) {
+		HttpResultModel<BalanceRecordModel> hrm = new HttpResultModel<BalanceRecordModel>();
+
+		if (req.getUserId() <= 0) {
+			return hrm.setCode(MyRecordCode.UserIdInValid.value()).setMsg(
+					MyRecordCode.UserIdInValid.desc());
+		}
+		if (!clienterService.isExistUserC(req.getUserId())) {
+			return hrm.setCode(MyRecordCode.UserIdUnexist.value()).setMsg(
+					MyRecordCode.UserIdUnexist.desc());
+		}
+
+		List<ClienterBalanceRecord> records = clienterBalanceRecordService
+				.getRecordList(req.getUserId());
+		List<ClienterBalanceRecord> incomeList = records.stream()
+				.filter(t -> t.getAmount() >= 0).collect(Collectors.toList());
+		List<ClienterBalanceRecord> expensesList = records.stream()
+				.filter(t -> t.getAmount() < 0).collect(Collectors.toList());
+
+		incomeList.sort((b, a) -> {
+			return a.getOperateTime().compareTo(b.getOperateTime());
+		});
+		expensesList.sort((b, a) -> {
+			return a.getOperateTime().compareTo(b.getOperateTime());
+		});
+		BalanceRecordModel resp = new BalanceRecordModel();
+		resp.setExpensesList(expensesList);
+		resp.setInComeList(incomeList);
+		hrm.setData(resp);
+		return hrm;
+	}
+
+	@Override
+	public HttpResultModel<TabModel<PartnerDetail>> getClienterListByTaskId(
+			PartnerListReq req) {
+		HttpResultModel<TabModel<PartnerDetail>> hrm = new HttpResultModel<TabModel<PartnerDetail>>();
+		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+		if(req.getTaskId()<=0){
+			hrm.setCode(TaskCode.TaskId.value()).setMsg(TaskCode.TaskId.desc());			
+			return hrm;
+		} 
+
+		List<PartnerDetail> result=clienterService.getClienterListByTaskId(req);
+		long partnerTotal=clienterService.getClienterListByTaskIdTotal(req.getTaskId());
+		TabModel<PartnerDetail> td = new TabModel<PartnerDetail>();
+		td.setContent(result);
+		td.setCount(result.size());
+		td.setTotal(partnerTotal);
+		if(result!=null && result.size()>0){
+			td.setNextId(result.get(result.size()-1).getCtId());
+		}
+		hrm.setData(td); 
+		return hrm;
+	}
+
+	@Override
+	public HttpResultModel<PartnerModel> getPartnerInfo(GetUserCReq req) {
+		HttpResultModel<PartnerModel> hrm = new HttpResultModel<PartnerModel>();
+		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+		if(req.getUserId()<=0){
+			return hrm.setCode(MyIncomeCode.UserIdError.value()).setMsg(
+					MyIncomeCode.UserIdError.desc());
+		} 
+		PartnerModel detail=clienterService.getPartnerInfo(req.getUserId());
+		hrm.setData(detail);
+		return hrm;
 	}
 
 	/**

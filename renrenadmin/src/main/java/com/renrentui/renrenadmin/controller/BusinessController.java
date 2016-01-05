@@ -15,8 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
-import com.renrentui.renrencore.util.ImageHelper;
-import com.renrentui.renrencore.util.StreamUtils;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.BusinessModel;
@@ -107,24 +105,4 @@ public class BusinessController {
 		String userName=context.getUserName();
 		return businessService.addBalance(req,userName);
 	}	
-	
-	/**
-	 * Logo上传
-	 * @author hulingbo	
-	 * @Date 2015年10月9日 14:10:25
-	 * @param search 查询条件实体
-	 * @return	
-	 * @throws IOException 
-	 * @throws ServletException 
-	 */	
-	@RequestMapping("uploadfile")
-	@ResponseBody
-	public int uploadFile(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-	 byte[] byteArrary=	StreamUtils.copyToByteArray( request.getInputStream());
-		businessService.UploadFile(byteArrary, "1");
-		ImageHelper.UploadImg(request,"business");
-		return 1;
-	}	
-
-	
 }

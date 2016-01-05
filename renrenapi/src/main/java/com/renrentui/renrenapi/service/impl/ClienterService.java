@@ -30,6 +30,8 @@ import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
@@ -41,6 +43,7 @@ import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
@@ -126,7 +129,7 @@ public class ClienterService implements IClienterService {
 				return -1;//推荐人不存在
 			}
 			//推荐人存在 查询推荐人的关系
-			creRelations=clienterRelationDao.getRelastionListByClienterId(recomClienter.getId());
+			creRelations=clienterRelationDao.getRelastionListByClienterId(recomClienter.getId(),1);
 			if(creRelations==null||creRelations.size()==0)
 			{
 				return -2;//推荐人没有推荐关系
@@ -300,4 +303,25 @@ public class ClienterService implements IClienterService {
 		return clienterDao.updateByPrimaryKeySelective(clienter);
 	}
 
+	@Override
+	public List<PartnerDetail> getClienterListByTaskId(PartnerListReq req) {
+		return clienterDao.getClienterListByTaskId(req);
+	}
+	@Override
+	public long getClienterListByTaskIdTotal(long taskID) {
+		return clienterDao.getClienterListByTaskIdTotal(taskID);
+	}
+
+	@Override
+	public PartnerModel getPartnerInfo(long userId) {
+		return clienterDao.getPartnerInfo(userId);
+	}
+	/**
+	 * 
+	 * 根据id查询地推员信息
+	 */
+	@Override
+	public Clienter getClienterById(Long cid) {
+		return clienterDao.getClienterById(cid);
+	}
 }

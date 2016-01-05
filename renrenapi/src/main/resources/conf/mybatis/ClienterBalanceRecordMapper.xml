@@ -18,6 +18,13 @@
     Id, ClienterId, Amount, AfterAmount, RecordType, OptName, OperateTime, OrderId, RelationNo, 
     Remark,Status
   </sql>
+
+    <select id="getRecordList" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+  	Id, Amount,RecordType,OperateTime,Remark
+    from ClienterBalanceRecord with(nolock)
+    where ClienterId = #{clienterId,jdbcType=BIGINT}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -165,4 +172,52 @@
     set   status = #{status,jdbcType=SMALLINT}   
     where OrderId = #{orderId,jdbcType=BIGINT}
   </update>
+     <!-- 获取地推员余额流水列表的分页 -->
+  	<sql id="getRecordListPage_Where">
+		cbr.ClienterId=${clienterId}
+		<if test="recordType !=0">
+			AND cbr.recordType=${recordType}
+		</if>
+		<if test="orderId != 0">
+			AND cbr.orderId=${orderId}
+		</if>
+		<if test="beginDate != null and beginDate != ''">
+			AND cbr.OperateTime > ''${beginDate}''
+		</if>
+		<if test="endDate != null and endDate != ''">
+			AND  ''${endDate}''> cbr.OperateTime
+		</if>
+	</sql>
+  <select id="getRecordListPage" resultType="com.renrentui.renrenentity.ClienterBalanceRecord" 
+  parameterType="com.renrentui.renrenentity.req.ClienterBlanceRecordReq" statementType="CALLABLE">  
+{call Sp_CustomPage2015_V1(
+' Id DESC ',
+' RecordType ,
+        OrderId ,
+        RelationNo ,
+        Amount ,
+        AfterAmount ,
+        Status ,
+        OperateTime ,
+        OptName ,
+        Remark',
+' dbo.ClienterBalanceRecord AS cbr(NOLOCK)',
+' <include refid="getRecordListPage_Where"/> ',
+#{pageSize,mode=IN,jdbcType=INTEGER},
+#{currentPage,mode=IN,jdbcType=INTEGER},
+1,
+#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+#{totalPage,mode=OUT,jdbcType=VARCHAR}
+)} 
+  </select>
+  
+  <select id="getSubmissionTip" parameterType="java.lang.Long" resultType="com.renrentui.renrenentity.domain.SubmissionTip">
+  SELECT  c.ClienterName ,
+        c.PhoneNo ,
+        cbr.Amount
+FROM    dbo.ClienterBalanceRecord AS cbr ( NOLOCK )
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON cbr.ClienterId = c.id
+WHERE   cbr.RecordType = 5
+        AND cbr.OrderId = #{orderId,jdbcType=BIGINT}
+  </select>
 </mapper>

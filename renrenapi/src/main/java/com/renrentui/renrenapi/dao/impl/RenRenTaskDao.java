@@ -258,6 +258,8 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 		return getMasterSqlSessionUtil().update("IRenRenTaskDao.setTaskSend", taskId);
 	}
 
-	
-	
+	@Override
+	public int updatePartnerNum(Long taskId) {
+		return getMasterSqlSessionUtil().update("IRenRenTaskDao.updatePartnerNum", taskId);
+	}
 }

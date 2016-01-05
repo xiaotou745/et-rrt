@@ -1,6 +1,5 @@
 package com.renrentui.renrenapihttp.service.inter;
 
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -9,9 +8,8 @@ import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenentity.domain.TabModel;
-import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
+import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
-import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskDatumReq;
@@ -45,4 +43,14 @@ public interface IDatumService {
 	@POST
 	@Path("/getmytaskdatumlist")
 	HttpResultModel<TabModel<TaskDatumModel>> getMyTaskDatumList(TaskDatumReq req);
+	/**
+	 * 获取我的资料列表
+	 * @author hailongzhao
+	 * @date 20151125
+	 * @param req
+	 * @return
+	 */
+	@POST
+	@Path("/getmytaskdatumgrouplist")
+	HttpResultModel<TabModel<TaskDatumGroup>> getMyTaskDatumGroupList(TaskDatumReq req);
 }

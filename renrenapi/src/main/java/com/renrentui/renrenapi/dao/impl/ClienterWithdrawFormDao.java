@@ -20,8 +20,7 @@ import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdrawFormDao {
 
 	@Override
-	public int insert(ClienterWithdrawForm record) {
-		// TODO Auto-generated method stub		
+	public int insert(ClienterWithdrawForm record) {	
 		return getMasterSqlSessionUtil().insert(
 				"IClienterWithdrawFormDao.insert", record);
 	}
@@ -53,26 +52,4 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 				"IClienterWithdrawFormDao.updateByPrimaryKeySelective", record);
 	}
 	
-	@Override
-	public int deleteByPrimaryKey(Long id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public int insertSelective(ClienterWithdrawForm record) {
-		// TODO Auto-generated method stub
-		return 0;
-	} 
-
-
-	@Override
-	public int updateByPrimaryKey(ClienterWithdrawForm record) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
-
 }

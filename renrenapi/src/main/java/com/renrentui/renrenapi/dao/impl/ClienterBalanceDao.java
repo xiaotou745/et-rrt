@@ -10,6 +10,7 @@ import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.domain.SubmissionTip;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 
 
@@ -101,7 +102,9 @@ public class ClienterBalanceDao extends DaoBase implements IClienterBalanceDao {
 	public int updateByPrimaryKey(ClienterBalance record) {
 		// TODO Auto-generated method stub
 		return 0;
-	}	
+	}
+
+		
 
 
 }

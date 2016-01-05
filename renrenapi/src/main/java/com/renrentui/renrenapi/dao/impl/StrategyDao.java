@@ -67,5 +67,9 @@ public class StrategyDao extends DaoBase implements IStrategyDao{
 	public List<StrategyChild> getStrategyChildById(Long id) {
 		return getMasterSqlSessionUtil().selectList("IStrategyDao.getStrategyChildById",id);
 	}
+	@Override
+	public List<StrategyChild> getStrategyChildByOrderId(Long id) {
+		return getMasterSqlSessionUtil().selectList("IStrategyDao.getStrategyChildByOrderId",id);
+	}
 
 }

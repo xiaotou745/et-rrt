@@ -1,22 +1,22 @@
 package com.renrentui.renrenapi.service.inter;
 
-import com.renrentui.renrencore.enums.WithdrawState;
+import java.util.List;
+
 import com.renrentui.renrenentity.Clienter;
-import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.domain.ClienterDetail;
-import com.renrentui.renrenentity.req.ClienterBalanceReq;
+import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
-import com.renrentui.renrenentity.req.MyIncomeReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
 import com.renrentui.renrenentity.req.SignInReq;
 import com.renrentui.renrenentity.resp.ClienterResp;
-import com.renrentui.renrenentity.resp.MyIncomeResp;
 
 
 /**
@@ -99,5 +99,31 @@ public interface IClienterService {
 	* @Return
 	*/
 	 int  modifyuserc (ModifyUserCReq req);
-	
+
+	/**
+	 * 查询参与了某个任务的所有骑士信息
+	 * 
+	 * @author hailongzhao
+	 * @date 20151231
+	 * @param taskId
+	 * @return
+	 */
+	List<PartnerDetail> getClienterListByTaskId(PartnerListReq req);
+
+	/**
+	 * 查询参与了某个任务的所有骑士信息
+	 * 
+	 * @author hailongzhao
+	 * @date 20151231
+	 * @param taskId
+	 * @return
+	 */
+	long getClienterListByTaskIdTotal(long taskId);
+	PartnerModel getPartnerInfo(long userId);
+	/**
+	 * 根据ID查询地推员信息
+	 * @param cid
+	 * @return
+	 */
+	Clienter getClienterById(Long cid);
 }

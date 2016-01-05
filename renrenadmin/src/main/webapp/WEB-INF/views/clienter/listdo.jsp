@@ -32,7 +32,10 @@
 			    <td><%=i+1 %></td>
                 <td><%=list.get(i).getClienterName() %></td>
                 <td><%=list.get(i).getPhoneNo() %></td>
-                <td><%=ParseHelper.digitsNum( list.get(i).getBalance(), 2)%></td>
+                <td>
+                <a href="<%=basePath%>/clienter/recordlist?phoneNo=<%=list.get(i).getPhoneNo()%>&name=<%=list.get(i).getClienterName()%>&blance=<%=ParseHelper.digitsNum(list.get(i).getBalance(), 2)%>&hadWithdraw=<%=ParseHelper.digitsNum(list.get(i).getHadWithdraw(),2) %>&id=<%=list.get(i).getId()%>" target="_blank" >
+                <%=ParseHelper.digitsNum( list.get(i).getBalance(), 2)%></a>
+                </td>
                 <td><%=ParseHelper.digitsNum(list.get(i).getSubAmount(), 2)%></td>
                 <td><%=ParseHelper.digitsNum(list.get(i).getHadWithdraw(), 2)%></td>
 			</tr>

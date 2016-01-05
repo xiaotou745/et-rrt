@@ -44,8 +44,8 @@ VALUES  ( ${taskDatumId} ,
   SELECT   	
             a.status,
             count(*) as totalNum
-  FROM      TaskDatum a
-            JOIN RenRenTask b ON a.TaskId = b.id
+  FROM      TaskDatum a ( NOLOCK ) 
+            JOIN RenRenTask b ( NOLOCK ) ON a.TaskId = b.id
   where a.ClienterId = ${userId} 
   	<if test="taskId > 0" >
 	      AND a.TaskId = ${taskId}
@@ -81,7 +81,37 @@ VALUES  ( ${taskDatumId} ,
 	       and   ${nextId}> a.id 
 	</if>
 	order by a.id desc;
-  </select> 
+  </select>
+  <!--  查询我的资料审核分组后的列表，zhaohl,20151230 -->
+  <select id="getMyTaskDatumGroupList" resultType="com.renrentui.renrenentity.domain.TaskDatumGroup" parameterType="com.renrentui.renrenentity.req.TaskDatumReq" >
+	  
+  SELECT   	
+  <if test="itemsCount > 0" >
+		top  ${itemsCount} 
+  </if>
+	        a.id AS taskId ,
+            a.TaskTitle AS taskName ,
+            a.amount ,
+            a.TaskType ,
+            a.Status AS taskStatus ,
+            b.Logo,
+            COUNT(c.Id) AS taskDatumCount
+  FROM      RenRenTask a ( NOLOCK )
+            JOIN dbo.Business b ( NOLOCK ) ON a.BusinessId = b.id
+            JOIN TaskDatum c ( NOLOCK ) ON c.TaskId = a.id
+  WHERE     c.ClienterId = ${userId} 
+            AND c.Status = ${auditStatus}
+            <if test="nextId > 0" >
+	       		and   ${nextId}> a.id 
+			</if>
+  GROUP BY  a.id ,
+            a.TaskTitle ,
+            a.TaskType ,
+            a.Status ,
+            a.Amount ,
+            b.Logo
+  order by a.id desc;
+  </select>  
    <!--  查询我的资料审核列表中每个资料需要显示的内容，zhaohl,20151125 -->
     <select id="getMyTaskDatumTitleList" resultType="com.renrentui.renrenentity.domain.TaskDatumTitle" parameterType="com.renrentui.renrenentity.req.TaskDatumReq" >
             SELECT   g1.taskid ,MIN(g1.id) AS groupid

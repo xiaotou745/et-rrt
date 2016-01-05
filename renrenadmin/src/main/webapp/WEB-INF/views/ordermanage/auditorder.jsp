@@ -152,7 +152,9 @@ width: 100%;
 		</div>
 	</div>
 </div>
-
+<div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;">
+dasda
+</div>
 <script>
 $(function(){
 	  //初始化时间控件

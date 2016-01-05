@@ -89,7 +89,65 @@
 		</div>
 	</form>
 </div>
-
+<!-- 开始 --------------------------------------------------------------------------------------------------------------------->
+	<div tabindex="-1" class="modal inmodal" id="jisuanqiBox" role="dialog" aria-hidden="true" style="display: none;">	
+	
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<h5 class="modal-title" >分佣计算器</h5>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+					 <div class="ibox-content">
+                            <form class="form-horizontal">
+                                <div class="form-group" >
+                                	<label class="col-lg-3 control-label ">地推员佣金</label>
+									<div class="col-lg-6">
+										<input type="佣金" placeholder="金额" class="form-control brokerage">
+                                    </div>
+                                    <label class="col-lg-0 control-label">元</label>
+									<button class="btn btn-sm btn-white control-label total" type="button">计算</button>
+                                </div>
+                            </form>
+                            
+                            <table class="table">
+	                            <thead>
+	                            <tr>
+	                                <th>级别</th>
+	                                <th>分佣比例</th>
+	                                <th>可获得分红</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody id="fenyong">
+	                            
+	                            </tbody>
+	                            
+	                            <!----------------------------------- 这是要clone复制的对象 级别列表 ----------------------------------------------->
+	                            <tbody id="copy" style="display:none;" >
+	                            	<tr>
+		                                <td></td>
+		                                <td></td>
+		                                <td></td>
+		                           	 </tr>
+	                            </tbody>
+	                            <!----------------------------------- 这是要clone复制的对象 ----------------------------------------------->
+	                        </table>
+                        
+                        </div>
+						
+				
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>	
+</div>
+	<!-- 结束 -------------------------------------------------------------------------------------------------- -->
 
 <script type="text/javascript">
 //控件模板
@@ -274,5 +332,45 @@ function SaveCheck(){
 	});
 	return flag;
 }
+
+$('#jisuanqi').click(function(){
+	$(".total").unbind("click");
+	$('#fenyong').html('');
+	 var arr = new Array();
+	 arr=[];
+	 var  arr2= CreateChildList();
+	 console.log(arr2);
+	 for(var i=0;i<arr2.length;i++)
+	 {
+		 arr.push({"levalNo":arr2[i].levalNo+"级","percentage":+arr2[i].percentage+"%"});
+	 }
+	
+	 for(var i=0;i<arr.length;i++){
+		 var levalNo = arr[i].levalNo;
+		 var percentage = arr[i].percentage;
+		 var obj = $("#copy").clone(true).show();
+		 obj.find("tr td").eq(0).html(levalNo);
+		 obj.find("tr td").eq(1).html(percentage);
+		 $("#fenyong").append(obj.html());
+	 }
+	  $(".total").click(function() {
+		  	var brokerage = $(".brokerage").val();//获取佣金
+		  	if(brokerage==""){ 
+		  		alert("请填写佣金！");
+		  		return false;
+		  	}
+	  		if(isNaN(brokerage)){
+				alert("佣金必须是数字！");
+				return false;
+			}
+	  		$("#fenyong td:nth-child(2)").each(function(i){
+				var  scale= parseFloat($(this).text())*0.01; //获取比例
+				var  CenCommission = (brokerage * scale).toFixed(2)+"元";  //分佣
+				$(this).next().html(CenCommission);
+			});
+			
+		});
+	  $('#jisuanqiBox').modal('show');
+});
 //保存验证END
 </script>

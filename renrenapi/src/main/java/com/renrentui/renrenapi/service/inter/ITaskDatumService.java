@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
+import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
@@ -27,6 +28,14 @@ public interface ITaskDatumService {
 	 * @return
 	 */
 	 List<TaskDatumModel> getMyTaskDatumList(TaskDatumReq req);
+		/**
+		 * 获取我的资料分组后列表
+		 * @author hailongzhao
+		 * @date 20151230
+		 * @param req
+		 * @return
+		 */
+	List<TaskDatumGroup> getMyTaskDatumGroupList(TaskDatumReq req);
 	 
 		/**
 		 * 获取我的资料列表表头上的总数

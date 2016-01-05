@@ -86,5 +86,12 @@ public class SubCommissionService implements ISubCommissionService{
 	public List<StrategyChild> getStrategyChildById(Long id) {
 		return strategyDao.getStrategyChildById(id);
 	}
+	@Override
+	public List<StrategyChild> getCruuentStrategyChild() {
+		Strategy idLong=this.getCruuentStrategy();
+		if(idLong==null)
+			return null;
+		return strategyDao.getStrategyChildById(idLong.getId());
+	}
 
 }

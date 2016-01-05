@@ -22,6 +22,7 @@ import com.renrentui.renrenapi.dao.inter.IAttachmentDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
+import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
@@ -78,9 +79,11 @@ import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
+import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
+import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
 import com.renrentui.renrenentity.domain.TaskDetail;
@@ -91,6 +94,7 @@ import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.CancelTaskReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
@@ -147,6 +151,8 @@ public class RenRenTaskService implements IRenRenTaskService {
 	private IStrategyDao strategyDao;
 	@Autowired
 	private IClienterRelationDao clienterRelationDao;
+	@Autowired
+	private IClienterDao clienterDao;
 	/**
 	 * 获取任务详情 茹化肖 2015年9月29日13:00:35
 	 * 修改时间 2015年11月19日11:20:38
@@ -157,10 +163,29 @@ public class RenRenTaskService implements IRenRenTaskService {
 
 		TaskDetail detail = new TaskDetail();
 	 	RenRenTask task= renRenTaskDao.getTaskDetail(req);//获取任务 任务信息
+	 	if (task==null) {
+			return null;
+		}
+	 	if (req.getUserId()>0&&
+	 		task.getTaskType().intValue()!=TaskType.ContractTask.value()&&
+	 		task.getDownUrl()!=null&&
+	 		!task.getDownUrl().isEmpty()) {
+	 		String downUrl="%s/clienter/sharetask?taskId=%s&clienterId=%s&downUrl=%s";
+	 		downUrl=String.format(downUrl,PropertyUtils.getProperty("java.renrenadmin.url"),req.getTaskId(),req.getUserId(),task.getDownUrl());
+	 		task.setDownUrl(downUrl);
+		}
 	 	//获取任务步骤 等信息
-	 	ArrayList<TaskSetp> taskSetps=(ArrayList<TaskSetp>)taskSetpDao.getSetpsByTaskId(req.getTaskId());
+	 	List<TaskSetp> taskSetps=taskSetpDao.getSetpsByTaskId(req.getTaskId());
+	 	PartnerListReq partnerReq=new PartnerListReq();
+	 	partnerReq.setItemsCount(5);
+	 	partnerReq.setNextId(0);
+	 	partnerReq.setTaskId(req.getTaskId());
+		List<PartnerDetail> partnerList= clienterDao.getClienterListByTaskId(partnerReq);//获取任务参与人
+		long partnerTotal= clienterDao.getClienterListByTaskIdTotal(req.getTaskId());//获取任务参与人总数
+		detail.setPartnerTotal(partnerTotal);
 	 	detail.setTask(task);
 	 	detail.setTaskSetps(taskSetps);
+	 	detail.setPartnerList(partnerList);
 		return detail;
 	}
 
@@ -188,6 +213,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 		Long res =renRenTaskDao.insertClienterTask(cTask);
 		if(res>-1)//成功插入
 		{
+			renRenTaskDao.updatePartnerNum(req.getTaskId());
 			model.setOrderId(res);
 			model.setCode(GetTaskCode.Success);
 		}
@@ -515,6 +541,12 @@ public class RenRenTaskService implements IRenRenTaskService {
 
 	@Override
 	public List<TaskModel> getNewTaskList(TaskReq req) {
+		if (req.getCurrentPage()<=0) {
+			req.setCurrentPage(1);  //默认第一页
+		}
+		if(req.getPageSize()<=0){
+			req.setPageSize(15);  //默认页容量
+		}
 		return renRenTaskDao.getNewTaskList(req);
 	}
 
