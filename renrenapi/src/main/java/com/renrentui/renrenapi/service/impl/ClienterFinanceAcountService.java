@@ -21,8 +21,11 @@ public class ClienterFinanceAcountService implements
 	private IClienterDao clienterDao;
 
 	@Override
-	public boolean bindAliPay(BindAliPayReq req) {
+	public int bindAliPay(BindAliPayReq req) {
 		Clienter clienter = clienterDao.getClienterByPhoneNo(req.getPhoneNo());
+		if (clienter.getId().longValue()!=req.getUserId()) {
+			return -1;
+		}
 		ClienterFinanceAcount record = new ClienterFinanceAcount();
 		record.setClienterid(clienter.getId().intValue());
 		record.setTruename(req.getAliName());
@@ -34,9 +37,9 @@ public class ClienterFinanceAcountService implements
 		record.setBelongtype((short) 0);
 		ClienterFinanceAcount old=clienterFinanceAcountDao.select(clienter.getId(),AccountType.AliPay.value());
 		if (old==null) {
-			return clienterFinanceAcountDao.insertSelective(record) > 0;
+			return clienterFinanceAcountDao.insertSelective(record);
 		}
 		record.setId(old.getId());
-		return clienterFinanceAcountDao.updateSelective(record) > 0;
+		return clienterFinanceAcountDao.updateSelective(record);
 	}
 }

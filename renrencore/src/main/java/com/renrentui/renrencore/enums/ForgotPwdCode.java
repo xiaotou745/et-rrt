@@ -29,7 +29,23 @@ public enum ForgotPwdCode {
 	/**
 	 * 
 	 */
-	Fail(1035, "设置失败");
+	Fail(1035, "设置失败"),
+	/**
+	 * 支付宝账号不能为空
+	 */
+	AliAccountNull(1036, "支付宝账号不能为空"),
+	/**
+	 * 支付宝账号实名不能为空
+	 */
+	AliNameNull(1037, "支付宝账号实名不能为空"),
+	/**
+	 * userid和Phone不匹配
+	 */
+	OtherPhone(1038, "userid和Phone不匹配"),
+	/**
+	 * userid不能<=0
+	 */
+	UserIdError(1039, "userid不能<=0");
 
 	private int value = 0;
 	private String desc;
