@@ -1,6 +1,7 @@
 package com.renrentui.renrenentity.req;
 
 public class BindAliPayReq {
+	private long userId;
 	private String phoneNo;//手机号
 	private String aliAccount;//支付宝账号
 	private String aliName;//支付宝实名
@@ -28,6 +29,12 @@ public class BindAliPayReq {
 	}
 	public void setVerifyCode(String verifyCode) {
 		this.verifyCode = verifyCode;
+	}
+	public long getUserId() {
+		return userId;
+	}
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 }
