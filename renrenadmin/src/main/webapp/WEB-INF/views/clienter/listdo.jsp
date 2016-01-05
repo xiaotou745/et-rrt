@@ -23,6 +23,8 @@
 						<th width="%5">余额</th>
 						<th width="%5">累计获得分佣</th>
 						<th width="%5">已提现</th>
+						<th width="%5">注册时间</th>
+						<th width="%5">推荐人电话</th>
 				</tr>
 			</thead>
 			<tbody>                           
@@ -38,6 +40,8 @@
                 </td>
                 <td><%=ParseHelper.digitsNum(list.get(i).getSubAmount(), 2)%></td>
                 <td><%=ParseHelper.digitsNum(list.get(i).getHadWithdraw(), 2)%></td>
+                <td><%=ParseHelper.ToDateString(list.get(i).getCreateTime())%></td>
+                <td><%=list.get(i).getRecommendPhone()%></td>
 			</tr>
 		 <%}%> 	 	
 			</tbody>
