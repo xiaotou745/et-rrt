@@ -3518,8 +3518,16 @@ function _widget(options) {
 K.WidgetClass = KWidget;
 K.widget = _widget;
 function _iframeDoc(iframe) {
+	console.log(iframe);
 	iframe = _get(iframe);
-	return iframe.contentDocument || iframe.contentWindow.document;
+	try{
+		return iframe.contentDocument || iframe.contentWindow.document;
+	}
+	catch(e)
+	{
+		console.log(e);
+	}
+	//return iframe.contentDocument || iframe.contentWindow.document; //TODO
 }
 var html, _direction = '';
 if ((html = document.getElementsByTagName('html'))) {
@@ -4159,7 +4167,7 @@ _extend(KUploadButton, {
 			(options.form ? '<div class="ke-upload-area">' : '<form class="ke-upload-area ke-form" method="post" enctype="multipart/form-data" target="' + target + '" action="' + url + '">'),
 			'<span class="ke-button-common">',
 			hiddenElements.join(''),
-			'<input type="button" class="ke-button-common ke-button" value="' + title + '" />',
+			'<input type="hidden" name="loadFrom" value=4 ><input type="button" class="ke-button-common ke-button" value="' + title + '" />',//TODO
 			'</span>',
 			'<input type="file" class="ke-upload-file" name="' + fieldName + '" tabindex="-1" />',
 			(options.form ? '</div>' : '</form>'),
@@ -4206,6 +4214,7 @@ _extend(KUploadButton, {
 			}
 		});
 		self.form[0].submit();
+		
 		return self;
 	},
 	remove : function() {
