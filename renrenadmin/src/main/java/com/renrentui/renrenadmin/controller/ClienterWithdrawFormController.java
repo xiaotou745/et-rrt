@@ -12,6 +12,7 @@ import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 
@@ -90,4 +91,15 @@ public class ClienterWithdrawFormController {
 		record.setAuditName(context.getUserName());
 		return clienterWithdrawFormService.AuditRefuse(record);	
 	}	
+	/*
+	 * 支付宝批量付款
+	 * wangchao
+	 */
+	public void alipaybatchtransfer(HttpServletRequest request,int type ,String data){
+		AlipayBatchModel alipayBatchModel = new AlipayBatchModel();
+		alipayBatchModel.setData(data);
+		alipayBatchModel.setType(type);
+		alipayBatchModel.setOptName(UserContext.getCurrentContext(request).getUserName());
+		String html = clienterWithdrawFormService.AlipayBatchTransfer(alipayBatchModel); 
+	}
 }

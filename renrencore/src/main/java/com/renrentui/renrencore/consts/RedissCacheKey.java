@@ -28,4 +28,6 @@ public class RedissCacheKey {
     public static final String RR_PublicProvinceCity_Hot="RR_PublicProvinceCity_Hot";//热门城市和按照26个字母排序的城市
     
     public static final String RR_PublicProvinceCity_Version = "RR_PublicProvinceCity_Version"; //城市版本号
+    
+    public static final String Ets_AlipayBatchNo = "Ets_AlipayBatchNo_%s";
 }

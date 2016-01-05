@@ -5,6 +5,7 @@ import java.util.List;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
@@ -28,4 +29,6 @@ public interface IClienterWithdrawFormService {
 	int AuditRefuse(ClienterWithdrawForm record) ;
 	
 	PagedResponse<ClienterWithdrawFormDM> getList(PagedClienterWithdrawFormReq req);
+
+	String AlipayBatchTransfer(AlipayBatchModel alipayBatchModel);
 }

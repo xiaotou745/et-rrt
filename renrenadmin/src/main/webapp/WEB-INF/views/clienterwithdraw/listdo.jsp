@@ -18,6 +18,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead> 
 		<tr class="tdbg">
+			<th width="%5">全选<input type="checkbox" id="checkPayAll" onclick="checkAll(this.checked)" /></th>
 			<th width="%5">编号</th>
 			<th width="10%">用户名称</th>
 			<th width="10%">电话号码</th>			
@@ -38,6 +39,13 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			for (int i = 0; i < data.size(); i++) {			
 		%>
 		<tr>
+		<td>
+		<%if(data.get(i).getStatus()==1) {%>
+			<input type="checkbox" name="checkPay" value="<%=data.get(i).getId() %>" />
+		<%} else {%>
+			<input type="checkbox" name="checkPay" value="<%=data.get(i).getId() %>" disabled="disabled"/>
+		<%} %>
+		</td>
 			<td><%=data.get(i).getId()%></td>
 			<td><%=data.get(i).getClienterName()%></td>
 			<td><%=data.get(i).getPhoneNo()%></td>	
@@ -52,9 +60,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>','<%=data.get(i).getClienterId() %>','<%=data.get(i).getAmount() %>')" >审核通过 </a>
 			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>')" >审核拒绝</a>			
 			<%} %>			
-			
-			</td>				
-			
+			<%if(data.get(i).getStatus()==1) {%>
+			<a href="javascript:void(0)"  onclick="funPayOK('<%=data.get(i).getId() %>',<%=data.get(i).getAmount() %>)" >确认打款</a>
+			<%} %>
+			</td> 
 		</tr>
 		<%
 			}
@@ -125,6 +134,25 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
               }
           });
     }
+ //确认打款
+ function funPayOK(id,amount){
+	 var url = "<%=basePath%>/clienterwithdraw/alipaybatchtransfer?type=1&data=" + id;
+     window.open(url);
+     alert('请新打开的页面完成支付宝付款!');
+     $('#btnSearch').click();
+     return;
+ }
+  
+ //全选
+ function checkAll(val){
+	$("input[name='checkPay']").each(function (index, obj) { 
+		 if (obj.value != "" && !obj.disabled) {
+		 	this.checked = val; 
+		 }else { 
+             $(obj).removeAttr("checked");
+         }
+	});
+ }
   </script>
 	
 

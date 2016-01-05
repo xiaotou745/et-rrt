@@ -72,7 +72,10 @@ width: 100%;
 			    <div class="row">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>												 
+							style="margin-left: 3px;height:30px;">查询</button>	
+							<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipay" onclick="return BatchAlipay()"
+							style="margin-left: 3px;height:30px;display:none">批量支付宝付款</button>	
+																		 
 					</div>
 			</div>
 			</form>
@@ -118,6 +121,29 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
-
-
+$("#typeselect").change(function () {
+	if($(this).val() == 1){
+		$("#btnBatchAlipay").show();
+	}else{
+		$("#btnBatchAlipay").hide();
+	}
+});
+//批量付款按钮
+function BatchAlipay() {
+    var ids = "";
+    $('input[type="checkbox"][name="checkPay"]:checked').each(function (index, obj) {
+        if (!obj.disabled) {
+            ids += (obj.value + ",");
+        }
+    });
+    if (ids == "") {
+        alert("请选择要批量付款的提现单！");
+        return;
+    }
+    ids = ids.substring(0, ids.length - 1);
+    var url = "<%=basePath%>/clienterwithdraw/alipaybatchtransfer?type=1&data=" + ids;
+    window.open(url);
+    alert('请在新打开的页面完成支付宝付款！');
+    $('#btnSearch').click();
+}
 </script>

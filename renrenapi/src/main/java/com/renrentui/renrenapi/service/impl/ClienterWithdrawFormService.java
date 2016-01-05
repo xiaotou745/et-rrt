@@ -4,9 +4,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,16 +17,19 @@ import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
+import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.CBalanceRecordStatus;
 import com.renrentui.renrencore.enums.CBalanceRecordType;
 import com.renrentui.renrencore.enums.ClienterWithdrawFormStatus;
 import com.renrentui.renrencore.enums.ClienterWithdrawFormWithType;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.util.OrderNoHelper;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
@@ -76,7 +81,13 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 		clienterWithdrawFormModel.setWithType((short)ClienterWithdrawFormWithType.Alipay.value());//支付宝
 		clienterWithdrawFormModel.setAccountInfo(req.getAccountInfo());
 		clienterWithdrawFormModel.setTrueName(req.getTrueName());
-		clienterWithdrawFormModel.setStatus((short)ClienterWithdrawFormStatus.UnAudit.value());//待审核				
+		clienterWithdrawFormModel.setStatus((short)ClienterWithdrawFormStatus.UnAudit.value());//待审核	
+		
+		double actualHandCharge = PayToZhiFuBao(req.getAmount());
+		clienterWithdrawFormModel.setHandCharge(10); //骑士付给我们的手续费金额，从缓存中读取
+		clienterWithdrawFormModel.setActualHandCharge(actualHandCharge); //我们付给支付宝的手续费
+		clienterWithdrawFormModel.setActualAmount(req.getAmount()-actualHandCharge); 
+		
 		int cwfId= clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
 		
 		ClienterBalanceReq cBReq=new ClienterBalanceReq();
@@ -208,4 +219,74 @@ public class ClienterWithdrawFormService implements IClienterWithdrawFormService
 	{
 		return clienterWithdrawFormDao.getList(req);		
 	}
+	
+	/*
+	 * 根据提现金额，计算支付给支付给的手续费
+	 */
+	public double PayToZhiFuBao(double amount){
+		double actualhandcharge =0.0;
+		double tempmoney = (double)amount*0.005;
+        if (tempmoney <= 1)
+        {
+        	actualhandcharge = 1;
+        }
+        else if (tempmoney >= 25)
+        {
+        	actualhandcharge = 25;
+        }
+        else {
+        	actualhandcharge =(double)tempmoney;
+        }
+        return actualhandcharge;
+	}
+
+	@Override
+	public String AlipayBatchTransfer(AlipayBatchModel alipayBatchModel) {
+		 
+	            if (alipayBatchModel.getType() != 1 && alipayBatchModel.getType() != 2)
+	            {
+	                return "<html><body>Type参数有误</body></html>";
+	            }
+	            if (alipayBatchModel.getData()== null || alipayBatchModel.getData()=="")
+	            {
+	                return "<html><body>Data参数有误</body></html>";
+	            }
+	            int alipayBatchCount = 0;//总笔数
+	            double alipayPayAmount = 0;//该批次总付款金额
+	            double toatlChargeAmount = 0;//该批次总手续费
+	            String alipayBatchNo = "";//批次号
+	            String html = "";//返回的html
+	            int updateCount = 0;//事务修改数据量
+	            StringBuilder wids = new StringBuilder("");//
+	            StringBuilder wnos = new StringBuilder("");
+	           
+	           
+	            //alipayBatchNo = CreateAlipayBatchNo();//生成批次号
+	            return "";
+	            
+	}
+	
+	public String CreateAlipayBatchNo(int count)
+    {
+		String batchno="";
+        try
+        {
+            count = count + 1;
+            if (count > 3)//避免无限递归
+            {
+                return "";
+            }
+            Random r = new Random();
+            int min = 10000;
+            int max = 99999;
+            int ran = r.nextInt(max-min+1)+min;//10000-99999随机取一位
+             String.format(RedissCacheKey.Ets_AlipayBatchNo,batchno);
+            return batchno;
+        }
+        catch (Exception e)//避免异常引起的错误
+        { 
+            return "";
+        }
+
+    }
 }

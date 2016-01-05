@@ -83,10 +83,10 @@
   <insert id="insert" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" useGeneratedKeys="true" keyProperty="id" >
     insert into ClienterWithdrawForm (ClienterId, Amount, 
       WithdrawNo, WithType, AccountInfo, 
-      TrueName, Status )
+      TrueName, Status,ActualAmount,HandCharge,ActualHandCharge )
     values (#{clienterId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
       #{withdrawNo,jdbcType=VARCHAR}, #{withType,jdbcType=SMALLINT}, #{accountInfo,jdbcType=VARCHAR}, 
-      #{trueName,jdbcType=NVARCHAR}, #{status,jdbcType=SMALLINT}
+      #{trueName,jdbcType=NVARCHAR}, #{status,jdbcType=SMALLINT},#{actualAmount,jdbcType=DECIMAL},#{handCharge,jdbcType=DECIMAL},#{actualHandCharge,jdbcType=DECIMAL}
      )
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterWithdrawForm" >
