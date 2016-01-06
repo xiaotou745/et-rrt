@@ -8,7 +8,7 @@ public class AlipayClienterWithdrawModel {
 	/// <summary>
 	/// 提现单号
 	/// </summary>
-	private String withwardNo;
+	private String withdrawNo;
 	
 	/// <summary>
 	/// 提现金额
@@ -47,14 +47,7 @@ public class AlipayClienterWithdrawModel {
 		this.id = id;
 	}
 
-	public String getWithwardNo() {
-		return withwardNo;
-	}
-
-	public void setWithwardNo(String withwardNo) {
-		this.withwardNo = withwardNo;
-	}
-
+	 
 	public double getAmount() {
 		return amount;
 	}
@@ -110,5 +103,13 @@ public class AlipayClienterWithdrawModel {
 
 	public void setActualHandCharge(double actualHandCharge) {
 		this.actualHandCharge = actualHandCharge;
+	}
+
+	public String getWithdrawNo() {
+		return withdrawNo;
+	}
+
+	public void setWithdrawNo(String withdrawNo) {
+		this.withdrawNo = withdrawNo;
 	} 
 }

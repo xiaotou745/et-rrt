@@ -75,12 +75,16 @@ public class DES {
 		return cipher.doFinal(src);
 	}
 
-	public static String decrypt(String value) throws Exception
+	public static String decrypt(String value)
 	{
+		try{
 		byte[] srcs = convertHexString(value);
 		String DeString = new String(decrypt(srcs, EncryptionKey.getBytes(UTF8), EncryptionIV.getBytes(UTF8)), "utf-8");
 		// return URLDecoder.decode(DeString);
 		return DeString;
+		}catch(Exception ex){
+			return value;
+		}
 	}
 
 	private static byte[] convertHexString(String ss) {

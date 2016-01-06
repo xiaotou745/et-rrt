@@ -217,7 +217,7 @@
   </select>
   <select id="getWithdrawListForAlipay" resultType="com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel" parameterType="com.renrentui.renrenentity.req.AlipayBatchReq">
 	  SELECT  Id, 
-        WithwardNo, 
+        WithdrawNo, 
         Amount , 
         TrueName , 
         AccountInfo , 
@@ -226,13 +226,13 @@
         AlipayBatchNo
 FROM    dbo.ClienterWithdrawForm AS cwf(NOLOCK)
 WHERE   1 = 1 
-	  <if test="getType == 1" >
+	  <if test="type == 1" >
          AND cwf.Status = 1  AND WithType = 1 AND ISNULL(cwf.AlipayBatchNo, '') = '' AND cwf.id IN 
          <foreach collection="dataList" index="index" item="item" open="(" separator="," close=")">
 	           ${item}
 	     </foreach>
       </if>
-      <if test="getType == 2" >
+      <if test="type == 2" >
           AND cwf.Status = 20 AND AccountType = 1 AND ISNULL(cwf.AlipayBatchNo, '') = '${data}' 
       </if>
   </select>  
@@ -262,7 +262,7 @@ values(#{withwardId,jdbcType=BIGINT},#{status,jdbcType=INTEGER},#{remark,jdbcTyp
                 #{withdrawIds,jdbcType=VARCHAR} ,
                 #{createBy,jdbcType=VARCHAR} ,
                 #{lastOptUser,jdbcType=VARCHAR} ,
-                #{remarks,jdbcType=VARCHAR} ,
+                #{remarks,jdbcType=VARCHAR}
               )
   </insert>
   <update id="updateAlipayBatchForAgain" parameterType="com.renrentui.renrenentity.domain.AlipayBatchModel" >
