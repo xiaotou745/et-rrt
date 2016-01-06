@@ -155,5 +155,18 @@ $(function(){
 	$("#btnSearch").click(function(){
 		jss.search(1);
 	});	
-	
+	//数据导出
+	$('#export').click(function(){
+		var be=$('#beginDate').val();
+		var end=$('#endDate').val()==''?'':$('#endDate').val()+' 23:59:59';
+		var type=$('#recordType').val();
+		if(be==''||end=='')
+		{
+			alert('数据导出必须包含开始时间和结束时间!')
+			return;
+		}
+		var  url='<%=basePath%>/clienter/recordlistexport?clienterId=<%=id%>&orderId=0&recordType='+type+'&beginDate='+be+'&endDate='+end;
+		 window.location.href = url;
+	     return true;
+	});
 </script>

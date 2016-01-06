@@ -1,5 +1,5 @@
 
-use superman
+use RenRenDB
 go
 alter table dbo.ClienterWithdrawForm
 add PayTime datetime null

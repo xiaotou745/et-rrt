@@ -317,6 +317,7 @@ WHERE   c.Id = #{userId}
       ,c.[Status]
       ,c.[LastOptName]
       ,c.[LastOptTime]
+      ,c.RecommendPhone
       ,ISNULL(cb.Balance,0) Balance 
       ,ISNULL(cb.Withdraw,0) Withdraw
       ,ISNULL(cb.HadWithdraw,0) HadWithdraw,

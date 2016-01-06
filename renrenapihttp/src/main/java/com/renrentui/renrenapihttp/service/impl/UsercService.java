@@ -353,26 +353,39 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> bindAliPay(BindAliPayReq req) {
 		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-		if (req.getPhoneNo() == null || req.getPhoneNo().equals(""))// 手机号为空
+		if (req.getPhoneNo() == null || req.getPhoneNo().equals(""))
 			return resultModel.setCode(ForgotPwdCode.PhoneNull.value()).setMsg(
 					ForgotPwdCode.PhoneNull.desc());
-		if (!clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
-			return resultModel.setCode(ForgotPwdCode.PhoneError.value())
-					.setMsg(ForgotPwdCode.PhoneError.desc());
-		if (req.getVerifyCode() == null || req.getVerifyCode().equals(""))// 验证码为空
+		if (req.getVerifyCode() == null || req.getVerifyCode().equals(""))
 			return resultModel.setCode(ForgotPwdCode.VerCodeNull.value())
 					.setMsg(ForgotPwdCode.VerCodeNull.desc());
+		if (req.getAliAccount() == null || req.getAliAccount().equals(""))
+			return resultModel.setCode(ForgotPwdCode.AliAccountNull.value())
+					.setMsg(ForgotPwdCode.AliAccountNull.desc());
+		if (req.getAliName() == null || req.getAliName().equals(""))
+			return resultModel.setCode(ForgotPwdCode.AliNameNull.value())
+					.setMsg(ForgotPwdCode.AliNameNull.desc());
+		if (req.getUserId()<=0)
+			return resultModel.setCode(ForgotPwdCode.UserIdError.value())
+					.setMsg(ForgotPwdCode.UserIdError.desc());
+		if (!clienterService.isExistPhoneC(req.getPhoneNo()))
+			return resultModel.setCode(ForgotPwdCode.PhoneError.value())
+					.setMsg(ForgotPwdCode.PhoneError.desc());
 		String key = RedissCacheKey.RR_Clienter_sendcode_bindAliPay
 				+ req.getPhoneNo();// RedisKey
 		String redisValueString = redisService.get(key, String.class);
-		if (!req.getVerifyCode().equals(redisValueString))// 验证码不正确
+		if (!req.getVerifyCode().equals(redisValueString))
 			return resultModel.setCode(ForgotPwdCode.VerCodeError.value())
 					.setMsg(ForgotPwdCode.VerCodeError.desc());
-		if (clienterFinanceAcountService.bindAliPay(req))// 修改密码成功
+		int result=clienterFinanceAcountService.bindAliPay(req);
+		if (result>0){
 			return resultModel.setCode(ForgotPwdCode.Success.value()).setMsg(
 					ForgotPwdCode.Success.desc());
-		return resultModel.setCode(ForgotPwdCode.Fail.value()).setMsg(
-				ForgotPwdCode.Fail.desc());// 设置失败
+		}
+		else {
+			return resultModel.setCode(ForgotPwdCode.OtherPhone.value()).setMsg(
+					ForgotPwdCode.OtherPhone.desc());
+		}
 	}
 
 	@Override

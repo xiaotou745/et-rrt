@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.dao.inter.IStrategyDao;
+import com.renrentui.renrenapi.service.inter.IGlobalConfigService;
 import com.renrentui.renrenapi.service.inter.ISubCommissionService;
 import com.renrentui.renrenentity.Strategy;
 import com.renrentui.renrenentity.StrategyChild;
@@ -20,6 +21,8 @@ import com.renrentui.renrenentity.req.StrategyModelReq;
 public class SubCommissionService implements ISubCommissionService{
 	@Autowired
 	private IStrategyDao strategyDao;
+	@Autowired
+	private IGlobalConfigService globalConfigService;
 	/**
 	 * 添加分佣策略
 	 * 茹化肖
@@ -28,7 +31,8 @@ public class SubCommissionService implements ISubCommissionService{
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int addStrategy(StrategyModelReq req) {
 		//0.校验
-		Double maxDouble=50.0;//系统设置的最大比例
+		String tempString=globalConfigService.getValueByName("MaxPercentage");
+		Double maxDouble=Double.valueOf(tempString);//系统设置的最大比例
 		if(req.getPercentage()>maxDouble)
 			return -2;//当前设置的分佣总比例大于系统给的比例
 		if(req.getLevalCount()!=req.getChildList().size())
