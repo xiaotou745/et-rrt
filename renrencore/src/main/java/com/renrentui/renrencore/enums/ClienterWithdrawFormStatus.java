@@ -12,7 +12,13 @@ public enum ClienterWithdrawFormStatus {
 	/**
 	 * 审核拒绝
 	 */
-	AuditRefuse(2, "审核拒绝");
+	AuditRefuse(2, "审核拒绝"),
+	
+	Paying(20,"打款中"),
+	
+	PaySuccess(3,"打款完成"),
+	
+	PayError(30,"打款失败");
 
 	private int value = 0;
 	private String desc;

@@ -14,6 +14,7 @@ import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.req.AlipayBatchReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 
 @Controller
@@ -96,10 +97,10 @@ public class ClienterWithdrawFormController {
 	 * wangchao
 	 */
 	public void alipaybatchtransfer(HttpServletRequest request,int type ,String data){
-		AlipayBatchModel alipayBatchModel = new AlipayBatchModel();
-		alipayBatchModel.setData(data);
-		alipayBatchModel.setType(type);
-		alipayBatchModel.setOptName(UserContext.getCurrentContext(request).getUserName());
-		String html = clienterWithdrawFormService.AlipayBatchTransfer(alipayBatchModel); 
+		AlipayBatchReq alipayBatchReq = new AlipayBatchReq();
+		alipayBatchReq.setData(data);
+		alipayBatchReq.setType(type);
+		alipayBatchReq.setOptName(UserContext.getCurrentContext(request).getUserName());
+		String html = clienterWithdrawFormService.AlipayBatchTransfer(alipayBatchReq); 
 	}
 }

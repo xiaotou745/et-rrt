@@ -212,4 +212,67 @@
       AuditName = #{auditname,jdbcType=NVARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="checkAlipayBatch" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.domain.AlipayBatchModel">
+	  SELECT COUNT(1) FROM dbo.AlipayBatch AS ab  WHERE ab.BatchNo=#{batchNo,jdbcType=VARCHAR} AND ab.Status=#{status,jdbcType=SMALLINT} 
+  </select>
+  <select id="getWithdrawListForAlipay" resultType="com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel" parameterType="com.renrentui.renrenentity.req.AlipayBatchReq">
+	  SELECT  Id, 
+        WithwardNo, 
+        Amount , 
+        TrueName , 
+        AccountInfo , 
+        ActualAmount , 
+        ActualHandCharge,
+        AlipayBatchNo
+FROM    dbo.ClienterWithdrawForm AS cwf(NOLOCK)
+WHERE   1 = 1 
+	  <if test="getType == 1" >
+         AND cwf.Status = 1  AND WithType = 1 AND ISNULL(cwf.AlipayBatchNo, '') = '' AND cwf.id IN 
+         <foreach collection="dataList" index="index" item="item" open="(" separator="," close=")">
+	           ${item}
+	     </foreach>
+      </if>
+      <if test="getType == 2" >
+          AND cwf.Status = 20 AND AccountType = 1 AND ISNULL(cwf.AlipayBatchNo, '') = '${data}' 
+      </if>
+  </select>  
+  <insert id="insertLog" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLog" >
+    insert into ClienterWithdrawLog(WithwardId,Status,Remark,Operator)
+values(#{withwardId,jdbcType=BIGINT},#{status,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},#{operator,jdbcType=VARCHAR}) 
+  </insert>
+  <update id="updateAlipayBatchNo" parameterType="com.renrentui.renrenentity.req.UpdateAlipayBatchReq" >
+    UPDATE ClienterWithdrawForm SET AlipayBatchNo=#{aliBatchNo,jdbcType=VARCHAR},Status=20 WHERE id=#{id,jdbcType=BIGINT}
+  </update>
+  <insert id="insertAlipayBatch" parameterType="com.renrentui.renrenentity.domain.AlipayBatchModel" >
+    INSERT INTO dbo.AlipayBatch
+              ( BatchNo ,
+                TotalWithdraw ,
+                OptTimes ,
+                WithdrawNos ,
+                WithdrawIds ,
+                CreateBy ,
+                LastOptUser ,
+                Remarks
+              )
+      VALUES  ( 
+				#{batchNo,jdbcType=VARCHAR} ,
+                #{totalWithdraw,jdbcType=DOUBLE} ,
+                #{optTimes,jdbcType=INTEGER} ,
+                #{withdrawNos,jdbcType=VARCHAR} ,
+                #{withdrawIds,jdbcType=VARCHAR} ,
+                #{createBy,jdbcType=VARCHAR} ,
+                #{lastOptUser,jdbcType=VARCHAR} ,
+                #{remarks,jdbcType=VARCHAR} ,
+              )
+  </insert>
+  <update id="updateAlipayBatchForAgain" parameterType="com.renrentui.renrenentity.domain.AlipayBatchModel" >
+    UPDATE  dbo.AlipayBatch 
+    	SET LastOptUser=#{lastOptUser,jdbcType=VARCHAR},
+        	LastOptTime = GETDATE(),
+        	Remarks=Remarks + #{remarks,jdbcType=VARCHAR}+'',
+        	BatchNo=#{newBatchNo,jdbcType=VARCHAR}
+		WHERE BatchNo = #{batchNo,jdbcType=VARCHAR}
+  </update>
+  
+  
 </mapper>

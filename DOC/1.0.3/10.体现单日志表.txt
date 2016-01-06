@@ -1,0 +1,50 @@
+use RenRenDB
+go
+
+/****** Object:  Table [dbo].[ClienterWithdrawLog]    Script Date: 01/05/2016 16:11:14 ******/
+set ansi_nulls on
+go
+
+set quoted_identifier on
+go
+
+create table [dbo].[ClienterWithdrawLog](
+	[Id] [bigint] identity(1,1) not null,
+	[WithwardId] [bigint] not null,
+	[Status] [smallint] not null,
+	[Remark] [nvarchar](256) null,
+	[Operator] [nvarchar](50) not null,
+	[OperatTime] [datetime] not null,
+ constraint [PK_CLIENTERWITHDRAWLOG] primary key clustered 
+(
+	[Id] asc
+)with (pad_index  = off, statistics_norecompute  = off, ignore_dup_key = off, allow_row_locks  = on, allow_page_locks  = on) on [PRIMARY]
+) on [PRIMARY]
+
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'自增ID(PK)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawLog', @level2type=N'COLUMN',@level2name=N'Id'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'提现单ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawLog', @level2type=N'COLUMN',@level2name=N'WithwardId'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'操作后状态' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawLog', @level2type=N'COLUMN',@level2name=N'Status'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'备注' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawLog', @level2type=N'COLUMN',@level2name=N'Remark'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'操作人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawLog', @level2type=N'COLUMN',@level2name=N'Operator'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'操作时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawLog', @level2type=N'COLUMN',@level2name=N'OperatTime'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'骑士提现日志表' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawLog'
+go
+
+alter table [dbo].[ClienterWithdrawLog] add  default (getdate()) for [OperatTime]
+go
+
+

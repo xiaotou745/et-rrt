@@ -1,5 +1,6 @@
 package com.renrentui.renrenapi.dao.impl;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,14 @@ import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.AlipayBatchModel;
+import com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.domain.ClienterWithdrawLog;
+import com.renrentui.renrenentity.req.AlipayBatchReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
+import com.renrentui.renrenentity.req.UpdateAlipayBatchReq;
 
 
 @Repository
@@ -50,6 +56,41 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 	public int updateByPrimaryKeySelective(ClienterWithdrawForm record) {	
 		return getMasterSqlSessionUtil().update(
 				"IClienterWithdrawFormDao.updateByPrimaryKeySelective", record);
+	}
+	@Override
+	public int CheckAlipayBatch(AlipayBatchModel alipayBatchModel) { 
+		return getMasterSqlSessionUtil().selectOne(
+				"IClienterWithdrawFormDao.checkAlipayBatch", alipayBatchModel);
+	}
+	@Override
+	public List<AlipayClienterWithdrawModel> GetWithdrawListForAlipay(
+			AlipayBatchReq alipayBatchReq) {
+		return getMasterSqlSessionUtil().selectList(
+				"IClienterWithdrawFormDao.getWithdrawListForAlipay", alipayBatchReq); 
+	}
+	@Override
+	public int InsertLog(ClienterWithdrawLog clienterWithLog) {
+		// TODO Auto-generated method stub
+		return getMasterSqlSessionUtil().insert(
+				"IClienterWithdrawFormDao.insertLog", clienterWithLog); 
+	}
+	@Override
+	public int UpdateAlipayBatchNo(UpdateAlipayBatchReq updateAlipayBatchReq) {
+		// TODO Auto-generated method stub
+		return getMasterSqlSessionUtil().update(
+				"IClienterWithdrawFormDao.updateAlipayBatchNo", updateAlipayBatchReq); 
+	}
+	@Override
+	public int InsertAlipayBatch(AlipayBatchModel insertAlipayBatchModel) {
+		// TODO Auto-generated method stub
+		return getMasterSqlSessionUtil().insert(
+				"IClienterWithdrawFormDao.insertAlipayBatch", insertAlipayBatchModel); 
+	}
+	@Override
+	public int UpdateAlipayBatchForAgain(
+			AlipayBatchModel updateAlipayBatchModel) {
+		return getMasterSqlSessionUtil().update(
+				"IClienterWithdrawFormDao.updateAlipayBatchForAgain", updateAlipayBatchModel);
 	}
 	
 }
