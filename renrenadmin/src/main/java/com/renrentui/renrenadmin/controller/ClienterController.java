@@ -1,5 +1,6 @@
 package com.renrentui.renrenadmin.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
 import com.renrentui.renrenapi.service.inter.IClienterRelationService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.ITaskShareStatisticsService;
+import com.renrentui.renrencore.util.ExcelUtils;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.TaskShareStatistics;
@@ -111,6 +114,33 @@ public class ClienterController {
 		PagedResponse<ClienterBalanceRecord> list= clienterBalanceRecordService.getRecordList(req);
 		model.addObject("listData", list);
 		return model;
+	}
+	
+	/**
+	 * 地推员交易数据导出
+	 * @param req
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("recordlistexport")
+	public void recordlistexport(ClienterBlanceRecordReq req,HttpServletRequest request,HttpServletResponse response) throws Exception{	
+		req.setPageSize(25535);
+		req.setCurrentPage(1);
+		PagedResponse<ClienterBalanceRecord> list= clienterBalanceRecordService.getRecordList(req);
+		List<ClienterBalanceRecord> records=list.getResultList(); 
+				String fileName = "人人地推-%s-账单数据";
+				fileName = String.format(fileName, req.getBeginDate()+ "到" + ParseHelper.ToDateString(req.getEndDate(),"yyyy-MM-dd"));
+				LinkedHashMap<String, String> columnTitiles = new LinkedHashMap<String, String>();
+				columnTitiles.put("交易类型", "recordTypeName");
+				columnTitiles.put("资料ID/提现单ID", "orderId");
+				columnTitiles.put("收支金额", "amount");
+				columnTitiles.put("余额", "afterAmount");
+				columnTitiles.put("状态", "statusName");
+				columnTitiles.put("时间", "operateTime");
+				columnTitiles.put("操作人", "optName");
+				columnTitiles.put("备注", "remark");
+				ExcelUtils.export2Excel(fileName, "骑士余额流水记录", columnTitiles,records, request, response);
+				return;
 	}
 	
 	/**

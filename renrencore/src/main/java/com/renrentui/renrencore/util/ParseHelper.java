@@ -165,6 +165,17 @@ public class ParseHelper {
 		}
 		return ToDateString(date, null);
 	}
+	
+	public static String ToDateString(String s,String formart){
+		SimpleDateFormat sdf = new SimpleDateFormat(formart);                
+		Date date;
+		try {
+			date = sdf.parse(s);
+		} catch (Exception e) {
+			date=new Date();
+		}
+		return ToDateString(date, formart);
+	}
 
 	/**
 	 * 

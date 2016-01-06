@@ -27,8 +27,20 @@ public class ClienterBalanceRecord {
     private String remark;
     
     private Short status;    
+    private String statusName;
+    public String getStatusName() {
+		return status==Short.valueOf("1")?"交易成功":"交易中";
+	}
 
-    public Short getStatus() {
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	public void setRecordTypeName(String recordTypeName) {
+		this.recordTypeName = recordTypeName;
+	}
+
+	public Short getStatus() {
 		return status;
 	}
 
