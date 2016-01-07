@@ -97,7 +97,7 @@ public class OrderService implements IOrderService{
 			
 			//2.审核通过为上级分佣
 			this.SubmissionForAudit(req.getOrderId(), req.getUserId(), req.getAmount(), req.getAuditName());
-			//2.1获取订单上面的分佣策略
+
 			if(res>0&&orderlogres>0&&cbId>0&&cbrId>0)
 			{
 				//执行成功

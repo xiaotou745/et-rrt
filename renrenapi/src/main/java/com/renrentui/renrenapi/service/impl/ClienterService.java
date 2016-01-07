@@ -104,7 +104,7 @@ public class ClienterService implements IClienterService {
 	public boolean modifyPwdUserc(ModifyPwdReq req) {
 		ClienterLog log = new ClienterLog();
 		log.setClienterId(Long.valueOf(req.getUserId()));
-		log.setOptName("地推员UserID");
+		log.setOptName(req.getUserId()+"");
 		log.setRemark("地推员修改密码");
 		int reslog = clienterLogDao.addClienterLog(log);// 记录C端日志
 		return clienterDao.modifyPwdUserc(req);
