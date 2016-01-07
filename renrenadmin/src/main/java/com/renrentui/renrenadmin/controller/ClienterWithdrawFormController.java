@@ -1,5 +1,7 @@
 package com.renrentui.renrenadmin.controller;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.req.AlipayBatchReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 
 @Controller
@@ -22,6 +25,7 @@ public class ClienterWithdrawFormController {
 	@Autowired
 	private IClienterWithdrawFormService clienterWithdrawFormService;		
 
+	
 
 	/**
 	 * 用户提现列表管理页面 
@@ -95,11 +99,27 @@ public class ClienterWithdrawFormController {
 	 * 支付宝批量付款
 	 * wangchao
 	 */
-	public void alipaybatchtransfer(HttpServletRequest request,int type ,String data){
-		AlipayBatchModel alipayBatchModel = new AlipayBatchModel();
-		alipayBatchModel.setData(data);
-		alipayBatchModel.setType(type);
-		alipayBatchModel.setOptName(UserContext.getCurrentContext(request).getUserName());
-		String html = clienterWithdrawFormService.AlipayBatchTransfer(alipayBatchModel); 
+	@RequestMapping("alipaybatchtransfer")
+	@ResponseBody
+	public String alipaybatchtransfer(HttpServletRequest request,int type ,String data){
+		AlipayBatchReq alipayBatchReq = new AlipayBatchReq();
+		alipayBatchReq.setData(data);
+		alipayBatchReq.setType(type);
+		alipayBatchReq.setOptName(UserContext.getCurrentContext(request).getUserName());
+		String html = clienterWithdrawFormService.AlipayBatchTransfer(alipayBatchReq); 
+		return html;
+	}
+	
+	/**
+	 * 批量付款回调 
+	 * @throws UnsupportedEncodingException 
+	 * */
+	@RequestMapping("alibatchnotifytransfercallback")
+	public void AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException{
+//		ModelAndView model = new ModelAndView("clienterwithdraw/batchalinotify");		
+//		model.addObject("data", clienterWithdrawFormService.AliBatchNotifyTransferCallback(request));
+//		return model;
+		String outString=clienterWithdrawFormService.AliBatchNotifyTransferCallback(request);
+		System.out.println(outString);
 	}
 }
