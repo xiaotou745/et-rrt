@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IAlipayBatchDao" >
+  <!--  支付宝批次单列表页查询 动态查询条件 add by wangchao -->
+	<sql id="getAlipayBatchPagedListWhere">
+		1=1
+		<if test="batchNo != null and batchNo != ''">
+			and a.batchNo=''${batchNo}''
+		</if>
+		<if test="status != null and status>-1">
+			and a.[status]= ${status}
+		</if>
+		<if test="lastOptTimeStart != null and lastOptTimeStart!=''">
+			and a.lastOptTime>= ''${lastOptTimeStart} 00:00:00''
+		</if>
+		<if test="lastOptTimeEnd != null and lastOptTimeEnd!=''">
+         <![CDATA[ and a.lastOptTime <=]]>
+			''${lastOptTimeEnd} 23:59:59''
+		</if>
+	</sql>
+	<!--支付宝批次单列表页查询 add by wangchao -->
+	<select id="getAlipayBatchPagedList" resultType="com.renrentui.renrenentity.domain.AlipayBatchModel"
+		parameterType="com.renrentui.renrenentity.req.PagedAlipayBatchListReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' a.id desc ',
+		'a.Id,a.BatchNo,a.TotalWithdraw,a.OptTimes,a.SuccessTimes,a.FailTimes,a.Status,a.CallbackTime,a.LastOptUser,a.LastOptTime',
+		'[AlipayBatch] a with ( nolock )',
+		'
+		<include refid="getAlipayBatchPagedListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
+		<!--支付宝批次单列表页查询 add by wangchao -->
+	<select id="getAlipayBatchById" resultType="com.renrentui.renrenentity.domain.AlipayBatchModel"
+		parameterType="java.lang.Long" >
+	 select a.Id,a.BatchNo,a.TotalWithdraw,a.OptTimes,a.SuccessTimes,a.FailTimes,a.Status,a.CallbackTime,a.LastOptUser,a.LastOptTime from [AlipayBatch] a with ( nolock )
+	 where a.id=#{id,jdbcType=INTEGER}
+	</select>
+	<!--  根据批次号查询提现单  addby wangchao -->
+    <select id="getClienterWithdrawFormByBatchNo"  resultType="com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm" parameterType="java.lang.Long" >
+       SELECT  a.Id,a.WithdrawNo,a.AccountInfo,a.TrueName,a.Amount,
+       a.Status,b.LastOptUser,a.PayFailedReason
+       FROM ClienterWithdrawForm as a (nolock)
+       LEFT join dbo.AlipayBatch as b(nolock) on a.AlipayBatchNo=b.BatchNo 
+      where b.id= #{id}
+  </select>
+</mapper>

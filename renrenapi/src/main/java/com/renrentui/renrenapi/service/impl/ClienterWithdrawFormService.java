@@ -39,6 +39,7 @@ import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
@@ -263,7 +264,9 @@ public class ClienterWithdrawFormService implements
 		}
 		return actualhandcharge;
 	}
-
+	/*
+	 * 批量付款 wangchao
+	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public String AlipayBatchTransfer(AlipayBatchReq alipayBatchReq) {
@@ -418,7 +421,10 @@ public class ClienterWithdrawFormService implements
 			return "";
 		}
 	}
-
+	/*
+	 * 支付宝回调
+	 * wangchao
+	 */
 	@Override
 	public String AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException {
 
@@ -445,8 +451,7 @@ public class ClienterWithdrawFormService implements
 
 		// 批量付款数据中转账失败的详细信息
 		String fail_details = new String(request.getParameter("fail_details")
-				.getBytes("ISO-8859-1"), "UTF-8");
-
+				.getBytes("ISO-8859-1"), "UTF-8"); 
 		// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 
 		if (AlipayNotify.verify(params)) {// 验证成功

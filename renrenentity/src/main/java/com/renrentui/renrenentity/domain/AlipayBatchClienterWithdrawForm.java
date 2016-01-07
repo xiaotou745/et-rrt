@@ -2,8 +2,8 @@ package com.renrentui.renrenentity.domain;
 
 public class AlipayBatchClienterWithdrawForm {
 	private int id;
-	private String withwardNo;
-	private String accountNo;
+	private String withdrawNo;
+	private String accountInfo;
 	private String trueName;
 	private Double amount;
 	private int status;
@@ -24,44 +24,7 @@ public class AlipayBatchClienterWithdrawForm {
 	 */
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	/**
-	 * 提现单号
-	 * 
-	 * @return
-	 */
-	public String getWithwardNo() {
-		return withwardNo;
-	}
-
-	/**
-	 * 提现单号
-	 * 
-	 * @param withwardNo
-	 */
-	public void setWithwardNo(String withwardNo) {
-		this.withwardNo = withwardNo;
-	}
-
-	/**
-	 * 支付宝账号
-	 * 
-	 * @return
-	 */
-	public String getAccountNo() {
-		return accountNo;
-	}
-
-	/**
-	 * 支付宝账号
-	 * 
-	 * @param accountNo
-	 */
-	public void setAccountNo(String accountNo) {
-		this.accountNo = accountNo;
-	}
-
+	} 
 	/**
 	 * 支付宝用户名
 	 * 
@@ -150,5 +113,21 @@ public class AlipayBatchClienterWithdrawForm {
 	 */
 	public void setPayFailedReason(String payFailedReason) {
 		this.payFailedReason = payFailedReason;
+	}
+
+	public String getWithdrawNo() {
+		return withdrawNo;
+	}
+
+	public void setWithdrawNo(String withdrawNo) {
+		this.withdrawNo = withdrawNo;
+	}
+
+	public String getAccountInfo() {
+		return accountInfo;
+	}
+
+	public void setAccountInfo(String accountInfo) {
+		this.accountInfo = accountInfo;
 	}
 }

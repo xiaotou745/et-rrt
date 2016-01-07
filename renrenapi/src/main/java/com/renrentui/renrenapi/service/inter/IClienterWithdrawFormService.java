@@ -2,14 +2,10 @@ package com.renrentui.renrenapi.service.inter;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpServletRequest; 
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
-import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
 import com.renrentui.renrenentity.req.AlipayBatchReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
@@ -37,5 +33,5 @@ public interface IClienterWithdrawFormService {
 
 	String AlipayBatchTransfer(AlipayBatchReq alipayBatchReq);
 	
-	String AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException; 
+	String AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException;
 }

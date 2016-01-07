@@ -1,6 +1,7 @@
 package com.renrentui.renrenadmin.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenadmin.common.UserContext;
+import com.renrentui.renrenapi.service.inter.IAlipayBatchService;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
 import com.renrentui.renrenentity.req.AlipayBatchReq;
+import com.renrentui.renrenentity.req.PagedAlipayBatchListReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
 
 @Controller
@@ -25,7 +29,8 @@ public class ClienterWithdrawFormController {
 	@Autowired
 	private IClienterWithdrawFormService clienterWithdrawFormService;		
 
-	
+	@Autowired
+	private IAlipayBatchService alipayBatchService;
 
 	/**
 	 * 用户提现列表管理页面 
@@ -122,4 +127,41 @@ public class ClienterWithdrawFormController {
 		String outString=clienterWithdrawFormService.AliBatchNotifyTransferCallback(request);
 		System.out.println(outString);
 	}
+	
+	/*
+	 * 支付批次查询页面
+	 * wangchao
+	 */
+	@RequestMapping("alibatchlist")
+	public ModelAndView alibatchlist(){		
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "账务管理");
+		model.addObject("currenttitle", "支付宝批次进度查询");	
+		model.addObject("viewPath", "clienterwithdraw/alibatchlist");
+		return model;
+	}
+	
+	@RequestMapping("alipaybatchlistdo")
+	public ModelAndView alipaybatchlistdo(PagedAlipayBatchListReq req) {
+		ModelAndView model = new ModelAndView("finance/alipaybatchlistdo");
+		PagedResponse<AlipayBatchModel>  datas=alipayBatchService.getAlipayBatchPagedList(req);
+		model.addObject("listData",datas);
+		return model;
+	}
+	 /*
+	  * 支付批次查询详情
+	  * wangchao
+	  */
+	@RequestMapping("alipaybatchlistdetail")
+	public ModelAndView alipaybatchlistdetail(Long id) {
+		ModelAndView model = new ModelAndView("adminView");
+		AlipayBatchModel alipayBatch=alipayBatchService.getAlipayBatchById(id);
+	    List<AlipayBatchClienterWithdrawForm> withdrawForms=alipayBatchService.getClienterWithdrawFormByBatchNo(id);
+		model.addObject("alipayBatch",alipayBatch);
+		model.addObject("withdrawForms",withdrawForms);
+		model.addObject("subtitle", "财务管理");
+		model.addObject("currenttitle", "支付宝批次进度查询> 批次详情");
+		model.addObject("viewPath","finance/alipaybatchlistdetail");
+		return model;
+	}	
 }

@@ -12,7 +12,6 @@
 <%@page import="com.renrentui.renrenadmin.common.UserContext"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.admin.url");
-	String netUrl = PropertyUtils.getProperty("net.admin.url");
 	PagedResponse<AlipayBatch> data = (PagedResponse<AlipayBatch>) request.getAttribute("listData");
 	
 	UserContext context = UserContext.getCurrentContext(request);
@@ -51,7 +50,7 @@
 		%>
 		<tr>
 			<td><%=list.get(i).getId()%></td>
-			<td><a href="<%=basePath%>/finance/alipaybatchlistdetail?id=<%=list.get(i).getId()%>"><%=list.get(i).getBatchNo()%></a></td>
+			<td><a href="<%=basePath%>/clienterwithdraw/alipaybatchlistdetail?id=<%=list.get(i).getId()%>"><%=list.get(i).getBatchNo()%></a></td>
 			<td><%=list.get(i).getTotalWithdraw()%></td>
 			<td><%=list.get(i).getOptTimes()%></td>
 			<td>

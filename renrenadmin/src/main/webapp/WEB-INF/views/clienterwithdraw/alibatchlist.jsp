@@ -121,7 +121,7 @@ function doSure(bacthNo){
 	    btn: ['确认','取消'], //按钮
 	    shade: false //显示遮罩
 	}, function(){
-		window.open("<%=basePath%>/ClienterWithdraw/AlipayBatchTransfer?type=2&data="+bacthNo);
+		window.open("<%=basePath%>/ClienterWithdraw/alipaybatchtransfer?type=2&data="+bacthNo);
 		 var index= layer.alert('请在新打开的页面完成打款！', {
 			btn:["已完成打款"],
 		    skin: 'layui-layer-molv', //样式类名
