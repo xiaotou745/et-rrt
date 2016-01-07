@@ -25,6 +25,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
+import com.renrentui.renrenapi.service.inter.IGlobalConfigService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.CBalanceRecordStatus;
 import com.renrentui.renrencore.enums.CBalanceRecordType;
@@ -67,7 +68,8 @@ public class ClienterWithdrawFormService implements
 
 	@Autowired
 	private RedisService redisService;
-
+	@Autowired
+	private IGlobalConfigService globalConfigService;
 	@Override
 	public int Add(ClienterWithdrawForm record) {
 		return clienterWithdrawFormDao.insert(record);
@@ -104,9 +106,10 @@ public class ClienterWithdrawFormService implements
 		clienterWithdrawFormModel.setTrueName(req.getTrueName());
 		clienterWithdrawFormModel
 				.setStatus((short) ClienterWithdrawFormStatus.UnAudit.value());// 待审核
-
+		
 		double actualHandCharge = PayToZhiFuBao(req.getAmount());
-		clienterWithdrawFormModel.setHandCharge(10); // 骑士付给我们的手续费金额，从缓存中读取
+		String handchargeString = globalConfigService.getValueByName("HandCharge"); 
+		clienterWithdrawFormModel.setHandCharge(ParseHelper.ToDouble(handchargeString, 3)); // 骑士付给我们的手续费金额，从缓存中读取
 		clienterWithdrawFormModel.setActualHandCharge(actualHandCharge); // 我们付给支付宝的手续费
 		clienterWithdrawFormModel.setActualAmount(req.getAmount()
 				- actualHandCharge);
@@ -260,7 +263,7 @@ public class ClienterWithdrawFormService implements
 		} else if (tempmoney >= 25) {
 			actualhandcharge = 25;
 		} else {
-			actualhandcharge = (double) tempmoney;
+			actualhandcharge = (double)tempmoney;
 		}
 		return actualhandcharge;
 	}
@@ -307,7 +310,7 @@ public class ClienterWithdrawFormService implements
 		// 获取提现单列表信息
 		List<AlipayClienterWithdrawModel> withdrawList = clienterWithdrawFormDao
 				.GetWithdrawListForAlipay(alipayBatchReq);
-		if (withdrawList == null)
+		if (withdrawList == null || withdrawList.size() == 0)
 			return "<html><body>无提现单数据,请重试</body></html>";
 
 		alipayBatchCount = withdrawList.size();// 总笔数

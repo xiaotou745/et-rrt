@@ -8,11 +8,11 @@
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrencore.enums.AlipayBatchStatus"%>
-<%@page import="com.renrentui.renrenentity.AlipayBatch"%>
+<%@page import="com.renrentui.renrenentity.domain.AlipayBatchModel"%>
 <%@page import="com.renrentui.renrenadmin.common.UserContext"%>
 <%
-	String basePath = PropertyUtils.getProperty("java.admin.url");
-	PagedResponse<AlipayBatch> data = (PagedResponse<AlipayBatch>) request.getAttribute("listData");
+	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
+	PagedResponse<AlipayBatchModel> data = (PagedResponse<AlipayBatchModel>)request.getAttribute("listData");
 	
 	UserContext context = UserContext.getCurrentContext(request);
 	if(context == null){
@@ -45,7 +45,7 @@
 	</thead>
 	<tbody>
 		<%
-			List<AlipayBatch> list = data.getResultList();
+			List<AlipayBatchModel> list = data.getResultList();
 				for (int i = 0; i < list.size(); i++) {
 		%>
 		<tr>

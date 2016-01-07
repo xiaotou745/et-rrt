@@ -13,7 +13,7 @@
 <%@page import="java.util.ArrayList"%>
 
 <%	
-String basePath =PropertyUtils.getProperty("java.admin.url");
+String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -103,10 +103,10 @@ var jss={
 					 	lastOptTimeStart:$('#lastOptTimeStart').val(),
 					 	lastOptTimeEnd:$('#lastOptTimeEnd').val() 
 					 };
-			$.post("<%=basePath%>/finance/alipaybatchlistdo",
+			$.post("<%=basePath%>/clienterwithdraw/alibatchlistdo",
 					data,
 					function(d){
-				$("#content").html(d);
+					$("#content").html(d);
 			});
 		}
 	}
@@ -121,7 +121,7 @@ function doSure(bacthNo){
 	    btn: ['确认','取消'], //按钮
 	    shade: false //显示遮罩
 	}, function(){
-		window.open("<%=basePath%>/ClienterWithdraw/alipaybatchtransfer?type=2&data="+bacthNo);
+		window.open("<%=basePath%>/clienterwithdraw/alipaybatchtransfer?type=2&data="+bacthNo);
 		 var index= layer.alert('请在新打开的页面完成打款！', {
 			btn:["已完成打款"],
 		    skin: 'layui-layer-molv', //样式类名
