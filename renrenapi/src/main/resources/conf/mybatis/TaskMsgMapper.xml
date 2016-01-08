@@ -53,7 +53,7 @@ VALUES  ( ${title} ,
           TaskId,
           TaskDatumId
   FROM      TaskMsg  with (nolock)        
-  where ClienterId = ${userId} and HasRead=0 and isDel=0 
+  where ClienterId = ${userId} and isDel=0 
     <if test="nextId != 0" >
 	       and  ${nextId} > id 
 	</if>
