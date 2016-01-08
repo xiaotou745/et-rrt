@@ -3,7 +3,7 @@
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%@page import="com.renrentui.renrencore.util.EnumHelper"%>
-<%@page import="com.renrentui.renrenentity.Clienter;"%>
+<%@page import="com.renrentui.renrenentity.Clienter"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 Clienter c =(Clienter)request.getAttribute("clienter");
