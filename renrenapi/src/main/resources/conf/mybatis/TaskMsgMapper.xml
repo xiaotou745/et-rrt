@@ -69,10 +69,10 @@ VALUES  ( ${title} ,
     <update id="updateMsg" parameterType="com.renrentui.renrenentity.req.TaskMsgUpdateReq" >
          update TaskMsg
     <set >
-      <if test="opType =1" >
+      <if test="opType ==1" >
         isDel = 1,
       </if>
-      <if test="opType =2" >
+      <if test="opType ==2" >
         HasRead=1, ReadDate=getdate()
       </if>
     </set>
