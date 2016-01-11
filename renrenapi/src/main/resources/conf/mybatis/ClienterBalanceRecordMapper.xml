@@ -19,11 +19,24 @@
     Remark,Status
   </sql>
 
-    <select id="getRecordList" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    <select id="getRecordList" resultMap="BaseResultMap" parameterType="com.renrentui.renrenentity.req.GetIncomeReq" >
+  SELECT   	
+  <if test="itemsCount != 0" >
+		top  ${itemsCount} 
+  </if>
   	Id, Amount,RecordType,OperateTime,Remark
     from ClienterBalanceRecord with(nolock)
-    where ClienterId = #{clienterId,jdbcType=BIGINT}
+    where ClienterId = #{userId,jdbcType=BIGINT}
+     <if test="recordType == 1" >
+        and Amount>=0
+      </if>
+       <if test="recordType == 2" >
+        and 0>Amount
+      </if>
+    <if test="nextId != 0" >
+	     and  ${nextId} > id 
+	</if>
+	order by id desc;
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

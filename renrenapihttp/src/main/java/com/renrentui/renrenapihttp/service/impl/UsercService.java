@@ -33,15 +33,16 @@ import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
-import com.renrentui.renrenentity.domain.BalanceRecordModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.domain.TabModel;
+import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.GetIncomeReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.PartnerListReq;
@@ -400,34 +401,29 @@ public class UsercService implements IUsercService {
 	}
 
 	@Override
-	public HttpResultModel<BalanceRecordModel> getRecordList(GetUserCReq req) {
-		HttpResultModel<BalanceRecordModel> hrm = new HttpResultModel<BalanceRecordModel>();
+	public HttpResultModel<TabModel<ClienterBalanceRecord>> getRecordList(GetIncomeReq req) {
+		HttpResultModel<TabModel<ClienterBalanceRecord>> hrm = new HttpResultModel<TabModel<ClienterBalanceRecord>>();
 
 		if (req.getUserId() <= 0) {
 			return hrm.setCode(MyRecordCode.UserIdInValid.value()).setMsg(
 					MyRecordCode.UserIdInValid.desc());
+		}
+		if (req.getRecordType() <1||req.getRecordType()>2) {
+			return hrm.setCode(MyRecordCode.RecordTypeError.value()).setMsg(
+					MyRecordCode.RecordTypeError.desc());
 		}
 		if (!clienterService.isExistUserC(req.getUserId())) {
 			return hrm.setCode(MyRecordCode.UserIdUnexist.value()).setMsg(
 					MyRecordCode.UserIdUnexist.desc());
 		}
 
-		List<ClienterBalanceRecord> records = clienterBalanceRecordService
-				.getRecordList(req.getUserId());
-		List<ClienterBalanceRecord> incomeList = records.stream()
-				.filter(t -> t.getAmount() >= 0).collect(Collectors.toList());
-		List<ClienterBalanceRecord> expensesList = records.stream()
-				.filter(t -> t.getAmount() < 0).collect(Collectors.toList());
-
-		incomeList.sort((b, a) -> {
-			return a.getOperateTime().compareTo(b.getOperateTime());
-		});
-		expensesList.sort((b, a) -> {
-			return a.getOperateTime().compareTo(b.getOperateTime());
-		});
-		BalanceRecordModel resp = new BalanceRecordModel();
-		resp.setExpensesList(expensesList);
-		resp.setInComeList(incomeList);
+		List<ClienterBalanceRecord> records = clienterBalanceRecordService.getRecordList(req);
+		TabModel<ClienterBalanceRecord> resp = new TabModel<ClienterBalanceRecord>();
+		resp.setCount(records.size());
+		if(records!=null && records.size()>0){
+			resp.setNextId(records.get(records.size()-1).getId());
+		}
+		resp.setContent(records);
 		hrm.setData(resp);
 		return hrm;
 	}

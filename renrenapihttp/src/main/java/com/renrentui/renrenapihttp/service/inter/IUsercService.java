@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import com.renrentui.renrenapihttp.common.HttpResultModel;
-import com.renrentui.renrenentity.domain.BalanceRecordModel;
+import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.domain.PartnerModel;
@@ -15,6 +15,7 @@ import com.renrentui.renrenentity.req.BindAliPayReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
+import com.renrentui.renrenentity.req.GetIncomeReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.PartnerListReq;
@@ -132,7 +133,7 @@ public interface IUsercService {
 	 */
 	@POST
 	@Path("/getbalancerecordlist")
-	 public HttpResultModel<BalanceRecordModel> getRecordList(GetUserCReq req);
+	 public HttpResultModel<TabModel<ClienterBalanceRecord>> getRecordList(GetIncomeReq req);
 	
 	/**
 	 * 查询参与了某个任务的所有骑士信息
