@@ -120,12 +120,12 @@ public class ClienterWithdrawFormController {
 	 * @throws UnsupportedEncodingException 
 	 * */
 	@RequestMapping("alibatchnotifytransfercallback")
-	public void AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException{
-//		ModelAndView model = new ModelAndView("clienterwithdraw/batchalinotify");		
-//		model.addObject("data", clienterWithdrawFormService.AliBatchNotifyTransferCallback(request));
-//		return model;
-		String outString=clienterWithdrawFormService.AliBatchNotifyTransferCallback(request);
-		System.out.println(outString);
+	public ModelAndView AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException{
+		ModelAndView model = new ModelAndView("clienterwithdraw/batchalinotify");		
+		model.addObject("data", clienterWithdrawFormService.AliBatchNotifyTransferCallback(request));
+		return model;
+		//String outString=clienterWithdrawFormService.AliBatchNotifyTransferCallback(request);
+		//System.out.println(outString);
 	}
 	
 	/*

@@ -220,4 +220,31 @@ FROM    dbo.ClienterBalanceRecord AS cbr ( NOLOCK )
 WHERE   cbr.RecordType = 5
         AND cbr.OrderId = #{orderId,jdbcType=BIGINT}
   </select>
+  <!-- 提现失败时插入日志 wangchao -->
+  <insert id="insertClienterBalanceFailRecord" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
+   		insert into ClienterBalanceRecord
+            ([ClienterId]
+           ,[Amount]
+           ,[Status]
+           ,[AfterAmount]
+           ,[RecordType]
+           ,[Operator]
+           ,[OperateTime]
+           ,[OrderId]
+           ,[RelationNo]
+           ,[Remark])
+select      cwf.[ClienterId]
+           ,ISNULL(cwf.[Amount],0) Amount
+           ,1
+           ,ISNULL(cwf.[Amount],0)+ISNULL(c.Balance,0) AfterAmount
+           ,4 [RecordType]
+           ,'admin'
+           ,getdate() OperateTime
+           ,cwf.Id OrderId
+           ,cwf.WithwardNo RelationNo
+           ,#{remark,VARCHAR}
+ from ClienterWithdrawForm cwf(nolock)
+    join dbo.ClienterBalance c (nolock) on c.ClienterId=cwf.ClienterId
+ where cwf.Id=#{withwardId,BIGINT}
+  </insert>
 </mapper>

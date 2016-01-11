@@ -140,9 +140,20 @@ public class UsercService implements IUsercService {
 			resultModel.setMsg(WithdrawState.Failure.desc());
 			return resultModel;
 		}
+		
 		if (req.getAmount() < 10) {
-			resultModel.setCode(WithdrawState.ParaError.value());
-			resultModel.setMsg(WithdrawState.ParaError.desc());
+			resultModel.setCode(WithdrawState.LessTen.value());
+			resultModel.setMsg(WithdrawState.LessTen.desc());
+			return resultModel;
+		}
+		if(req.getAmount()>1000){
+			resultModel.setCode(WithdrawState.MoreThousand.value());
+			resultModel.setMsg(WithdrawState.MoreThousand.desc());
+			return resultModel;
+		}
+		if(req.getAmount()%10 !=0){
+			resultModel.setCode(WithdrawState.NoTenMultiple.value());
+			resultModel.setMsg(WithdrawState.NoTenMultiple.desc());
 			return resultModel;
 		}
 		WithdrawState code = clienterWithdrawFormService.WithdrawC(req);
