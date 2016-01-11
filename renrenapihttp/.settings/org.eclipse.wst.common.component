@@ -13,9 +13,6 @@
         <dependent-module archiveName="renrenapi-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrenapi/renrenapi">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="payscore-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/payscore/payscore">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="java-output-path" value="/renrenapihttp/target/classes"/>
         <property name="context-root" value="renrenapihttp"/>
     </wb-module>

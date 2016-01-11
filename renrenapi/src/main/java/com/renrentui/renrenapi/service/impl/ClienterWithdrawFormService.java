@@ -459,39 +459,46 @@ public class ClienterWithdrawFormService implements
 		// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
 		// 批量付款数据中转账成功的详细信息
 		AlipayBatchCallBackModel alipayBatchCallBackModel = new AlipayBatchCallBackModel();
-		String success_details = new String(request.getParameter("success_details").getBytes("ISO-8859-1"), "UTF-8");
-		// 批量付款数据中转账失败的详细信息
-		String fail_details = new String(request.getParameter("fail_details").getBytes("ISO-8859-1"), "UTF-8"); 
-		// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
-		String notify_time = new String(request.getParameter("notify_time").getBytes("ISO-8859-1"), "UTF-8"); 
-		String notify_type = new String(request.getParameter("notify_type").getBytes("ISO-8859-1"), "UTF-8"); 
-		String notify_id = new String(request.getParameter("notify_id").getBytes("ISO-8859-1"), "UTF-8"); 
-		String sign_type = new String(request.getParameter("sign_type").getBytes("ISO-8859-1"), "UTF-8"); 
-		String sign = new String(request.getParameter("sign").getBytes("ISO-8859-1"), "UTF-8"); 
-		String batch_no = new String(request.getParameter("batch_no").getBytes("ISO-8859-1"), "UTF-8");
-		String pay_user_id = new String(request.getParameter("pay_user_id").getBytes("ISO-8859-1"), "UTF-8");
-		String pay_user_name = new String(request.getParameter("pay_user_name").getBytes("ISO-8859-1"), "UTF-8");
-		String pay_account_no = new String(request.getParameter("pay_account_no").getBytes("ISO-8859-1"), "UTF-8");
-		alipayBatchCallBackModel.setSuccessDetails(success_details);
-		alipayBatchCallBackModel.setFailDetails(fail_details);
-		alipayBatchCallBackModel.setNotifyTime(notify_time);
-		alipayBatchCallBackModel.setNotifyType(notify_type);
-		alipayBatchCallBackModel.setNotifyId(notify_id);
-		alipayBatchCallBackModel.setSignType(sign_type);
-		alipayBatchCallBackModel.setSign(sign);
-		alipayBatchCallBackModel.setBatchNo(batch_no);
-		alipayBatchCallBackModel.setPayUserId(pay_user_id);
-		alipayBatchCallBackModel.setPayUserName(pay_user_name);
-		alipayBatchCallBackModel.setPayAccountNo(pay_account_no);
-		if (AlipayNotify.verify(params)) {// 验证成功
+
+		String fail_details= params.get("fail_details"); 
+//	 	String fail_details = new String(request.getParameter("fail_details").getBytes("ISO-8859-1"), "UTF-8");
+	 	
+		String success_details = params.get("success_details");
+		 
+		
+		params.put("platform", "1");
+		if ( success_details !=null && success_details!="" && AlipayNotify.verify(params)) {// 验证成功
+			// 批量付款数据中转账失败的详细信息
+			// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
+			String notify_time = new String(request.getParameter("notify_time").getBytes("ISO-8859-1"), "UTF-8"); 
+			String notify_type = new String(request.getParameter("notify_type").getBytes("ISO-8859-1"), "UTF-8"); 
+			String notify_id = new String(request.getParameter("notify_id").getBytes("ISO-8859-1"), "UTF-8"); 
+			String sign_type = new String(request.getParameter("sign_type").getBytes("ISO-8859-1"), "UTF-8"); 
+			String sign = new String(request.getParameter("sign").getBytes("ISO-8859-1"), "UTF-8"); 
+			String batch_no = new String(request.getParameter("batch_no").getBytes("ISO-8859-1"), "UTF-8");
+			String pay_user_id = new String(request.getParameter("pay_user_id").getBytes("ISO-8859-1"), "UTF-8");
+			String pay_user_name = new String(request.getParameter("pay_user_name").getBytes("ISO-8859-1"), "UTF-8");
+			String pay_account_no = new String(request.getParameter("pay_account_no").getBytes("ISO-8859-1"), "UTF-8");
+			alipayBatchCallBackModel.setSuccessDetails(success_details);
+			alipayBatchCallBackModel.setFailDetails(fail_details);
+			alipayBatchCallBackModel.setNotifyTime(notify_time);
+			alipayBatchCallBackModel.setNotifyType(notify_type);
+			alipayBatchCallBackModel.setNotifyId(notify_id);
+			alipayBatchCallBackModel.setSignType(sign_type);
+			alipayBatchCallBackModel.setSign(sign);
+			alipayBatchCallBackModel.setBatchNo(batch_no);
+			alipayBatchCallBackModel.setPayUserId(pay_user_id);
+			alipayBatchCallBackModel.setPayUserName(pay_user_name);
+			alipayBatchCallBackModel.setPayAccountNo(pay_account_no);
 			if(AliBatchNotifyTransferCallbackBusinessDeal(alipayBatchCallBackModel))  //处理成功后的业务逻辑
 			{
 				return "success";
 			}
 			else {
+				// 验证失败
 				return "fail";
 			}
-		} else {// 验证失败
+		} else {
 			return "fail";
 		}
 

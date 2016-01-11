@@ -10,9 +10,6 @@
         <dependent-module archiveName="renrencore-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrencore/renrencore">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="payscore-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/payscore/payscore">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="renrenentity-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrenentity/renrenentity">
             <dependency-type>uses</dependency-type>
         </dependent-module>
