@@ -77,9 +77,9 @@ public class ClienterFinanceAcountService implements
 	public boolean ClienterWithdrawPayFail(ClienterWithdrawLogModel cwlModel) {
 		boolean reg = false;	
 		if(clienterFinanceAcountDao.InsertClienterBalanceFailRecord(cwlModel)){  //骑士提现失败后返现==增加骑士余额流水记录
-			if(clienterFinanceAcountDao.ClienterWithdrawPayFailed(cwlModel)){
+			if(clienterFinanceAcountDao.ClienterWithdrawPayFailed(cwlModel)){//更新骑士提现单状态为失败
 				if(clienterFinanceAcountDao.ModifyClienterBalanceRecordStatus(cwlModel)){ //修改骑士提款流水状态
-					if(clienterFinanceAcountDao.ModifyClienterTotalAmount(cwlModel)){//骑士提现打款确认后修改骑士表累计提款金额
+					if(clienterFinanceAcountDao.ModifyClienterAmountInfo(cwlModel)){//加骑士余额可提现余额
 						reg=true;
 					}
 				}

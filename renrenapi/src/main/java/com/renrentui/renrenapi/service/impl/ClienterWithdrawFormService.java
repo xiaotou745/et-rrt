@@ -126,7 +126,7 @@ public class ClienterWithdrawFormService implements
 				- actualHandCharge);
 
 		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
-
+		//申请提现，扣减金额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
 		cBReq.setAmount(-req.getAmount());
@@ -499,7 +499,6 @@ public class ClienterWithdrawFormService implements
 	
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public boolean AliBatchNotifyTransferCallbackBusinessDeal(AlipayBatchCallBackModel alipayBatchCallBackModel){
-		
 		List<AlipayCallBackData> successlist = ConvertAlipayDetails(alipayBatchCallBackModel.getSuccessDetails());
 		List<AlipayCallBackData> faillist = ConvertAlipayDetails(alipayBatchCallBackModel.getFailDetails());
 		AlipayBatchModel alipayBatchModel = new AlipayBatchModel();

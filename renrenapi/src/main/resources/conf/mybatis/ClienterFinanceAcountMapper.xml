@@ -285,4 +285,14 @@
 		  [OperatTime])
 		 WHERE  Id = #{withwardId,BIGINT} AND [Status] in(1,20) 
   </update>
+    <!-- 骑士提现打款失败后修改骑士表累计提款金额 wangchao -->
+  <update id="modifyClienterAmountInfo" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
+   update c
+		set    c.Balance=ISNULL(c.Balance, 0)+ISNULL(cwf.Amount,0),
+		       c.Withdraw=ISNULL(c.Withdraw,0)+ISNULL(cwf.Amount,0)
+		from dbo.ClienterBalance c
+		join [ClienterWithdrawForm] cwf on c.ClienterId=cwf.ClienterId
+		where cwf.Id=#{withwardId,BIGINT};
+  </update>
+  
 </mapper>
