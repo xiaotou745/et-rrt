@@ -92,5 +92,11 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 		return getMasterSqlSessionUtil().update(
 				"IClienterWithdrawFormDao.updateAlipayBatchForAgain", updateAlipayBatchModel);
 	}
+	@Override
+	public int UpdateAlipayBatchNo(AlipayBatchModel alipayBatchModel) {
+		// TODO Auto-generated method stub
+		return getMasterSqlSessionUtil().update(
+				"IClienterWithdrawFormDao.updateAlipayBatchNo", alipayBatchModel);
+	}
 	
 }

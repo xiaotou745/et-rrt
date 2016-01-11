@@ -1,12 +1,9 @@
 package com.renrentui.renrenapihttp.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.print.attribute.standard.DateTimeAtCompleted;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +15,6 @@ import com.renrentui.renrenapihttp.service.inter.IRegionService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.RegionCode;
 import com.renrentui.renrencore.util.ParseHelper;
-import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.RegionModel;
 import com.renrentui.renrenentity.domain.RegionModelFirstLetter;
@@ -35,27 +31,27 @@ public class RegionService implements IRegionService{
 		if (req.getVersion()==null||req.getVersion().trim().isEmpty()) {
 			return new HttpResultModel<RegionModel>().setCode(RegionCode.Version.value()).setMsg(RegionCode.Version.desc());
 		} 
-		String[] letter={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-		//返回给app的结果Model
-		RegionModel rModel = new RegionModel();  
 		String cityVersion = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Version,String.class);
-		if(cityVersion == null || cityVersion == ""){ 
-		  String kkString=	ParseHelper.ToDateString(new Date(),"yyyyMMdd" );
-			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,kkString); //初始化
-			rModel.setVersion(kkString);
-		} 
-		if(req.getVersion().equals(cityVersion)){  //版本一致，直接从缓存中取出
-			rModel = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Hot,RegionModel.class);  //获取热门城市和26个字母排序城市 
-			if(rModel !=null){
-				return new HttpResultModel<RegionModel>().setCode(RegionCode.Success.value()).setMsg(RegionCode.Success.desc()).setData(rModel);
-			}else{
-				rModel = new RegionModel(); 
-				rModel.setVersion(redisService.get(RedissCacheKey.RR_PublicProvinceCity_Version,String.class)); 
-			}
-		} else {
-			rModel.setVersion(redisService.get(RedissCacheKey.RR_PublicProvinceCity_Version,String.class));
+		if(cityVersion == null){
+			cityVersion="";
 		}
-		
+		if(req.getVersion().equals(cityVersion)){  //版本一致，直接返回null
+			return new HttpResultModel<RegionModel>().setCode(RegionCode.Success.value()).setMsg(RegionCode.Success.desc());
+		}
+		if(cityVersion.isEmpty()){ 
+		    String kkString=ParseHelper.ToDateString(new Date(),"yyyyMMdd" );
+			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,kkString); //初始化
+			cityVersion=kkString;
+		}
+		RegionModel rModel = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Hot,RegionModel.class);  //获取热门城市和26个字母排序城市 
+		if (rModel!=null) {
+			rModel.setVersion(cityVersion);
+			return new HttpResultModel<RegionModel>().setCode(RegionCode.Success.value()).setMsg(RegionCode.Success.desc()).setData(rModel);
+		}
+		//返回给app的结果Model
+		rModel = new RegionModel();  
+		rModel.setVersion(cityVersion);
+ 
 		//首字母排列的所有城市
 		List<RegionModelFirstLetter> firstLetterRegionModel = new ArrayList<RegionModelFirstLetter>();
 		//热门城市
@@ -69,6 +65,7 @@ public class RegionService implements IRegionService{
 		rModel.setHotRegionModel(hotRegionModel);
 		 
 		String str="";
+		String[] letter={"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 		for(int i=0;i<letter.length;i++){
 			str=letter[i];
 			RegionModelFirstLetter rmflFirstLetter =new RegionModelFirstLetter();

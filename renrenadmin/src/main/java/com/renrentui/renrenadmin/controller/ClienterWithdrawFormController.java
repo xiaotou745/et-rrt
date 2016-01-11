@@ -120,12 +120,12 @@ public class ClienterWithdrawFormController {
 	 * @throws UnsupportedEncodingException 
 	 * */
 	@RequestMapping("alibatchnotifytransfercallback")
-	public void AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException{
-//		ModelAndView model = new ModelAndView("clienterwithdraw/batchalinotify");		
-//		model.addObject("data", clienterWithdrawFormService.AliBatchNotifyTransferCallback(request));
-//		return model;
-		String outString=clienterWithdrawFormService.AliBatchNotifyTransferCallback(request);
-		System.out.println(outString);
+	public ModelAndView AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException{
+		ModelAndView model = new ModelAndView("clienterwithdraw/batchalinotify");		
+		model.addObject("data", clienterWithdrawFormService.AliBatchNotifyTransferCallback(request));
+		return model;
+		//String outString=clienterWithdrawFormService.AliBatchNotifyTransferCallback(request);
+		//System.out.println(outString);
 	}
 	
 	/*
@@ -141,10 +141,10 @@ public class ClienterWithdrawFormController {
 		return model;
 	}
 	
-	@RequestMapping("alipaybatchlistdo")
+	@RequestMapping("alibatchlistdo")
 	public ModelAndView alipaybatchlistdo(PagedAlipayBatchListReq req) {
-		ModelAndView model = new ModelAndView("finance/alipaybatchlistdo");
-		PagedResponse<AlipayBatchModel>  datas=alipayBatchService.getAlipayBatchPagedList(req);
+		ModelAndView model = new ModelAndView("clienterwithdraw/alibatchlistdo");
+		PagedResponse<AlipayBatchModel> datas=alipayBatchService.getAlipayBatchPagedList(req);
 		model.addObject("listData",datas);
 		return model;
 	}
@@ -161,7 +161,7 @@ public class ClienterWithdrawFormController {
 		model.addObject("withdrawForms",withdrawForms);
 		model.addObject("subtitle", "财务管理");
 		model.addObject("currenttitle", "支付宝批次进度查询> 批次详情");
-		model.addObject("viewPath","finance/alipaybatchlistdetail");
+		model.addObject("viewPath","clienterwithdraw/alipaybatchlistdetail");
 		return model;
 	}	
 }

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.renrentui.renrenentity.AlipayBatch"%>
+<%@page import="com.renrentui.renrenentity.domain.AlipayBatchModel"%>
 <%@page
 	import="com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm"%>
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
@@ -16,8 +16,8 @@
 <%@page import="com.renrentui.renrencore.enums.ClienterWithdrawFormStatus"%>
 <%@page import="com.renrentui.renrenadmin.common.UserContext"%>
 <%
-	String basePath = PropertyUtils.getProperty("java.admin.url");
-	AlipayBatch alipayBatch = (AlipayBatch) request.getAttribute("alipayBatch");
+	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
+    AlipayBatchModel alipayBatch = (AlipayBatchModel) request.getAttribute("alipayBatch");
 	List<AlipayBatchClienterWithdrawForm> list = (List<AlipayBatchClienterWithdrawForm>) request.getAttribute("withdrawForms");
 	String callTimeStr = alipayBatch.getStatus() == AlipayBatchStatus.PlayGame.value() ? "- -" : ParseHelper.ToDateString(alipayBatch.getLastOptTime());
 %>
@@ -160,7 +160,7 @@ $(function(){
 		    btn: ['确认','取消'], //按钮
 		    shade: false //显示遮罩
 		}, function(){
-			window.open("<%=basePath%>/clienterwithdraw/AlipayBatchTransfer?type=2&data=<%=alipayBatch.getBatchNo()+""%>");
+			window.open("<%=basePath%>/clienterwithdraw/alipaybatchtransfer?type=2&data=<%=alipayBatch.getBatchNo()+""%>");
 			 var index= layer.alert('请在新打开的页面完成打款！', {
 				btn:["已完成打款"],
 			    skin: 'layui-layer-molv', //样式类名

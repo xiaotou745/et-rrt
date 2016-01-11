@@ -64,12 +64,8 @@ WHERE   cr.OtherClienterId = @Myid
 
 SELECT  #T2.ClienterId ,
         COUNT(td.id) AS CompleteCount ,
-        SUM(CASE WHEN cbr.RecordType = 1 THEN cbr.Amount
-                 ELSE 0
-            END) AS TotalAmount ,
-        SUM(CASE WHEN cbr.RecordType = 5 THEN cbr.Amount
-                 ELSE 0
-            END) AS TotalSubAmount ,
+        SUM( ISNULL(cbr.Amount,0)) AS TotalAmount ,
+        SUM( ISNULL(cbr2.Amount,0)) AS TotalSubAmount ,
         #T2.ClienterLevel
 INTO    #T5
 FROM    #T2
@@ -81,10 +77,9 @@ FROM    #T2
                                                     <if test="endDate != null and endDate!= ''" >
  													AND '${endDate}'>td.CreateDate
      												</if>
-        LEFT JOIN dbo.ClienterBalanceRecord AS cbr ON td.id = cbr.OrderId
-                                                      AND ( RecordType = 1
-                                                            OR RecordType = 5
-                                                          )
+        LEFT JOIN dbo.ClienterBalanceRecord AS cbr (nolock)ON td.id = cbr.OrderId AND  RecordType = 1
+		LEFT JOIN dbo.ClienterBalanceRecord AS cbr2 (nolock)ON td.id = cbr2.OrderId
+                                                      AND cbr2.RecordType = 5 AND cbr2.ClienterId = @Myid
 GROUP BY #T2.ClienterId ,
         #T2.ClienterLevel
 
@@ -135,12 +130,8 @@ SELECT  #T1.ClienterId ,
         MAX(#T1.ClienterName) AS ClienterName ,
         MAX(#T1.PhoneNo) AS PhoneNo ,
         COUNT(td.id) AS CompleteCount ,
-        SUM(CASE WHEN cbr.RecordType = 1 THEN cbr.Amount
-                 ELSE 0
-            END) AS TotalAmount ,
-        SUM(CASE WHEN cbr.RecordType = 5 THEN cbr.Amount
-                 ELSE 0
-            END) AS TotalSubAmount
+        SUM( ISNULL(cbr.Amount,0)) AS TotalAmount ,
+        SUM( ISNULL(cbr2.Amount,0)) AS TotalSubAmount 
 FROM    #T1
         LEFT JOIN dbo.TaskDatum AS td ( NOLOCK ) ON td.ClienterId = #T1.ClienterId
                                                     AND TD.Status = 2
@@ -150,10 +141,9 @@ FROM    #T1
                                                     <if test="endDate != null and endDate!= ''" >
  													AND '${endDate}'>td.CreateDate
      												</if>
-        LEFT JOIN dbo.ClienterBalanceRecord AS cbr ON td.id = cbr.OrderId
-                                                      AND ( RecordType = 1
-                                                            OR RecordType = 5
-                                                          )
+        LEFT JOIN dbo.ClienterBalanceRecord AS cbr(NOLOCK) ON td.id = cbr.OrderId AND  RecordType = 1
+        LEFT JOIN dbo.ClienterBalanceRecord AS cbr2 (nolock)ON td.id = cbr2.OrderId
+                                                      AND cbr2.RecordType = 5 AND cbr2.ClienterId = @Myid
         
 GROUP BY #T1.ClienterId
 DROP TABLE #CR

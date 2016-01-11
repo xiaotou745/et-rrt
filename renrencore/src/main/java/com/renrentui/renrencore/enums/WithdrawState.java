@@ -9,11 +9,17 @@ public enum WithdrawState  {
 	 * 提取金额大于可提现金额
 	 */
 	MoneyError(1211, "提取金额大于可提现金额"),
-	ParaError(1213, "参数错误"),
+	MoreThenTen(1212, "提现金额不能小于10元"),
+	LessThenOneThousand(1213, "单笔提现金额不能超过1000元"),
+	MustIntegralMultiple(1214, "提现金额必须为10的整数倍"),
+	UserIDError(1215, "userid必须大于0"),
+	LessTen(1214,"提现金额不能小于10元"),
+	MoreThousand(1215,"单笔提现金额不能超过1000元"),
+	NoTenMultiple(1216,"提现金额必须为10的整数倍"),
 	/**
 	 * 提现失败
 	 */
-	Failure(1212, "提现失败");
+	Failure(1312, "提现失败");
 
 	private int value = 0;
 	private String desc;

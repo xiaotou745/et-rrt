@@ -233,7 +233,7 @@ WHERE   1 = 1
 	     </foreach>
       </if>
       <if test="type == 2" >
-          AND cwf.Status = 20 AND AccountType = 1 AND ISNULL(cwf.AlipayBatchNo, '') = '${data}' 
+          AND cwf.Status = 20 AND WithType = 1 AND ISNULL(cwf.AlipayBatchNo, '') = '${data}' 
       </if>
   </select>  
   <insert id="insertLog" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLog" >

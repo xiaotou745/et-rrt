@@ -34,7 +34,13 @@ public class HttpUtil {
         String result = "";
         BufferedReader in = null;
         try {
-            String urlNameString = url + "?" + param;
+        	String urlNameString = url;
+        	param=(param==null?"":param);
+        	if (url.indexOf("?")>0) {
+        		urlNameString = url+param;
+			}else if (!param.isEmpty()) {
+				urlNameString = url + "?"+param;
+			}
             URL realUrl = new URL(urlNameString);
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();
@@ -59,8 +65,9 @@ public class HttpUtil {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送GET请求出现异常！" + e);
-            e.printStackTrace();
+//            System.out.println("发送GET请求出现异常！" + e);
+//            e.printStackTrace();
+            throw new RuntimeException("发送 GET 请求出现异常！"+e.getMessage());
         }
         // 使用finally块来关闭输入流
         finally {

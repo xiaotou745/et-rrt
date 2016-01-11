@@ -42,5 +42,8 @@ public interface IClienterWithdrawFormDao {
 	int InsertAlipayBatch(AlipayBatchModel insertAlipayBatchModel);
 
 
-	int UpdateAlipayBatchForAgain(AlipayBatchModel updateAlipayBatchModel); 
+	int UpdateAlipayBatchForAgain(AlipayBatchModel updateAlipayBatchModel);
+
+
+	int UpdateAlipayBatchNo(AlipayBatchModel alipayBatchModel); 
 }

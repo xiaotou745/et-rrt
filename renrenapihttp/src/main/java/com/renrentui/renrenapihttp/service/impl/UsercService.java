@@ -136,13 +136,24 @@ public class UsercService implements IUsercService {
 		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
 
 		if (req.getUserId() < 1) {
-			resultModel.setCode(WithdrawState.Failure.value());
-			resultModel.setMsg(WithdrawState.Failure.desc());
+			resultModel.setCode(WithdrawState.UserIDError.value());
+			resultModel.setMsg(WithdrawState.UserIDError.desc());
 			return resultModel;
 		}
+		
 		if (req.getAmount() < 10) {
-			resultModel.setCode(WithdrawState.ParaError.value());
-			resultModel.setMsg(WithdrawState.ParaError.desc());
+			resultModel.setCode(WithdrawState.MoreThenTen.value());
+			resultModel.setMsg(WithdrawState.MoreThenTen.desc());
+			return resultModel;
+		}
+		if (req.getAmount() > 1000) {
+			resultModel.setCode(WithdrawState.LessThenOneThousand.value());
+			resultModel.setMsg(WithdrawState.LessThenOneThousand.desc());
+			return resultModel;
+		}
+		if(req.getAmount()%10>0){
+			resultModel.setCode(WithdrawState.MustIntegralMultiple.value());
+			resultModel.setMsg(WithdrawState.MustIntegralMultiple.desc());
 			return resultModel;
 		}
 		WithdrawState code = clienterWithdrawFormService.WithdrawC(req);
