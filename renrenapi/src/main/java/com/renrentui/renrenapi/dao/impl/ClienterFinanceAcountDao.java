@@ -91,4 +91,10 @@ public class ClienterFinanceAcountDao extends DaoBase implements
 				"IClienterFinanceAcountDao.clienterWithdrawPayFailed", cwlModel)>0;
 	}
 
+	@Override
+	public boolean ModifyClienterAmountInfo(ClienterWithdrawLogModel cwlModel) {
+		return getMasterSqlSessionUtil().update(
+				"IClienterFinanceAcountDao.modifyClienterAmountInfo", cwlModel)>0;
+	}
+
 }

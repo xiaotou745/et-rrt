@@ -25,4 +25,5 @@ public interface IClienterFinanceAcountDao {
 	ClienterFinanceAcountModel GetClienterFinanceAccount(Long withdrawId);
 	boolean InsertClienterBalanceFailRecord(ClienterWithdrawLogModel cwlModel);
 	boolean ClienterWithdrawPayFailed(ClienterWithdrawLogModel cwlModel);
+	boolean ModifyClienterAmountInfo(ClienterWithdrawLogModel cwlModel);
 }
