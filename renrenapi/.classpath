@@ -28,6 +28,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/Code/renrenditui/lib/payscore.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
