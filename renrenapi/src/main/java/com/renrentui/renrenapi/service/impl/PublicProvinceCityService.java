@@ -112,8 +112,9 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	public int modifyCity(ModifyCityReq modifyCityReq) {
 		int result= publicProvinceCityDao.modifyCity(modifyCityReq);
 		if (result>0) {
-			redisService.remove(RedissCacheKey.RR_PublicProvinceCity_Hot);
 			redisService.remove(RedissCacheKey.RR_PublicProvinceCity);
+			redisService.remove(RedissCacheKey.RR_PublicProvinceCity_Hot);
+			redisService.remove(RedissCacheKey.RR_PublicProvinceCity_Version);
 		}
 
 		return result;
