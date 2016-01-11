@@ -373,6 +373,7 @@ PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvi
 </div>
 
 <script>
-//$('input').attr('disabled','disabled');
+$('input').attr('readonly','readonly');
+$('[name="rTaskType"]').attr('disabled','disabled');
 
 </script>
