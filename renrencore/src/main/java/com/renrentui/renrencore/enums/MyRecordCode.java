@@ -10,6 +10,10 @@ public enum MyRecordCode {
 	 */
 	UserIdInValid(1201, "用户ID无效"),
 	/**
+	 * RecordType值无效：1是收入，2是支出
+	 */
+	RecordTypeError(1203, "RecordType值无效：1是收入，2是支出"),
+	/**
 	 * 用户ID不存在
 	 */
 	UserIdUnexist(1202, "用户ID不存在");

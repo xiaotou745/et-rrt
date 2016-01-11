@@ -6,6 +6,8 @@ import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.SubmissionTip;
 import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
+import com.renrentui.renrenentity.req.GetIncomeReq;
+import com.renrentui.renrenentity.req.GetUserCReq;
 
 
 public interface IClienterBalanceRecordDao {
@@ -21,7 +23,7 @@ public interface IClienterBalanceRecordDao {
     int updateByPrimaryKeySelective(ClienterBalanceRecord record);
     
     int updateStatusByOrderId(ClienterBalanceRecord record); 
-	List<ClienterBalanceRecord> getRecordList(Long clienterId);
+	List<ClienterBalanceRecord> getRecordList(GetIncomeReq req);
 	
 	PagedResponse<ClienterBalanceRecord> getRecordList(ClienterBlanceRecordReq req);
 	

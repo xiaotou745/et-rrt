@@ -11,14 +11,16 @@ import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.SubmissionTip;
 import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
+import com.renrentui.renrenentity.req.GetIncomeReq;
+import com.renrentui.renrenentity.req.GetUserCReq;
 
 @Service
 public class ClienterBalanceRecordService implements IClienterBalanceRecordService{
 @Autowired
 	private IClienterBalanceRecordDao clienterBalanceRecordDao;
 	@Override
-	public List<ClienterBalanceRecord> getRecordList(Long clienterId) {
-return clienterBalanceRecordDao.getRecordList(clienterId);
+	public List<ClienterBalanceRecord> getRecordList(GetIncomeReq req) {
+		return clienterBalanceRecordDao.getRecordList(req);
 	}
 	/**
 	 * 地推余额流水分页
