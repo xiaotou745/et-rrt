@@ -1036,8 +1036,10 @@ function savetask(){
 						if (result > 0) {
 							alert("操作成功");
 							window.location.href = window.location.href;
-						} else {
+						} else if(result==0){
 							alert("操作失败");
+						}else{
+							alert("操作失败:下载链接无法访问，请修改后重试");
 						}
 					}
 		});

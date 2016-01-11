@@ -27,7 +27,9 @@ import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ISubCommissionService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
+import com.renrentui.renrencore.enums.TaskType;
 import com.renrentui.renrencore.enums.TemplateStatus;
+import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
@@ -36,6 +38,7 @@ import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.TaskShareStatistics;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
@@ -182,6 +185,17 @@ public class TaskManageController {
 		
 		SaveTaskReq req=JsonUtil.str2obj(data,SaveTaskReq.class);
 		RenRenTask taskItem=req.getRenRenTask();
+		//如果是下载类或分享类任务，需要校验地址是否可以打开
+		if (taskItem.getTaskType().intValue()!=TaskType.ContractTask.value()&&
+			taskItem.getDownUrl()!=null&&
+			!taskItem.getDownUrl().isEmpty()) {
+			try {
+				HttpUtil.sendGet(taskItem.getDownUrl(), "");
+			} catch (Exception e) {
+				return -1;
+			}
+		}
+		
 		taskItem.setStatus(TaskStatus.WaitAudit.value());
 		UserContext context=UserContext.getCurrentContext(request);
 		taskItem.setCreateName(context.getUserName());

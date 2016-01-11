@@ -19,6 +19,7 @@ import com.renrentui.renrenapi.service.inter.IClienterRelationService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.ITaskShareStatisticsService;
 import com.renrentui.renrencore.util.ExcelUtils;
+import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
@@ -183,10 +184,16 @@ public class ClienterController {
 			req.getDownUrl().isEmpty()) {
 			return;
 		}
-		TaskShareStatistics record=new TaskShareStatistics();
-		record.setClienterid(req.getClienterId());
-		record.setTaskid(req.getTaskId());
-		taskShareStatisticsService.insert(record);
+		try {
+			HttpUtil.sendGet(req.getDownUrl(), "");
+			TaskShareStatistics record=new TaskShareStatistics();
+			record.setClienterid(req.getClienterId());
+			record.setTaskid(req.getTaskId());
+			taskShareStatisticsService.insert(record);
+		} catch (Exception e) {
+			//e.printStackTrace();
+		}
+
 		response.sendRedirect(req.getDownUrl());
 	}
 	

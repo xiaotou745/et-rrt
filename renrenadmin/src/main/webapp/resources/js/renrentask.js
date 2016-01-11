@@ -42,17 +42,17 @@ function CheckSave(){
 	//task.estimatedTime=$('#estimatedTime').val();
 	if($('input[name="rTaskType"]:checked').val()!=1)
 	{
-		if($('#downUrl').val=='')
+		if($('#downUrl').val()=='')
 			{
 			alert('下载链接不能为空');
 			return false;
 			}
-		if($('#scanTip').val.length>20)
+		if($('#scanTip').val().length>20)
 		{
 		alert('扫码说明不能大于20个字符');
 		return false;
 		}
-		if($('#reminder').val.length>40)
+		if($('#reminder').val().length>40)
 		{
 		alert('温馨提示不能大于40个字符');
 		return false;
