@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,14 +32,18 @@ import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IOrderService;
 import com.renrentui.renrenapi.service.inter.ITaskDatumService;
+import com.renrentui.renrencore.util.ExcelUtils;
 import com.renrentui.renrencore.util.HttpRequestUtil;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
+import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.OrderChildInfoModel;
 import com.renrentui.renrenentity.domain.TemplateInfo;
 import com.renrentui.renrenentity.req.CancelOrderReq;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.ClienterBlanceRecordReq;
 import com.renrentui.renrenentity.req.OrderAuditReq;
 import com.renrentui.renrenentity.req.OrderChildReq;
 import com.renrentui.renrenentity.req.PagedAuditorderReq;
@@ -181,5 +186,31 @@ public class OrderController {
 	@ResponseBody
 	public String  getsubtip(Long orderId){			
 		return  clienterBalanceRecordService.getSubmissionTip(orderId);
+	}
+	
+	@RequestMapping("auditorderexport")
+	public void auditorderexport(PagedAuditorderReq req,HttpServletRequest request,HttpServletResponse response) throws Exception{	
+		req.setPageSize(25535);
+		req.setCurrentPage(1);
+		PagedResponse<OrderAudit> resp = orderService.getOrderAuditList(req);
+		List<OrderAudit> records=resp.getResultList(); 
+				String fileName = "人人地推-%s-数据";
+				fileName = String.format(fileName, req.getBeginDate()+ "到" + ParseHelper.ToDateString(req.getEndDate(),"yyyy-MM-dd"));
+				LinkedHashMap<String, String> columnTitiles = new LinkedHashMap<String, String>();
+				columnTitiles.put("资料编号", "id");
+				columnTitiles.put("地推员", "clienterInfo");
+				columnTitiles.put("公司名称", "pusher");
+				columnTitiles.put("任务名称", "taskTitle");
+				columnTitiles.put("该地推员完成次数", "completeNum");
+				columnTitiles.put("总佣金/次", "totalAmount");
+				columnTitiles.put("地推员佣金/次", "amountStr");
+				columnTitiles.put("上级累计分佣", "subCommisson");
+				columnTitiles.put("盈亏", "profitAmount");
+				columnTitiles.put("提交时间", "finishTime");
+				columnTitiles.put("终审时间", "auditTime");
+				columnTitiles.put("审核状态", "auditStatus");
+				//columnTitiles.put("资料详情", "dataInfo");
+				ExcelUtils.export2Excel(fileName, "资料审核列表", columnTitiles,records, request, response);
+				return;
 	}
 }

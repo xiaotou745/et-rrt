@@ -43,7 +43,9 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 		if (handler instanceof HandlerMethod) {
 			request.setAttribute("requestTime", (new Date()));
+		
 		}
+		
 		return true;
 	}
 
@@ -55,7 +57,6 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 
 			String methodName = handlerMethod.getMethod().toString();
 			String param = JsonUtil.obj2string(request.getParameterMap());
-			Date endDate = new Date();
 			Date requestTime = (Date) request.getAttribute("requestTime");
 			int userID=ParseHelper.ToInt(request.getAttribute("userID"),-1);
 			String userName = ParseHelper.ToString(request.getAttribute("userName"),"");
@@ -75,7 +76,6 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			String clientIp = SystemUtils.getClientIp(request);
 			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 			String appServerIP = JsonUtil.obj2string(ipinfoList);
-			
 			ActionLog logEngity = new ActionLog();
 			logEngity.setClientIp(clientIp);
 			logEngity.setRequestUrl(request.getRequestURL().toString());
@@ -92,6 +92,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			logEngity.setParam(param);
 			logEngity.setException(exceptionMsg);
 			logEngity.setStackTrace(stackTrace);
+			Date endDate = new Date();
 			logEngity.setExecuteTime(endDate.getTime() - requestTime.getTime());
 			logEngity.setRequestTime(ParseHelper.ToDateString(requestTime, ""));
 			logEngity.setRequestEndTime(ParseHelper.ToDateString(endDate, ""));
@@ -107,6 +108,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			System.out.println("方法名称：" + methodName);
 			System.out.println("方法入参：" + param);
 			System.out.println("执行时间,精确到毫秒:" + (endDate.getTime() - requestTime.getTime()));
+			
 		}
 	}
 

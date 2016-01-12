@@ -81,6 +81,7 @@ public class ClienterWithdrawFormService implements
 	private IClienterFinanceAcountService clienterFinanceAcountService;
 	@Autowired
 	private ITaskMsgService taskMsgService;
+
 	@Override
 	public int Add(ClienterWithdrawForm record) {
 		return clienterWithdrawFormDao.insert(record);
@@ -117,16 +118,18 @@ public class ClienterWithdrawFormService implements
 		clienterWithdrawFormModel.setTrueName(req.getTrueName());
 		clienterWithdrawFormModel
 				.setStatus((short) ClienterWithdrawFormStatus.UnAudit.value());// 待审核
-		
+
 		double actualHandCharge = PayToZhiFuBao(req.getAmount());
-		String handchargeString = globalConfigService.getValueByName("HandCharge"); 
-		clienterWithdrawFormModel.setHandCharge(ParseHelper.ToDouble(handchargeString, 3)); // 骑士付给我们的手续费金额，从缓存中读取
+		String handchargeString = globalConfigService
+				.getValueByName("HandCharge");
+		clienterWithdrawFormModel.setHandCharge(ParseHelper.ToDouble(
+				handchargeString, 3)); // 骑士付给我们的手续费金额，从缓存中读取
 		clienterWithdrawFormModel.setActualHandCharge(actualHandCharge); // 我们付给支付宝的手续费
 		clienterWithdrawFormModel.setActualAmount(req.getAmount()
 				- actualHandCharge);
 
 		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
-		//申请提现，扣减金额
+		// 申请提现，扣减金额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
 		cBReq.setAmount(-req.getAmount());
@@ -273,10 +276,11 @@ public class ClienterWithdrawFormService implements
 		} else if (tempmoney >= 25) {
 			actualhandcharge = 25;
 		} else {
-			actualhandcharge = (double)tempmoney;
+			actualhandcharge = (double) tempmoney;
 		}
 		return actualhandcharge;
 	}
+
 	/*
 	 * 批量付款 wangchao
 	 */
@@ -331,11 +335,10 @@ public class ClienterWithdrawFormService implements
 			toatlChargeAmount += item.getActualHandCharge();// 实际付款手续费
 			// 提现单号,支付宝账号,支付宝账户名,金额,备注
 			// 注意此处用提现单ID作为流水号穿给支付宝,方便支付宝回调后对数据处理
-			detailData.append(String.format("%s^%s^%s^%s^骑士申请提现打款|", item
-						.getId(), DES.decrypt(item.getAccountInfo()), item
-						.getTrueName(), new DecimalFormat("0.00").format(item
-						.getActualAmount())));
-				 
+			detailData.append(String.format("%s^%s^%s^%s^骑士申请提现打款|",
+					item.getId(), DES.decrypt(item.getAccountInfo()),
+					item.getTrueName(),
+					new DecimalFormat("0.00").format(item.getActualAmount())));
 			if (alipayBatchReq.getType() == 1)// 第一次提交
 			{
 				ClienterWithdrawLog clienterWithLog = new ClienterWithdrawLog();
@@ -376,25 +379,30 @@ public class ClienterWithdrawFormService implements
 			updateAlipayBatchModel.setRemarks(new Date() + "将批次号"
 					+ alipayBatchReq.getData() + "更换为" + alipayBatchNo + ";");
 			updateAlipayBatchModel.setNewBatchNo(alipayBatchNo);
-			clienterWithdrawFormDao.UpdateAlipayBatchForAgain(updateAlipayBatchModel);
+			clienterWithdrawFormDao
+					.UpdateAlipayBatchForAgain(updateAlipayBatchModel);
 		}
 
 		if ((updateCount == alipayBatchCount))// 更新数据量,插入数据量和数据总数一致
 		{
 			JSONObject json = new JSONObject();
-			json.put("notify_url", Config.aliBatchNotifyUrl+"/renrenadmin/clienterwithdraw/alibatchnotifytransfercallback");
+			json.put("notify_url", Config.aliBatchNotifyUrl
+					+ "/clienterwithdraw/alibatchnotifytransfercallback");
 			json.put("batch_no", alipayBatchNo);
-			json.put("batch_fee",alipayPayAmount); //总金额
-			json.put("batch_num",alipayBatchCount);//总笔数
-			json.put("detail_info",detailData.toString());
-
+			json.put("batch_fee", alipayPayAmount); // 总金额
+			json.put("batch_num", alipayBatchCount);// 总笔数
+			json.put("detail_info", detailData.toString());
+			json.put("platform", "1");
 			String postData = json.toString();
-			if (Config.interceptSwith == "1") {
-				postData = com.renrentui.renrencore.security.AES
-						.aesEncrypt(postData);
-				postData="{\"data\":\"" + postData + "\"}";
-			} 
-			String logResultJson = com.renrentui.renrencore.util.HttpUtil.sendPost(Config.aliBatchRequstUrl +"/services/aliservice/batchtrans",postData,"application/json; charset=utf-8"); 
+			// if (Config.interceptSwith == "1") {
+			postData = com.renrentui.renrencore.security.AES
+					.aesEncrypt(postData);
+			postData = "{\"data\":\"" + postData + "\"}";
+			// }
+			String logResultJson = com.renrentui.renrencore.util.HttpUtil
+					.sendPost(Config.aliBatchRequstUrl
+							+ "/services/aliservice/batchtrans", postData,
+							"application/json;charset=utf-8");
 			return logResultJson;
 		} else {
 			return "<html><body>提交提现单事务异常,请重试</body></html>";
@@ -417,13 +425,13 @@ public class ClienterWithdrawFormService implements
 			int max = 99999;
 			int ran = r.nextInt(max - min + 1) + min;// 10000-99999随机取一位
 
-			
-			batchno = ParseHelper.ToDateString(new Date(), "yyyyMMddhhmmssSSS") + ran;
+			batchno = ParseHelper.ToDateString(new Date(), "yyyyMMddhhmmssSSS")
+					+ ran;
 			String key = String.format(RedissCacheKey.Ets_AlipayBatchNo,
 					batchno);
 			String redisBatchNoString = redisService.get(key, String.class);
 
-			if (redisBatchNoString == null ||redisBatchNoString.equals("")) {
+			if (redisBatchNoString == null || redisBatchNoString.equals("")) {
 				redisService.set(key, batchno);// 将该批次号写入缓存25小时
 			} else {
 				batchno = CreateAlipayBatchNo(count);// 重新生成批次号
@@ -434,25 +442,15 @@ public class ClienterWithdrawFormService implements
 			return "";
 		}
 	}
+
 	/*
-	 * 支付宝回调
-	 * wangchao HttpServletRequest request
+	 * 支付宝回调 wangchao HttpServletRequest request
 	 */
 	@Override
 	public String AliBatchNotifyTransferCallback(HttpServletRequest request) {
 
-		Map<String, String> params = new HashMap<String, String>(); 
-//		 params.put("fail_details",""); 
-//		 params.put("success_details","110^dou631@163.com^白玉^0.01^S^^20160111538017244^20160111172502|"); 
-//		 params.put("notify_time","2016-01-11 17:25:03"); 
-//		 params.put("notify_type","batch_trans_notify"); 
-//		 params.put("notify_id","5aca1d49c70018e9488cc6a6a5c7312mhc"); 
-//		 params.put("sign_type","1"); 
-//		 params.put("sign","63ed2c0e7701a5786478a2862680c0ac"); 
-//		 params.put("batch_no","201501061151"); 
-//		 params.put("pay_user_id","2088911703660069"); 
-//		 params.put("pay_user_name","易代送网络科技（北京）有限公司"); 
-//		 params.put("pay_account_no","20889117036600690156"); 
+		Map<String, String> params = new HashMap<String, String>();
+
 		Map requestParams = request.getParameterMap();
 		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
 			String name = (String) iter.next();
@@ -468,18 +466,19 @@ public class ClienterWithdrawFormService implements
 		}
 		// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
 		// 批量付款数据中转账成功的详细信息
-		AlipayBatchCallBackModel alipayBatchCallBackModel = new AlipayBatchCallBackModel(); 
+		AlipayBatchCallBackModel alipayBatchCallBackModel = new AlipayBatchCallBackModel();
 		params.put("platform", "1");
-		//if (AlipayNotify.verify(params)) {// 验证成功
+		params.put("verify", "1");
+		if (AlipayNotify.verify(params)) {// 验证成功
 			// 批量付款数据中转账失败的详细信息
 			// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
-			String fail_details= params.get("fail_details"); 
+			String fail_details = params.get("fail_details");
 			String success_details = params.get("success_details");
-			String notify_time = params.get("notify_time"); 
-			String notify_type = params.get("notify_type"); 
-			String notify_id = params.get("notify_id"); 
-			String sign_type = params.get("sign_type"); 
-			String sign = params.get("sign"); 
+			String notify_time = params.get("notify_time");
+			String notify_type = params.get("notify_type");
+			String notify_id = params.get("notify_id");
+			String sign_type = params.get("sign_type");
+			String sign = params.get("sign");
 			String batch_no = params.get("batch_no");
 			String pay_user_id = params.get("pay_user_id");
 			String pay_user_name = params.get("pay_user_name");
@@ -495,112 +494,137 @@ public class ClienterWithdrawFormService implements
 			alipayBatchCallBackModel.setPayUserId(pay_user_id);
 			alipayBatchCallBackModel.setPayUserName(pay_user_name);
 			alipayBatchCallBackModel.setPayAccountNo(pay_account_no);
-			if(AliBatchNotifyTransferCallbackBusinessDeal(alipayBatchCallBackModel))  //处理成功后的业务逻辑
+			if (AliBatchNotifyTransferCallbackBusinessDeal(alipayBatchCallBackModel)) // 处理成功后的业务逻辑
 			{
 				return "success";
-			}
-			else {
+			} else {
 				// 验证失败
 				return "fail";
 			}
-//		} else {
-//			return "fail";
-//		}
+		} else {
+			return "fail";
+		}
 
 	}
-	
+
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public boolean AliBatchNotifyTransferCallbackBusinessDeal(AlipayBatchCallBackModel alipayBatchCallBackModel){
-		List<AlipayCallBackData> successlist = ConvertAlipayDetails(alipayBatchCallBackModel.getSuccessDetails());
-		List<AlipayCallBackData> faillist = ConvertAlipayDetails(alipayBatchCallBackModel.getFailDetails());
+	public boolean AliBatchNotifyTransferCallbackBusinessDeal(
+			AlipayBatchCallBackModel alipayBatchCallBackModel) {
+		List<AlipayCallBackData> successlist = ConvertAlipayDetails(alipayBatchCallBackModel
+				.getSuccessDetails());
+		List<AlipayCallBackData> faillist = ConvertAlipayDetails(alipayBatchCallBackModel
+				.getFailDetails());
 		AlipayBatchModel alipayBatchModel = new AlipayBatchModel();
 		alipayBatchModel.setBatchNo(alipayBatchCallBackModel.getBatchNo());
-		alipayBatchModel.setStatus(1); //打款完成
-		if(clienterWithdrawFormDao.CheckAlipayBatch(alipayBatchModel)>0){ //已经处理了该批次
+		alipayBatchModel.setStatus(1); // 打款完成
+		if (clienterWithdrawFormDao.CheckAlipayBatch(alipayBatchModel) > 0) { // 已经处理了该批次
 			return false;
 		}
 		AlipayBatchModel alipayBatchModel2 = new AlipayBatchModel();
 		alipayBatchModel2.setSuccessTimes(successlist.size());
 		alipayBatchModel2.setFailTimes(faillist.size());
 		alipayBatchModel2.setBatchNo(alipayBatchCallBackModel.getBatchNo());
-		int cc =clienterWithdrawFormDao.UpdateAlipayBatchNo(alipayBatchModel2);//更新批次表信息
-		//处理成功的
+		int cc = clienterWithdrawFormDao.UpdateAlipayBatchNo(alipayBatchModel2);// 更新批次表信息
+		// 处理成功的
 		for (int i = 0; i < successlist.size(); i++) {
 			ClienterWithdrawLogModel clienterWithdrawLogModel = new ClienterWithdrawLogModel();
 			clienterWithdrawLogModel.setOperator("system");
-			clienterWithdrawLogModel.setRemark("支付宝提现打款成功，支付宝账号"+successlist.get(i).getAccountNo());
-			clienterWithdrawLogModel.setStatus(ClienterWithdrawFormStatus.PaySuccess.value());
-			clienterWithdrawLogModel.setOldStatus(ClienterWithdrawFormStatus.Paying.value());
-			clienterWithdrawLogModel.setWithwardId(successlist.get(i).getWithdrawId());
+			clienterWithdrawLogModel.setRemark("支付宝提现打款成功，支付宝账号"
+					+ successlist.get(i).getAccountNo());
+			clienterWithdrawLogModel
+					.setStatus(ClienterWithdrawFormStatus.PaySuccess.value());
+			clienterWithdrawLogModel
+					.setOldStatus(ClienterWithdrawFormStatus.Paying.value());
+			clienterWithdrawLogModel.setWithwardId(successlist.get(i)
+					.getWithdrawId());
 			clienterWithdrawLogModel.setIsCallBack(1);
-			clienterWithdrawLogModel.setCallBackRequestId(successlist.get(i).getAlipayInnerNo());
-			//更新骑士 确认打款
-			clienterFinanceAcountService.ClienterWithdrawPayOk(clienterWithdrawLogModel);
-			////获取骑士相关金融账户信息 发送消息
-			ClienterFinanceAcountModel cfaModel = new ClienterFinanceAcountModel(); 
-			cfaModel = clienterFinanceAcountService.GetClienterFinanceAccount(successlist.get(i).getWithdrawId());
-			if(cfaModel !=null){
+			clienterWithdrawLogModel.setCallBackRequestId(successlist.get(i)
+					.getAlipayInnerNo());
+			// 更新骑士 确认打款
+			clienterFinanceAcountService
+					.ClienterWithdrawPayOk(clienterWithdrawLogModel);
+			// //获取骑士相关金融账户信息 发送消息
+			ClienterFinanceAcountModel cfaModel = new ClienterFinanceAcountModel();
+			cfaModel = clienterFinanceAcountService
+					.GetClienterFinanceAccount(successlist.get(i)
+							.getWithdrawId());
+			if (cfaModel != null) {
 				AddCPlayMoneySuccessMessage(cfaModel);
 			}
 		}
-		//处理失败的提现单
+		// 处理失败的提现单
 		for (int i = 0; i < faillist.size(); i++) {
 			ClienterWithdrawLogModel cwlModel = new ClienterWithdrawLogModel();
 			cwlModel.setOperator("system");
-			String reString="支付宝提现打款失败"+faillist.get(i).getReason().trim().toUpperCase()=="ACCOUN_NAME_NOT_MATCH" ? ",支付宝账户和姓名不匹配" : "";
+			String reString = "支付宝提现打款失败"
+					+ faillist.get(i).getReason().trim().toUpperCase() == "ACCOUN_NAME_NOT_MATCH" ? ",支付宝账户和姓名不匹配"
+					: "";
 			cwlModel.setRemark(reString);
-			cwlModel.setPayFailedReason("支付宝失败代码:"+faillist.get(i).getReason().trim().toUpperCase()=="ACCOUN_NAME_NOT_MATCH" ? ",支付宝账户和姓名不匹配" :faillist.get(i).getReason());
+			cwlModel.setPayFailedReason("支付宝失败代码:"
+					+ faillist.get(i).getReason().trim().toUpperCase() == "ACCOUN_NAME_NOT_MATCH" ? ",支付宝账户和姓名不匹配"
+					: faillist.get(i).getReason());
 			cwlModel.setStatus(ClienterWithdrawFormStatus.PayError.value());
 			cwlModel.setOldStatus(ClienterWithdrawFormStatus.Paying.value());
 			cwlModel.setWithwardId(faillist.get(i).getWithdrawId());
 			cwlModel.setIsCallBack(1);
 			cwlModel.setCallBackRequestId(faillist.get(i).getAlipayInnerNo());
-			//更新骑士 确认打款
+			// 更新骑士 确认打款
 			clienterFinanceAcountService.ClienterWithdrawPayFail(cwlModel);
-			////获取骑士相关金融账户信息 发送消息
-			ClienterFinanceAcountModel cfaModel = new ClienterFinanceAcountModel(); 
-			cfaModel = clienterFinanceAcountService.GetClienterFinanceAccount(faillist.get(i).getWithdrawId());
+			// //获取骑士相关金融账户信息 发送消息
+			ClienterFinanceAcountModel cfaModel = new ClienterFinanceAcountModel();
+			cfaModel = clienterFinanceAcountService
+					.GetClienterFinanceAccount(faillist.get(i).getWithdrawId());
 			cfaModel.setPayFailedReason(reString);
-			if(cfaModel !=null){
+			if (cfaModel != null) {
 				AddCPlayMoneyFailMessage(cfaModel);
 			}
 		}
 		return true;
 	}
-	
+
 	private boolean AddCPlayMoneyFailMessage(ClienterFinanceAcountModel cfaModel) {
-        int id = taskMsgService.insertMsg("提现失败", String.format("您于%s发起的提现申请交易失败，失败原因：（人工选择或填写的备注），提现资金已退还到账户余额。如有疑问，请联系地推小管家：010-57173598",ParseHelper.ToDateString(cfaModel.getCreatetime(),"yyyy-MM-dd")), "admin", 1, cfaModel.getClienterId(), cfaModel.getWithdrawId(), 0);
-		return id>0;
+		int id = taskMsgService
+				.insertMsg(
+						"提现失败",
+						String.format(
+								"您于%s发起的提现申请交易失败，失败原因：（人工选择或填写的备注），提现资金已退还到账户余额。如有疑问，请联系地推小管家：010-57173598",
+								ParseHelper.ToDateString(
+										cfaModel.getCreatetime(), "yyyy-MM-dd")),
+						"admin", 1, cfaModel.getClienterId(), cfaModel
+								.getWithdrawId(), 0);
+		return id > 0;
 	}
 
-	public boolean AddCPlayMoneySuccessMessage(ClienterFinanceAcountModel cfaModel){ 
-        int id = taskMsgService.insertMsg("提现成功", String.format("您的%s元提现金额已成功到账，请注意查收，手续费%s元已扣款。如有疑问，请联系地推小管家：010-57173598", cfaModel.getAmount(),cfaModel.getHandCharge()), "admin", 1, cfaModel.getClienterId(), cfaModel.getWithdrawId(), 0);
-		return id>0;
+	public boolean AddCPlayMoneySuccessMessage(
+			ClienterFinanceAcountModel cfaModel) {
+		int id = taskMsgService.insertMsg("提现成功", String.format(
+				"您的%s元提现金额已成功到账，请注意查收，手续费%s元已扣款。如有疑问，请联系地推小管家：010-57173598",
+				cfaModel.getAmount(), cfaModel.getHandCharge()), "admin", 1,
+				cfaModel.getClienterId(), cfaModel.getWithdrawId(), 0);
+		return id > 0;
 	}
-	
-	public List<AlipayCallBackData> ConvertAlipayDetails(String data){
+
+	public List<AlipayCallBackData> ConvertAlipayDetails(String data) {
 		List<AlipayCallBackData> list = new ArrayList<AlipayCallBackData>();
-		if(data== null || data.length() == 0){
+		if (data == null || data.length() == 0) {
 			return list;
 		}
-		String[] dataArr = data.split("\\|");//单个数据
-        for (int i = 0; i < dataArr.length; i++)
-        {
-            if (dataArr[i] == "")
-            {
-                continue;
-            }
-            String[] propArr = dataArr[i].split("\\^");
-            AlipayCallBackData model = new AlipayCallBackData();
-             model.setWithdrawId(ParseHelper.ToLong(propArr[0],0));
-             model.setAccountNo(propArr[1]);
-             model.setTrueName(propArr[2]);
-             model.setPaidAmount(ParseHelper.ToDouble(propArr[3], 0));
-             model.setStatus(propArr[4]);
-             model.setReason(propArr[5]);
-             model.setAlipayInnerNo(propArr[6]);             
-            list.add(model);
-        }
-        return list;
+		String[] dataArr = data.split("\\|");// 单个数据
+		for (int i = 0; i < dataArr.length; i++) {
+			if (dataArr[i] == "") {
+				continue;
+			}
+			String[] propArr = dataArr[i].split("\\^");
+			AlipayCallBackData model = new AlipayCallBackData();
+			model.setWithdrawId(ParseHelper.ToLong(propArr[0], 0));
+			model.setAccountNo(propArr[1]);
+			model.setTrueName(propArr[2]);
+			model.setPaidAmount(ParseHelper.ToDouble(propArr[3], 0));
+			model.setStatus(propArr[4]);
+			model.setReason(propArr[5]);
+			model.setAlipayInnerNo(propArr[6]);
+			list.add(model);
+		}
+		return list;
 	}
 }
