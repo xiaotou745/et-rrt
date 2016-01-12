@@ -35,6 +35,11 @@ public class OrderAudit {
 	private Double subCommisson;
 	private int profit;
 	private Double profitAmount;
+	//-------------导出专用
+	public String getClienterInfo() {
+		return phoneNo+","+clienterName;
+	}
+	//-------------
 	public Double getProfitAmount() {
 		return profitAmount;
 	}
