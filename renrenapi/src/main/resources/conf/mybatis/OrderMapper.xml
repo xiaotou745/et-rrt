@@ -335,7 +335,8 @@ where GETDATE()>=DealLineTime and OrderStatus=0
   <update id="orderAudit" parameterType="com.renrentui.renrenentity.req.OrderAuditReq">
 UPDATE dbo.TaskDatum SET Status=${auditStatus},
 AuditTime=GETDATE(),
-AuditName='${auditName}'
+AuditName='${auditName}',
+RefuReason='${refuReason}'
 WHERE id=${orderId}
   </update>
   
