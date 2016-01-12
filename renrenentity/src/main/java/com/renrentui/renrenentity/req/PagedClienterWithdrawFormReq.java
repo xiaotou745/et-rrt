@@ -16,12 +16,36 @@ public class PagedClienterWithdrawFormReq extends PagedRequestBase {
 	   	private String clienterName;
 
 	    private String phoneNo;
-
+	    private int withType;  
+		private String startDate;
+	    private String endDate;
 	    private int status;
 		public int getStatus() {
 			return status;
 		}
+		public int getWithType() {
+			return withType;
+		}
 
+		public void setWithType(int withType) {
+			this.withType = withType;
+		}
+
+		public String getStartDate() {
+			return startDate;
+		}
+
+		public void setStartDate(String startDate) {
+			this.startDate = startDate;
+		}
+
+		public String getEndDate() {
+			return endDate;
+		}
+
+		public void setEndDate(String endDate) {
+			this.endDate = endDate;
+		}
 		public void setStatus(int status) {
 			this.status = status;
 		}

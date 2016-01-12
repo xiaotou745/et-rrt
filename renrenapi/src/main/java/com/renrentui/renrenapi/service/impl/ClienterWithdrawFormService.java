@@ -220,7 +220,6 @@ public class ClienterWithdrawFormService implements
 		record.setStatus((short) ClienterWithdrawFormStatus.AuditRefuse.value());// 审核拒绝
 		record.setAuditTime(new Date());
 		int cwfId = clienterWithdrawFormDao.updateByPrimaryKeySelective(record);
-
 		// 流水表 更新提现状态
 		ClienterBalanceRecord cbrModelU = new ClienterBalanceRecord();
 		cbrModelU.setOrderId(cbrModel.getOrderId());

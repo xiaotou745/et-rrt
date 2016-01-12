@@ -25,6 +25,9 @@ go
 alter table dbo.ClienterWithdrawForm
 add CallBackRequestId nvarchar(512) null
 go
+alter table dbo.ClienterWithdrawForm
+add AuditFailedReason nvarchar(512) default ''
+go
 exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'支付时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'PayTime'
 go
 exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'打款失败原因' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'PayFailedReason'
@@ -42,3 +45,5 @@ exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'第三方回调时间
 go
 exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'第三方回调单号' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'CallBackRequestId'
 go
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'审核拒绝原因' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'AuditFailedReason'

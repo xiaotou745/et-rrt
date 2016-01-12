@@ -49,7 +49,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getId()%></td>
 			<td><%=data.get(i).getClienterName()%></td>
 			<td><%=data.get(i).getPhoneNo()%></td>	
-			<td><%=ParseHelper.digitsNum(data.get(i).getAmount(),2)%></td>	
+			<td><%=data.get(i).getAmountString()%></td>	
 			<td><%=data.get(i).getWithdrawNo()%></td>	
 			<td><%=data.get(i).getAccountInfo()%></td>
 			<td><%=data.get(i).getTrueName()%></td>			
@@ -58,7 +58,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td>
 			<%if(data.get(i).getStatus()==0) {%>
 			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>','<%=data.get(i).getClienterId() %>','<%=data.get(i).getAmount() %>')" >审核通过 </a>
-			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>')" >审核拒绝</a>			
+			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>',<%=data.get(i).getAmount() %>)" >审核拒绝</a>			
 			<%} %>			
 			<%if(data.get(i).getStatus()==1) {%>
 			<a href="javascript:void(0)"  onclick="funPayOK('<%=data.get(i).getId() %>',<%=data.get(i).getAmount() %>)" >确认打款</a>
@@ -97,43 +97,51 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 					window.location.href = "<%=basePath%>/clienterwithdraw/list";
 				} else {
 					alert("操作失败");
-				}  
-
-              /*  if (result.IsSuccess) {
-                   alert(result.Message);
-                   window.location.href = "/clienterwithdraw/ClienterWithdraw";
-               } else {
-                   alert(result.Message);
-               } */
+				}
            }
        });
    }
     
  //审核拒绝
-    function WithdrawAuditRefuse(withwardId)
-    {
-    	  if (!window.confirm("确认要审核拒绝？")) {
-              return;
-          }
-          var paramaters = {
-              "withwardId": withwardId           
-          };
-          var url = "<%=basePath%>/clienterwithdraw/auditrefuse";
-          $.ajax({
-              type: 'POST',
-              url: url,
-              data: paramaters,
-              success: function (result) {
-           	   
-        	   if (result>0) {
-					alert("操作成功");
-					window.location.href = "<%=basePath%>/clienterwithdraw/list";
-				} else {
-					alert("操作失败");
-				}  
-              }
-          });
+    function WithdrawAuditRefuse(withwardId,amount) {
+	 	$("#lblRefusePayMoney").html(amount);
+	 	$("#txtHideWithdrawId").val(withwardId);
+	 	$("#refuseRemarkDiv").modal('show'); 
     }
+ function refuseConfirm(){
+	 if (!window.confirm("确认要审核拒绝？")) {
+         return;
+     } 
+	 var refuseRemrak = $("#refuseRemrakTxt").val().trim();
+	 if(refuseRemrak.length<0){
+		 alert("拒绝原因不能为空");
+		 return;
+	 }
+	 
+	 if(refuseRemrak.length>100){
+		 alert("拒绝原因请控制在100字符以内");
+		 return;
+	 }	 
+     var paramaters = {
+         "withwardId": $("#txtHideWithdrawId").val(), 
+         "auditFailedReason":refuseRemrak
+     };
+     var url = "<%=basePath%>/clienterwithdraw/auditrefuse";
+     $.ajax({
+         type: 'POST',
+         url: url,
+         data: paramaters,
+         success: function (result) {
+      	   
+   	   if (result>0) {
+				alert("操作成功");
+				window.location.href = "<%=basePath%>/clienterwithdraw/list";
+			} else {
+				alert("操作失败");
+			}  
+         }
+     });
+ }
  //确认打款
  function funPayOK(id,amount){
 	 var url = "<%=basePath%>/clienterwithdraw/alipaybatchtransfer?type=1&data=" + id;

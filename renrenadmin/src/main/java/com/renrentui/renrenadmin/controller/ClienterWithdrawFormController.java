@@ -92,10 +92,11 @@ public class ClienterWithdrawFormController {
 	 */	
 	@RequestMapping("auditrefuse")
 	@ResponseBody
-	public int auditrefuse(HttpServletRequest request,int  withwardId) {
+	public int auditrefuse(HttpServletRequest request,int  withwardId,String auditFailedReason) {
 	
 		ClienterWithdrawForm record=new ClienterWithdrawForm();
 		record.setId((long)withwardId);
+		record.setAuditFailedReason(auditFailedReason);
 		UserContext context=UserContext.getCurrentContext(request);
 		record.setAuditName(context.getUserName());
 		return clienterWithdrawFormService.AuditRefuse(record);	

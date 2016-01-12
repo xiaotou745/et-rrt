@@ -1,13 +1,14 @@
 package com.renrentui.renrenentity;
 
 
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class ClienterWithdrawForm {
     private Long id;
 
     private Long clienterId;
-
+    private String auditFailedReason;
     private Double amount;
 
     private String withdrawNo;
@@ -43,6 +44,10 @@ public class ClienterWithdrawForm {
 
     public Double getAmount() {
         return amount;
+    }
+    public String getAmountString()
+    {
+      return new DecimalFormat("0.00").format(amount);
     }
 
     public void setAmount(Double amount) {
@@ -145,6 +150,14 @@ public class ClienterWithdrawForm {
 
 	public void setActualHandCharge(double actualHandCharge) {
 		this.actualHandCharge = actualHandCharge;
+	}
+
+	public String getAuditFailedReason() {
+		return auditFailedReason;
+	}
+
+	public void setAuditFailedReason(String auditFailedReason) {
+		this.auditFailedReason = auditFailedReason;
 	}
 
     
