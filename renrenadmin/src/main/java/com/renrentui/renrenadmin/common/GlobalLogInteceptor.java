@@ -43,7 +43,9 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 		if (handler instanceof HandlerMethod) {
 			request.setAttribute("requestTime", (new Date()));
+		
 		}
+		
 		return true;
 	}
 
@@ -74,7 +76,6 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			String clientIp = SystemUtils.getClientIp(request);
 			List<String> ipinfoList = SystemUtils.getLocalIpInfo();
 			String appServerIP = JsonUtil.obj2string(ipinfoList);
-			
 			ActionLog logEngity = new ActionLog();
 			logEngity.setClientIp(clientIp);
 			logEngity.setRequestUrl(request.getRequestURL().toString());
@@ -107,6 +108,7 @@ public class GlobalLogInteceptor extends HandlerInterceptorAdapter {
 			System.out.println("方法名称：" + methodName);
 			System.out.println("方法入参：" + param);
 			System.out.println("执行时间,精确到毫秒:" + (endDate.getTime() - requestTime.getTime()));
+			
 		}
 	}
 

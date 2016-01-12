@@ -1,4 +1,5 @@
 
+<%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
@@ -83,7 +84,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						{
 							%>
 							<tr><td><%=view.getTemplateGroup().get(i).getControlList().get(j).getControlTitle()%></td>
-							<td><img alt="" src="<%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue().equals("")?"":view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%>"></td></tr>
+							<td>
+							<a href="<%=ParseHelper.getBigPic(view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()) %>" target="_blanck">
+							<img alt="" src="<%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue().equals("")?"":view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%>">
+							</a></td></tr>
 							<%
 						}
 						%>
@@ -106,7 +110,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						for(int j=0;j<view.getTemplateGroup().get(i).getControlList().size();j++)
 						{
 							%>
-							<td><img alt="" src="<%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue().equals("")?"":view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%>"></td></tr>
+							<td>
+							<a href="<%=ParseHelper.getBigPic(view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()) %>" target="_blanck">
+							<img alt="" src="<%=view.getTemplateGroup().get(i).getControlList().get(j).getControlValue().equals("")?"":view.getTemplateGroup().get(i).getControlList().get(j).getControlValue()%>">
+							</a></td></tr>
 							<%
 						}
 						%>
