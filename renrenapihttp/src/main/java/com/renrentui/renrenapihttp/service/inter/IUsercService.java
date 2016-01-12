@@ -156,7 +156,7 @@ public interface IUsercService {
 	@Path("/getpartnerinfo")
 	public HttpResultModel<PartnerModel> getPartnerInfo(GetUserCReq req);
 	
-	@POST
-	@Path("/wangchao")
-	public void wangchao(String id);
+//	@POST
+//	@Path("/wangchao")
+//	public void wangchao(String id);
 }
