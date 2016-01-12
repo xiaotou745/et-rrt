@@ -62,6 +62,9 @@ width: 100%;
 								<option value="0">待审核</option>
 								<option value="1">审核通过</option>
 								<option value="2">审核拒绝</option>
+								<option value="20">打款中</option>
+								<option value="3">打款成功</option>
+								<option value="30">打款失败</option>
 								</select> 
 							</div>
 						</div>
