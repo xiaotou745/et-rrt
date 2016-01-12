@@ -244,9 +244,13 @@ values(#{withwardId,jdbcType=BIGINT},#{status,jdbcType=INTEGER},#{remark,jdbcTyp
     update  dbo.AlipayBatch
 set     [Status] = 1 ,
         CallbackTime = getdate() ,
-        SuccessTimes = 1 ,
-        FailTimes = 0
-where   BatchNo = '1'
+        SuccessTimes = #{successTimes,jdbcType=INTEGER} ,
+        FailTimes = #{failTimes,jdbcType=INTEGER}
+where   BatchNo = #{batchNo,jdbcType=VARCHAR}
+  </update>
+  <!-- 修改提现单状态为20打款中，更新批次号 wangchao -->
+  <update id="updateAlipaySuccessBatchNo" parameterType="com.renrentui.renrenentity.req.UpdateAlipayBatchReq" > 
+    UPDATE ClienterWithdrawForm SET AlipayBatchNo=#{aliBatchNo,jdbcType=VARCHAR},Status=20 WHERE id=#{id,jdbcType=INTEGER}
   </update>
   <insert id="insertAlipayBatch" parameterType="com.renrentui.renrenentity.domain.AlipayBatchModel" >
     INSERT INTO dbo.AlipayBatch
@@ -278,6 +282,4 @@ where   BatchNo = '1'
         	BatchNo=#{newBatchNo,jdbcType=VARCHAR}
 		WHERE BatchNo = #{batchNo,jdbcType=VARCHAR}
   </update>
-  
-  
 </mapper>

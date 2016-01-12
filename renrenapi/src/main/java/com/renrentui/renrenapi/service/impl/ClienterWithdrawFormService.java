@@ -340,7 +340,6 @@ public class ClienterWithdrawFormService implements
 					item.getId(), DES.decrypt(item.getAccountInfo()),
 					item.getTrueName(),
 					new DecimalFormat("0.00").format(item.getActualAmount())));
-
 			if (alipayBatchReq.getType() == 1)// 第一次提交
 			{
 				ClienterWithdrawLog clienterWithLog = new ClienterWithdrawLog();
@@ -388,25 +387,23 @@ public class ClienterWithdrawFormService implements
 		if ((updateCount == alipayBatchCount))// 更新数据量,插入数据量和数据总数一致
 		{
 			JSONObject json = new JSONObject();
-			json.put(
-					"notify_url",
-					Config.aliBatchNotifyUrl
-							+ "/renrenadmin/clienterwithdraw/alibatchnotifytransfercallback");
+			json.put("notify_url", Config.aliBatchNotifyUrl
+					+ "/clienterwithdraw/alibatchnotifytransfercallback");
 			json.put("batch_no", alipayBatchNo);
 			json.put("batch_fee", alipayPayAmount); // 总金额
 			json.put("batch_num", alipayBatchCount);// 总笔数
 			json.put("detail_info", detailData.toString());
-
+			json.put("platform", "1");
 			String postData = json.toString();
-			if (Config.interceptSwith == "1") {
-				postData = com.renrentui.renrencore.security.AES
-						.aesEncrypt(postData);
-				postData = "{\"data\":\"" + postData + "\"}";
-			}
+			// if (Config.interceptSwith == "1") {
+			postData = com.renrentui.renrencore.security.AES
+					.aesEncrypt(postData);
+			postData = "{\"data\":\"" + postData + "\"}";
+			// }
 			String logResultJson = com.renrentui.renrencore.util.HttpUtil
 					.sendPost(Config.aliBatchRequstUrl
 							+ "/services/aliservice/batchtrans", postData,
-							"application/json; charset=utf-8");
+							"application/json;charset=utf-8");
 			return logResultJson;
 		} else {
 			return "<html><body>提交提现单事务异常,请重试</body></html>";
