@@ -466,10 +466,10 @@ public class UsercService implements IUsercService {
 		return hrm;
 	}
 
-	@Override
-	public void wangchao(String id) {  
-		clienterWithdrawFormService.AliBatchNotifyTransferCallback();
-	}
+//	@Override
+//	public void wangchao(String id) {  
+//		clienterWithdrawFormService.AliBatchNotifyTransferCallback();
+//	}
 
 	/**
 	 * 上传文件
