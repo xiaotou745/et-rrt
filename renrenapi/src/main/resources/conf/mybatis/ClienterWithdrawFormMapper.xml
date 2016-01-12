@@ -224,7 +224,7 @@
         ActualAmount , 
         ActualHandCharge,
         AlipayBatchNo
-FROM    dbo.ClienterWithdrawForm AS cwf(NOLOCK)
+FROM    dbo.ClienterWithdrawForm AS cwf(NOLOCK) 
 WHERE   1 = 1 
 	  <if test="type == 1" >
          AND cwf.Status = 1  AND WithType = 1 AND ISNULL(cwf.AlipayBatchNo, '') = '' AND cwf.id IN 
@@ -240,8 +240,13 @@ WHERE   1 = 1
     insert into ClienterWithdrawLog(WithwardId,Status,Remark,Operator)
 values(#{withwardId,jdbcType=BIGINT},#{status,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR},#{operator,jdbcType=VARCHAR}) 
   </insert>
-  <update id="updateAlipayBatchNo" parameterType="com.renrentui.renrenentity.req.UpdateAlipayBatchReq" >
-    UPDATE ClienterWithdrawForm SET AlipayBatchNo=#{aliBatchNo,jdbcType=VARCHAR},Status=20 WHERE id=#{id,jdbcType=BIGINT}
+  <update id="updateAlipayBatchNo" parameterType="com.renrentui.renrenentity.domain.AlipayBatchModel" > 
+    update  dbo.AlipayBatch
+set     [Status] = 1 ,
+        CallbackTime = getdate() ,
+        SuccessTimes = 1 ,
+        FailTimes = 0
+where   BatchNo = '1'
   </update>
   <insert id="insertAlipayBatch" parameterType="com.renrentui.renrenentity.domain.AlipayBatchModel" >
     INSERT INTO dbo.AlipayBatch

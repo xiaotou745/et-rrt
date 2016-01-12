@@ -21,7 +21,12 @@ add ActualHandCharge decimal(9,2) default 0.00
 go
 alter table dbo.ClienterWithdrawForm
 add CallBackTime datetime null
-
+go
+alter table dbo.ClienterWithdrawForm
+add CallBackRequestId nvarchar(512) null
+go
+alter table dbo.ClienterWithdrawForm
+add Payer nvarchar(512) default ''
 go
 exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'支付时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'PayTime'
 go
@@ -37,4 +42,8 @@ go
 exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'我们付给第三方平台手续费' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'ActualHandCharge'
 go
 exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'第三方回调时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'CallBackTime'
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'第三方回调单号' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'CallBackRequestId'
+go
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'支付人' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWithdrawForm', @level2type=N'COLUMN',@level2name=N'Payer'
 go

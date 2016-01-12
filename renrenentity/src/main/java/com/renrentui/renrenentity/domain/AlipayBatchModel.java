@@ -26,12 +26,12 @@ public class AlipayBatchModel {
 	/**
 	 * 成功笔数
 	 */
-	private Integer successTimes;
+	private int successTimes;
 
 	/**
 	 * 失败笔数
 	 */
-	private Integer failTimes;
+	private int failTimes;
 
 	/**
 	 * 批次单状态  0打款中 1 打款完成 默认0 
@@ -138,28 +138,28 @@ public class AlipayBatchModel {
 	/**
 	 * 获取成功笔数
 	 */
-	public Integer getSuccessTimes() {
+	public int getSuccessTimes() {
 		return successTimes;
 	}
 	/**
 	 * 设置成功笔数
 	 * @param successTimes 成功笔数
 	 */
-	public void setSuccessTimes(Integer successTimes) {
+	public void setSuccessTimes(int successTimes) {
 		this.successTimes = successTimes;
 	}
 
 	/**
 	 * 获取失败笔数
 	 */
-	public Integer getFailTimes() {
+	public int getFailTimes() {
 		return failTimes;
 	}
 	/**
 	 * 设置失败笔数
 	 * @param failTimes 失败笔数
 	 */
-	public void setFailTimes(Integer failTimes) {
+	public void setFailTimes(int failTimes) {
 		this.failTimes = failTimes;
 	}
 

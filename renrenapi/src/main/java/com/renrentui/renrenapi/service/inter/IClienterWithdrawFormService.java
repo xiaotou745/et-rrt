@@ -32,6 +32,6 @@ public interface IClienterWithdrawFormService {
 	PagedResponse<ClienterWithdrawFormDM> getList(PagedClienterWithdrawFormReq req);
 
 	String AlipayBatchTransfer(AlipayBatchReq alipayBatchReq);
-	
-	String AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException;
+	//HttpServletRequest request
+	String AliBatchNotifyTransferCallback(HttpServletRequest request);
 }

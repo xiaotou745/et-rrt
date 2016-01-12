@@ -255,9 +255,9 @@ select      cwf.[ClienterId]
            ,getdate() OperateTime
            ,cwf.Id OrderId
            ,cwf.WithwardNo RelationNo
-           ,#{remark,VARCHAR}
+           ,#{remark,jdbcType=VARCHAR}
  from ClienterWithdrawForm cwf(nolock)
     join dbo.ClienterBalance c (nolock) on c.ClienterId=cwf.ClienterId
- where cwf.Id=#{withwardId,BIGINT}
+ where cwf.Id=#{withwardId,jdbcType=BIGINT}
   </insert>
 </mapper>

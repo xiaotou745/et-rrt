@@ -227,15 +227,15 @@
     UPDATE ClienterWithdrawForm 
     <set >
       <if test="isCallBack > 0" >
-          CallBackTime=getdate(),CallBackRequestId=#{callBackRequestId,BIGINT},
+          CallBackTime=getdate(),CallBackRequestId=#{callBackRequestId,jdbcType=BIGINT},
       </if>
-        [Status] = #{status,INTEGER},Payer=#{operator,VARCHAR},PayTime=getdate() 
+        [Status] = #{status,jdbcType=INTEGER},Payer=#{operator,jdbcType=VARCHAR},PayTime=getdate() 
     </set>
 		OUTPUT
 		  Inserted.Id,
 		  Inserted.[Status],
-		  #{remark,VARCHAR},
-		  #{operator,VARCHAR},
+		  #{remark,jdbcType=VARCHAR},
+		  #{operator,jdbcType=VARCHAR},
 		  getdate()
 		INTO ClienterWithdrawLog
 		  ([WithwardId],
@@ -243,11 +243,11 @@
 		  [Remark],
 		  [Operator],
 		  [OperatTime])
-		 WHERE  Id = #{withwardId,BIGINT} AND [Status]=#{oldStatus,INTEGER}
+		 WHERE  Id = #{withwardId,jdbcType=BIGINT} AND [Status]=#{oldStatus,jdbcType=INTEGER}
   </update>
   <!-- 修改骑士提款流水状态 wangchao -->
   <update id="modifyClienterBalanceRecordStatus" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
-    UPDATE ClienterBalanceRecord SET [Status] = 1 WHERE WithwardId = #{withwardId,BIGINT} AND [Status]=2
+    UPDATE ClienterBalanceRecord SET [Status] = 1 WHERE OrderId = #{withwardId,jdbcType=BIGINT} AND [Status]=2
   </update>
     <!-- 骑士提现打款确认后修改骑士表累计提款金额 wangchao -->
   <update id="modifyClienterTotalAmount" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
@@ -255,11 +255,11 @@
 		set c.HadWithdraw=ISNULL(c.HadWithdraw, 0)+ISNULL(cwf.Amount,0)
 		from dbo.ClienterBalance c
 		join [ClienterWithdrawForm] cwf on c.ClienterId=cwf.ClienterId
-		where cwf.Id=#{withwardId,BIGINT};
+		where cwf.Id=#{withwardId,jdbcType=BIGINT};
   </update>
   <select id="getClienterFinanceAccount" resultType="com.renrentui.renrenentity.domain.ClienterFinanceAcountModel" parameterType="java.lang.Long" >
     SELECT cwf.Id withdrawId,cwf.clienterId,cwf.CreateTime,cwf.Amount,cwf.HandCharge,cwf.PayFailedReason FROM dbo.ClienterWithdrawForm cwf(nolock)
- where cwf.Id = #{withwardId,BIGINT};
+ where cwf.Id = #{withwardId,jdbcType=BIGINT};
   </select>
   
   <update id="clienterWithdrawPayFailed" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
@@ -268,14 +268,14 @@
       <if test="isCallBack > 0" >
           CallBackTime=getdate(),CallBackRequestId=#{callBackRequestId,BIGINT},
       </if>
-        [Status] = #{status,INTEGER},Payer=#{operator,VARCHAR},PayTime=getdate(),
-        PayFailedReason=ISNULL(PayFailedReason,'')+#{payFailedReason,VARCHAR}+' '
+        [Status] = #{status,jdbcType=INTEGER},Payer=#{operator,jdbcType=VARCHAR},PayTime=getdate(),
+        PayFailedReason=ISNULL(PayFailedReason,'')+#{payFailedReason,jdbcType=VARCHAR}+' '
     </set>
 		OUTPUT
 		  Inserted.Id,
 		  Inserted.[Status],
-		  #{remark,VARCHAR},
-		  #{operator,VARCHAR},
+		  #{remark,jdbcType=VARCHAR},
+		  #{operator,jdbcType=VARCHAR},
 		  getdate()
 		INTO ClienterWithdrawLog
 		  ([WithwardId],
@@ -283,7 +283,7 @@
 		  [Remark],
 		  [Operator],
 		  [OperatTime])
-		 WHERE  Id = #{withwardId,BIGINT} AND [Status] in(1,20) 
+		 WHERE  Id = #{withwardId,jdbcType=BIGINT} AND [Status] in(1,20) 
   </update>
     <!-- 骑士提现打款失败后修改骑士表累计提款金额 wangchao -->
   <update id="modifyClienterAmountInfo" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
@@ -292,7 +292,7 @@
 		       c.Withdraw=ISNULL(c.Withdraw,0)+ISNULL(cwf.Amount,0)
 		from dbo.ClienterBalance c
 		join [ClienterWithdrawForm] cwf on c.ClienterId=cwf.ClienterId
-		where cwf.Id=#{withwardId,BIGINT};
+		where cwf.Id=#{withwardId,jdbcType=BIGINT};
   </update>
   
 </mapper>

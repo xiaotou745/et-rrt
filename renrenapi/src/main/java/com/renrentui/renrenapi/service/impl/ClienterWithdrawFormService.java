@@ -437,12 +437,23 @@ public class ClienterWithdrawFormService implements
 	}
 	/*
 	 * 支付宝回调
-	 * wangchao
+	 * wangchao HttpServletRequest request
 	 */
 	@Override
-	public String AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException {
+	public String AliBatchNotifyTransferCallback(HttpServletRequest request) {
 
-		Map<String, String> params = new HashMap<String, String>();
+		Map<String, String> params = new HashMap<String, String>(); 
+//		 params.put("fail_details",""); 
+//		 params.put("success_details","110^dou631@163.com^白玉^0.01^S^^20160111538017244^20160111172502|"); 
+//		 params.put("notify_time","2016-01-11 17:25:03"); 
+//		 params.put("notify_type","batch_trans_notify"); 
+//		 params.put("notify_id","5aca1d49c70018e9488cc6a6a5c7312mhc"); 
+//		 params.put("sign_type","1"); 
+//		 params.put("sign","63ed2c0e7701a5786478a2862680c0ac"); 
+//		 params.put("batch_no","201501061151"); 
+//		 params.put("pay_user_id","2088911703660069"); 
+//		 params.put("pay_user_name","易代送网络科技（北京）有限公司"); 
+//		 params.put("pay_account_no","20889117036600690156"); 
 		Map requestParams = request.getParameterMap();
 		for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
 			String name = (String) iter.next();
@@ -458,27 +469,22 @@ public class ClienterWithdrawFormService implements
 		}
 		// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
 		// 批量付款数据中转账成功的详细信息
-		AlipayBatchCallBackModel alipayBatchCallBackModel = new AlipayBatchCallBackModel();
-
-		String fail_details= params.get("fail_details"); 
-//	 	String fail_details = new String(request.getParameter("fail_details").getBytes("ISO-8859-1"), "UTF-8");
-	 	
-		String success_details = params.get("success_details");
-		 
-		
+		AlipayBatchCallBackModel alipayBatchCallBackModel = new AlipayBatchCallBackModel(); 
 		params.put("platform", "1");
-		if ( success_details !=null && success_details!="" && AlipayNotify.verify(params)) {// 验证成功
+		//if (AlipayNotify.verify(params)) {// 验证成功
 			// 批量付款数据中转账失败的详细信息
 			// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
-			String notify_time = new String(request.getParameter("notify_time").getBytes("ISO-8859-1"), "UTF-8"); 
-			String notify_type = new String(request.getParameter("notify_type").getBytes("ISO-8859-1"), "UTF-8"); 
-			String notify_id = new String(request.getParameter("notify_id").getBytes("ISO-8859-1"), "UTF-8"); 
-			String sign_type = new String(request.getParameter("sign_type").getBytes("ISO-8859-1"), "UTF-8"); 
-			String sign = new String(request.getParameter("sign").getBytes("ISO-8859-1"), "UTF-8"); 
-			String batch_no = new String(request.getParameter("batch_no").getBytes("ISO-8859-1"), "UTF-8");
-			String pay_user_id = new String(request.getParameter("pay_user_id").getBytes("ISO-8859-1"), "UTF-8");
-			String pay_user_name = new String(request.getParameter("pay_user_name").getBytes("ISO-8859-1"), "UTF-8");
-			String pay_account_no = new String(request.getParameter("pay_account_no").getBytes("ISO-8859-1"), "UTF-8");
+			String fail_details= params.get("fail_details"); 
+			String success_details = params.get("success_details");
+			String notify_time = params.get("notify_time"); 
+			String notify_type = params.get("notify_type"); 
+			String notify_id = params.get("notify_id"); 
+			String sign_type = params.get("sign_type"); 
+			String sign = params.get("sign"); 
+			String batch_no = params.get("batch_no");
+			String pay_user_id = params.get("pay_user_id");
+			String pay_user_name = params.get("pay_user_name");
+			String pay_account_no = params.get("pay_account_no");
 			alipayBatchCallBackModel.setSuccessDetails(success_details);
 			alipayBatchCallBackModel.setFailDetails(fail_details);
 			alipayBatchCallBackModel.setNotifyTime(notify_time);
@@ -498,9 +504,9 @@ public class ClienterWithdrawFormService implements
 				// 验证失败
 				return "fail";
 			}
-		} else {
-			return "fail";
-		}
+//		} else {
+//			return "fail";
+//		}
 
 	}
 	
@@ -518,7 +524,7 @@ public class ClienterWithdrawFormService implements
 		alipayBatchModel2.setSuccessTimes(successlist.size());
 		alipayBatchModel2.setFailTimes(faillist.size());
 		alipayBatchModel2.setBatchNo(alipayBatchCallBackModel.getBatchNo());
-		clienterWithdrawFormDao.UpdateAlipayBatchNo(alipayBatchModel2);//更新批次表信息
+		int cc =clienterWithdrawFormDao.UpdateAlipayBatchNo(alipayBatchModel2);//更新批次表信息
 		//处理成功的
 		for (int i = 0; i < successlist.size(); i++) {
 			ClienterWithdrawLogModel clienterWithdrawLogModel = new ClienterWithdrawLogModel();
@@ -534,7 +540,9 @@ public class ClienterWithdrawFormService implements
 			////获取骑士相关金融账户信息 发送消息
 			ClienterFinanceAcountModel cfaModel = new ClienterFinanceAcountModel(); 
 			cfaModel = clienterFinanceAcountService.GetClienterFinanceAccount(successlist.get(i).getWithdrawId());
-			AddCPlayMoneySuccessMessage(cfaModel);
+			if(cfaModel !=null){
+				AddCPlayMoneySuccessMessage(cfaModel);
+			}
 		}
 		//处理失败的提现单
 		for (int i = 0; i < faillist.size(); i++) {
@@ -554,7 +562,9 @@ public class ClienterWithdrawFormService implements
 			ClienterFinanceAcountModel cfaModel = new ClienterFinanceAcountModel(); 
 			cfaModel = clienterFinanceAcountService.GetClienterFinanceAccount(faillist.get(i).getWithdrawId());
 			cfaModel.setPayFailedReason(reString);
-			AddCPlayMoneyFailMessage(cfaModel);
+			if(cfaModel !=null){
+				AddCPlayMoneyFailMessage(cfaModel);
+			}
 		}
 		return true;
 	}
@@ -581,7 +591,7 @@ public class ClienterWithdrawFormService implements
             {
                 continue;
             }
-            String[] propArr = dataArr[i].split("^");
+            String[] propArr = dataArr[i].split("\\^");
             AlipayCallBackData model = new AlipayCallBackData();
              model.setWithdrawId(ParseHelper.ToLong(propArr[0],0));
              model.setAccountNo(propArr[1]);

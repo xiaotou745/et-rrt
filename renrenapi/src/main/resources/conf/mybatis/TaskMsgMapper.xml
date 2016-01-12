@@ -19,17 +19,17 @@ INSERT INTO dbo.TaskMsg
           TaskId,
           TaskDatumId
         )
-VALUES  ( ${title} , 
-          ${msg} , 
-          ${createName},
+VALUES  ( #{title,jdbcType=VARCHAR} , 
+          #{msg,jdbcType=VARCHAR} , 
+          #{createName,jdbcType=VARCHAR},
           getdate() , 
           0 , 
           null , 
           0 ,
           0,
-          ${clienterId},
-          ${taskId} , 
-          ${taskDatumId}
+          #{clienterId,jdbcType=INTEGER},
+          #{taskId,jdbcType=INTEGER} , 
+          #{taskDatumId,jdbcType=INTEGER}
         )	
 </insert>
 

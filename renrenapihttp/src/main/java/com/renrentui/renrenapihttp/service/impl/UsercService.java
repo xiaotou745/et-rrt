@@ -4,6 +4,8 @@ package com.renrentui.renrenapihttp.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -462,6 +464,11 @@ public class UsercService implements IUsercService {
 		PartnerModel detail=clienterService.getPartnerInfo(req.getUserId());
 		hrm.setData(detail);
 		return hrm;
+	}
+
+	@Override
+	public void wangchao(String id) {  
+		clienterWithdrawFormService.AliBatchNotifyTransferCallback();
 	}
 
 	/**
