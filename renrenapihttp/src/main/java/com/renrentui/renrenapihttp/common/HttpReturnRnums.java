@@ -8,7 +8,7 @@ public enum HttpReturnRnums {
 	/**
 	 * 成功
 	 */
-	Success(1,"成功"),
+	Success(200,"success"),
 	/**
 	 * 系统错误
 	 */
