@@ -1,5 +1,6 @@
 package com.renrentui.renrenapi.service.impl;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -7,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.Math.*;
-
-import javax.management.RuntimeErrorException;
-
-import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenapi.common.ImageCuter;
 import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
@@ -20,33 +17,23 @@ import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
-import com.renrentui.renrencore.enums.CBalanceRecordStatus;
-import com.renrentui.renrencore.enums.CBalanceRecordType;
-import com.renrentui.renrencore.enums.ClienterWithdrawFormStatus;
-import com.renrentui.renrencore.enums.ClienterWithdrawFormWithType;
-import com.renrentui.renrencore.enums.WithdrawState;
-import com.renrentui.renrencore.util.OrderNoHelper;
-import com.renrentui.renrencore.util.StringUtils;
-import com.renrentui.renrenentity.ClienterWithdrawForm;
-import com.renrentui.renrenentity.common.PagedResponse;
-import com.renrentui.renrenentity.domain.ClienterDetail;
-import com.renrentui.renrenentity.domain.PartnerDetail;
-import com.renrentui.renrenentity.domain.PartnerModel;
-import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.Clienter;
-import com.renrentui.renrenentity.ClienterBalance;
-import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.ClienterRelation;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenentity.domain.ClienterDetail;
+import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
-import com.renrentui.renrenentity.req.ModifyUserCReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
-import com.renrentui.renrenentity.req.PartnerListReq;
-import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
+import com.renrentui.renrenentity.req.ModifyUserCReq;
+import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignInReq;
+import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.resp.ClienterResp;
 
 @Service
@@ -255,6 +242,26 @@ public class ClienterService implements IClienterService {
 	 */
 	@Override
 	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
+		List<String> head=clienterDao.getClienterheadimg();
+		for (String string : head) {
+			try {
+				String diskPath = "/usr/local/renrenimgmountpoint/"+ string;
+				File uploadedFile = new File(diskPath);
+				if (uploadedFile.exists()) {
+					int index=diskPath.lastIndexOf(".");
+					String src=diskPath.substring(0, index)+"_0_0"+diskPath.substring(index);
+					String des=diskPath.substring(0, index)+"_95_95"+diskPath.substring(index);
+					File srcFile = new File(src);
+					File desFile = new File(des);
+					if (srcFile.exists()&&!desFile.exists()) {
+						ImageCuter.cut(src, des, 95, 95);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
 		return clienterDao.queryClienterList(req);
 	}
 
