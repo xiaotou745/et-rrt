@@ -117,7 +117,9 @@ width: 100%;
 			    <div class="row">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>			 
+							style="margin-left: 3px;height:30px;">查询</button>	
+						<button type="button" class="btn btn-w-m btn-primary" id="exportorder"
+							style="margin-left: 3px;height:30px;">导出数据</button>				 
 					</div>
 			</div>
 			</form>
@@ -205,6 +207,32 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
-
-
+//导出数据
+$('#exportorder').click(function(){
+	var clienterName = $("#clienterName").val();				   
+	 var orderNo = $("#orderNo").val();
+	 var companyName = $("#companyName").val();
+	 var auditStatus = $("#auditStatus").val();
+	 var clienterPhone=$('#clienterPhone').val();
+	 var taskName=$('#taskName').val();
+	 var beginDate=$('#beginDate').val();
+	 var endDate=$('#endDate').val();
+	 if(beginDate==''||endDate=='')
+	{
+		 alert('导出数据开始时间或结束时间不能为空!');
+		 return;
+	}
+	  endDate=endDate==''?'':endDate+' 23:59:59';
+	   var url = "<%=basePath%>/ordermanage/auditorderexport?currentPage=1&clienterName="
+		+clienterName
+		+"&orderNo"+orderNo
+		+"&companyName="+companyName
+		+"&auditStatus="+auditStatus
+		+"&clienterPhone="+clienterPhone
+		+"&taskName="+taskName
+		+"&beginDate="+beginDate
+		+"&endDate="+endDate;
+	window.location.href = url;
+    return true;  
+});
 </script>

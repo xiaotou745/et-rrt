@@ -121,12 +121,14 @@ $(objDiv).css("display", "none");
 	   if(!confirm("确定操作该审核结果?")){
 		   return false;
 		   }
+	   var RefuReason="哎哎哎";//拒绝原因
 	   var paramaters = { 				 
 				 "auditStatus":auditStatus,
 				 "orderId":orderId,
 				 "userId":userId,
 				 "amount":amount,
-				 "orderNo":orderNo
+				 "orderNo":orderNo,
+				 "refuReason":RefuReason
 				 };
 		   var url = "<%=basePath%>/ordermanage/orderaudit";
 		   $.ajax({

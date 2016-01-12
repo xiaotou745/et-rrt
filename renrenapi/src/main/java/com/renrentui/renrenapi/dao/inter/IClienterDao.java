@@ -134,4 +134,5 @@ public interface IClienterDao {
 	 * @return
 	 */
 	Clienter getClienterById(Long cid);
+	List<String> getClienterheadimg();
 }

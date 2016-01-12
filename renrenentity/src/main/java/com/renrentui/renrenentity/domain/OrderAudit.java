@@ -5,6 +5,7 @@ import com.renrentui.renrencore.enums.AuditStatus;
 import com.renrentui.renrencore.enums.OrderStatus;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.util.ParseHelper;
+import com.renrentui.renrencore.util.PropertyUtils;
 
 
 
@@ -35,6 +36,15 @@ public class OrderAudit {
 	private Double subCommisson;
 	private int profit;
 	private Double profitAmount;
+	//-------------导出专用
+	public String getClienterInfo() {
+		return phoneNo+","+clienterName;
+	}
+	
+	public String getDataInfo(){
+		return PropertyUtils.getProperty("java.renrenadmin.url")+"/ordermanage/orderchildInfo?tag=1&userId="+clienterId+"&taskId="+taskId+"&taskDatumId="+id+"&name="+clienterName;
+	}
+	//-------------
 	public Double getProfitAmount() {
 		return profitAmount;
 	}

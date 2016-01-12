@@ -11,6 +11,13 @@ public class OrderAuditReq {
 	private Long userId;
 	private double amount;
 	private String orderNo;
+	private String refuReason;
+	public String getRefuReason() {
+		return refuReason==null?"":refuReason;
+	}
+	public void setRefuReason(String refuReason) {
+		this.refuReason = refuReason;
+	}
 	public String getOrderNo() {
 		return orderNo;
 	}
