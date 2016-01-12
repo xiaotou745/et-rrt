@@ -204,5 +204,10 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return getReadOnlySqlSessionUtil().selectOne("IClienterDao.getClienterById", cid);
 	}
 
+	@Override
+	public List<String> getClienterheadimg() {
+		return getMasterSqlSessionUtil().selectList("IClienterDao.getClienterheadimg");
+	}
+
 
 }

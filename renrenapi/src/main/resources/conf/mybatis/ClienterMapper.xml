@@ -463,4 +463,7 @@ WHERE b.taskid=#{taskId,jdbcType=BIGINT}
   parameterType="java.lang.Long" >
   SELECT * FROM dbo.Clienter AS c (NOLOCK) WHERE id =#{cid,jdbcType=BIGINT}
 </select>   
+<select id="getClienterheadimg" resultType="java.lang.String">
+  SELECT HeadImage FROM dbo.Clienter AS c (NOLOCK) WHERE isnull(HeadImage,'')!=''
+</select> 
 </mapper>
