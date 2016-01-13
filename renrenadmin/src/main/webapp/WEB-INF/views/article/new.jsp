@@ -32,9 +32,9 @@ var editor1 = K.create('textarea[name="content"]', {
 
 cssPath : 'kindeditor/plugins/code/prettify.css',
 
-uploadJson : 'http://10.8.8.64:8094/upload/fileupload/uploadimg',
+uploadJson : '<%=basePath%>/article/uploadimg',
 
-fileManagerJson : 'kindeditor/jsp/file_manager_json.jsp',
+fileManagerJson : '<%=basePath%>/article/filemanager',
 
 allowFileManager : true,
 
