@@ -1,9 +1,12 @@
 package com.renrentui.renrenadmin.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +50,7 @@ public class ClienterWithdrawFormController {
 		model.addObject("viewPath", "clienterwithdraw/list");
 		return model;
 	}	
+	 
 	
 	/**
 	 * 用户提现列表管理页面 
@@ -121,12 +125,20 @@ public class ClienterWithdrawFormController {
 	 * @throws UnsupportedEncodingException 
 	 * */
 	@RequestMapping("alibatchnotifytransfercallback")
-	public ModelAndView AliBatchNotifyTransferCallback(HttpServletRequest request) throws UnsupportedEncodingException{
-		ModelAndView model = new ModelAndView("clienterwithdraw/batchalinotify");		
-		model.addObject("data", clienterWithdrawFormService.AliBatchNotifyTransferCallback(request));
-		return model;
-		//String outString=clienterWithdrawFormService.AliBatchNotifyTransferCallback(request);
-		//System.out.println(outString);
+	public void AliBatchNotifyTransferCallback(HttpServletRequest request,HttpServletResponse response) {
+//		ModelAndView model = new ModelAndView("clienterwithdraw/batchalinotify");		
+//		model.addObject("data", clienterWithdrawFormService.AliBatchNotifyTransferCallback(request));
+//		return model; 
+		//String outString="success"; 
+		String outString=clienterWithdrawFormService.AliBatchNotifyTransferCallback(request); 
+		OutputStream outputStream;
+		try {
+			outputStream = response.getOutputStream();
+			byte[] dataByteArr = outString.getBytes("UTF-8");
+			outputStream.write(dataByteArr);
+		} catch (IOException e1) { 
+			e1.printStackTrace();
+		} 
 	}
 	
 	/*

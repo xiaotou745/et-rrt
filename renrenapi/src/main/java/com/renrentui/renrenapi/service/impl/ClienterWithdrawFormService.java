@@ -335,7 +335,7 @@ public class ClienterWithdrawFormService implements
 			toatlChargeAmount += item.getActualHandCharge();// 实际付款手续费
 			// 提现单号,支付宝账号,支付宝账户名,金额,备注
 			// 注意此处用提现单ID作为流水号穿给支付宝,方便支付宝回调后对数据处理
-			detailData.append(String.format("%s^%s^%s^%s^骑士申请提现打款|",
+			detailData.append(String.format("%s^%s^%s^%s^地推员申请提现打款|",
 					item.getId(), DES.decrypt(item.getAccountInfo()),
 					item.getTrueName(),
 					new DecimalFormat("0.00").format(item.getActualAmount())));
@@ -469,6 +469,7 @@ public class ClienterWithdrawFormService implements
 		AlipayBatchCallBackModel alipayBatchCallBackModel = new AlipayBatchCallBackModel();
 		params.put("platform", "1");
 		params.put("verify", "1");
+		
 		if (AlipayNotify.verify(params)) {// 验证成功
 			// 批量付款数据中转账失败的详细信息
 			// 获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
