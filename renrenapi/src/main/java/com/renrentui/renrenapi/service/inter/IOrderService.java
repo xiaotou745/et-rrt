@@ -28,11 +28,11 @@ public interface IOrderService {
 	 * @author CaoHeYang
 	 * @date 20151009
 	 */
-	public void outTimeCanelOrder();
+//	public void outTimeCanelOrder();
 	
-	public OrderChildInfoModel getOrderChildInfo(OrderChildReq req);
+//	public OrderChildInfoModel getOrderChildInfo(OrderChildReq req);
 	
 	public String downLoadOrderInfo(TaskDatumDetailReq req);
-	public int cancelOrder(CancelTaskReq req);
-	public Double getOrderTotalAmount(Long taskId);
+//	public int cancelOrder(CancelTaskReq req);
+//	public Double getOrderTotalAmount(Long taskId);
 }

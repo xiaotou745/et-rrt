@@ -1,10 +1,8 @@
 package com.renrentui.renrenapihttp.service.impl;
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import com.renrentui.renrenapihttp.service.inter.IDatumService;
 import com.renrentui.renrencore.enums.DatumAuditStatus;
 import com.renrentui.renrencore.enums.TaskCode;
 import com.renrentui.renrenentity.domain.TabModel;
-import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
 import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TemplateInfo;

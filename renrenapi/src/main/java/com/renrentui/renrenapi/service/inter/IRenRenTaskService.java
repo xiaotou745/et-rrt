@@ -52,12 +52,12 @@ public interface IRenRenTaskService {
 	
 	 OrderRetrunModel getTask(TaskDatumDetailReq req);
 	
-	/**
-	 * 取消任务
-	 * @param req
-	 * @return
-	 */
-	 CancelTaskCode cancelTask(CancelTaskReq req);
+//	/**
+//	 * 取消任务
+//	 * @param req
+//	 * @return
+//	 */
+//	 CancelTaskCode cancelTask(CancelTaskReq req);
 	/**
 	 * 提交任务
 	 * 茹化肖
@@ -95,7 +95,7 @@ public interface IRenRenTaskService {
 	 void outTimeCanelTask();
 	 RenRenTask getTaskInfo(Long taskId);
 	 List<RenRenTask> getListByTemplateId(Long templateId); 
-	 int settlementTask(Long taskId,String userName);
+//	 int settlementTask(Long taskId,String userName);
 	 /**
 		 * 获取任务控件信息
 		 * 茹化肖
