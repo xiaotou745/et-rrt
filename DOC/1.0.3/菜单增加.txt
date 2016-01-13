@@ -1,0 +1,17 @@
+use renrendb
+go
+insert into dbo.AuthorityMenuClass
+         ( ParId ,
+           MenuName ,
+           BeLock ,
+           Url ,
+           IsButton ,
+           AuthCode
+         )
+ values  ( 20 , -- ParId - int
+           '支付宝批次进度查询' , -- MenuName - varchar(50)
+           0 , -- BeLock - bit
+           '/clienterwithdraw/alibatchlist' , -- Url - varchar(500)
+           0 , -- IsButton - bit
+           'CLIENTER_WITHDRAW_BATCHSELECT'  -- AuthCode - varchar(500)
+         )
