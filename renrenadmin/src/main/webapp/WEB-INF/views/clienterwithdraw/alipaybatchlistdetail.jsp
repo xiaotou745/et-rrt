@@ -95,8 +95,7 @@ label {
 					<div class="col-lg-3">
 					<%if(alipayBatch.getStatus() == AlipayBatchStatus.PlayGame.value()&&ParseHelper.plusDate(alipayBatch.getLastOptTime(), 4, 10)
 							.compareTo(new Date())<0
-					&&(UserContext.getCurrentContext(request).getLoginName().trim().equals("admin")||
-							UserContext.getCurrentContext(request).getLoginName().trim().equals("douhaichao"))) {%>
+					&&(UserContext.getCurrentContext(request).getLoginName().trim().equals("douhaichao"))) {%>
 					<div class="form-group">
 								<button type="button" class="btn btn-w-m btn-primary" id="btnDosure" style="margin-left: 3px;height:30px;">打款</button>
 						</div>
