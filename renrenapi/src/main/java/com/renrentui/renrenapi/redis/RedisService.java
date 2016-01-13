@@ -29,7 +29,7 @@ public class RedisService {
 	 *            value
 	 */
 	public void set(String key, Object value) {
-		set(key, value, 1, TimeUnit.HOURS);
+		set(key, value, 1, TimeUnit.DAYS);
 	}
 
 	/**

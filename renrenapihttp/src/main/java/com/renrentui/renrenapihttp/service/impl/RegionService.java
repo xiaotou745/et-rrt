@@ -3,6 +3,7 @@ package com.renrentui.renrenapihttp.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class RegionService implements IRegionService{
 		}
 		if(cityVersion.isEmpty()){ 
 		    String kkString=ParseHelper.ToDateString(new Date(),"yyyyMMdd" );
-			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,kkString); //初始化
+			redisService.set(RedissCacheKey.RR_PublicProvinceCity_Version,kkString,360,TimeUnit.DAYS); //初始化
 			cityVersion=kkString;
 		}
 		RegionModel rModel = redisService.get(RedissCacheKey.RR_PublicProvinceCity_Hot,RegionModel.class);  //获取热门城市和26个字母排序城市 
@@ -80,7 +81,7 @@ public class RegionService implements IRegionService{
 			firstLetterRegionModel.add(rmflFirstLetter);
 		}
 		rModel.setFirstLetterRegionModel(firstLetterRegionModel);
-		redisService.set(RedissCacheKey.RR_PublicProvinceCity_Hot, rModel);
+		redisService.set(RedissCacheKey.RR_PublicProvinceCity_Hot, rModel,360,TimeUnit.DAYS);
 		return new HttpResultModel<RegionModel>().setCode(RegionCode.Success.value()).setMsg(RegionCode.Success.desc()).setData(rModel);
 		
 	}
