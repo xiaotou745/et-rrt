@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
 import com.renrentui.renrenentity.domain.TaskDatumDetail;
@@ -14,6 +16,8 @@ import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
 import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TaskDatumTitle;
+import com.renrentui.renrenentity.req.OrderAuditReq;
+import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskDatumReq;
 @Repository
@@ -65,5 +69,21 @@ return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getMyTaskDatumListT
 	public List<TaskDatumGroup> getMyTaskDatumGroupList(TaskDatumReq req) {
 return getReadOnlySqlSessionUtil().selectList("ITaskDatumDao.getMyTaskDatumGroupList", req);
 	}
-
+	/**
+	 * 订单审核
+	 * 茹化肖
+	 * 2015年10月10日11:10:27
+	 * 
+	 */
+	@Override
+	public int orderAudit(OrderAuditReq req) {
+		return getMasterSqlSessionUtil().update("ITaskDatumDao.orderAudit", req);
+	}
+	/**
+	 * 管理后台-获取订单列表分页
+	 */
+	@Override
+	public PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req) {
+		return getReadOnlySqlSessionUtil().selectPageList("ITaskDatumDao.getOrderAuditList", req);
+	}
 }

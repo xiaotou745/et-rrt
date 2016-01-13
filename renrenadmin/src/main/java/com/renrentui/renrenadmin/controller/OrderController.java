@@ -104,19 +104,19 @@ public class OrderController {
 		return orderService.orderAudit( req);
 	}
 	
-	/**
-	 * 取消订单 
-	 * @author 茹化肖
-	 * @Date 2015年9月30日 15:35:12
-	 * @param search 查询条件实体
-	 * @return	
-	 */	
-	@RequestMapping("cancelorder")
-	@ResponseBody
-	public int cancelOrder(HttpServletRequest request,CancelTaskReq req) {
-		req.setRemark(UserContext.getCurrentContext(request).getUserName());
-		return orderService.cancelOrder(req);
-	}
+//	/**
+//	 * 取消订单 
+//	 * @author 茹化肖
+//	 * @Date 2015年9月30日 15:35:12
+//	 * @param search 查询条件实体
+//	 * @return	
+//	 */	
+//	@RequestMapping("cancelorder")
+//	@ResponseBody
+//	public int cancelOrder(HttpServletRequest request,CancelTaskReq req) {
+//		req.setRemark(UserContext.getCurrentContext(request).getUserName());
+//		return orderService.cancelOrder(req);
+//	}
 	
 	/**
 	 * 获取合同信息 

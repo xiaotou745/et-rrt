@@ -23,6 +23,7 @@ public class TaskDatumModel {
     private int groupType;
     private List<String> titlesList;
     private long ctId;
+    private String refuReason;
 	 public long getCtId() {
 		return ctId;
 	}
@@ -117,6 +118,12 @@ public class TaskDatumModel {
 	}
 	public void setTaskStatusName(String taskStatusName) {
 		this.taskStatusName = taskStatusName;
+	}
+	public String getRefuReason() {
+		return refuReason;
+	}
+	public void setRefuReason(String refuReason) {
+		this.refuReason = refuReason;
 	}
 	
 }

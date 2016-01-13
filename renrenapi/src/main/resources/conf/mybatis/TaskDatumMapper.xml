@@ -69,7 +69,8 @@ VALUES  ( ${taskDatumId} ,
             a.Status AS auditStatus ,
             a.CreateDate ,
             a.AuditTime,
-            a.CtId
+            a.CtId,
+            a.refuReason
   FROM      TaskDatum a (nolock)
             JOIN RenRenTask b (nolock) ON a.TaskId = b.id
   where a.ClienterId = ${userId} 
@@ -189,4 +190,12 @@ VALUES  ( ${taskDatumId} ,
                         and c.id=${taskDatumId}
 			 		</if> 
   </select> 
+    <!-- 审核订单2015年9月30日13:36:59茹化肖 -->
+  <update id="orderAudit" parameterType="com.renrentui.renrenentity.req.OrderAuditReq">
+UPDATE dbo.TaskDatum SET Status=${auditStatus},
+AuditTime=GETDATE(),
+AuditName='${auditName}',
+RefuReason='${refuReason}'
+WHERE id=${orderId}
+  </update>
 </mapper>

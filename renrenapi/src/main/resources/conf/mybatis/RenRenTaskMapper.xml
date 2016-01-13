@@ -524,4 +524,14 @@ WHERE   rrt.Status = 1
   <update id="updatePartnerNum" parameterType="java.lang.Long">
   UPDATE dbo.RenRenTask SET PartnerNum=PartnerNum+1 WHERE id =#{taskId,jdbcType=BIGINT}
   </update>
+    <!-- 验证合同是否可以提交  2015年9月30日13:36:59茹化肖 -->
+  <select id="checkOrderSubmit" parameterType="com.renrentui.renrenentity.req.SubmitTaskReq" resultType="com.renrentui.renrenentity.domain.CheckSubmitTask">
+SELECT TOP 1
+        CASE WHEN  GETDATE()> rrt.EndTime OR Status!=1 THEN 1
+             ELSE 0
+        END AS TaskClosed,
+        rrt.Amount as taskAmount
+FROM    dbo.RenRenTask AS rrt ( NOLOCK )
+WHERE   rrt.id = ${taskId}
+  </select>
 </mapper>
