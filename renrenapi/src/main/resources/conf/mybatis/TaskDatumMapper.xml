@@ -198,4 +198,79 @@ AuditName='${auditName}',
 RefuReason='${refuReason}'
 WHERE id=${orderId}
   </update>
+  <!-- 获取订单审核列表 茹化肖-->
+  
+   <sql id="getOrderAuditListWhere">
+		1=1			
+		<if test="orderNo != null and orderNo!=''">
+			 AND td.id=''${orderNo}''
+		</if>
+	    <if test="auditStatus != -1">
+			AND td.Status=${auditStatus}
+		</if>
+		
+		<if test="clienterPhone != null and clienterPhone!=''">
+			AND c.PhoneNo = ''${clienterPhone}''
+		</if>
+		
+		<if test="beginDate != null and beginDate!=''">
+			AND td.CreateDate >''${beginDate}''
+		</if>
+		<if test="endDate != null and endDate!=''">
+			AND ''${endDate}''>td.CreateDate
+		</if>
+		
+		<if test="taskName != null and taskName!=''">
+			AND rrt.TaskTitle LIKE ''%${taskName}%''
+		</if>
+		<if test="companyName != null and companyName!=''">
+			AND rrt.pusher LIKE ''%${companyName}%''
+		</if>
+		<if test="clienterName != null and clienterName!=''">
+			AND c.ClienterName LIKE ''%${clienterName}%''
+		</if>	
+	
+	</sql>
+	<select id="getOrderAuditList" resultType="com.renrentui.renrenentity.domain.OrderAudit"
+		parameterType="com.renrentui.renrenentity.req.PagedAuditorderReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' td.id DESC ',
+		'
+		 td.id ,
+		td.ClienterId,
+        c.ClienterName ,
+        rrt.Pusher ,
+        rrt.TaskTitle ,
+        rrt.Status AS taskStatus ,
+        ct.CompleteNum ,
+        ct.Amount ,
+        td.CreateDate AS finishTime,
+        td.AuditTime ,
+        td.Status AS auditStatus,
+        rrt.id as TaskId  ,
+        c.PhoneNo ,
+        rrt.TotalAmount ,
+        td.SubCommisson ,
+        CASE WHEN ( ct.Amount + td.SubCommisson) > rrt.TotalAmount
+             THEN -1
+             ELSE 1
+        END AS Profit,
+        (rrt.TotalAmount-( ct.Amount + td.SubCommisson)) AS ProfitAmount
+		',
+		' dbo.TaskDatum AS td ( NOLOCK )
+        LEFT JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
+        LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id 
+        LEFT JOIN dbo.Strategy AS s ( NOLOCK ) ON s.id = td.StrategyId',
+		'
+		<include refid="getOrderAuditListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>
