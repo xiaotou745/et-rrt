@@ -154,6 +154,33 @@ width: 100%;
 		</div>
 	</div>
 </div>
+<div tabindex="-1" class="modal inmodal" id="RefuReasonBox" role="dialog" aria-hidden="true" style="display: none;">	
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
+				</button>
+				<h4 class="modal-title">拒绝原因</h4>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+				<inupt type="hidden" id="hidauditStatus" value="">
+				<inupt type="hidden" id="hidorderId" value="">
+				<inupt type="hidden" id="hiduserId" value="">
+				<inupt type="hidden" id="hidamount" value="">
+				<inupt type="hidden" id="hidorderNo" value="">
+				<textarea id="reasontxt" cols="30" rows="5" maxlength="150">
+				</textarea>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+					<button class="btn btn-primary" type="button" id="btnRefu">确定</button>
+				</div>
+			</small>
+		</div>
+	</div>
+</div>
 <div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;">
 dasda
 </div>
@@ -234,5 +261,51 @@ $('#exportorder').click(function(){
 		+"&endDate="+endDate;
 	window.location.href = url;
     return true;  
+});
+//输入审核拒绝原因
+$('#btnRefu').click(function(){
+	var  str=$('#reasontxt').val();
+	if(str=='')
+	{
+		alert('请输入审核拒绝原因!');
+		return;
+	}
+
+   if(!confirm("确定操作该审核结果?")){
+	   return false;
+	   }
+   	var auditStatus=$('#hidauditStatus').val();
+	var orderId= $('#hidorderId').val();
+	var userId= $('#hiduserId').val();
+	var amount= $('#hidamount').val();
+	var orderNo= $('#hidorderNo').val();
+	var RefuReason=str;//拒绝原因
+    var paramaters = { 				 
+			 "auditStatus":auditStatus,
+			 "orderId":orderId,
+			 "userId":userId,
+			 "amount":amount,
+			 "orderNo":orderNo,
+			 "refuReason":RefuReason
+			 };
+	var url = "<%=basePath%>/ordermanage/orderaudit";
+	 $.ajax({
+		        type: 'POST',
+		        url: url,
+		        data: paramaters,
+		        success: function (result) {   	
+		        	if(result=='1'||result==1){
+		        		alert('操作成功!')
+		        		$('#RefuReasonBox').modal('hide');
+		        		$('#hidauditStatus').val('');
+		        		 $('#hidorderId').val('');
+		        		 $('#hiduserId').val('');
+		        		 $('#hidamount').val('');
+		        		 $('#hidorderNo').val('');
+		        		 $('#reasontxt').html('');
+		        		jss.search(1);
+		        		}//if
+		        }//success
+		    });//ajax
 });
 </script>

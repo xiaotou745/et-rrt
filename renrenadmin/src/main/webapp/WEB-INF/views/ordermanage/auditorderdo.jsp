@@ -80,7 +80,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<%if(data.get(i).getAuditStatusCode()==1) 
 			{%>
 			<a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getId()%>,2,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核通过</a>
-		    <a  href="javascript:void(0)"  onclick="Audit(<%=data.get(i).getId()%>,3,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核拒绝</a>
+		    <a  href="javascript:void(0)"  onclick="AuditRe(<%=data.get(i).getId()%>,3,<%=data.get(i).getClienterId()%>,<%=data.get(i).getAmount()%>,<%=data.get(i).getId()%>)">审核拒绝</a>
 			<%	
 			}
 			%>
@@ -142,6 +142,17 @@ $(objDiv).css("display", "none");
 		        		}
 		        }
 		    });
+   }
+ //订单审核
+   function AuditRe(orderId,auditStatus,userId,amount,orderNo){
+	 $('#hidauditStatus').val(auditStatus);
+	 $('#hidorderId').val(orderId);
+	 $('#hiduserId').val(userId);
+	 $('#hidamount').val(amount);
+	 $('#hidorderNo').val(orderNo);
+	 $('#reasontxt').val('');
+	 $('#RefuReasonBox').modal('show'); 
+
    }
    function ShowInfo(userId,taskId,taskDatumId,name){
 	   var paramaters = {"userId":userId,
