@@ -125,9 +125,7 @@ public class ClienterWithdrawFormService implements
 		clienterWithdrawFormModel.setHandCharge(ParseHelper.ToDouble(
 				handchargeString, 3)); // 骑士付给我们的手续费金额，从缓存中读取
 		clienterWithdrawFormModel.setActualHandCharge(actualHandCharge); // 我们付给支付宝的手续费
-		clienterWithdrawFormModel.setActualAmount(req.getAmount()
-				- actualHandCharge);
-
+		clienterWithdrawFormModel.setActualAmount(req.getAmount()-ParseHelper.ToDouble(handchargeString, 3));
 		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
 		// 申请提现，扣减金额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
