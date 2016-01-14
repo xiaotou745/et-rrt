@@ -60,12 +60,18 @@
 			<artifactId>json-simple</artifactId>
 			<version>1.1</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>commons-digester</groupId> -->
-<!-- 			<artifactId>commons-digester</artifactId> -->
-<!-- 			<version>1.8</version> -->
-<!-- 		</dependency> -->
-
+		<!-- 为了解决commons-digester的版本冲突，而添加以下两个jar -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-digester</groupId>
+			<artifactId>commons-digester</artifactId>
+			<version>1.8</version>
+		</dependency>
+		<!-- 为了解决commons-digester的版本冲突，而添加以上两个jar -->
 	</dependencies>
 	<build>
 		<defaultGoal>compile</defaultGoal>
