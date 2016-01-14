@@ -422,6 +422,7 @@ public class ClienterWithdrawFormService implements
 					.sendPost(Config.aliBatchRequstUrl
 							+ "/services/aliservice/batchtrans", postData,
 							"application/json;charset=utf-8");
+			logService.writeFile("renrenadmin", logResultJson);
 			return logResultJson;
 		} else {
 			return "<html><body>提交提现单事务异常,请重试</body></html>";
