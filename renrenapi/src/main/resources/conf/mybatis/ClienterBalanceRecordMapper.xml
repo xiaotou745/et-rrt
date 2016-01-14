@@ -61,7 +61,7 @@
 		select #{clienterId,jdbcType=INTEGER},
 		#{amount,jdbcType=DECIMAL},cb.Balance+#{amount,jdbcType=DECIMAL},#{recordType,jdbcType=SMALLINT},#{optName,jdbcType=NVARCHAR}
 		,#{orderId,jdbcType=BIGINT},#{relationNo,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR},#{status,jdbcType=SMALLINT}
-		from dbo.ClienterBalance  as cb where cb.ClienterId=#{clienterId,jdbcType=BIGINT} ;
+		from dbo.ClienterBalance as cb where cb.ClienterId=#{clienterId,jdbcType=BIGINT} ;
 		select @@IDENTITY
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterBalanceRecord" >

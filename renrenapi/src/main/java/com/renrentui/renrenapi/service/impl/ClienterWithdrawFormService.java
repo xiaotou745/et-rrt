@@ -109,7 +109,7 @@ public class ClienterWithdrawFormService implements
 		if (req.getAmount() > amount) {
 			return WithdrawState.MoneyError;
 		}
-
+		
 		// 创建提现表
 		ClienterWithdrawForm clienterWithdrawFormModel = new ClienterWithdrawForm();
 		clienterWithdrawFormModel.setClienterId(req.getUserId());
@@ -131,43 +131,39 @@ public class ClienterWithdrawFormService implements
 				handchargeString, 3)); // 骑士付给我们的手续费金额，从缓存中读取
 		clienterWithdrawFormModel.setActualHandCharge(actualHandCharge); // 我们付给支付宝的手续费
 		clienterWithdrawFormModel.setActualAmount(req.getAmount()-ParseHelper.ToDouble(handchargeString, 3));
-		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
-		// 申请提现，扣减金额
-		ClienterBalanceReq cBReq = new ClienterBalanceReq();
-		cBReq.setUserId(req.getUserId());
-		cBReq.setAmount(-req.getAmount());
-		int cbId = clienterBalanceDao.updateMoneyByKey(cBReq);
+		
 		//增加地推员提现流水记录，实际到账金额，比如申请提现20，其中到账17，手续费3元，插入流水两条记录
-		ClienterBalanceRecord clienterBalanceRecordModel = new ClienterBalanceRecord();
-		clienterBalanceRecordModel.setClienterId(req.getUserId());
-		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()-ParseHelper.ToDouble(handchargeString,3)));   
-		clienterBalanceRecordModel.setRecordType((short) CBalanceRecordType.ApplicationFor.value());// 提现申请
-		clienterBalanceRecordModel.setOptName(req.getTrueName());
-		clienterBalanceRecordModel.setOrderId((long) clienterWithdrawFormModel.getId());
-		clienterBalanceRecordModel.setRelationNo(no);
-		clienterBalanceRecordModel.setRemark("提现申请实际到账金额");
-		clienterBalanceRecordModel
-				.setStatus((short) CBalanceRecordStatus.Trading.value());// 交易中
-		int cbrId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
+		ClienterBalanceRecord cbrWithdraw = new ClienterBalanceRecord();
+		cbrWithdraw.setClienterId(req.getUserId());
+		cbrWithdraw.setAmount(-Math.abs(req.getAmount()-ParseHelper.ToDouble(handchargeString,3)));   
+		cbrWithdraw.setRecordType((short) CBalanceRecordType.ApplicationFor.value());// 提现申请
+		cbrWithdraw.setOptName(req.getTrueName());
+		cbrWithdraw.setOrderId((long) clienterWithdrawFormModel.getId());
+		cbrWithdraw.setRelationNo(no);
+		cbrWithdraw.setRemark("提现申请实际到账金额");
+		cbrWithdraw.setStatus((short) CBalanceRecordStatus.Trading.value());// 交易中
+		int cbrId = clienterBalanceRecordDao.insert(cbrWithdraw);
 		//增加地推员提现手续费金额  ，这里增加记录后 会影响后面的 流程，审核通过、拒绝、确认打款，都需要去改
 		ClienterBalanceRecord cbrHandCharge = new ClienterBalanceRecord();
 		cbrHandCharge.setClienterId(req.getUserId());
 		cbrHandCharge.setAmount(-Math.abs(ParseHelper.ToDouble(handchargeString, 3)));  //金额3元手续费
-		cbrHandCharge.setRecordType((short) CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
+		cbrHandCharge.setRecordType((short)CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
 		cbrHandCharge.setOptName(req.getTrueName());
 		cbrHandCharge.setOrderId((long) clienterWithdrawFormModel.getId());
 		cbrHandCharge.setRelationNo(no);
 		cbrHandCharge.setRemark("提现申请手续费");
 		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
 		int cbrHandId = clienterBalanceRecordDao.insert(cbrHandCharge);
+		//增加一条提现记录
+		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
+		// 申请提现，扣减金额
+		ClienterBalanceReq cBReq = new ClienterBalanceReq();
+		cBReq.setUserId(req.getUserId());
+		cBReq.setAmount(-req.getAmount());
+		int cbId = clienterBalanceDao.updateMoneyByKey(cBReq);
 		if (cwfId > 0 && cbId > 0 && cbrId > 0 && cbrHandId>0) {
 			return WithdrawState.Success;
 		}
-		/*
-		 * else { Error error=new Error("提现出错"); throw new
-		 * RuntimeErrorException(error); }
-		 */
-
 		return WithdrawState.Failure;
 	}
 
@@ -247,21 +243,18 @@ public class ClienterWithdrawFormService implements
 		// 更新用户余额，可提现余额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(cbrModel.getClienterId());
-		cBReq.setAmount(-cbrModel.getAmount());
+		cBReq.setAmount(cbrModel.getAmount());
 		int cbId = clienterBalanceDao.updateMoneyByKey(cBReq);
-
 		// 写入审核拒绝流水
 		ClienterBalanceRecord clienterBalanceRecordModel = new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(cbrModel.getClienterId());
-		clienterBalanceRecordModel.setAmount(-cbrModel.getAmount());
-		clienterBalanceRecordModel
-				.setRecordType((short) CBalanceRecordType.DenialOf.value());//
+		clienterBalanceRecordModel.setAmount(cbrModel.getAmount());
+		clienterBalanceRecordModel.setRecordType((short) CBalanceRecordType.DenialOf.value());//
 		clienterBalanceRecordModel.setOptName(record.getAuditName());//
 		clienterBalanceRecordModel.setOrderId((long) cbrModel.getOrderId());//
 		clienterBalanceRecordModel.setRelationNo(cbrModel.getRelationNo());//
 		clienterBalanceRecordModel.setRemark("申请拒绝失败");
-		clienterBalanceRecordModel
-				.setStatus((short) CBalanceRecordStatus.Success.value());
+		clienterBalanceRecordModel.setStatus((short) CBalanceRecordStatus.Success.value());
 		int cbrIdInsert = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
 		//发送消息
 		ClienterFinanceAcountModel cfaModel=new ClienterFinanceAcountModel();
