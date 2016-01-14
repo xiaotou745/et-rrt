@@ -41,7 +41,7 @@ public class SubCommissionService implements ISubCommissionService{
 		for (int i = 0; i < req.getChildList().size(); i++) {
 			aDouble+=req.getChildList().get(i).getPercentage();
 		}
-		if(aDouble!=req.getPercentage())
+		if(!aDouble.equals(req.getPercentage()))
 			return -4.0;
 		//1.插入Strategy
 		Strategy star=new Strategy();
@@ -72,6 +72,12 @@ public class SubCommissionService implements ISubCommissionService{
 	 */
 	@Override
 	public int updateStatus(Strategy req) {
+		String tempString=globalConfigService.getValueByName("MaxPercentage");
+		Double maxDouble=Double.valueOf(tempString);//系统设置的最大比例
+		if(req.getStatus()==2&&req.getPercentage()>maxDouble)
+		{
+			return -1;
+		}
 		return strategyDao.updateStatus(req);
 	}
 	/**
