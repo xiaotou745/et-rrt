@@ -129,6 +129,8 @@ width: 100%;
 					<fieldset> 
 			            	<div> 
 			            	<input id="txtHideWithdrawId" type="hidden"> 
+			            	<input id="txtHideWithdrawDate" type="hidden">
+			            	<input id="txtHideclienterId" type="hidden">
 			            	拒绝原因：<textarea id="refuseRemrakTxt" style="width:350px;height:120px;max-width:350px;max-height:120px;"></textarea>
 			            	</div>
 			        </fieldset>

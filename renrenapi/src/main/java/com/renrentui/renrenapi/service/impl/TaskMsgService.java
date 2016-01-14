@@ -27,16 +27,7 @@ public class TaskMsgService implements ITaskMsgService {
 	}
 
 	@Override
-	public int insertMsg(String title,String msg,String createName,
-			int msgType,long clienterId,long taskId,long taskDatumId) {
-		TaskMsg req=new TaskMsg();
-		req.setTitle(title);
-		req.setMsg(msg);
-		req.setCreateName(createName);
-		req.setMsgType(msgType);
-		req.setClienterId(clienterId);
-		req.setTaskId(taskId);
-		req.setTaskDatumId(taskDatumId);
+	public int insertMsg(TaskMsg req) {
 		return taskMsgDao.insert(req);
 	}
 

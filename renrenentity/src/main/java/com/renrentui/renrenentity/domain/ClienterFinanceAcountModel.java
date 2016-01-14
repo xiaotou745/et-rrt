@@ -5,8 +5,8 @@ import java.util.Date;
 import com.renrentui.renrenentity.ClienterFinanceAcount;
 
 public class ClienterFinanceAcountModel{
-	private int withdrawId;
-	private int clienterId;
+	private Long withdrawId;
+	private Long clienterId;
 	private Date createtime;
 	private double amount;
 	
@@ -46,19 +46,19 @@ public class ClienterFinanceAcountModel{
 		this.payFailedReason = payFailedReason;
 	}
 
-	public int getClienterId() {
+	public Long getClienterId() {
 		return clienterId;
 	}
 
-	public void setClienterId(int clienterId) {
+	public void setClienterId(Long clienterId) {
 		this.clienterId = clienterId;
 	}
 
-	public int getWithdrawId() {
+	public Long getWithdrawId() {
 		return withdrawId;
 	}
 
-	public void setWithdrawId(int withdrawId) {
+	public void setWithdrawId(Long withdrawId) {
 		this.withdrawId = withdrawId;
 	}
 }

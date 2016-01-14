@@ -83,7 +83,7 @@ public class LogServiceBLL {
 			}
 		}
 	}
-	private void writeFile(String sourceSys, String jsonMsg) {
+	public  void writeFile(String sourceSys, String jsonMsg) {
 		switch (sourceSys) {
 		case "renrenadmin":
 			renrenAdminLogger.info(jsonMsg);

@@ -3,6 +3,7 @@ package com.renrentui.renrenadmin.controller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IAlipayBatchService;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm;
@@ -96,13 +98,15 @@ public class ClienterWithdrawFormController {
 	 */	
 	@RequestMapping("auditrefuse")
 	@ResponseBody
-	public int auditrefuse(HttpServletRequest request,int  withwardId,String auditFailedReason) {
+	public int auditrefuse(HttpServletRequest request,int  withwardId,String auditFailedReason,String date,Long clienterId) {
 	
 		ClienterWithdrawForm record=new ClienterWithdrawForm();
 		record.setId((long)withwardId);
 		record.setAuditFailedReason(auditFailedReason);
 		UserContext context=UserContext.getCurrentContext(request);
 		record.setAuditName(context.getUserName());
+		record.setCreateTime(ParseHelper.ToDate(date));
+		record.setClienterId(clienterId);
 		return clienterWithdrawFormService.AuditRefuse(record);	
 	}	
 	/*
