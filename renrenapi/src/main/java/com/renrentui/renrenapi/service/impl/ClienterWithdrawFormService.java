@@ -132,23 +132,30 @@ public class ClienterWithdrawFormService implements
 		cBReq.setUserId(req.getUserId());
 		cBReq.setAmount(-req.getAmount());
 		int cbId = clienterBalanceDao.updateMoneyByKey(cBReq);
-
+		//增加地推员提现流水记录，实际到账金额，比如申请提现20，其中到账17，手续费3元，插入流水两条记录
 		ClienterBalanceRecord clienterBalanceRecordModel = new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(req.getUserId());
-		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));
-		clienterBalanceRecordModel
-				.setRecordType((short) CBalanceRecordType.ApplicationFor
-						.value());// 提现申请
+		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));   
+		clienterBalanceRecordModel.setRecordType((short) CBalanceRecordType.ApplicationFor.value());// 提现申请
 		clienterBalanceRecordModel.setOptName(req.getTrueName());
-		clienterBalanceRecordModel.setOrderId((long) clienterWithdrawFormModel
-				.getId());
+		clienterBalanceRecordModel.setOrderId((long) clienterWithdrawFormModel.getId());
 		clienterBalanceRecordModel.setRelationNo(no);
-		clienterBalanceRecordModel.setRemark("提现申请");
+		clienterBalanceRecordModel.setRemark("提现申请实际到账金额");
 		clienterBalanceRecordModel
 				.setStatus((short) CBalanceRecordStatus.Trading.value());// 交易中
 		int cbrId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
-
-		if (cwfId > 0 && cbId > 0 && cbrId > 0) {
+//		//增加地推员提现手续费金额  ，这里增加记录后 会影响后面的 流程，审核通过、拒绝、确认打款，都需要去改
+//		ClienterBalanceRecord cbrHandCharge = new ClienterBalanceRecord();
+//		cbrHandCharge.setClienterId(req.getUserId());
+//		cbrHandCharge.setAmount(-Math.abs(ParseHelper.ToDouble(handchargeString, 3)));  //金额3元手续费
+//		cbrHandCharge.setRecordType((short) CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
+//		cbrHandCharge.setOptName(req.getTrueName());
+//		cbrHandCharge.setOrderId((long) clienterWithdrawFormModel.getId());
+//		cbrHandCharge.setRelationNo(no);
+//		cbrHandCharge.setRemark("提现申请手续费");
+//		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
+//		int cbrHandId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
+		if (cwfId > 0 && cbId > 0 && cbrId > 0 ) {
 			return WithdrawState.Success;
 		}
 		/*
@@ -374,7 +381,8 @@ public class ClienterWithdrawFormService implements
 		{
 			AlipayBatchModel updateAlipayBatchModel = new AlipayBatchModel();
 			updateAlipayBatchModel.setLastOptUser(alipayBatchReq.getOptName());
-			updateAlipayBatchModel.setRemarks(new Date() + "将批次号"
+			updateAlipayBatchModel.setBatchNo(alipayBatchReq.getData());			
+			updateAlipayBatchModel.setRemarks(ParseHelper.ToDateString(new Date()) + "将批次号"
 					+ alipayBatchReq.getData() + "更换为" + alipayBatchNo + ";");
 			updateAlipayBatchModel.setNewBatchNo(alipayBatchNo);
 			clienterWithdrawFormDao

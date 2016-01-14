@@ -19,7 +19,7 @@
     AuditTime, AuditName
   </sql>
   <sql id="Sp_Column_List" >
-    cwf.Id, cwf.ClienterId, cwf.Amount, cwf.WithdrawNo, cwf.WithType, cwf.AccountInfo, cwf.TrueName, cwf.Status, cwf.CreateTime, 
+    cwf.Id, cwf.ClienterId, cwf.Amount,cwf.HandCharge,cwf.ActualAmount,cwf.ActualHandCharge,cwf.WithdrawNo, cwf.WithType, cwf.AccountInfo, cwf.TrueName, cwf.Status, cwf.CreateTime, 
     cwf.AuditTime, cwf.AuditName,c.clienterName,c.phoneNo
   </sql>
     <sql id="getListWhere"> 
@@ -67,7 +67,7 @@
 		parameterType="com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		' cwf.Id  ',
+		' cwf.Id desc ',
 		'
 		<include refid="Sp_Column_List" />
 		',
@@ -223,7 +223,7 @@
     where Id = #{id,jdbcType=BIGINT}
   </update>
   <select id="checkAlipayBatch" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.domain.AlipayBatchModel">
-	  SELECT COUNT(1) FROM dbo.AlipayBatch AS ab  WHERE ab.BatchNo=#{batchNo,jdbcType=VARCHAR} AND ab.Status=#{status,jdbcType=SMALLINT} 
+	  SELECT COUNT(1) as data1 FROM dbo.AlipayBatch(nolock) ab WHERE ab.BatchNo=#{batchNo,jdbcType=VARCHAR} AND ab.[Status]=#{status,jdbcType=INTEGER} 
   </select>
   <select id="getWithdrawListForAlipay" resultType="com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel" parameterType="com.renrentui.renrenentity.req.AlipayBatchReq">
 	  SELECT  Id, 
