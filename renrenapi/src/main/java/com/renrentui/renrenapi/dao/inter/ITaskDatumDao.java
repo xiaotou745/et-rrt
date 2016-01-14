@@ -3,6 +3,8 @@ package com.renrentui.renrenapi.dao.inter;
 import java.util.List;
 import java.util.Map;
 
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
 import com.renrentui.renrenentity.domain.TaskDatumDetail;
@@ -10,6 +12,8 @@ import com.renrentui.renrenentity.domain.TaskDatumDetailGroup;
 import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
 import com.renrentui.renrenentity.domain.TaskDatumTitle;
+import com.renrentui.renrenentity.req.OrderAuditReq;
+import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 import com.renrentui.renrenentity.req.TaskDatumReq;
 
@@ -80,4 +84,6 @@ public interface ITaskDatumDao {
 		 * @return
 		 */
 	List<TaskDatumGroup> getMyTaskDatumGroupList(TaskDatumReq req);
+	int orderAudit(OrderAuditReq req);
+    PagedResponse<OrderAudit> getOrderAuditList(PagedAuditorderReq req);
 }

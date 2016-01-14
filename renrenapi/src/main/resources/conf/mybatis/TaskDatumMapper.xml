@@ -69,7 +69,8 @@ VALUES  ( ${taskDatumId} ,
             a.Status AS auditStatus ,
             a.CreateDate ,
             a.AuditTime,
-            a.CtId
+            a.CtId,
+            a.refuReason
   FROM      TaskDatum a (nolock)
             JOIN RenRenTask b (nolock) ON a.TaskId = b.id
   where a.ClienterId = ${userId} 
@@ -95,10 +96,12 @@ VALUES  ( ${taskDatumId} ,
             a.TaskType ,
             a.Status AS taskStatus ,
             b.Logo,
+            k.id AS ctid,
             COUNT(c.Id) AS taskDatumCount
   FROM      RenRenTask a ( NOLOCK )
             JOIN dbo.Business b ( NOLOCK ) ON a.BusinessId = b.id
             JOIN TaskDatum c ( NOLOCK ) ON c.TaskId = a.id
+            JOIN ClienterTask k ( NOLOCK ) ON a.Id=k.TaskId AND k.ClienterId=${userId}
   WHERE     c.ClienterId = ${userId} 
             AND c.Status = ${auditStatus}
             <if test="nextId > 0" >
@@ -109,7 +112,8 @@ VALUES  ( ${taskDatumId} ,
             a.TaskType ,
             a.Status ,
             a.Amount ,
-            b.Logo
+            b.Logo,
+            k.id
   order by a.id desc;
   </select>  
    <!--  查询我的资料审核列表中每个资料需要显示的内容，zhaohl,20151125 -->
@@ -189,4 +193,87 @@ VALUES  ( ${taskDatumId} ,
                         and c.id=${taskDatumId}
 			 		</if> 
   </select> 
+    <!-- 审核订单2015年9月30日13:36:59茹化肖 -->
+  <update id="orderAudit" parameterType="com.renrentui.renrenentity.req.OrderAuditReq">
+UPDATE dbo.TaskDatum SET Status=${auditStatus},
+AuditTime=GETDATE(),
+AuditName='${auditName}',
+RefuReason='${refuReason}'
+WHERE id=${orderId}
+  </update>
+  <!-- 获取订单审核列表 茹化肖-->
+  
+   <sql id="getOrderAuditListWhere">
+		1=1			
+		<if test="orderNo != null and orderNo!=''">
+			 AND td.id=''${orderNo}''
+		</if>
+	    <if test="auditStatus != -1">
+			AND td.Status=${auditStatus}
+		</if>
+		
+		<if test="clienterPhone != null and clienterPhone!=''">
+			AND c.PhoneNo = ''${clienterPhone}''
+		</if>
+		
+		<if test="beginDate != null and beginDate!=''">
+			AND td.CreateDate >''${beginDate}''
+		</if>
+		<if test="endDate != null and endDate!=''">
+			AND ''${endDate}''>td.CreateDate
+		</if>
+		
+		<if test="taskName != null and taskName!=''">
+			AND rrt.TaskTitle LIKE ''%${taskName}%''
+		</if>
+		<if test="companyName != null and companyName!=''">
+			AND rrt.pusher LIKE ''%${companyName}%''
+		</if>
+		<if test="clienterName != null and clienterName!=''">
+			AND c.ClienterName LIKE ''%${clienterName}%''
+		</if>	
+	
+	</sql>
+	<select id="getOrderAuditList" resultType="com.renrentui.renrenentity.domain.OrderAudit"
+		parameterType="com.renrentui.renrenentity.req.PagedAuditorderReq"
+		statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		' td.id DESC ',
+		'
+		 td.id ,
+		td.ClienterId,
+        c.ClienterName ,
+        rrt.Pusher ,
+        rrt.TaskTitle ,
+        rrt.Status AS taskStatus ,
+        ct.CompleteNum ,
+        ct.Amount ,
+        td.CreateDate AS finishTime,
+        td.AuditTime ,
+        td.Status AS auditStatus,
+        rrt.id as TaskId  ,
+        c.PhoneNo ,
+        rrt.TotalAmount ,
+        td.SubCommisson ,
+        CASE WHEN ( ct.Amount + td.SubCommisson) > rrt.TotalAmount
+             THEN -1
+             ELSE 1
+        END AS Profit,
+        (rrt.TotalAmount-( ct.Amount + td.SubCommisson)) AS ProfitAmount
+		',
+		' dbo.TaskDatum AS td ( NOLOCK )
+        LEFT JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
+        LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
+        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id 
+        LEFT JOIN dbo.Strategy AS s ( NOLOCK ) ON s.id = td.StrategyId',
+		'
+		<include refid="getOrderAuditListWhere" />
+		',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+	</select>
 </mapper>

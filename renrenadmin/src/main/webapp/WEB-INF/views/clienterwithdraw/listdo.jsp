@@ -22,10 +22,13 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<th width="%5">编号</th>
 			<th width="10%">用户名称</th>
 			<th width="10%">电话号码</th>			
-			<th width="10%">金额</th>
+			<th width="7%">申请提现金额</th>
+			<th width="7%">地推员需支付手续费</th>
+			<th width="7%">实际支付手续费</th>
+			<th width="7%">实际提现金额</th>
 			<th width="10%">提现单号</th>
-			<th width="10%">提现账号</th>
-			<th width="10%">真实姓名</th>
+			<th width="7%">提现账号</th>
+			<th width="7%">真实姓名</th>
 			<th width="10%">创建时间</th>
 			<th width="10%">状态</th>			
 			<th width="10%">操作</th>							
@@ -49,7 +52,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td><%=data.get(i).getId()%></td>
 			<td><%=data.get(i).getClienterName()%></td>
 			<td><%=data.get(i).getPhoneNo()%></td>	
-			<td><%=data.get(i).getAmountString()%></td>	
+			<td><%=data.get(i).getAmountString()%></td>
+			<td><%=data.get(i).getHandCharge()%></td>
+			<td><%=data.get(i).getActualHandCharge()%></td>
+			<td><%=data.get(i).getActualAmount() %></td>
 			<td><%=data.get(i).getWithdrawNo()%></td>	
 			<td><%=data.get(i).getAccountInfo()%></td>
 			<td><%=data.get(i).getTrueName()%></td>			
@@ -58,7 +64,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td>
 			<%if(data.get(i).getStatus()==0) {%>
 			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>','<%=data.get(i).getClienterId() %>','<%=data.get(i).getAmount() %>')" >审核通过 </a>
-			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>',<%=data.get(i).getAmount() %>)" >审核拒绝</a>			
+			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>',<%=data.get(i).getAmount()%>,'<%=ParseHelper.ToDateString(data.get(i).getCreateTime())%>',<%=data.get(i).getClienterId()%>)" >审核拒绝</a>			
 			<%} %>			
 			<%if(data.get(i).getStatus()==1) {%>
 			<a href="javascript:void(0)"  onclick="funPayOK('<%=data.get(i).getId() %>',<%=data.get(i).getAmount() %>)" >确认打款</a>
@@ -103,9 +109,11 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
    }
     
  //审核拒绝
-    function WithdrawAuditRefuse(withwardId,amount) {
+    function WithdrawAuditRefuse(withwardId,amount,date,clienterId) {
 	 	$("#lblRefusePayMoney").html(amount);
 	 	$("#txtHideWithdrawId").val(withwardId);
+	 	$("#txtHideWithdrawDate").val(date);
+	 	$("#txtHideclienterId").val(clienterId);
 	 	$("#refuseRemarkDiv").modal('show'); 
     }
  function refuseConfirm(){
@@ -124,7 +132,9 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	 }	 
      var paramaters = {
          "withwardId": $("#txtHideWithdrawId").val(), 
-         "auditFailedReason":refuseRemrak
+         "auditFailedReason":refuseRemrak,
+         "date":$("#txtHideWithdrawDate").val(),
+         "clienterId":$("#txtHideclienterId").val()
      };
      var url = "<%=basePath%>/clienterwithdraw/auditrefuse";
      $.ajax({

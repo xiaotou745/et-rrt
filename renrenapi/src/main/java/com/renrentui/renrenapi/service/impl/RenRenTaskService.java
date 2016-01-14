@@ -259,45 +259,45 @@ public class RenRenTaskService implements IRenRenTaskService {
 //		}
 	}
 
-	/**
-	 * 取消任务 茹化肖 2015年9月30日13:24:27
-	 */
-	@Override
-	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public CancelTaskCode cancelTask(CancelTaskReq req) {
-		// 验证订单相关信息
-		CheckCancelOrder check = orderDao.checkCancelOrder(req);
-		if (check == null)// 订单不存在
-			return CancelTaskCode.OrderNull;
-		// if (check.getCancelCan() == 0)// 订单不能取消 //窦海超 去掉了判断订单进行中-未完成不能取消状态
-		// {
-		if (check.getIsCancle() == 1)// 订单已经取消
-			return CancelTaskCode.TaskIsCancel;
-		// if (check.getIsComplete() == 1)// 订单已经完成不能取消
-		// return CancelTaskCode.TaskComplete;
-		// return CancelTaskCode.CantCancel;// 订单不可取消
-		// }
-
-		int res = orderDao.cancelOrder(req);// 取消订单
-
-		OrderLog orderLog = new OrderLog();
-		orderLog.setOrderNo(check.getOrderNo());
-		orderLog.setOrderId(req.getOrderId());
-		orderLog.setOptType(Short.valueOf("1"));
-		orderLog.setOptName("地推员:" + req.getUserId());
-		orderLog.setRemark("地推员:" + req.getUserId() + "取消订单:"
-				+ check.getOrderNo());
-		int orderlogres = orderLogDao.addOrderLog(orderLog);// 记录订单操作日志
-
-		int addres = renRenTaskDao.addTaskAvailableCount(check.getTaskId());// 增加任务的剩余量
-		if (res > 0 && orderlogres > 0 && addres > 0) {
-			return CancelTaskCode.Success;
-		} else {
-			Error error = new Error("取消任务错误");
-			throw new RuntimeErrorException(error);
-		}
-	}
-
+//	/**
+//	 * 取消任务 茹化肖 2015年9月30日13:24:27
+//	 */
+//	@Override
+//	@Transactional(rollbackFor = Exception.class, timeout = 30)
+//	public CancelTaskCode cancelTask(CancelTaskReq req) {
+//		// 验证订单相关信息
+//		CheckCancelOrder check = orderDao.checkCancelOrder(req);
+//		if (check == null)// 订单不存在
+//			return CancelTaskCode.OrderNull;
+//		// if (check.getCancelCan() == 0)// 订单不能取消 //窦海超 去掉了判断订单进行中-未完成不能取消状态
+//		// {
+//		if (check.getIsCancle() == 1)// 订单已经取消
+//			return CancelTaskCode.TaskIsCancel;
+//		// if (check.getIsComplete() == 1)// 订单已经完成不能取消
+//		// return CancelTaskCode.TaskComplete;
+//		// return CancelTaskCode.CantCancel;// 订单不可取消
+//		// }
+//
+//		int res = orderDao.cancelOrder(req);// 取消订单
+//
+//		OrderLog orderLog = new OrderLog();
+//		orderLog.setOrderNo(check.getOrderNo());
+//		orderLog.setOrderId(req.getOrderId());
+//		orderLog.setOptType(Short.valueOf("1"));
+//		orderLog.setOptName("地推员:" + req.getUserId());
+//		orderLog.setRemark("地推员:" + req.getUserId() + "取消订单:"
+//				+ check.getOrderNo());
+//		int orderlogres = orderLogDao.addOrderLog(orderLog);// 记录订单操作日志
+//
+//		int addres = renRenTaskDao.addTaskAvailableCount(check.getTaskId());// 增加任务的剩余量
+//		if (res > 0 && orderlogres > 0 && addres > 0) {
+//			return CancelTaskCode.Success;
+//		} else {
+//			Error error = new Error("取消任务错误");
+//			throw new RuntimeErrorException(error);
+//		}
+//	}
+//
 	/**
 	 * 提交任务 茹化肖 2015年10月8日13:37:08
 	 */
@@ -305,7 +305,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public SubmitTaskCode submitTask(SubmitTaskReq req) {
 		//验证订单是否可以提交
-		CheckSubmitTask check = orderDao.checkOrderSubmit(req);
+		CheckSubmitTask check = renRenTaskDao.checkOrderSubmit(req);
 		if (check == null)
 			return SubmitTaskCode.CantSubmit;
 		if (check.getTaskClosed() == 1)// 任务已关闭 不可提交
@@ -561,38 +561,7 @@ public class RenRenTaskService implements IRenRenTaskService {
  */
 	@Override
 	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
-		return renRenTaskDao.getMyReceivedTaskList(req);
-//		List<MyReceiveTask> result=new ArrayList<>();
-//		List<MyReceiveTask> taskList= renRenTaskDao.getMyReceivedTaskList(req);
-//		List<Long> taskIdList=taskList.stream().map(t->t.getTaskId()).distinct().collect(Collectors.toList());
-//		for (Long taskId : taskIdList) {
-//			List<MyReceiveTask> taskTempList=taskList.stream().filter(t->t.getTaskId()==taskId).collect(Collectors.toList());
-//			MyReceiveTask tempTask=taskTempList.get(0);
-//			for (MyReceiveTask myReceiveTask : taskTempList) {
-//				if (myReceiveTask.getTaskType()==TaskType.ContractTask.value()) {
-//					DatumAuditStatus datumAuditStatus=DatumAuditStatus.getEnum(myReceiveTask.getAuditStatus());
-//					if (datumAuditStatus!=null) {
-//						switch (datumAuditStatus) {
-//						case WaitAudit:
-//							tempTask.setAuditWaitNum(myReceiveTask.getAuditNum());
-//							break;
-//						case Audited:
-//							tempTask.setAuditPassNum(myReceiveTask.getAuditNum());
-//							break;
-//						case Refuse:
-//							tempTask.setAuditRefuseNum(myReceiveTask.getAuditNum());
-//							break;
-//						default:
-//							break;
-//						}
-//					}
-//				}
-//			}
-//			result.add(tempTask);
-//		}
-//		
-//		return result;
-//		
+		return renRenTaskDao.getMyReceivedTaskList(req);	
 	}
 
 	@Override
@@ -995,46 +964,46 @@ public class RenRenTaskService implements IRenRenTaskService {
 		return renRenTaskDao.getListByTemplateId(templateId);
 	}
 
-	/**
-	 * 任务结账服务
-	 */
-	@Override
-	public int settlementTask(Long taskId, String userName) {
-		RenRenTask taskModel = renRenTaskDao.selectById(taskId);
-		if (taskModel == null
-				|| (taskModel.getStatus() != TaskStatus.Expired.value()
-						&& taskModel.getStatus() != TaskStatus.Stop.value() || taskModel
-						.getStatus().equals(TaskStatus.HasSettlement.value()))) {
-			return -1;
-		}
-		Double realFee = orderDao.getOrderTotalAmount(taskId);
-		if (realFee.equals(0d)) {
-			return -1;
-		}
-		BusinessBalance oldBusinessBalance = businessBalanceDao
-				.selectByBusinessId(taskModel.getBusinessId());
-		if (oldBusinessBalance == null) {
-			throw new TransactionalRuntimeException("没有找到id=" + taskModel.getBusinessId()
-					+ "的商户的余额信息");
-		}
-		Double totalFee = taskModel.getAmount() * taskModel.getTaskTotalCount();
-		Double difFee = totalFee - realFee;
-		if (difFee.compareTo(0d) < 0) {
-			throw new TransactionalRuntimeException("id为" + taskId + "的任务的共给地推员的佣金大于了任务总佣金");
-		}
-		if (difFee.compareTo(0d) > 0) {
-			updateBusinessBalance(taskId, taskModel.getBusinessId(), difFee,
-					oldBusinessBalance.getBalance(),
-					BBalanceRecordType.TaskSettlement, userName);
-		}
-		UpdateStatusReq statusReq = new UpdateStatusReq();
-		statusReq.setOldStatus(taskModel.getStatus());
-		statusReq.setReocrdId(taskId);
-		statusReq.setStatus(TaskStatus.HasSettlement.value());
-		statusReq.setUserName(userName);
-		setTaskStatus(statusReq);
-		return 1;
-	}
+//	/**
+//	 * 任务结账服务
+//	 */
+//	@Override
+//	public int settlementTask(Long taskId, String userName) {
+//		RenRenTask taskModel = renRenTaskDao.selectById(taskId);
+//		if (taskModel == null
+//				|| (taskModel.getStatus() != TaskStatus.Expired.value()
+//						&& taskModel.getStatus() != TaskStatus.Stop.value() || taskModel
+//						.getStatus().equals(TaskStatus.HasSettlement.value()))) {
+//			return -1;
+//		}
+//		Double realFee = orderDao.getOrderTotalAmount(taskId);
+//		if (realFee.equals(0d)) {
+//			return -1;
+//		}
+//		BusinessBalance oldBusinessBalance = businessBalanceDao
+//				.selectByBusinessId(taskModel.getBusinessId());
+//		if (oldBusinessBalance == null) {
+//			throw new TransactionalRuntimeException("没有找到id=" + taskModel.getBusinessId()
+//					+ "的商户的余额信息");
+//		}
+//		Double totalFee = taskModel.getAmount() * taskModel.getTaskTotalCount();
+//		Double difFee = totalFee - realFee;
+//		if (difFee.compareTo(0d) < 0) {
+//			throw new TransactionalRuntimeException("id为" + taskId + "的任务的共给地推员的佣金大于了任务总佣金");
+//		}
+//		if (difFee.compareTo(0d) > 0) {
+//			updateBusinessBalance(taskId, taskModel.getBusinessId(), difFee,
+//					oldBusinessBalance.getBalance(),
+//					BBalanceRecordType.TaskSettlement, userName);
+//		}
+//		UpdateStatusReq statusReq = new UpdateStatusReq();
+//		statusReq.setOldStatus(taskModel.getStatus());
+//		statusReq.setReocrdId(taskId);
+//		statusReq.setStatus(TaskStatus.HasSettlement.value());
+//		statusReq.setUserName(userName);
+//		setTaskStatus(statusReq);
+//		return 1;
+//	}
 	/**
 	 * 获取任务的步骤信息
 	 * 茹化肖

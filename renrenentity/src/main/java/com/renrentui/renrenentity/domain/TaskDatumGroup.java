@@ -14,6 +14,7 @@ public class TaskDatumGroup {
     private String taskTypeName;
     private String taskStatus;
     private long taskDatumCount;
+    private long ctId;
     public String getLogo() {
 		if (this.logo != null && !this.logo.equals(""))
 			return PropertyUtils.getProperty("ImgShowUrl") + this.logo;
@@ -73,6 +74,12 @@ public class TaskDatumGroup {
 	}
 	public void setTaskDatumCount(long taskDatumCount) {
 		this.taskDatumCount = taskDatumCount;
+	}
+	public long getCtId() {
+		return ctId;
+	}
+	public void setCtId(long ctId) {
+		this.ctId = ctId;
 	}
 
 }

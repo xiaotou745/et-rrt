@@ -200,17 +200,17 @@ public class TaskDatum {
 
 	 */
 
-	private String refuseReason;
+	private String refuReason;
 
-	public String getRefuseReason() {
+	public String getRefuReason() {
 
-		return refuseReason;
+		return refuReason;
 
 	}
 
-	public void setRefuseReason(String refuseReason) {
+	public void setRefuReason(String refuseReason) {
 
-		this.refuseReason = refuseReason;
+		this.refuReason = refuseReason;
 
 	}
 

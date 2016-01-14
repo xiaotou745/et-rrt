@@ -34,6 +34,5 @@ public interface ITaskMsgService {
 	 * @Author zhaohl
 	 * @return
 	 */
-	int insertMsg(String title,String msg,String createName,
-			int msgType,long clienterId,long taskId,long taskDatumId);
+	int insertMsg(TaskMsg req);
 }

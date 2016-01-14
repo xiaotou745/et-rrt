@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		if (listdata==null||listdata.size()==0) {
 			listdata=publicProvinceCityDao.getAllOpenCity();
 			if (listdata!=null||listdata.size()>0) {
-				redisService.set(RedissCacheKey.RR_PublicProvinceCity, listdata);
+				redisService.set(RedissCacheKey.RR_PublicProvinceCity, listdata,360,TimeUnit.DAYS);
 			}
 		}
 		return listdata;

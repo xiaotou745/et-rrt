@@ -59,8 +59,9 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 	}
 	@Override
 	public int CheckAlipayBatch(AlipayBatchModel alipayBatchModel) { 
-		return getMasterSqlSessionUtil().selectOne(
+		int i =getMasterSqlSessionUtil().selectOne(
 				"IClienterWithdrawFormDao.checkAlipayBatch", alipayBatchModel);
+		return i;
 	}
 	@Override
 	public List<AlipayClienterWithdrawModel> GetWithdrawListForAlipay(

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.renrentui.renrenadmin.common.UploadFileHelper;
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IArticleService;
 import com.renrentui.renrenentity.AccountInfo;
@@ -116,6 +117,29 @@ public class ArticleController {
 		ModelAndView view = new ModelAndView();
 		view.addObject("detail", detailArticle);
 		view.addObject("viewPath", "article/detail");
+		return view;
+	}
+	/**
+	 * 图片上传
+	 * 
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("uploadimg")
+	@ResponseBody
+	public String uploadimg(HttpServletRequest request) throws Exception {
+		return UploadFileHelper.UploadImg(request);
+	}
+	/**
+	 * 图片管理
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("filemanager")
+	public ModelAndView filemanager(HttpServletRequest request) {
+		ModelAndView view = new ModelAndView("article/uploadimg");
 		return view;
 	}
 }

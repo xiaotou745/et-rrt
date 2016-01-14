@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import com.renrentui.renrenapi.common.LogServiceBLL;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
@@ -34,14 +35,17 @@ import com.renrentui.renrencore.enums.CBalanceRecordStatus;
 import com.renrentui.renrencore.enums.CBalanceRecordType;
 import com.renrentui.renrencore.enums.ClienterWithdrawFormStatus;
 import com.renrentui.renrencore.enums.ClienterWithdrawFormWithType;
+import com.renrentui.renrencore.enums.MsgOpType;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.security.DES;
 import com.renrentui.renrencore.util.Config;
+import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.OrderNoHelper;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
+import com.renrentui.renrenentity.TaskMsg;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchCallBackModel;
 import com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm;
@@ -81,7 +85,8 @@ public class ClienterWithdrawFormService implements
 	private IClienterFinanceAcountService clienterFinanceAcountService;
 	@Autowired
 	private ITaskMsgService taskMsgService;
-
+	@Autowired 
+	private LogServiceBLL logService;
 	@Override
 	public int Add(ClienterWithdrawForm record) {
 		return clienterWithdrawFormDao.insert(record);
@@ -125,32 +130,37 @@ public class ClienterWithdrawFormService implements
 		clienterWithdrawFormModel.setHandCharge(ParseHelper.ToDouble(
 				handchargeString, 3)); // 骑士付给我们的手续费金额，从缓存中读取
 		clienterWithdrawFormModel.setActualHandCharge(actualHandCharge); // 我们付给支付宝的手续费
-		clienterWithdrawFormModel.setActualAmount(req.getAmount()
-				- actualHandCharge);
-
+		clienterWithdrawFormModel.setActualAmount(req.getAmount()-ParseHelper.ToDouble(handchargeString, 3));
 		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
 		// 申请提现，扣减金额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
 		cBReq.setAmount(-req.getAmount());
 		int cbId = clienterBalanceDao.updateMoneyByKey(cBReq);
-
+		//增加地推员提现流水记录，实际到账金额，比如申请提现20，其中到账17，手续费3元，插入流水两条记录
 		ClienterBalanceRecord clienterBalanceRecordModel = new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(req.getUserId());
-		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));
-		clienterBalanceRecordModel
-				.setRecordType((short) CBalanceRecordType.ApplicationFor
-						.value());// 提现申请
+		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));   
+		clienterBalanceRecordModel.setRecordType((short) CBalanceRecordType.ApplicationFor.value());// 提现申请
 		clienterBalanceRecordModel.setOptName(req.getTrueName());
-		clienterBalanceRecordModel.setOrderId((long) clienterWithdrawFormModel
-				.getId());
+		clienterBalanceRecordModel.setOrderId((long) clienterWithdrawFormModel.getId());
 		clienterBalanceRecordModel.setRelationNo(no);
-		clienterBalanceRecordModel.setRemark("提现申请");
+		clienterBalanceRecordModel.setRemark("提现申请实际到账金额");
 		clienterBalanceRecordModel
 				.setStatus((short) CBalanceRecordStatus.Trading.value());// 交易中
 		int cbrId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
-
-		if (cwfId > 0 && cbId > 0 && cbrId > 0) {
+//		//增加地推员提现手续费金额  ，这里增加记录后 会影响后面的 流程，审核通过、拒绝、确认打款，都需要去改
+//		ClienterBalanceRecord cbrHandCharge = new ClienterBalanceRecord();
+//		cbrHandCharge.setClienterId(req.getUserId());
+//		cbrHandCharge.setAmount(-Math.abs(ParseHelper.ToDouble(handchargeString, 3)));  //金额3元手续费
+//		cbrHandCharge.setRecordType((short) CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
+//		cbrHandCharge.setOptName(req.getTrueName());
+//		cbrHandCharge.setOrderId((long) clienterWithdrawFormModel.getId());
+//		cbrHandCharge.setRelationNo(no);
+//		cbrHandCharge.setRemark("提现申请手续费");
+//		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
+//		int cbrHandId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
+		if (cwfId > 0 && cbId > 0 && cbrId > 0 ) {
 			return WithdrawState.Success;
 		}
 		/*
@@ -212,6 +222,7 @@ public class ClienterWithdrawFormService implements
 	 * @return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int AuditRefuse(ClienterWithdrawForm record) {
 		long id = record.getId();// 提现单Id
 		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao
@@ -249,7 +260,14 @@ public class ClienterWithdrawFormService implements
 				.setStatus((short) CBalanceRecordStatus.Success.value());
 		int cbrIdInsert = clienterBalanceRecordDao
 				.insert(clienterBalanceRecordModel);
-
+		//发送消息
+		ClienterFinanceAcountModel cfaModel=new ClienterFinanceAcountModel();
+		cfaModel.setClienterId(record.getClienterId());
+		cfaModel.setPayFailedReason(record.getAuditFailedReason());
+		cfaModel.setCreatetime(record.getCreateTime());
+		cfaModel.setWithdrawId(record.getId());
+		AddCPlayMoneyFailMessage(cfaModel);
+		//发送消息结束
 		if (cwfId > 0 && cbrId > 0 && cbId > 0 && cbrIdInsert > 0)
 			return 1;
 		else {
@@ -376,7 +394,8 @@ public class ClienterWithdrawFormService implements
 		{
 			AlipayBatchModel updateAlipayBatchModel = new AlipayBatchModel();
 			updateAlipayBatchModel.setLastOptUser(alipayBatchReq.getOptName());
-			updateAlipayBatchModel.setRemarks(new Date() + "将批次号"
+			updateAlipayBatchModel.setBatchNo(alipayBatchReq.getData());			
+			updateAlipayBatchModel.setRemarks(ParseHelper.ToDateString(new Date()) + "将批次号"
 					+ alipayBatchReq.getData() + "更换为" + alipayBatchNo + ";");
 			updateAlipayBatchModel.setNewBatchNo(alipayBatchNo);
 			clienterWithdrawFormDao
@@ -403,6 +422,7 @@ public class ClienterWithdrawFormService implements
 					.sendPost(Config.aliBatchRequstUrl
 							+ "/services/aliservice/batchtrans", postData,
 							"application/json;charset=utf-8");
+			logService.writeFile("renrenadmin", logResultJson);
 			return logResultJson;
 		} else {
 			return "<html><body>提交提现单事务异常,请重试</body></html>";
@@ -448,6 +468,7 @@ public class ClienterWithdrawFormService implements
 	 */
 	@Override
 	public String AliBatchNotifyTransferCallback(HttpServletRequest request) {
+		logService.writeFile("renrenadmin", "AA回调开始");
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -495,14 +516,24 @@ public class ClienterWithdrawFormService implements
 			alipayBatchCallBackModel.setPayUserId(pay_user_id);
 			alipayBatchCallBackModel.setPayUserName(pay_user_name);
 			alipayBatchCallBackModel.setPayAccountNo(pay_account_no);
+			//记录参数 失败不做任何处理
+			try {
+				logService.writeFile("renrenadmin", JsonUtil.obj2string(alipayBatchCallBackModel));
+			} catch( Exception e ){
+			
+			}
+			
 			if (AliBatchNotifyTransferCallbackBusinessDeal(alipayBatchCallBackModel)) // 处理成功后的业务逻辑
 			{
+				logService.writeFile("renrenadmin", "AA处理成功");
 				return "success";
 			} else {
 				// 验证失败
+				logService.writeFile("renrenadmin", "AA处理失败");
 				return "fail";
 			}
 		} else {
+			logService.writeFile("renrenadmin", "AA校验失败");
 			return "fail";
 		}
 
@@ -583,25 +614,32 @@ public class ClienterWithdrawFormService implements
 		return true;
 	}
 
-	private boolean AddCPlayMoneyFailMessage(ClienterFinanceAcountModel cfaModel) {
-		int id = taskMsgService
-				.insertMsg(
-						"提现失败",
-						String.format(
-								"您于%s发起的提现申请交易失败，失败原因：（人工选择或填写的备注），提现资金已退还到账户余额。如有疑问，请联系地推小管家：010-57173598",
-								ParseHelper.ToDateString(
-										cfaModel.getCreatetime(), "yyyy-MM-dd")),
-						"admin", 1, cfaModel.getClienterId(), cfaModel
-								.getWithdrawId(), 0);
+	public boolean AddCPlayMoneyFailMessage(ClienterFinanceAcountModel cfaModel) {
+		TaskMsg req=new TaskMsg();
+		req.setTitle("提现失败");
+		req.setMsg(String.format(
+				"您于%s发起的提现申请交易失败，失败原因："+cfaModel.getPayFailedReason()+"，提现资金已退还到账户余额。如有疑问，请联系地推小管家：010-57173598",
+				ParseHelper.ToDateString(cfaModel.getCreatetime(), "yyyy-MM-dd")));
+		req.setCreateName("admin");
+		req.setMsgType(1);
+		req.setClienterId(cfaModel.getClienterId());
+		req.setTaskId(cfaModel.getWithdrawId());
+		req.setTaskDatumId(0);
+		int id = taskMsgService.insertMsg(req);
 		return id > 0;
 	}
 
-	public boolean AddCPlayMoneySuccessMessage(
-			ClienterFinanceAcountModel cfaModel) {
-		int id = taskMsgService.insertMsg("提现成功", String.format(
+	public boolean AddCPlayMoneySuccessMessage(ClienterFinanceAcountModel cfaModel) {
+		TaskMsg req=new TaskMsg();
+		req.setTitle("提现成功");
+		req.setMsg(String.format(
 				"您的%s元提现金额已成功到账，请注意查收，手续费%s元已扣款。如有疑问，请联系地推小管家：010-57173598",
-				cfaModel.getAmount(), cfaModel.getHandCharge()), "admin", 1,
-				cfaModel.getClienterId(), cfaModel.getWithdrawId(), 0);
+				cfaModel.getAmount(), cfaModel.getHandCharge()));
+		req.setCreateName("admin");
+		req.setMsgType(1);
+		req.setClienterId(cfaModel.getClienterId());
+		req.setTaskId(cfaModel.getWithdrawId());
+		int id = taskMsgService.insertMsg(req);
 		return id > 0;
 	}
 
