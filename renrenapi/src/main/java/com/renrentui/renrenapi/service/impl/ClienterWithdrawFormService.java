@@ -467,6 +467,7 @@ public class ClienterWithdrawFormService implements
 	 */
 	@Override
 	public String AliBatchNotifyTransferCallback(HttpServletRequest request) {
+		logService.writeFile("renrenadmin", "AA回调开始");
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -523,12 +524,15 @@ public class ClienterWithdrawFormService implements
 			
 			if (AliBatchNotifyTransferCallbackBusinessDeal(alipayBatchCallBackModel)) // 处理成功后的业务逻辑
 			{
+				logService.writeFile("renrenadmin", "AA处理成功");
 				return "success";
 			} else {
 				// 验证失败
+				logService.writeFile("renrenadmin", "AA处理失败");
 				return "fail";
 			}
 		} else {
+			logService.writeFile("renrenadmin", "AA校验失败");
 			return "fail";
 		}
 
