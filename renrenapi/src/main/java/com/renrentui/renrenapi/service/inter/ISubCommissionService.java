@@ -19,7 +19,7 @@ public interface ISubCommissionService {
 	 * @param req
 	 * @return
 	 */
-	int addStrategy(StrategyModelReq req);
+	double addStrategy(StrategyModelReq req);
 	
 	/**
 	 * 获取策略列表
