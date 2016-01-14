@@ -96,10 +96,12 @@ VALUES  ( ${taskDatumId} ,
             a.TaskType ,
             a.Status AS taskStatus ,
             b.Logo,
+            k.id AS ctid,
             COUNT(c.Id) AS taskDatumCount
   FROM      RenRenTask a ( NOLOCK )
             JOIN dbo.Business b ( NOLOCK ) ON a.BusinessId = b.id
             JOIN TaskDatum c ( NOLOCK ) ON c.TaskId = a.id
+            JOIN ClienterTask k ( NOLOCK ) ON a.Id=k.TaskId AND k.ClienterId=${userId}
   WHERE     c.ClienterId = ${userId} 
             AND c.Status = ${auditStatus}
             <if test="nextId > 0" >
@@ -110,7 +112,8 @@ VALUES  ( ${taskDatumId} ,
             a.TaskType ,
             a.Status ,
             a.Amount ,
-            b.Logo
+            b.Logo,
+            k.id
   order by a.id desc;
   </select>  
    <!--  查询我的资料审核列表中每个资料需要显示的内容，zhaohl,20151125 -->
