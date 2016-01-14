@@ -159,7 +159,7 @@ public class ClienterWithdrawFormService implements
 		cbrHandCharge.setRelationNo(no);
 		cbrHandCharge.setRemark("提现申请手续费");
 		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
-		int cbrHandId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
+		int cbrHandId = clienterBalanceRecordDao.insert(cbrHandCharge);
 		if (cwfId > 0 && cbId > 0 && cbrId > 0 && cbrHandId>0) {
 			return WithdrawState.Success;
 		}

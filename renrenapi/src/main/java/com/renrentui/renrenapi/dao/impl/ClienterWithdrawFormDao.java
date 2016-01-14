@@ -33,13 +33,13 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 	@Override
 	public ClienterWithdrawForm selectByPrimaryKey(Long id) {
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.api.dao.inter.IClienterWithdrawFormDao.selectByPrimaryKey", id);		
+				"IClienterWithdrawFormDao.selectByPrimaryKey", id);		
 	}
 	
 	public ClienterWithdrawForm selectById(Long id)
 	{
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.api.dao.inter.IClienterWithdrawFormDao.selectById", id);		
+				"IClienterWithdrawFormDao.selectById", id);		
 	}
 	
 	
