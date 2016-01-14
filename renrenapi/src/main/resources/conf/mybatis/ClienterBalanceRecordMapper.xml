@@ -241,7 +241,7 @@ WHERE   cbr.RecordType = 5
            ,[Status]
            ,[AfterAmount]
            ,[RecordType]
-           ,[Operator]
+           ,[OptName]
            ,[OperateTime]
            ,[OrderId]
            ,[RelationNo]
@@ -254,7 +254,7 @@ select      cwf.[ClienterId]
            ,'admin'
            ,getdate() OperateTime
            ,cwf.Id OrderId
-           ,cwf.WithwardNo RelationNo
+           ,cwf.WithdrawNo RelationNo
            ,#{remark,jdbcType=VARCHAR}
  from ClienterWithdrawForm cwf(nolock)
     join dbo.ClienterBalance c (nolock) on c.ClienterId=cwf.ClienterId

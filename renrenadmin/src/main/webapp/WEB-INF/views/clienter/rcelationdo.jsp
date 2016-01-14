@@ -32,8 +32,8 @@
 			  <td><%=data.get(i).getClienterLevel()%>级</td>
 			  <td><%=data.get(i).getClienterCount()%></td>
 			  <td><%=data.get(i).getCompleteCount()%></td>
-			  <td><%=data.get(i).getTotalAmount()%></td>
-			  <td><%=data.get(i).getTotalSubAmount()%></td>
+			  <td><%=ParseHelper.digitsNum(data.get(i).getTotalAmount(),2)%></td>
+			  <td><%=ParseHelper.digitsNum(data.get(i).getTotalSubAmount(),2)%></td>
 			  <td><a target="_blank"  href="<%=basePath%>/clienter/rejibie?cid=<%=data.get(i).getMyId()%>&jibie=<%=data.get(i).getClienterLevel()%>">地推员列表</a></td>
 			</tr>
 		 <%}%> 	 	

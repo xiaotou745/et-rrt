@@ -77,7 +77,7 @@ FROM    #T2
                                                     <if test="endDate != null and endDate!= ''" >
  													AND '${endDate}'>td.CreateDate
      												</if>
-        LEFT JOIN dbo.ClienterBalanceRecord AS cbr (nolock)ON td.id = cbr.OrderId AND  RecordType = 1
+        LEFT JOIN dbo.ClienterBalanceRecord AS cbr (nolock)ON td.id = cbr.OrderId AND  RecordType = 1  AND cbr.ClienterId = #T2.ClienterId
 		LEFT JOIN dbo.ClienterBalanceRecord AS cbr2 (nolock)ON td.id = cbr2.OrderId
                                                       AND cbr2.RecordType = 5 AND cbr2.ClienterId = @Myid
 GROUP BY #T2.ClienterId ,
@@ -141,7 +141,7 @@ FROM    #T1
                                                     <if test="endDate != null and endDate!= ''" >
  													AND '${endDate}'>td.CreateDate
      												</if>
-        LEFT JOIN dbo.ClienterBalanceRecord AS cbr(NOLOCK) ON td.id = cbr.OrderId AND  RecordType = 1
+        LEFT JOIN dbo.ClienterBalanceRecord AS cbr(NOLOCK) ON td.id = cbr.OrderId AND  RecordType = 1  AND cbr.ClienterId = #T1.ClienterId
         LEFT JOIN dbo.ClienterBalanceRecord AS cbr2 (nolock)ON td.id = cbr2.OrderId
                                                       AND cbr2.RecordType = 5 AND cbr2.ClienterId = @Myid
         

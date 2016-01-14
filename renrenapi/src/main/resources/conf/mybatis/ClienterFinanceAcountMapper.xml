@@ -266,7 +266,7 @@
     UPDATE ClienterWithdrawForm 
     <set >
       <if test="isCallBack > 0" >
-          CallBackTime=getdate(),CallBackRequestId=#{callBackRequestId,BIGINT},
+          CallBackTime=getdate(),CallBackRequestId=#{callBackRequestId,jdbcType=BIGINT},
       </if>
         [Status] = #{status,jdbcType=INTEGER},Payer=#{operator,jdbcType=VARCHAR},PayTime=getdate(),
         PayFailedReason=ISNULL(PayFailedReason,'')+#{payFailedReason,jdbcType=VARCHAR}+' '

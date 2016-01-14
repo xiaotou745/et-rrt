@@ -424,6 +424,7 @@ public class ClienterWithdrawFormService implements
 					.sendPost(Config.aliBatchRequstUrl
 							+ "/services/aliservice/batchtrans", postData,
 							"application/json;charset=utf-8");
+			logService.writeFile("renrenadmin", logResultJson);
 			return logResultJson;
 		} else {
 			return "<html><body>提交提现单事务异常,请重试</body></html>";
@@ -469,6 +470,7 @@ public class ClienterWithdrawFormService implements
 	 */
 	@Override
 	public String AliBatchNotifyTransferCallback(HttpServletRequest request) {
+		logService.writeFile("renrenadmin", "AA回调开始");
 
 		Map<String, String> params = new HashMap<String, String>();
 
@@ -525,12 +527,15 @@ public class ClienterWithdrawFormService implements
 			
 			if (AliBatchNotifyTransferCallbackBusinessDeal(alipayBatchCallBackModel)) // 处理成功后的业务逻辑
 			{
+				logService.writeFile("renrenadmin", "AA处理成功");
 				return "success";
 			} else {
 				// 验证失败
+				logService.writeFile("renrenadmin", "AA处理失败");
 				return "fail";
 			}
 		} else {
+			logService.writeFile("renrenadmin", "AA校验失败");
 			return "fail";
 		}
 
@@ -549,11 +554,7 @@ public class ClienterWithdrawFormService implements
 		if (clienterWithdrawFormDao.CheckAlipayBatch(alipayBatchModel) > 0) { // 已经处理了该批次
 			return false;
 		}
-		AlipayBatchModel alipayBatchModel2 = new AlipayBatchModel();
-		alipayBatchModel2.setSuccessTimes(successlist.size());
-		alipayBatchModel2.setFailTimes(faillist.size());
-		alipayBatchModel2.setBatchNo(alipayBatchCallBackModel.getBatchNo());
-		int cc = clienterWithdrawFormDao.UpdateAlipayBatchNo(alipayBatchModel2);// 更新批次表信息
+		
 		// 处理成功的
 		for (int i = 0; i < successlist.size(); i++) {
 			ClienterWithdrawLogModel clienterWithdrawLogModel = new ClienterWithdrawLogModel();
@@ -580,18 +581,16 @@ public class ClienterWithdrawFormService implements
 			if (cfaModel != null) {
 				AddCPlayMoneySuccessMessage(cfaModel);
 			}
-		}
+		}//for  成功
 		// 处理失败的提现单
 		for (int i = 0; i < faillist.size(); i++) {
 			ClienterWithdrawLogModel cwlModel = new ClienterWithdrawLogModel();
 			cwlModel.setOperator("system");
 			String reString = "支付宝提现打款失败"
-					+ faillist.get(i).getReason().trim().toUpperCase() == "ACCOUN_NAME_NOT_MATCH" ? ",支付宝账户和姓名不匹配"
-					: "";
+					+ (faillist.get(i).getReason().trim().toUpperCase().equals("ACCOUN_NAME_NOT_MATCH")? ",支付宝账户和姓名不匹配": "");
 			cwlModel.setRemark(reString);
 			cwlModel.setPayFailedReason("支付宝失败代码:"
-					+ faillist.get(i).getReason().trim().toUpperCase() == "ACCOUN_NAME_NOT_MATCH" ? ",支付宝账户和姓名不匹配"
-					: faillist.get(i).getReason());
+					+ (faillist.get(i).getReason().trim().toUpperCase().equals("ACCOUN_NAME_NOT_MATCH") ? ",支付宝账户和姓名不匹配": faillist.get(i).getReason()));
 			cwlModel.setStatus(ClienterWithdrawFormStatus.PayError.value());
 			cwlModel.setOldStatus(ClienterWithdrawFormStatus.Paying.value());
 			cwlModel.setWithwardId(faillist.get(i).getWithdrawId());
@@ -607,7 +606,12 @@ public class ClienterWithdrawFormService implements
 			if (cfaModel != null) {
 				AddCPlayMoneyFailMessage(cfaModel);
 			}
-		}
+		}//for 失败
+		AlipayBatchModel alipayBatchModel2 = new AlipayBatchModel();
+		alipayBatchModel2.setSuccessTimes(successlist.size());
+		alipayBatchModel2.setFailTimes(faillist.size());
+		alipayBatchModel2.setBatchNo(alipayBatchCallBackModel.getBatchNo());
+		int cc = clienterWithdrawFormDao.UpdateAlipayBatchNo(alipayBatchModel2);// 更新批次表信息
 		return true;
 	}
 
