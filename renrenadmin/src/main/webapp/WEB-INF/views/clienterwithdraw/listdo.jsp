@@ -64,7 +64,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<td>
 			<%if(data.get(i).getStatus()==0) {%>
 			<a href="javascript:void(0)"  onclick="WithdrawAuditPass('<%=data.get(i).getId() %>','<%=data.get(i).getClienterId() %>','<%=data.get(i).getAmount() %>')" >审核通过 </a>
-			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>',<%=data.get(i).getAmount() %>)" >审核拒绝</a>			
+			<a href="javascript:void(0)"  onclick="WithdrawAuditRefuse('<%=data.get(i).getId() %>',<%=data.get(i).getAmount()%>,'<%=ParseHelper.ToDateString(data.get(i).getCreateTime())%>',<%=data.get(i).getClienterId()%>)" >审核拒绝</a>			
 			<%} %>			
 			<%if(data.get(i).getStatus()==1) {%>
 			<a href="javascript:void(0)"  onclick="funPayOK('<%=data.get(i).getId() %>',<%=data.get(i).getAmount() %>)" >确认打款</a>
@@ -109,9 +109,11 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
    }
     
  //审核拒绝
-    function WithdrawAuditRefuse(withwardId,amount) {
+    function WithdrawAuditRefuse(withwardId,amount,date,clienterId) {
 	 	$("#lblRefusePayMoney").html(amount);
 	 	$("#txtHideWithdrawId").val(withwardId);
+	 	$("#txtHideWithdrawDate").val(date);
+	 	$("#txtHideclienterId").val(clienterId);
 	 	$("#refuseRemarkDiv").modal('show'); 
     }
  function refuseConfirm(){
@@ -130,7 +132,9 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 	 }	 
      var paramaters = {
          "withwardId": $("#txtHideWithdrawId").val(), 
-         "auditFailedReason":refuseRemrak
+         "auditFailedReason":refuseRemrak,
+         "date":$("#txtHideWithdrawDate").val(),
+         "clienterId":$("#txtHideclienterId").val()
      };
      var url = "<%=basePath%>/clienterwithdraw/auditrefuse";
      $.ajax({
