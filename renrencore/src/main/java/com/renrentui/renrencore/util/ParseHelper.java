@@ -321,16 +321,18 @@ public class ParseHelper {
 	 * @return
 	 */
 	public static String digitsNum(Object numVaule, int digits){
+		
+		
 		if (digits<0) {
 			digits=2;
 		}
-		String f=".0000000000";
-		String aString=f.substring(0, digits+1);
-		if (Double.parseDouble(numVaule.toString())==0d) {
-			return "0"+aString;
+		String formatString="######0.";
+		for (int i = 0; i < digits; i++) {
+			formatString+="0";
 		}
-		DecimalFormat decimalFormat=new DecimalFormat(aString);//构造方法的字符格式这里如果小数不足2位,会以0补足.
-		return decimalFormat.format(numVaule);
+		DecimalFormat    df   = new DecimalFormat(formatString);  
+		return df.format(numVaule);
+
 	}
 	/**
 	 * 
