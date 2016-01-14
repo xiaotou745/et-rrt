@@ -131,7 +131,8 @@ public class ClienterWithdrawFormService implements
 				handchargeString, 3)); // 骑士付给我们的手续费金额，从缓存中读取
 		clienterWithdrawFormModel.setActualHandCharge(actualHandCharge); // 我们付给支付宝的手续费
 		clienterWithdrawFormModel.setActualAmount(req.getAmount()-ParseHelper.ToDouble(handchargeString, 3));
-		
+		//增加一条提现记录
+		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
 		//增加地推员提现流水记录，实际到账金额，比如申请提现20，其中到账17，手续费3元，插入流水两条记录
 		ClienterBalanceRecord cbrWithdraw = new ClienterBalanceRecord();
 		cbrWithdraw.setClienterId(req.getUserId());
@@ -153,9 +154,7 @@ public class ClienterWithdrawFormService implements
 		cbrHandCharge.setRelationNo(no);
 		cbrHandCharge.setRemark("提现申请手续费");
 		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
-		int cbrHandId = clienterBalanceRecordDao.insert(cbrHandCharge);
-		//增加一条提现记录
-		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
+		int cbrHandId = clienterBalanceRecordDao.insert(cbrHandCharge); 
 		// 申请提现，扣减金额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
