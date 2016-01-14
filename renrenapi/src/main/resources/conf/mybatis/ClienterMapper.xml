@@ -440,7 +440,7 @@ WHERE b.taskid=#{taskId,jdbcType=BIGINT}
   parameterType="java.lang.Long" >
         DECLARE @RecommendPhone VARCHAR(50)
         DECLARE @PartnerNum INT
-        DECLARE @BonusTotal DECIMAL
+        DECLARE @BonusTotal DECIMAL(18,2)
         
         SELECT  @RecommendPhone = RecommendPhone
         FROM    Clienter with(nolock)
