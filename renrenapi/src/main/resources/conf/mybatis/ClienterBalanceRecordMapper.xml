@@ -45,7 +45,7 @@
     where Id = #{id,jdbcType=BIGINT}
   </select>
     <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select top 1 
     <include refid="Base_Column_List" />
     from ClienterBalanceRecord
     where OrderId = #{orderId,jdbcType=BIGINT}

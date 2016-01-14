@@ -140,7 +140,7 @@ public class ClienterWithdrawFormService implements
 		//增加地推员提现流水记录，实际到账金额，比如申请提现20，其中到账17，手续费3元，插入流水两条记录
 		ClienterBalanceRecord clienterBalanceRecordModel = new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(req.getUserId());
-		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));   
+		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()-ParseHelper.ToDouble(handchargeString,3)));   
 		clienterBalanceRecordModel.setRecordType((short) CBalanceRecordType.ApplicationFor.value());// 提现申请
 		clienterBalanceRecordModel.setOptName(req.getTrueName());
 		clienterBalanceRecordModel.setOrderId((long) clienterWithdrawFormModel.getId());
@@ -149,18 +149,18 @@ public class ClienterWithdrawFormService implements
 		clienterBalanceRecordModel
 				.setStatus((short) CBalanceRecordStatus.Trading.value());// 交易中
 		int cbrId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
-//		//增加地推员提现手续费金额  ，这里增加记录后 会影响后面的 流程，审核通过、拒绝、确认打款，都需要去改
-//		ClienterBalanceRecord cbrHandCharge = new ClienterBalanceRecord();
-//		cbrHandCharge.setClienterId(req.getUserId());
-//		cbrHandCharge.setAmount(-Math.abs(ParseHelper.ToDouble(handchargeString, 3)));  //金额3元手续费
-//		cbrHandCharge.setRecordType((short) CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
-//		cbrHandCharge.setOptName(req.getTrueName());
-//		cbrHandCharge.setOrderId((long) clienterWithdrawFormModel.getId());
-//		cbrHandCharge.setRelationNo(no);
-//		cbrHandCharge.setRemark("提现申请手续费");
-//		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
-//		int cbrHandId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
-		if (cwfId > 0 && cbId > 0 && cbrId > 0 ) {
+		//增加地推员提现手续费金额  ，这里增加记录后 会影响后面的 流程，审核通过、拒绝、确认打款，都需要去改
+		ClienterBalanceRecord cbrHandCharge = new ClienterBalanceRecord();
+		cbrHandCharge.setClienterId(req.getUserId());
+		cbrHandCharge.setAmount(-Math.abs(ParseHelper.ToDouble(handchargeString, 3)));  //金额3元手续费
+		cbrHandCharge.setRecordType((short) CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
+		cbrHandCharge.setOptName(req.getTrueName());
+		cbrHandCharge.setOrderId((long) clienterWithdrawFormModel.getId());
+		cbrHandCharge.setRelationNo(no);
+		cbrHandCharge.setRemark("提现申请手续费");
+		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
+		int cbrHandId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
+		if (cwfId > 0 && cbId > 0 && cbrId > 0 && cbrHandId>0) {
 			return WithdrawState.Success;
 		}
 		/*
@@ -182,9 +182,8 @@ public class ClienterWithdrawFormService implements
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int AuditPass(ClienterWithdrawForm record) {
 		long id = record.getId();// 提现单Id
-
-		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao
-				.selectByOrderId(id);
+		
+		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao.selectByOrderId(id);
 		if (cbrModel.getStatus() != 2)
 			return 0;
 
@@ -225,11 +224,16 @@ public class ClienterWithdrawFormService implements
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int AuditRefuse(ClienterWithdrawForm record) {
 		long id = record.getId();// 提现单Id
-		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao
-				.selectByOrderId(id);
+		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao.selectByOrderId(id);
 		if (cbrModel.getStatus() != 2)
 			return 0;
-
+		ClienterWithdrawForm cwf= clienterWithdrawFormDao.selectById(record.getId());
+		if(cwf!=null){
+			cbrModel.setAmount(cwf.getAmount());  //提现金额
+		}else{
+			Error error = new Error("审核拒绝，提现单可能不存在");
+			throw new RuntimeErrorException(error);
+		}
 		// 更新提现单审核状态
 		record.setStatus((short) ClienterWithdrawFormStatus.AuditRefuse.value());// 审核拒绝
 		record.setAuditTime(new Date());
@@ -258,8 +262,7 @@ public class ClienterWithdrawFormService implements
 		clienterBalanceRecordModel.setRemark("申请拒绝失败");
 		clienterBalanceRecordModel
 				.setStatus((short) CBalanceRecordStatus.Success.value());
-		int cbrIdInsert = clienterBalanceRecordDao
-				.insert(clienterBalanceRecordModel);
+		int cbrIdInsert = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
 		//发送消息
 		ClienterFinanceAcountModel cfaModel=new ClienterFinanceAcountModel();
 		cfaModel.setClienterId(record.getClienterId());
@@ -274,7 +277,6 @@ public class ClienterWithdrawFormService implements
 			Error error = new Error("审核拒绝");
 			throw new RuntimeErrorException(error);
 		}
-
 	}
 
 	@Override
