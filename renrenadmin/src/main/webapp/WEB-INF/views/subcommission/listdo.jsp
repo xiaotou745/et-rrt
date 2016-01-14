@@ -45,18 +45,17 @@
 				{
 					//当前启用   ,,操作禁用 
 					%>
-					<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,1)">禁用</a>
+					<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,1,<%=list.get(i).getPercentage()%>)">禁用</a>
 					<%
 				}
 				else if(list.get(i).getStatus()==StrategyStatus.UnEnable.value())
 				{
 					//当前禁用 操作启用
 					%>
-					<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,2)">启用</a>
+					<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,2,<%=list.get(i).getPercentage()%>)">启用</a>
 					<%
 				}
 				%>
-				<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,3)">删除</a>
 				</td>
 				</tr>
 				<%
