@@ -12,8 +12,8 @@ import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
-import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
+import com.renrentui.renrenentity.req.UpdatePwdReq;
 
 
 @Service

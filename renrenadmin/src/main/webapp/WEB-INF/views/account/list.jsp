@@ -138,6 +138,33 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+function modify(id) {
+	var paramaters = {
+			"userId" :  id
+		};
+		var url = "<%=basePath%>/account/getuserinfo";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				$("#txtUserName").val(result.userName);
+				$("#txtLoginName").val(result.loginName);
+				$("#txtPwd").val();
+				$("#txtConfirmPwd").val();
+				if(result.status==1){
+					$("#radyes").prop('checked','checked')
+				}
+				else{
+					$("#radno").prop('checked','checked')
+				}
+			    userid=id;
+				optype=1;
+		        $('#myModal').modal('show');
+			}
+		});
+
+}
 function updateuser(){
 	if($("#txtUserName").val()==""){
 		alert("用户名不能为空");
