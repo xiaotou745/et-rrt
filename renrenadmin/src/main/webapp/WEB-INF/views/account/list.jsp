@@ -61,7 +61,7 @@ List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
 						单独分配<input type="radio" id="usertype" name="objtype" value="1">
 					</div>
 					<div class="control-group" id="rolediv">
-						<%=HtmlHelper.getSelect("roleid", roleData, "roleName", "id",null,null,"全部")%>
+						<%=HtmlHelper.getSelect("roleid", roleData, "roleName", "id",null,"-1","请选择")%>
 					</div>
 					<div class="control-group" id="userdiv" style="display: hidden;">
 						<div class="controls">
@@ -290,6 +290,10 @@ $("input[type='radio'][name='objtype']").change(function() {
 $("#saveauth").click(function() {
 	var typeid=$("input[name='objtype']:checked").val();
 	 if(typeid=="0"){
+		 if($("#roleid").val()=="-1"){
+			 alert("请选择一个角色！");
+			 return;
+		 }
 		 if($("#userroleid").val()==$("#roleid").val()){
 			 alert("没有变更，不需要保存");
 			 return;

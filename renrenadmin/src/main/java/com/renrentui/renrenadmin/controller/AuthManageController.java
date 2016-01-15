@@ -96,7 +96,7 @@ public class AuthManageController {
 		oldList.removeAll(newList);// oldList中剩余的是被删掉的权限id
 		diffList.addAll(oldList);// diffList中剩余的是发生了变更的权限id
 		if (diffList.size() == 0) {
-			return "没有任何修改，不需要保存";
+			return "";
 		}
 		List<AccountAuth> authList = new ArrayList<>();
 		UserContext context = UserContext.getCurrentContext(request);
