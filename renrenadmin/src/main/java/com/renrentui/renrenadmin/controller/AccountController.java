@@ -34,8 +34,8 @@ import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.RoleInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.SimpleUserInfoModel;
-import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
+import com.renrentui.renrenentity.req.UpdatePwdReq;
 
 @Controller
 @RequestMapping("account")

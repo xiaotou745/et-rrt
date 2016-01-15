@@ -134,7 +134,15 @@ public class ClienterBalanceRecord {
     }
 
 	public String getRecordTypeName() {
-		return CBalanceRecordType.getEnum(recordType).desc();
+		CBalanceRecordType type=CBalanceRecordType.getEnum(recordType);
+		if (type!=null) {
+			if (type.value()==CBalanceRecordType.DenialOf.value()) {
+				return CBalanceRecordType.WithdrawFail.desc();
+			}else{
+				return type.desc();
+			}
+		}
+		return "";
 	}
 
 	public double getWithdrawAmount() {

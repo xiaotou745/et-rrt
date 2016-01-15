@@ -24,7 +24,7 @@
   <if test="itemsCount != 0" >
 		top  ${itemsCount} 
   </if>
-  	Id, Amount,RecordType,OperateTime,Remark
+  	Id, Amount,RecordType,OperateTime,Remark,RelationNo 
     from ClienterBalanceRecord with(nolock)
     where ClienterId = #{userId,jdbcType=BIGINT}
      <if test="recordType == 1" >
