@@ -98,11 +98,11 @@ width: 100%;
 			    <div class="row">
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
-							style="margin-left: 3px;height:30px;">查询</button>	
+							style="margin-left: 3px;height:30px;">查询</button>
+							<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipay" onclick="return exportWithdraw()"
+							style="margin-left: 3px;height:30px;">导出</button>		
 							<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipay" onclick="return BatchAlipay()"
-							style="margin-left: 3px;height:30px;display:none">批量支付宝付款</button>	
-						<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipay" onclick="return exportWithdraw()"
-							style="margin-left: 3px;height:30px;display:none">导出</button>											 
+							style="margin-left: 3px;height:30px;display:none">批量支付宝付款</button>
 					</div>
 			</div>
 			</form>
@@ -220,7 +220,7 @@ function BatchAlipay() {
 }
 //导出
 function exportWithdraw(){
-	var withdrawNo = $("#txtWithdrawNo").val();
+	 var withdrawNo = $("#txtWithdrawNo").val();
 	 var clienterName = $("#txtClienterName").val();
 	 var phoneNo = $("#txtPhoneNo").val();	 
 	 var typeselect=$('#typeselect').val();
@@ -231,5 +231,8 @@ function exportWithdraw(){
         alert("请输入时间范围!");
         return;
     }
+    var url = "<%=basePath%>/clienterwithdraw/exportwithdraw?withdrawNo=" + withdrawNo + "&clienterName=" + clienterName + "&phoneNo=" + phoneNo +  "&typeselect=" + typeselect + "&withType=" + withType+ "&startDate=" + startdate + "&endDate=" + enddate;
+    window.location.href = url;
+    return;
 }
 </script>

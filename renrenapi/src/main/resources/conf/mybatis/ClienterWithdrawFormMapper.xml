@@ -61,8 +61,7 @@
     AuditTime, AuditName
     from ClienterWithdrawForm
     where Id = #{id,jdbcType=BIGINT}
-  </select>
-  
+  </select> 
     	<select id="getList" resultType="com.renrentui.renrenentity.domain.ClienterWithdrawFormDM"
 		parameterType="com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq"
 		statementType="CALLABLE">
@@ -292,4 +291,43 @@ where   BatchNo = #{batchNo,jdbcType=VARCHAR}
         	BatchNo=#{newBatchNo,jdbcType=VARCHAR}
 		WHERE BatchNo = #{batchNo,jdbcType=VARCHAR}
   </update>
+  <select id="exportWithdrawExcel" resultType="com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel" parameterType="com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq">
+		select  cwf.AccountInfo ,
+        cwf.TrueName ,
+        c.ClienterName ,
+        c.PhoneNo ,
+        convert(varchar(20),cwf.CreateTime,120) CreateTime,
+        cwf.Amount ,
+        cwf.HandCharge ,
+        cwf.WithdrawNo ,
+        cwf.ActualAmount ,
+        cwf.ActualHandCharge ,
+        case cwf.Status
+          when 1 then '审核通过'
+          when 2 then '审核拒绝'
+          when 0 then '待审核'
+          when 3 then '打款完成'
+          when 20 then '打款中'
+          when 30 then '打款失败'
+          else ''
+        end statusString
+from    dbo.ClienterWithdrawForm cwf ( nolock )
+        join dbo.Clienter c ( nolock ) on cwf.ClienterId = c.Id where 
+        1=1	and cwf.CreateTime>='${startDate}' AND '${endDate}'>=cwf.CreateTime
+		<if test="withdrawNo != null and withdrawNo!=''">
+			and cwf.withdrawNo=''${withdrawNo}''
+		</if>		
+		<if test="phoneNo != null and phoneNo!=''">
+			and c.phoneNo=''${phoneNo}''
+		</if>
+		<if test="status != -1 ">
+			and cwf.status=${status}
+		</if>	
+		<if test="clienterName != null and clienterName!=''">
+			and c.clienterName LIKE ''%${clienterName}%''
+		</if> 
+		<if test="withType != -1">
+			and cwf.withType=${withType}
+		</if>
+	</select>
 </mapper>

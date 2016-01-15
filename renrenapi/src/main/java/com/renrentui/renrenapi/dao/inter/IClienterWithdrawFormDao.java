@@ -7,6 +7,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawLog;
 import com.renrentui.renrenentity.req.AlipayBatchReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
@@ -45,5 +46,9 @@ public interface IClienterWithdrawFormDao {
 	int UpdateAlipayBatchForAgain(AlipayBatchModel updateAlipayBatchModel);
 
 
-	int UpdateAlipayBatchNo(AlipayBatchModel alipayBatchModel); 
+	int UpdateAlipayBatchNo(AlipayBatchModel alipayBatchModel);
+
+
+	List<ClienterWithdrawFormExcel> exportWithdraw(
+			PagedClienterWithdrawFormReq req); 
 }

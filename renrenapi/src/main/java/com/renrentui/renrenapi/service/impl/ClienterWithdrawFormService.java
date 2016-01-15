@@ -11,16 +11,13 @@ import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.dom4j.tree.BackedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.renrentui.renrenapi.common.LogServiceBLL;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
@@ -35,7 +32,6 @@ import com.renrentui.renrencore.enums.CBalanceRecordStatus;
 import com.renrentui.renrencore.enums.CBalanceRecordType;
 import com.renrentui.renrencore.enums.ClienterWithdrawFormStatus;
 import com.renrentui.renrencore.enums.ClienterWithdrawFormWithType;
-import com.renrentui.renrencore.enums.MsgOpType;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.security.DES;
 import com.renrentui.renrencore.util.Config;
@@ -48,12 +44,12 @@ import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.TaskMsg;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchCallBackModel;
-import com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.AlipayCallBackData;
 import com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel;
 import com.renrentui.renrenentity.domain.ClienterFinanceAcountModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawLog;
 import com.renrentui.renrenentity.domain.ClienterWithdrawLogModel;
 import com.renrentui.renrenentity.req.AlipayBatchReq;
@@ -91,7 +87,10 @@ public class ClienterWithdrawFormService implements
 	public int Add(ClienterWithdrawForm record) {
 		return clienterWithdrawFormDao.insert(record);
 	}
-
+	@Override
+	public List<ClienterWithdrawFormExcel> exportWithdraw(PagedClienterWithdrawFormReq req) {
+		return clienterWithdrawFormDao.exportWithdraw(req);
+	}
 	/**
 	 * @Des 用户提现 申请
 	 * @Author 胡灵波
@@ -659,5 +658,5 @@ public class ClienterWithdrawFormService implements
 			list.add(model);
 		}
 		return list;
-	}
+	} 
 }

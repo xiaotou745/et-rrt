@@ -10,6 +10,7 @@ import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchCallBackModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel;
 import com.renrentui.renrenentity.req.AlipayBatchReq;
 import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
@@ -40,4 +41,6 @@ public interface IClienterWithdrawFormService {
 	
 	 boolean AliBatchNotifyTransferCallbackBusinessDeal(
 			AlipayBatchCallBackModel alipayBatchCallBackModel);
+
+	List<ClienterWithdrawFormExcel> exportWithdraw(PagedClienterWithdrawFormReq req);
 }
