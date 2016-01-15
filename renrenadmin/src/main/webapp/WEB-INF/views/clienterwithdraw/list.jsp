@@ -101,7 +101,8 @@ width: 100%;
 							style="margin-left: 3px;height:30px;">查询</button>	
 							<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipay" onclick="return BatchAlipay()"
 							style="margin-left: 3px;height:30px;display:none">批量支付宝付款</button>	
-																		 
+						<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipay" onclick="return exportWithdraw()"
+							style="margin-left: 3px;height:30px;display:none">导出</button>											 
 					</div>
 			</div>
 			</form>
@@ -216,5 +217,19 @@ function BatchAlipay() {
     window.open(url);
     alert('请在新打开的页面完成支付宝付款！');
     $('#btnSearch').click();
+}
+//导出
+function exportWithdraw(){
+	var withdrawNo = $("#txtWithdrawNo").val();
+	 var clienterName = $("#txtClienterName").val();
+	 var phoneNo = $("#txtPhoneNo").val();	 
+	 var typeselect=$('#typeselect').val();
+	 var withType=$('#typewithdraw').val();
+	 var startdate=$("#txtstartdate").val();       
+    var enddate=$("#txtenddate").val();
+    if (startdate == "" || enddate == "") {
+        alert("请输入时间范围!");
+        return;
+    }
 }
 </script>

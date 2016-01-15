@@ -155,7 +155,7 @@ public class ClienterWithdrawFormService implements
 		cbrHandCharge.setRelationNo(no);
 		cbrHandCharge.setRemark("提现申请手续费");
 		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
-		int cbrHandId = clienterBalanceRecordDao.handCinsert(cbrHandCharge); 
+		int cbrHandId = clienterBalanceRecordDao.handChargeinsert(cbrHandCharge); 
 		// 申请提现，扣减金额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
