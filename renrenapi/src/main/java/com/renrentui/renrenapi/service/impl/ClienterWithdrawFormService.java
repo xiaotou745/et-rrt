@@ -148,13 +148,14 @@ public class ClienterWithdrawFormService implements
 		ClienterBalanceRecord cbrHandCharge = new ClienterBalanceRecord();
 		cbrHandCharge.setClienterId(req.getUserId());
 		cbrHandCharge.setAmount(-Math.abs(ParseHelper.ToDouble(handchargeString, 3)));  //金额3元手续费
+		cbrHandCharge.setWithdrawAmount(-Math.abs(req.getAmount()));
 		cbrHandCharge.setRecordType((short)CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
 		cbrHandCharge.setOptName(req.getTrueName());
 		cbrHandCharge.setOrderId((long) clienterWithdrawFormModel.getId());
 		cbrHandCharge.setRelationNo(no);
 		cbrHandCharge.setRemark("提现申请手续费");
 		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
-		int cbrHandId = clienterBalanceRecordDao.insert(cbrHandCharge); 
+		int cbrHandId = clienterBalanceRecordDao.handChargeinsert(cbrHandCharge); 
 		// 申请提现，扣减金额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
@@ -178,7 +179,7 @@ public class ClienterWithdrawFormService implements
 	public int AuditPass(ClienterWithdrawForm record) {
 		long id = record.getId();// 提现单Id
 		
-		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao.selectByOrderId(id);
+		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao.selBalanceByOrderId(id);
 		if (cbrModel.getStatus() != 2)
 			return 0;
 
@@ -219,7 +220,7 @@ public class ClienterWithdrawFormService implements
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int AuditRefuse(ClienterWithdrawForm record) {
 		long id = record.getId();// 提现单Id
-		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao.selectByOrderId(id);
+		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao.selBalanceByOrderId(id);
 		if (cbrModel.getStatus() != 2)
 			return 0;
 		ClienterWithdrawForm cwf= clienterWithdrawFormDao.selectById(record.getId());

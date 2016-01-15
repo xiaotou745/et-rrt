@@ -28,6 +28,7 @@ public class ClienterBalanceRecord {
     
     private Short status;    
     private String statusName;
+    private double withdrawAmount;
     public String getStatusName() {
 		return status==Short.valueOf("1")?"交易成功":"交易中";
 	}
@@ -135,4 +136,13 @@ public class ClienterBalanceRecord {
 	public String getRecordTypeName() {
 		return CBalanceRecordType.getEnum(recordType).desc();
 	}
+
+	public double getWithdrawAmount() {
+		return withdrawAmount;
+	}
+
+	public void setWithdrawAmount(double withdrawAmount) {
+		this.withdrawAmount = withdrawAmount;
+	}
+ 
 }
