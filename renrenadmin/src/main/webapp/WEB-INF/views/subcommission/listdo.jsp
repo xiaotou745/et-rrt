@@ -33,10 +33,10 @@
 			{
 				%>
 				<tr>
-				<td><%=list.get(i).getId()%></td>
+				<td><%=(i+1)%></td>
 				<td><a href="<%=basePath+"/subcommission/detail?id="+list.get(i).getId()%>" target="_blank"><%=list.get(i).getStrategyName()%></a></td>
 				<td><%=list.get(i).getLevalCount()%></td>
-				<td><%=list.get(i).getPercentage()%></td>
+				<td><%=list.get(i).getPercentage()%>%</td>
 				<td><%=ParseHelper.ToDateString(list.get(i).getCreateDate())%></td>
 				<td><%=list.get(i).getOptName()%></td>
 				<td><%=StrategyStatus.getEnum(list.get(i).getStatus()).desc()%></td>
