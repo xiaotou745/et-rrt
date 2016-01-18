@@ -94,7 +94,7 @@ public class OrderService implements IOrderService{
 			clienterBalanceRecordModel.setOptName(req.getAuditName());
 			clienterBalanceRecordModel.setOrderId(req.getOrderId());
 			clienterBalanceRecordModel.setRelationNo(req.getOrderNo());
-			clienterBalanceRecordModel.setRemark("合同审核通过增加佣金");
+			clienterBalanceRecordModel.setRemark(req.getTaskTitle());
 			clienterBalanceRecordModel.setStatus((short)1);
 			int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);	
 			

@@ -12,6 +12,7 @@ public class OrderAuditReq {
 	private double amount;
 	private String orderNo;
 	private String refuReason;
+	private String taskTitle;
 	public String getRefuReason() {
 		return refuReason==null?"":refuReason;
 	}
@@ -53,5 +54,11 @@ public class OrderAuditReq {
 	}
 	public void setAuditName(String auditName) {
 		this.auditName = auditName;
+	}
+	public String getTaskTitle() {
+		return taskTitle;
+	}
+	public void setTaskTitle(String taskTitle) {
+		this.taskTitle = taskTitle;
 	}
 }

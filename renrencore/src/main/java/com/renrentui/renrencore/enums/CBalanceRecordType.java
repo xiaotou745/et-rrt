@@ -5,7 +5,7 @@ public enum CBalanceRecordType {
 	/**
 	 * 佣金
 	 */
-	Commission(1, "佣金"),
+	Commission(1, "任务奖励"),
 	/**
 	 * 提现申请
 	 */
