@@ -2,24 +2,23 @@ package com.renrentui.renrenadmin.controller;
 
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+
+
 import com.renrentui.renrenadmin.common.UserContext;
-import com.renrentui.renrenapi.dao.inter.IStrategyDao;
 import com.renrentui.renrenapi.service.inter.IBusinessBalanceService;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
@@ -29,6 +28,7 @@ import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.enums.TaskType;
 import com.renrentui.renrencore.enums.TemplateStatus;
+import com.renrentui.renrencore.util.ExcelUtils;
 import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
@@ -41,6 +41,7 @@ import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.TaskShareStatistics;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
@@ -358,6 +359,37 @@ public class TaskManageController {
 			return ParseHelper.digitsNum(balance.getBalance(),2);
 		}
 		return "0.00";
+	}
+	/**
+	 * 任务数据导出
+	 * @param taskId
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("taskexport")
+	@ResponseBody
+	public void taskExport(Long taskId,HttpServletRequest request,HttpServletResponse response) throws Exception
+	{
+		List<OrderAudit> records=renRenTaskService.taskDaumExport(taskId);
+		String fileName = "人人地推-资料数据数据"+taskId;
+		//fileName = String.format(fileName, "到" + ParseHelper.ToDateString(req.getEndDate(),"yyyy-MM-dd"));
+		LinkedHashMap<String, String> columnTitiles = new LinkedHashMap<String, String>();
+		columnTitiles.put("资料编号", "id");
+		columnTitiles.put("地推员", "clienterInfo");
+		columnTitiles.put("公司名称", "pusher");
+		columnTitiles.put("任务名称", "taskTitle");
+		columnTitiles.put("该地推员完成次数", "completeNum");
+		columnTitiles.put("总佣金/次", "totalAmount");
+		columnTitiles.put("地推员佣金/次", "amountStr");
+		columnTitiles.put("上级累计分佣", "subCommisson");
+		columnTitiles.put("盈亏", "profitAmount");
+		columnTitiles.put("提交时间", "finishTime");
+		columnTitiles.put("终审时间", "auditTime");
+		columnTitiles.put("审核状态", "auditStatus");
+		columnTitiles.put("资料数据", "dataValue");
+		ExcelUtils.export2Excel(fileName, "资料审核列表", columnTitiles,records, request, response);
+		return;
 	}
 //	/**
 //	 * 任务结账

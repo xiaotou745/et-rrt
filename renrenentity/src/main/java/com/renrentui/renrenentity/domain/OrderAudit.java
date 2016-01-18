@@ -36,15 +36,18 @@ public class OrderAudit {
 	private Double subCommisson;
 	private int profit;
 	private Double profitAmount;
-	//-------------导出专用
+	private String dataValue;
+	//订单导出
+	
 	public String getClienterInfo() {
 		return phoneNo+","+clienterName;
 	}
-	
-	public String getDataInfo(){
-		return PropertyUtils.getProperty("java.renrenadmin.url")+"/ordermanage/orderchildInfo?tag=1&userId="+clienterId+"&taskId="+taskId+"&taskDatumId="+id+"&name="+clienterName;
+	public String getDataValue() {
+		return dataValue;
 	}
-	//-------------
+	public void setDataValue(String dataValue) {
+		this.dataValue = dataValue;
+	}
 	public Double getProfitAmount() {
 		return profitAmount;
 	}

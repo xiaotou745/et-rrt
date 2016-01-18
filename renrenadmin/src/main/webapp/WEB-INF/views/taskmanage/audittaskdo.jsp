@@ -61,10 +61,16 @@
 		    if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()||data.get(i).getStatus()==TaskStatus.Reject.value()){%>
 			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',5,<%=data.get(i).getStatus() %>,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">取消</a>
 			<a href="<%=basePath%>/taskmanage/newtask?taskId=<%=data.get(i).getId()%>" target="_blank">修改任务</a>
-			<%}	%>
-<!-- 			if(data.get(i).getCanSettlement().equals(1)){%> -->
-<%-- 					<a href="javascript:settlementtask('<%=data.get(i).getId()%>')">结算</a> --%>
-<%-- 				<%} --%>
+			<%}	
+			
+			if(data.get(i).getStatus()==TaskStatus.Audited.value()
+					||data.get(i).getStatus()==TaskStatus.Expired.value()
+					||data.get(i).getStatus()==TaskStatus.Stop.value()
+					)
+			{%>
+				<a href="javascript:Export(<%=data.get(i).getId()%>)">导出资料数据</a>
+			<%}
+			%>
 			</td>
 		</tr>
 		<%

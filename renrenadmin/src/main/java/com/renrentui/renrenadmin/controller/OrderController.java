@@ -209,7 +209,6 @@ public class OrderController {
 				columnTitiles.put("提交时间", "finishTime");
 				columnTitiles.put("终审时间", "auditTime");
 				columnTitiles.put("审核状态", "auditStatus");
-				//columnTitiles.put("资料详情", "dataInfo");
 				ExcelUtils.export2Excel(fileName, "资料审核列表", columnTitiles,records, request, response);
 				return;
 	}

@@ -9,6 +9,7 @@ import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskModel;
@@ -135,4 +136,10 @@ public interface IRenRenTaskDao {
 	 */
 	int updatePartnerNum(Long taskId);
     CheckSubmitTask checkOrderSubmit(SubmitTaskReq req);
+    /**
+     * 资料任务导出
+     * @param taskId
+     * @return
+     */
+    List<OrderAudit> taskDaumExport(Long taskId);
 }

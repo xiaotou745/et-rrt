@@ -4,6 +4,7 @@ package com.renrentui.renrenapi.service.inter;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
@@ -16,6 +17,7 @@ import com.renrentui.renrencore.enums.SubmitTaskCode;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.RenRenTask;
+
 
 
 
@@ -108,5 +110,12 @@ public interface IRenRenTaskService {
 	  * @return
 	  */
 	 ArrayList<TaskSetp> getTaskSetps(Long taskId);
+	 
+		/**
+		 * 任务下资料导出
+		 * @param taskId
+		 * @return
+		 */
+		List<OrderAudit> taskDaumExport(Long taskId);
 	
 }
