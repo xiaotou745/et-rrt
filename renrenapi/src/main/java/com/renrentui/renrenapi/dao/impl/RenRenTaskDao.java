@@ -14,6 +14,7 @@ import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.CheckTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskModel;
@@ -267,5 +268,14 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	@Override
 	public CheckSubmitTask checkOrderSubmit(SubmitTaskReq req) {
 		return getMasterSqlSessionUtil().selectOne("IRenRenTaskDao.checkOrderSubmit", req);
+	}
+	/**
+	 * 
+	 * 
+	 * 任务下所有数据导出
+	 */
+	@Override
+	public List<OrderAudit> taskDaumExport(Long taskId) {
+		return getReadOnlySqlSessionUtil().selectList("IRenRenTaskDao.taskDaumExport", taskId);
 	}
 }

@@ -78,6 +78,7 @@ import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.domain.ReceiveNum;
@@ -1049,5 +1050,14 @@ public class RenRenTaskService implements IRenRenTaskService {
 			groups.add(groupaGroup);		
 			}
 		return groups;
+	}
+	
+	/**
+	 * 资料数据导出
+	 * 茹化肖
+	 */
+	@Override
+	public List<OrderAudit> taskDaumExport(Long taskId) {
+		return renRenTaskDao.taskDaumExport(taskId );
 	}
 }

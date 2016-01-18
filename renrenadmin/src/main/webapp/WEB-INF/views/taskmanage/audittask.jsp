@@ -239,4 +239,11 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 			}
 		});
 	}
+	
+	function Export(taskid)
+	{
+		var url = "<%=basePath%>/taskmanage/taskexport?taskId="+taskid;
+		window.open(url);
+	    return true;
+	}
 </script>
