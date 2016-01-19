@@ -248,11 +248,12 @@ statementType="CALLABLE">
  rrt.Reminder,
  rrt.status,
  b.Logo,
- ct.CompleteNum,
+ case  rrt.TaskType when 1 then  ISNULL(CTD.auditWaitNum,0)+ISNULL(CTD.auditPassNum,0)+ISNULL(CTD.auditRefuseNum,0)
+ else  ct.CompleteNum end as CompleteNum,
  ct.id as CtId,
- CTD.auditWaitNum,
- CTD.auditPassNum,
- CTD.auditRefuseNum
+ isnull(CTD.auditWaitNum,0) as auditWaitNum,
+ isnull(CTD.auditPassNum,0) as auditPassNum,
+ isnull(CTD.auditRefuseNum,0) as auditRefuseNum
 FROM dbo.ClienterTask AS ct  (NOLOCK)
 INNER JOIN dbo.RenRenTask AS rrt(NOLOCK) ON ct.TaskId=rrt.id
 INNER JOIN dbo.Business AS b (NOLOCK) ON rrt.BusinessId=b.id
