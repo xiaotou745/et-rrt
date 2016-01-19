@@ -1,17 +1,11 @@
-use renrendb
-go
-insert into dbo.AuthorityMenuClass
-         ( ParId ,
-           MenuName ,
-           BeLock ,
-           Url ,
-           IsButton ,
-           AuthCode
-         )
- values  ( 20 , -- ParId - int
-           '支付宝批次进度查询' , -- MenuName - varchar(50)
-           0 , -- BeLock - bit
-           '/clienterwithdraw/alibatchlist' , -- Url - varchar(500)
-           0 , -- IsButton - bit
-           'CLIENTER_WITHDRAW_BATCHSELECT'  -- AuthCode - varchar(500)
-         )
+USE [RenRenDBTest]
+GO
+/****** Object:  Table [dbo].[AuthorityMenuClass]    Script Date: 01/19/2016 11:38:37 ******/
+SET IDENTITY_INSERT [dbo].[AuthorityMenuClass] ON
+INSERT [dbo].[AuthorityMenuClass] ([Id], [ParId], [MenuName], [BeLock], [Url], [IsButton], [AuthCode]) VALUES (31, 0, N'分佣管理', 0, N'', 0, N'SubCommission_Manager')
+INSERT [dbo].[AuthorityMenuClass] ([Id], [ParId], [MenuName], [BeLock], [Url], [IsButton], [AuthCode]) VALUES (32, 31, N'添加分佣策略', 0, N'/subcommission/add', 0, N'SubCommission_Add')
+INSERT [dbo].[AuthorityMenuClass] ([Id], [ParId], [MenuName], [BeLock], [Url], [IsButton], [AuthCode]) VALUES (33, 31, N'分佣策略列表', 0, N'/subcommission/list', 0, N'SubCommission_List')
+INSERT [dbo].[AuthorityMenuClass] ([Id], [ParId], [MenuName], [BeLock], [Url], [IsButton], [AuthCode]) VALUES (34, 23, N'推荐关系查询', 0, N'/clienter/clientercelation', 0, N'Clienter_ClienterRelation')
+INSERT [dbo].[AuthorityMenuClass] ([Id], [ParId], [MenuName], [BeLock], [Url], [IsButton], [AuthCode]) VALUES (35, 3, N'公共配置', 0, N'/admintools/globalconfig', 0, N'Admintools_Globalconfig')
+INSERT [dbo].[AuthorityMenuClass] ([Id], [ParId], [MenuName], [BeLock], [Url], [IsButton], [AuthCode]) VALUES (36, 20, N'支付宝批次进度查询', 0, N'/clienterwithdraw/alibatchlist', 0, N'CLIENTER_WITHDRAW_BATCHSELECT')
+SET IDENTITY_INSERT [dbo].[AuthorityMenuClass] OFF
