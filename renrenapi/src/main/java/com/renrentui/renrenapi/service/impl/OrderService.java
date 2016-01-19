@@ -209,20 +209,23 @@ public class OrderService implements IOrderService{
 				Double pre=childs.get(i).getPercentage();//百分比
 				Double SubMoney=baseMoe*pre*0.01;//分出去的金额
 				//1.审核通过 将合同的单价添加到骑士余额和可提现余额
-				ClienterBalanceReq cBReq=new ClienterBalanceReq();
-				cBReq.setUserId(cid);
-				cBReq.setAmount(SubMoney);
-				int cbId= clienterBalanceDao.updateMoneyByKey(cBReq);
-			    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
-				clienterBalanceRecordModel.setClienterId(cid);
-				clienterBalanceRecordModel.setAmount(SubMoney);		
-				clienterBalanceRecordModel.setRecordType((short)5);		
-				clienterBalanceRecordModel.setOptName(OptName);
-				clienterBalanceRecordModel.setOrderId(OrderId);
-				clienterBalanceRecordModel.setRelationNo(OrderId.toString());
-				clienterBalanceRecordModel.setRemark("合伙人成功完成任务后，根据分佣比例获得的奖励");
-				clienterBalanceRecordModel.setStatus((short)1);
-				int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);	
+				if(SubMoney>0.01d)
+				{
+					ClienterBalanceReq cBReq=new ClienterBalanceReq();
+					cBReq.setUserId(cid);
+					cBReq.setAmount(SubMoney);
+					int cbId= clienterBalanceDao.updateMoneyByKey(cBReq);
+				    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
+					clienterBalanceRecordModel.setClienterId(cid);
+					clienterBalanceRecordModel.setAmount(SubMoney);		
+					clienterBalanceRecordModel.setRecordType((short)5);		
+					clienterBalanceRecordModel.setOptName(OptName);
+					clienterBalanceRecordModel.setOrderId(OrderId);
+					clienterBalanceRecordModel.setRelationNo(OrderId.toString());
+					clienterBalanceRecordModel.setRemark("合伙人成功完成任务后，根据分佣比例获得的奖励");
+					clienterBalanceRecordModel.setStatus((short)1);
+					int cbrId=clienterBalanceRecordDao.insert(clienterBalanceRecordModel);	
+				}
 		}
 		return true;
 	}
