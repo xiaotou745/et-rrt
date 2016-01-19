@@ -13,7 +13,7 @@ function CheckSave(){
 		alert('任务描述必须在5-20个字符之间');
 		return false;
 	}
-	if(isInt($('#auditCycle').val()))
+	if(!isInt($('#auditCycle').val()))
 	{
 		alert('审核周期必须为整数');
 		return false;
@@ -28,7 +28,7 @@ function CheckSave(){
 		alert('地推员佣金必须大于0元');
 		return false;
 	}
-	if(isInt($('#estimatedTime').val()))
+	if(!isInt($('#estimatedTime').val()))
 	{
 		alert('预计完成消耗必须为整数');
 		return false;
