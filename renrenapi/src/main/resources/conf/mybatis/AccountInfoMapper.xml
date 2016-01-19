@@ -23,12 +23,6 @@
     update AccountInfo
     <set >
     	LastChangeTime=getdate(),
-      <if test="userName != null and userName!=''" >
-        userName = #{userName,jdbcType=NVARCHAR},
-      </if>
-      <if test="loginName != null and loginName!=''" >
-        loginName = #{loginName,jdbcType=NVARCHAR},
-      </if>
       <if test="status != null" >
         Status = #{status,jdbcType=INTEGER},
       </if>
@@ -92,7 +86,7 @@
     update accountinfo set roleid=#{newRoleID,jdbcType=INTEGER}
     where Id = #{userID,jdbcType=INTEGER}
   </update>
-    <update id="updatePwd"  parameterType="com.renrentui.renrenentity.domain.UpdatePwdReq" >
+    <update id="updatePwd"  parameterType="com.renrentui.renrenentity.req.UpdatePwdReq" >
     update accountinfo set Password=#{newPwd,jdbcType=NVARCHAR}
     where Id = #{userId,jdbcType=INTEGER} and Password=#{oldPwd,jdbcType=NVARCHAR}
   </update>

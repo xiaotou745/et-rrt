@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +19,19 @@ import org.springframework.web.servlet.ModelAndView;
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IAlipayBatchService;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
+import com.renrentui.renrencore.util.ExcelUtils;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel;
 import com.renrentui.renrenentity.req.AlipayBatchReq;
 import com.renrentui.renrenentity.req.PagedAlipayBatchListReq;
 import com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq;
+
+import freemarker.template.utility.StringUtil;
 
 @Controller
 @RequestMapping("clienterwithdraw")
@@ -180,5 +185,46 @@ public class ClienterWithdrawFormController {
 		model.addObject("currenttitle", "支付宝批次进度查询> 批次详情");
 		model.addObject("viewPath","clienterwithdraw/alipaybatchlistdetail");
 		return model;
-	}	
+	}
+	@RequestMapping("exportwithdraw")
+	public void exportWithdraw(String withdrawNo, String clienterName,String phoneNo,int typeselect,int withType,String startDate, String endDate,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		PagedClienterWithdrawFormReq req = new PagedClienterWithdrawFormReq();
+		req.setEndDate(endDate);
+		req.setStartDate(startDate);
+		req.setWithdrawNo(withdrawNo);
+		req.setClienterName(clienterName);
+		req.setPhoneNo(phoneNo);
+		req.setWithType(withType);
+		req.setStatus(typeselect);
+		req.setCurrentPage(1);
+		req.setPageSize(Integer.MAX_VALUE);
+		List<ClienterWithdrawFormExcel> resp = clienterWithdrawFormService.exportWithdraw(req);
+		String filename = "地推员提现单%s";
+		if (req.getStartDate()!="" && req.getEndDate()!="") {
+			filename = String.format(filename, ParseHelper.ToDateString(req.getStartDate(),"yyyyMMdd") + "到" +ParseHelper.ToDateString(req.getEndDate(),"yyyyMMdd"));
+		}
+		if (resp!=null&&resp.size()>0) {
+			exportWithdrawExcel(filename, resp,request,response);
+		}
+		
+	} 
+	private void exportWithdrawExcel(String filename,
+			List<ClienterWithdrawFormExcel> resp, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		LinkedHashMap<String,String> columnTitiles=new LinkedHashMap<String,String>();
+		columnTitiles.put("提现单号", "withdrawNo");
+		columnTitiles.put("支付宝账号", "accountInfo");
+		columnTitiles.put("支付宝实名", "trueName");
+		columnTitiles.put("地推员姓名", "clienterName");
+		columnTitiles.put("地推员账号", "phoneNo");
+		columnTitiles.put("申请提现金额", "amount");
+		columnTitiles.put("实际到账金额", "actualAmount");
+		columnTitiles.put("扣除地推员手续费", "handCharge");
+		columnTitiles.put("实缴手续费", "actualHandCharge");
+		columnTitiles.put("申请提现时间", "createTime");
+		columnTitiles.put("提现单状态", "statusString");
+		ExcelUtils.export2Excel(filename,"地推员提现单",columnTitiles,resp,request,response);
+	}
+	
 }

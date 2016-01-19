@@ -15,6 +15,7 @@ import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawLog;
 import com.renrentui.renrenentity.req.AlipayBatchReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
@@ -33,13 +34,13 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 	@Override
 	public ClienterWithdrawForm selectByPrimaryKey(Long id) {
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.api.dao.inter.IClienterWithdrawFormDao.selectByPrimaryKey", id);		
+				"IClienterWithdrawFormDao.selectByPrimaryKey", id);		
 	}
 	
 	public ClienterWithdrawForm selectById(Long id)
 	{
 		return getMasterSqlSessionUtil().selectOne(
-				"com.renrentui.api.dao.inter.IClienterWithdrawFormDao.selectById", id);		
+				"IClienterWithdrawFormDao.selectById", id);		
 	}
 	
 	
@@ -98,6 +99,13 @@ public class ClienterWithdrawFormDao extends DaoBase implements IClienterWithdra
 		// TODO Auto-generated method stub
 		return getMasterSqlSessionUtil().update(
 				"IClienterWithdrawFormDao.updateAlipayBatchNo", alipayBatchModel);
+	}
+	@Override
+	public List<ClienterWithdrawFormExcel> exportWithdraw(
+			PagedClienterWithdrawFormReq req) {
+		List<ClienterWithdrawFormExcel> model = getReadOnlySqlSessionUtil()
+				.selectList("IClienterWithdrawFormDao.exportWithdrawExcel",req);
+		return model;
 	}
 	
 }

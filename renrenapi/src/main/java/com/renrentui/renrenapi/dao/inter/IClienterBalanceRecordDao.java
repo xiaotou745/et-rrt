@@ -19,7 +19,7 @@ public interface IClienterBalanceRecordDao {
     ClienterBalanceRecord selectByPrimaryKey(Long id);
     
     ClienterBalanceRecord selectByOrderId(Long OrderId);
-
+    ClienterBalanceRecord selBalanceByOrderId(Long OrderId);
     int updateByPrimaryKeySelective(ClienterBalanceRecord record);
     
     int updateStatusByOrderId(ClienterBalanceRecord record); 
@@ -28,4 +28,7 @@ public interface IClienterBalanceRecordDao {
 	PagedResponse<ClienterBalanceRecord> getRecordList(ClienterBlanceRecordReq req);
 	
 	List<SubmissionTip> getSubmissionTip(Long orderId);
+
+
+	int handChargeinsert(ClienterBalanceRecord cbrHandCharge);
 }

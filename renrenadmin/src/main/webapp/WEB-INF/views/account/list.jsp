@@ -61,7 +61,7 @@ List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
 						单独分配<input type="radio" id="usertype" name="objtype" value="1">
 					</div>
 					<div class="control-group" id="rolediv">
-						<%=HtmlHelper.getSelect("roleid", roleData, "roleName", "id",null,null,"全部")%>
+						<%=HtmlHelper.getSelect("roleid", roleData, "roleName", "id",null,"-1","请选择")%>
 					</div>
 					<div class="control-group" id="userdiv" style="display: hidden;">
 						<div class="controls">
@@ -125,6 +125,8 @@ var jss={
 		reset:function(){
 			$("#txtUserName").val("");
 			$("#txtLoginName").val("");
+            $("#txtUserName").removeAttr("disabled");
+            $("#txtLoginName").removeAttr("disabled");
 			$("#txtPwd").val("");
 			$("#txtConfirmPwd").val("");
 		    $("#radyes").attr("checked","checked");
@@ -138,6 +140,35 @@ jss.search(1);
 $("#btnSearch").click(function(){
 	jss.search(1);
 });
+function modify(id) {
+	var paramaters = {
+			"userId" :  id
+		};
+		var url = "<%=basePath%>/account/getuserinfo";
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : paramaters,
+			success : function(result) {
+				$("#txtUserName").val(result.userName);
+				$("#txtLoginName").val(result.loginName);
+		        $("#txtUserName").attr("disabled", "true");
+		        $("#txtLoginName").attr("disabled", "true");
+				$("#txtPwd").val();
+				$("#txtConfirmPwd").val();
+				if(result.status==1){
+					$("#radyes").prop('checked','checked')
+				}
+				else{
+					$("#radno").prop('checked','checked')
+				}
+			    userid=id;
+				optype=1;
+		        $('#myModal').modal('show');
+			}
+		});
+
+}
 function updateuser(){
 	if($("#txtUserName").val()==""){
 		alert("用户名不能为空");
@@ -263,6 +294,10 @@ $("input[type='radio'][name='objtype']").change(function() {
 $("#saveauth").click(function() {
 	var typeid=$("input[name='objtype']:checked").val();
 	 if(typeid=="0"){
+		 if($("#roleid").val()=="-1"){
+			 alert("请选择一个角色！");
+			 return;
+		 }
 		 if($("#userroleid").val()==$("#roleid").val()){
 			 alert("没有变更，不需要保存");
 			 return;

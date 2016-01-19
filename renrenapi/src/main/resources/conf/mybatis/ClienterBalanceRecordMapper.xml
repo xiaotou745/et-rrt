@@ -24,7 +24,7 @@
   <if test="itemsCount != 0" >
 		top  ${itemsCount} 
   </if>
-  	Id, Amount,RecordType,OperateTime,Remark
+  	Id, Amount,RecordType,OperateTime,Remark,RelationNo 
     from ClienterBalanceRecord with(nolock)
     where ClienterId = #{userId,jdbcType=BIGINT}
      <if test="recordType == 1" >
@@ -45,10 +45,16 @@
     where Id = #{id,jdbcType=BIGINT}
   </select>
     <select id="selectByOrderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select top 1 
     <include refid="Base_Column_List" />
     from ClienterBalanceRecord
     where OrderId = #{orderId,jdbcType=BIGINT}
+  </select>
+   <select id="selBalanceByOrderId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ClienterBalanceRecord
+    where OrderId = #{orderId,jdbcType=BIGINT} and RecordType = 2 
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from ClienterBalanceRecord
@@ -59,9 +65,23 @@
 		ClienterBalanceRecord
 		(ClienterId,Amount,AfterAmount,RecordType,OptName,OrderId,RelationNo,Remark,status)
 		select #{clienterId,jdbcType=INTEGER},
-		#{amount,jdbcType=DECIMAL},cb.Balance+#{amount,jdbcType=DECIMAL},#{recordType,jdbcType=SMALLINT},#{optName,jdbcType=NVARCHAR}
+		#{amount,jdbcType=DECIMAL}, 
+		cb.Balance + #{amount,jdbcType=DECIMAL}, 
+		#{recordType,jdbcType=SMALLINT},#{optName,jdbcType=NVARCHAR}
 		,#{orderId,jdbcType=BIGINT},#{relationNo,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR},#{status,jdbcType=SMALLINT}
-		from dbo.ClienterBalance  as cb where cb.ClienterId=#{clienterId,jdbcType=BIGINT} ;
+		from dbo.ClienterBalance as cb where cb.ClienterId=#{clienterId,jdbcType=BIGINT} ;
+		select @@IDENTITY
+  </insert>
+  <insert id="handChargeinsert" parameterType="com.renrentui.renrenentity.ClienterBalanceRecord"  >
+       insert into
+		ClienterBalanceRecord
+		(ClienterId,Amount,AfterAmount,RecordType,OptName,OrderId,RelationNo,Remark,status)
+		select #{clienterId,jdbcType=INTEGER},
+		#{amount,jdbcType=DECIMAL}, 
+		cb.Balance + #{withdrawAmount,jdbcType=DECIMAL}, 
+		#{recordType,jdbcType=SMALLINT},#{optName,jdbcType=NVARCHAR}
+		,#{orderId,jdbcType=BIGINT},#{relationNo,jdbcType=VARCHAR},#{remark,jdbcType=NVARCHAR},#{status,jdbcType=SMALLINT}
+		from dbo.ClienterBalance as cb where cb.ClienterId=#{clienterId,jdbcType=BIGINT} ;
 		select @@IDENTITY
   </insert>
   <insert id="insertSelective" parameterType="com.renrentui.renrenentity.ClienterBalanceRecord" >
@@ -241,7 +261,7 @@ WHERE   cbr.RecordType = 5
            ,[Status]
            ,[AfterAmount]
            ,[RecordType]
-           ,[Operator]
+           ,[OptName]
            ,[OperateTime]
            ,[OrderId]
            ,[RelationNo]
@@ -254,7 +274,7 @@ select      cwf.[ClienterId]
            ,'admin'
            ,getdate() OperateTime
            ,cwf.Id OrderId
-           ,cwf.WithwardNo RelationNo
+           ,cwf.WithdrawNo RelationNo
            ,#{remark,jdbcType=VARCHAR}
  from ClienterWithdrawForm cwf(nolock)
     join dbo.ClienterBalance c (nolock) on c.ClienterId=cwf.ClienterId

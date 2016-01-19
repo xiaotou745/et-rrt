@@ -13,6 +13,11 @@ function CheckSave(){
 		alert('任务描述必须在5-20个字符之间');
 		return false;
 	}
+	if(!isInt($('#auditCycle').val()))
+	{
+		alert('审核周期必须为整数');
+		return false;
+	}
 	if(parseInt($('#auditCycle').val())<1||isNaN(parseInt($('#auditCycle').val())))
 	{
 		alert('审核周期必须大于1天');
@@ -21,6 +26,11 @@ function CheckSave(){
 	if(parseFloat($('#amount').val())<=0||isNaN(parseFloat($('#amount').val())))
 	{
 		alert('地推员佣金必须大于0元');
+		return false;
+	}
+	if(!isInt($('#estimatedTime').val()))
+	{
+		alert('预计完成消耗必须为整数');
 		return false;
 	}
 	if(parseInt($('#estimatedTime').val())<0||isNaN(parseInt($('#estimatedTime').val())))
@@ -181,4 +191,9 @@ function CheckSave(){
 			if(!flag) return flag;
 		});
 	    return flag;
+}
+
+function isInt(n)
+{
+     return n == Math.abs( parseInt( n ) );
 }

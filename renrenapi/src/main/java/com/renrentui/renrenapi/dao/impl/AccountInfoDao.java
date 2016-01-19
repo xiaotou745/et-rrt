@@ -10,8 +10,8 @@ import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IAccountInfoDao;
 import com.renrentui.renrenentity.AccountInfo;
 import com.renrentui.renrenentity.common.PagedResponse;
-import com.renrentui.renrenentity.domain.UpdatePwdReq;
 import com.renrentui.renrenentity.req.PagedAccountInfoReq;
+import com.renrentui.renrenentity.req.UpdatePwdReq;
 
 @Repository
 public class AccountInfoDao extends DaoBase implements IAccountInfoDao {

@@ -54,15 +54,18 @@ $(function(){
 	$('#btnSearch').click();
 });
 //更新状态
-function updateStatus(id,status)
+function updateStatus(id,status,percentage)
 {
 	//1 禁用 2 启用 3 删除
 	var url="<%=basePath%>/subcommission/updateStatus";
-	var  par={"id":id,"status":status};
+	var  par={"id":id,"status":status,"percentage":percentage};
 	$.post(url,par,function(d){
-		if(d>0){
+		if(d>=1){
 			alert('操作成功!');
 			window.location.reload();
+			}
+		else if (d==-1){
+			alert('该策略总分佣大于系统当前设置分佣,无法启用')
 			}
 		else{
 			alert('操作失败!');

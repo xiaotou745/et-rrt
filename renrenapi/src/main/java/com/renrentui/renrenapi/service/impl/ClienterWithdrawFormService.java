@@ -11,16 +11,13 @@ import java.util.Random;
 
 import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.dom4j.tree.BackedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.renrentui.renrenapi.common.LogServiceBLL;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
@@ -35,7 +32,6 @@ import com.renrentui.renrencore.enums.CBalanceRecordStatus;
 import com.renrentui.renrencore.enums.CBalanceRecordType;
 import com.renrentui.renrencore.enums.ClienterWithdrawFormStatus;
 import com.renrentui.renrencore.enums.ClienterWithdrawFormWithType;
-import com.renrentui.renrencore.enums.MsgOpType;
 import com.renrentui.renrencore.enums.WithdrawState;
 import com.renrentui.renrencore.security.DES;
 import com.renrentui.renrencore.util.Config;
@@ -48,12 +44,12 @@ import com.renrentui.renrenentity.ClienterWithdrawForm;
 import com.renrentui.renrenentity.TaskMsg;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.AlipayBatchCallBackModel;
-import com.renrentui.renrenentity.domain.AlipayBatchClienterWithdrawForm;
 import com.renrentui.renrenentity.domain.AlipayBatchModel;
 import com.renrentui.renrenentity.domain.AlipayCallBackData;
 import com.renrentui.renrenentity.domain.AlipayClienterWithdrawModel;
 import com.renrentui.renrenentity.domain.ClienterFinanceAcountModel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawFormDM;
+import com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel;
 import com.renrentui.renrenentity.domain.ClienterWithdrawLog;
 import com.renrentui.renrenentity.domain.ClienterWithdrawLogModel;
 import com.renrentui.renrenentity.req.AlipayBatchReq;
@@ -91,7 +87,10 @@ public class ClienterWithdrawFormService implements
 	public int Add(ClienterWithdrawForm record) {
 		return clienterWithdrawFormDao.insert(record);
 	}
-
+	@Override
+	public List<ClienterWithdrawFormExcel> exportWithdraw(PagedClienterWithdrawFormReq req) {
+		return clienterWithdrawFormDao.exportWithdraw(req);
+	}
 	/**
 	 * @Des 用户提现 申请
 	 * @Author 胡灵波
@@ -109,7 +108,7 @@ public class ClienterWithdrawFormService implements
 		if (req.getAmount() > amount) {
 			return WithdrawState.MoneyError;
 		}
-
+		
 		// 创建提现表
 		ClienterWithdrawForm clienterWithdrawFormModel = new ClienterWithdrawForm();
 		clienterWithdrawFormModel.setClienterId(req.getUserId());
@@ -131,43 +130,39 @@ public class ClienterWithdrawFormService implements
 				handchargeString, 3)); // 骑士付给我们的手续费金额，从缓存中读取
 		clienterWithdrawFormModel.setActualHandCharge(actualHandCharge); // 我们付给支付宝的手续费
 		clienterWithdrawFormModel.setActualAmount(req.getAmount()-ParseHelper.ToDouble(handchargeString, 3));
+		//增加一条提现记录
 		int cwfId = clienterWithdrawFormDao.insert(clienterWithdrawFormModel);
+		//增加地推员提现流水记录，实际到账金额，比如申请提现20，其中到账17，手续费3元，插入流水两条记录
+		ClienterBalanceRecord cbrWithdraw = new ClienterBalanceRecord();
+		cbrWithdraw.setClienterId(req.getUserId());
+		cbrWithdraw.setAmount(-Math.abs(req.getAmount()-ParseHelper.ToDouble(handchargeString,3)));   
+		cbrWithdraw.setRecordType((short) CBalanceRecordType.ApplicationFor.value());// 提现申请
+		cbrWithdraw.setOptName(req.getTrueName());
+		cbrWithdraw.setOrderId((long) clienterWithdrawFormModel.getId());
+		cbrWithdraw.setRelationNo(no);
+		cbrWithdraw.setRemark("提现申请实际到账金额");
+		cbrWithdraw.setStatus((short) CBalanceRecordStatus.Trading.value());// 交易中
+		int cbrId = clienterBalanceRecordDao.insert(cbrWithdraw);
+		//增加地推员提现手续费金额  ，这里增加记录后 会影响后面的 流程，审核通过、拒绝、确认打款，都需要去改
+		ClienterBalanceRecord cbrHandCharge = new ClienterBalanceRecord();
+		cbrHandCharge.setClienterId(req.getUserId());
+		cbrHandCharge.setAmount(-Math.abs(ParseHelper.ToDouble(handchargeString, 3)));  //金额3元手续费
+		cbrHandCharge.setWithdrawAmount(-Math.abs(req.getAmount()));
+		cbrHandCharge.setRecordType((short)CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
+		cbrHandCharge.setOptName(req.getTrueName());
+		cbrHandCharge.setOrderId((long) clienterWithdrawFormModel.getId());
+		cbrHandCharge.setRelationNo(no);
+		cbrHandCharge.setRemark("提现申请手续费");
+		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
+		int cbrHandId = clienterBalanceRecordDao.handChargeinsert(cbrHandCharge); 
 		// 申请提现，扣减金额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(req.getUserId());
 		cBReq.setAmount(-req.getAmount());
 		int cbId = clienterBalanceDao.updateMoneyByKey(cBReq);
-		//增加地推员提现流水记录，实际到账金额，比如申请提现20，其中到账17，手续费3元，插入流水两条记录
-		ClienterBalanceRecord clienterBalanceRecordModel = new ClienterBalanceRecord();
-		clienterBalanceRecordModel.setClienterId(req.getUserId());
-		clienterBalanceRecordModel.setAmount(-Math.abs(req.getAmount()));   
-		clienterBalanceRecordModel.setRecordType((short) CBalanceRecordType.ApplicationFor.value());// 提现申请
-		clienterBalanceRecordModel.setOptName(req.getTrueName());
-		clienterBalanceRecordModel.setOrderId((long) clienterWithdrawFormModel.getId());
-		clienterBalanceRecordModel.setRelationNo(no);
-		clienterBalanceRecordModel.setRemark("提现申请实际到账金额");
-		clienterBalanceRecordModel
-				.setStatus((short) CBalanceRecordStatus.Trading.value());// 交易中
-		int cbrId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
-//		//增加地推员提现手续费金额  ，这里增加记录后 会影响后面的 流程，审核通过、拒绝、确认打款，都需要去改
-//		ClienterBalanceRecord cbrHandCharge = new ClienterBalanceRecord();
-//		cbrHandCharge.setClienterId(req.getUserId());
-//		cbrHandCharge.setAmount(-Math.abs(ParseHelper.ToDouble(handchargeString, 3)));  //金额3元手续费
-//		cbrHandCharge.setRecordType((short) CBalanceRecordType.WithDrawHandCharge.value());// 提现申请
-//		cbrHandCharge.setOptName(req.getTrueName());
-//		cbrHandCharge.setOrderId((long) clienterWithdrawFormModel.getId());
-//		cbrHandCharge.setRelationNo(no);
-//		cbrHandCharge.setRemark("提现申请手续费");
-//		cbrHandCharge.setStatus((short)CBalanceRecordStatus.Trading.value());// 交易中
-//		int cbrHandId = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
-		if (cwfId > 0 && cbId > 0 && cbrId > 0 ) {
+		if (cwfId > 0 && cbId > 0 && cbrId > 0 && cbrHandId>0) {
 			return WithdrawState.Success;
 		}
-		/*
-		 * else { Error error=new Error("提现出错"); throw new
-		 * RuntimeErrorException(error); }
-		 */
-
 		return WithdrawState.Failure;
 	}
 
@@ -182,9 +177,8 @@ public class ClienterWithdrawFormService implements
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int AuditPass(ClienterWithdrawForm record) {
 		long id = record.getId();// 提现单Id
-
-		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao
-				.selectByOrderId(id);
+		
+		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao.selBalanceByOrderId(id);
 		if (cbrModel.getStatus() != 2)
 			return 0;
 
@@ -225,11 +219,16 @@ public class ClienterWithdrawFormService implements
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int AuditRefuse(ClienterWithdrawForm record) {
 		long id = record.getId();// 提现单Id
-		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao
-				.selectByOrderId(id);
+		ClienterBalanceRecord cbrModel = clienterBalanceRecordDao.selBalanceByOrderId(id);
 		if (cbrModel.getStatus() != 2)
 			return 0;
-
+		ClienterWithdrawForm cwf= clienterWithdrawFormDao.selectById(record.getId());
+		if(cwf!=null){
+			cbrModel.setAmount(cwf.getAmount());  //提现金额
+		}else{
+			Error error = new Error("审核拒绝，提现单可能不存在");
+			throw new RuntimeErrorException(error);
+		}
 		// 更新提现单审核状态
 		record.setStatus((short) ClienterWithdrawFormStatus.AuditRefuse.value());// 审核拒绝
 		record.setAuditTime(new Date());
@@ -243,23 +242,19 @@ public class ClienterWithdrawFormService implements
 		// 更新用户余额，可提现余额
 		ClienterBalanceReq cBReq = new ClienterBalanceReq();
 		cBReq.setUserId(cbrModel.getClienterId());
-		cBReq.setAmount(-cbrModel.getAmount());
+		cBReq.setAmount(cbrModel.getAmount());
 		int cbId = clienterBalanceDao.updateMoneyByKey(cBReq);
-
 		// 写入审核拒绝流水
 		ClienterBalanceRecord clienterBalanceRecordModel = new ClienterBalanceRecord();
 		clienterBalanceRecordModel.setClienterId(cbrModel.getClienterId());
-		clienterBalanceRecordModel.setAmount(-cbrModel.getAmount());
-		clienterBalanceRecordModel
-				.setRecordType((short) CBalanceRecordType.DenialOf.value());//
+		clienterBalanceRecordModel.setAmount(cbrModel.getAmount());
+		clienterBalanceRecordModel.setRecordType((short) CBalanceRecordType.DenialOf.value());//
 		clienterBalanceRecordModel.setOptName(record.getAuditName());//
 		clienterBalanceRecordModel.setOrderId((long) cbrModel.getOrderId());//
 		clienterBalanceRecordModel.setRelationNo(cbrModel.getRelationNo());//
 		clienterBalanceRecordModel.setRemark("申请拒绝失败");
-		clienterBalanceRecordModel
-				.setStatus((short) CBalanceRecordStatus.Success.value());
-		int cbrIdInsert = clienterBalanceRecordDao
-				.insert(clienterBalanceRecordModel);
+		clienterBalanceRecordModel.setStatus((short) CBalanceRecordStatus.Success.value());
+		int cbrIdInsert = clienterBalanceRecordDao.insert(clienterBalanceRecordModel);
 		//发送消息
 		ClienterFinanceAcountModel cfaModel=new ClienterFinanceAcountModel();
 		cfaModel.setClienterId(record.getClienterId());
@@ -274,7 +269,6 @@ public class ClienterWithdrawFormService implements
 			Error error = new Error("审核拒绝");
 			throw new RuntimeErrorException(error);
 		}
-
 	}
 
 	@Override
@@ -552,11 +546,7 @@ public class ClienterWithdrawFormService implements
 		if (clienterWithdrawFormDao.CheckAlipayBatch(alipayBatchModel) > 0) { // 已经处理了该批次
 			return false;
 		}
-		AlipayBatchModel alipayBatchModel2 = new AlipayBatchModel();
-		alipayBatchModel2.setSuccessTimes(successlist.size());
-		alipayBatchModel2.setFailTimes(faillist.size());
-		alipayBatchModel2.setBatchNo(alipayBatchCallBackModel.getBatchNo());
-		int cc = clienterWithdrawFormDao.UpdateAlipayBatchNo(alipayBatchModel2);// 更新批次表信息
+		
 		// 处理成功的
 		for (int i = 0; i < successlist.size(); i++) {
 			ClienterWithdrawLogModel clienterWithdrawLogModel = new ClienterWithdrawLogModel();
@@ -583,18 +573,16 @@ public class ClienterWithdrawFormService implements
 			if (cfaModel != null) {
 				AddCPlayMoneySuccessMessage(cfaModel);
 			}
-		}
+		}//for  成功
 		// 处理失败的提现单
 		for (int i = 0; i < faillist.size(); i++) {
 			ClienterWithdrawLogModel cwlModel = new ClienterWithdrawLogModel();
 			cwlModel.setOperator("system");
 			String reString = "支付宝提现打款失败"
-					+ faillist.get(i).getReason().trim().toUpperCase() == "ACCOUN_NAME_NOT_MATCH" ? ",支付宝账户和姓名不匹配"
-					: "";
+					+ (faillist.get(i).getReason().trim().toUpperCase().equals("ACCOUN_NAME_NOT_MATCH")? ",支付宝账户和姓名不匹配": "");
 			cwlModel.setRemark(reString);
 			cwlModel.setPayFailedReason("支付宝失败代码:"
-					+ faillist.get(i).getReason().trim().toUpperCase() == "ACCOUN_NAME_NOT_MATCH" ? ",支付宝账户和姓名不匹配"
-					: faillist.get(i).getReason());
+					+ (faillist.get(i).getReason().trim().toUpperCase().equals("ACCOUN_NAME_NOT_MATCH") ? ",支付宝账户和姓名不匹配": faillist.get(i).getReason()));
 			cwlModel.setStatus(ClienterWithdrawFormStatus.PayError.value());
 			cwlModel.setOldStatus(ClienterWithdrawFormStatus.Paying.value());
 			cwlModel.setWithwardId(faillist.get(i).getWithdrawId());
@@ -610,7 +598,12 @@ public class ClienterWithdrawFormService implements
 			if (cfaModel != null) {
 				AddCPlayMoneyFailMessage(cfaModel);
 			}
-		}
+		}//for 失败
+		AlipayBatchModel alipayBatchModel2 = new AlipayBatchModel();
+		alipayBatchModel2.setSuccessTimes(successlist.size());
+		alipayBatchModel2.setFailTimes(faillist.size());
+		alipayBatchModel2.setBatchNo(alipayBatchCallBackModel.getBatchNo());
+		int cc = clienterWithdrawFormDao.UpdateAlipayBatchNo(alipayBatchModel2);// 更新批次表信息
 		return true;
 	}
 
@@ -665,5 +658,5 @@ public class ClienterWithdrawFormService implements
 			list.add(model);
 		}
 		return list;
-	}
+	} 
 }

@@ -50,7 +50,7 @@ public class SubCommissionController {
 	 */
 	@RequestMapping("save")
 	@ResponseBody
-	public int saveTask(HttpServletRequest request,String data) {
+	public double saveTask(HttpServletRequest request,String data) {
 		UserContext context=UserContext.getCurrentContext(request);
 		StrategyModelReq req=JsonUtil.str2obj(data,StrategyModelReq.class);
 		req.setOptName(context.getUserName());

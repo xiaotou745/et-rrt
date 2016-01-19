@@ -29,14 +29,20 @@ public class SubCommissionService implements ISubCommissionService{
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int addStrategy(StrategyModelReq req) {
+	public double addStrategy(StrategyModelReq req) {
 		//0.校验
 		String tempString=globalConfigService.getValueByName("MaxPercentage");
 		Double maxDouble=Double.valueOf(tempString);//系统设置的最大比例
 		if(req.getPercentage()>maxDouble)
-			return -2;//当前设置的分佣总比例大于系统给的比例
+			return (double)maxDouble;//当前设置的分佣总比例大于系统给的比例
 		if(req.getLevalCount()!=req.getChildList().size())
-			return -3;//层级不一致
+			return -3.0;//层级不一致
+		Double aDouble=new Double(0);
+		for (int i = 0; i < req.getChildList().size(); i++) {
+			aDouble+=req.getChildList().get(i).getPercentage();
+		}
+		if(!aDouble.equals(req.getPercentage()))
+			return -4.0;
 		//1.插入Strategy
 		Strategy star=new Strategy();
 		star.setStrategyName(req.getStrategyName());
@@ -52,7 +58,7 @@ public class SubCommissionService implements ISubCommissionService{
 			child.setStrategyId(star.getId());
 			strategyDao.insertStrategyChild(child);
 		}
-		return 1;
+		return 1.0;
 	}
 	/**
 	 * 获取策略列表
@@ -66,6 +72,12 @@ public class SubCommissionService implements ISubCommissionService{
 	 */
 	@Override
 	public int updateStatus(Strategy req) {
+		String tempString=globalConfigService.getValueByName("MaxPercentage");
+		Double maxDouble=Double.valueOf(tempString);//系统设置的最大比例
+		if(req.getStatus()==2&&req.getPercentage()>maxDouble)
+		{
+			return -1;
+		}
 		return strategyDao.updateStatus(req);
 	}
 	/**

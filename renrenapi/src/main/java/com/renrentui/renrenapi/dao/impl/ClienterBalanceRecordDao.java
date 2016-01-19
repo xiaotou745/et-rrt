@@ -8,6 +8,7 @@ import java.util.List;
 
 
 
+
 import org.springframework.stereotype.Repository;
 
 import com.renrentui.renrenapi.common.DaoBase;
@@ -66,5 +67,17 @@ public class ClienterBalanceRecordDao extends DaoBase implements IClienterBalanc
 	@Override
 	public List<SubmissionTip> getSubmissionTip(Long orderId) {
 		return getReadOnlySqlSessionUtil().selectList("IClienterBalanceRecordDao.getSubmissionTip", orderId);
+	}
+
+	@Override
+	public ClienterBalanceRecord selBalanceByOrderId(Long OrderId) {
+		return getMasterSqlSessionUtil().selectOne(
+				"IClienterBalanceRecordDao.selBalanceByOrderId", OrderId);
+	}
+
+	@Override
+	public int handChargeinsert(ClienterBalanceRecord cbrHandCharge) {
+		return getMasterSqlSessionUtil().insert(
+				"IClienterBalanceRecordDao.handChargeinsert", cbrHandCharge);
 	}
 }

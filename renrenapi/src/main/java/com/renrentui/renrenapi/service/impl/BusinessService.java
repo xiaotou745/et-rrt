@@ -1,15 +1,12 @@
 package com.renrentui.renrenapi.service.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.management.RuntimeErrorException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -18,49 +15,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
-
-
-
-
-
-
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessLogDao;
 import com.renrentui.renrenapi.dao.inter.IBusinessRechargeDao;
-import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
-import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
-import com.renrentui.renrenapi.dao.inter.IClienterDao;
-import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
-import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrencore.enums.BBalanceRecordType;
 import com.renrentui.renrencore.enums.BusinessRechargePayStatus;
 import com.renrentui.renrencore.enums.BusinessRechargePayType;
 import com.renrentui.renrencore.security.MD5Util;
 import com.renrentui.renrencore.util.OrderNoHelper;
-import com.renrentui.renrenentity.ClienterWithdrawForm;
-import com.renrentui.renrenentity.common.PagedResponse;
-import com.renrentui.renrenentity.domain.BusinessModel;
-import com.renrentui.renrenentity.req.ClienterBalanceReq;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.BusinessBalanceRecord;
 import com.renrentui.renrenentity.BusinessLog;
 import com.renrentui.renrenentity.BusinessRecharge;
-import com.renrentui.renrenentity.Clienter;
-import com.renrentui.renrenentity.ClienterBalance;
-import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.BusinessModel;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
-import com.renrentui.renrenentity.req.ForgotPwdReq;
-import com.renrentui.renrenentity.req.MyIncomeReq;
 import com.renrentui.renrenentity.req.PagedBusinessReq;
-import com.renrentui.renrenentity.req.SignUpReq;
-import com.renrentui.renrenentity.req.ModifyPwdReq;
-import com.renrentui.renrenentity.req.SignInReq;
 
 @Service
 public class BusinessService implements IBusinessService {

@@ -221,7 +221,7 @@ function ItemCheck(obj){
 			Percentage.length>5
 			)
 	{
-		alert('分佣比例需要在0-99.99之间');
+		alert('分佣比例需要在0%-99.99%之间');
 		$(obj).val('');
 		$(obj)[0].focus();//获取焦点 
 		return;
@@ -299,12 +299,16 @@ $('#save').click(function(){
 		{
 			alert('添加分佣策略成功');
 			window.location.href="<%=basePath%>/subcommission/list";
-		}else if(d==-2)
+		}else if(d>1)
 		{
-			alert('当前设置的分佣总比例大于系统设定的比例');
+			alert('当前设置的分佣总比例大于系统设定的比例,当前系统设置为'+d+'%');
 		}else if(d==-3)
 		{
 			alert('提交数据中层级不一致');
+		}
+		else if(d==-4)
+		{
+			alert('分佣总比例与各层级分佣总和不一致!');
 		}
 		else
 		{
@@ -323,7 +327,7 @@ function SaveCheck(){
 		}
 	var flag=true;
 	$('.StrategyChildItem').each(function(index,el){
-		if($(el).val()=='')
+		if($(el).val()==''||parseFloat($(el).val())>99.99||parseFloat($(el).val())<=0)
 		{
 			alert('尚有层级分佣比例未正确填写!');
 			flag=false;

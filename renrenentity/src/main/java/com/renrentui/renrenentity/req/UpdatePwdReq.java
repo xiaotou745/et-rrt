@@ -1,4 +1,4 @@
-package com.renrentui.renrenentity.domain;
+package com.renrentui.renrenentity.req;
 
 public class UpdatePwdReq {
 	private String oldPwd;

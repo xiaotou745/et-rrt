@@ -33,10 +33,10 @@
 			{
 				%>
 				<tr>
-				<td><%=list.get(i).getId()%></td>
+				<td><%=(i+1)%></td>
 				<td><a href="<%=basePath+"/subcommission/detail?id="+list.get(i).getId()%>" target="_blank"><%=list.get(i).getStrategyName()%></a></td>
 				<td><%=list.get(i).getLevalCount()%></td>
-				<td><%=list.get(i).getPercentage()%></td>
+				<td><%=list.get(i).getPercentage()%>%</td>
 				<td><%=ParseHelper.ToDateString(list.get(i).getCreateDate())%></td>
 				<td><%=list.get(i).getOptName()%></td>
 				<td><%=StrategyStatus.getEnum(list.get(i).getStatus()).desc()%></td>
@@ -45,18 +45,17 @@
 				{
 					//当前启用   ,,操作禁用 
 					%>
-					<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,1)">禁用</a>
+					<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,1,<%=list.get(i).getPercentage()%>)">禁用</a>
 					<%
 				}
 				else if(list.get(i).getStatus()==StrategyStatus.UnEnable.value())
 				{
 					//当前禁用 操作启用
 					%>
-					<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,2)">启用</a>
+					<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,2,<%=list.get(i).getPercentage()%>)">启用</a>
 					<%
 				}
 				%>
-				<a href="javascript:void(0)" onclick="updateStatus(<%=list.get(i).getId()%>,3)">删除</a>
 				</td>
 				</tr>
 				<%

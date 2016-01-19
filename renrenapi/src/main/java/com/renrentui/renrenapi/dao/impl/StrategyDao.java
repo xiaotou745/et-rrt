@@ -43,7 +43,7 @@ public class StrategyDao extends DaoBase implements IStrategyDao{
 	 */
 	@Override
 	public int updateStatus(Strategy req) {
-		return getMasterSqlSessionUtil().insert("IStrategyDao.updateStatus", req);
+		return getMasterSqlSessionUtil().update("IStrategyDao.updateStatus", req);
 	}
 	/**
 	 * 获取当前启用的策略
