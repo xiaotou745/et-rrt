@@ -562,7 +562,19 @@ public class RenRenTaskService implements IRenRenTaskService {
  */
 	@Override
 	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
-		return renRenTaskDao.getMyReceivedTaskList(req);	
+		List<MyReceiveTask> resultList= renRenTaskDao.getMyReceivedTaskList(req);
+		String downUrl="%s/clienter/sharetask?taskId=%s&clienterId=%s&downUrl=%s";
+		String adminHost=PropertyUtils.getProperty("java.renrenadmin.url");
+		String finalDownUrl="";
+		for (MyReceiveTask task : resultList) {
+			if (task.getTaskType()!=TaskType.ContractTask.value()&&
+		 		task.getDownUrl()!=null&&
+		 		!task.getDownUrl().isEmpty()){
+				finalDownUrl=String.format(downUrl,adminHost,task.getTaskId(),req.getUserId(),task.getDownUrl());
+		 		task.setDownUrl(finalDownUrl);	
+			}
+		}
+		return resultList;
 	}
 
 	@Override
