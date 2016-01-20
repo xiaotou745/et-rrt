@@ -306,7 +306,7 @@ $(document).ready(function() {
     $("#uploadifyA").uploadify({
      	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
         'uploader':'<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.swf',
-        'script':'<%=UploadUrl%>/fileupload/uploadimg?uploadFrom=1',//后台处理的请求
+        'script':'<%=UploadUrl%>/fileupload/webuploadimg?uploadFrom=1',//后台处理的请求
         'cancelImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/cancel.png',
         'folder':'uploads',//您想将文件保存到的路径
         'queueID':'fileQueueA',//与下面的id对应
@@ -343,7 +343,7 @@ $(document).ready(function() {
     $("#uploadifyM").uploadify({
      	'buttonImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/selectFile.gif',
         'uploader':'<%=basePath%>/js/jquery.uploadify-v2.1.0/uploadify.swf',
-        'script':'<%=UploadUrl%>/fileupload/uploadimg?uploadFrom=1',//后台处理的请求
+        'script':'<%=UploadUrl%>/fileupload/webuploadimg?uploadFrom=1',//后台处理的请求
         'cancelImg':'<%=basePath%>/js/jquery.uploadify-v2.1.0/cancel.png',
         'folder':'uploads',//您想将文件保存到的路径
         'queueID':'fileQueueM',//与下面的id对应
