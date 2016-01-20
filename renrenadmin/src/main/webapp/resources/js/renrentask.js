@@ -18,6 +18,12 @@ function CheckSave(){
 		alert('审核周期必须为整数');
 		return false;
 	}
+	var reg=/^d{11}$/;
+	if($('#hotline').val()!=''&&!reg.test($('#hotline').val()))
+	{
+		alert('咨询电话必须为11位数字');
+		return false;
+	}
 	if(parseInt($('#auditCycle').val())<1||isNaN(parseInt($('#auditCycle').val())))
 	{
 		alert('审核周期必须大于1天');
@@ -33,9 +39,9 @@ function CheckSave(){
 		alert('预计完成消耗必须为整数');
 		return false;
 	}
-	if(parseInt($('#estimatedTime').val())<0||isNaN(parseInt($('#estimatedTime').val())))
+	if(parseInt($('#estimatedTime').val())<1||isNaN(parseInt($('#estimatedTime').val())))
 	{
-		alert('预计完成消耗必须大于等于0小时');
+		alert('预计完成消耗必须大于等于1分钟');
 		return false;
 	}
 	if(parseFloat($('#totalAmount').val())<=0||isNaN(parseFloat($('#totalAmount').val())))
@@ -47,9 +53,7 @@ function CheckSave(){
 	{
 		alert('任务总佣金必须大于等于地推员佣金');
 		return false;
-	}
-	//task.totalAmount=$('#totalAmount').val();
-	//task.estimatedTime=$('#estimatedTime').val();
+	};
 	if($('input[name="rTaskType"]:checked').val()!=1)
 	{
 		if($('#downUrl').val()=='')

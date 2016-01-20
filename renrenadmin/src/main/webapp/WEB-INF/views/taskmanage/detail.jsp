@@ -100,7 +100,7 @@ PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvi
 									<input type="text" class="form-control" name="estimatedTime" id="estimatedTime" value="<%=taskInfo.getEstimatedTime() %>"/>
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
-	  							   小时
+	  							   分钟
 								</div>
 							</div>
 						</div>

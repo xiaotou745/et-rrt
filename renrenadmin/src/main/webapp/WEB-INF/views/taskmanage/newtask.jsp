@@ -101,7 +101,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 									<input type="text" class="form-control" name="estimatedTime" id="estimatedTime" value="<%=taskInfo==null?"":taskInfo.getEstimatedTime() %>"/>
 								</div>
 								<div class="col-sm-2" style="line-height: 33px; padding-left: 3px;">
-	  							   小时
+	  							   分钟
 								</div>
 							</div>
 						</div>
