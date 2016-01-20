@@ -18,7 +18,7 @@ function CheckSave(){
 		alert('审核周期必须为整数');
 		return false;
 	}
-	var reg=/^d{11}$/;
+	var reg=/^\d{11}$/;
 	if($('#hotline').val()!=''&&!reg.test($('#hotline').val()))
 	{
 		alert('咨询电话必须为11位数字');
