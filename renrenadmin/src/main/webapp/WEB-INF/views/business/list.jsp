@@ -323,8 +323,8 @@ $(document).ready(function() {
         'fileSizeLimit' : '2MB',
         onComplete: function (event, queueId, fileObj, response, data) {
             var jsonstr = JSON.parse(response);
-            $("#imgShowA").attr("src",jsonstr.data.fileUrl);           
-            $('#txtImgShowA').val(jsonstr.data.relativePath)   
+            $("#imgShowA").attr("src",jsonstr.fileUrl);           
+            $('#txtImgShowA').val(jsonstr.relativePath)   
          /*    $("#imgShowM").attr("src",jsonstr.Result.FileUrl);           
             $('#txtImgShowM').val(jsonstr.Result.RelativePath)      */       
 
@@ -360,8 +360,8 @@ $(document).ready(function() {
         'fileSizeLimit' : '2MB',
         onComplete: function (event, queueId, fileObj, response, data) {
             var jsonstr = JSON.parse(response);
-          $("#imgShowM").attr("src",jsonstr.data.fileUrl);           
-            $('#txtImgShowM').val(jsonstr.data.relativePath)           
+          $("#imgShowM").attr("src",jsonstr.fileUrl);           
+            $('#txtImgShowM').val(jsonstr.relativePath)           
 
         }
     });
