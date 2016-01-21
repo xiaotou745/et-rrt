@@ -67,10 +67,10 @@
 			<a href="<%=basePath%>/taskmanage/newtask?taskId=<%=data.get(i).getId()%>" target="_blank">修改任务</a>
 			<%}	
 			
-			if(data.get(i).getStatus()==TaskStatus.Audited.value()
+			if((data.get(i).getStatus()==TaskStatus.Audited.value()
 					||data.get(i).getStatus()==TaskStatus.Expired.value()
 					||data.get(i).getStatus()==TaskStatus.Stop.value()
-					)
+					)&&data.get(i).getTaskType()==1)
 			{%>
 				<a href="javascript:Export(<%=data.get(i).getId()%>)">导出资料数据</a>
 			<%}
