@@ -72,7 +72,7 @@
 					||data.get(i).getStatus()==TaskStatus.Stop.value()
 					)&&data.get(i).getTaskType()==1)
 			{%>
-				<a href="javascript:Export(<%=data.get(i).getId()%>)">导出资料数据</a>
+				<a href="<%=basePath%>/taskmanage/taskexport?taskId=<%=data.get(i).getId()%>" target="_blank">导出资料数据</a>
 			<%}
 			%>
 			</td>
