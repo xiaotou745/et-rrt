@@ -140,9 +140,16 @@ WHERE   EndTime > GETDATE()
         Pusher ,
         Amount ,
         Status ,
-        TaskType
+        TaskType,
+        ISNULL(Tx.CompleteNum, 0) AS CompleteNum,
+        PartnerNum
         ',
-		' dbo.RenRenTask AS rrt (NOLOCK)  
+		' dbo.RenRenTask AS rrt (NOLOCK) 
+		  LEFT JOIN ( SELECT  ct.TaskId ,
+                            SUM(CompleteNum) AS CompleteNum
+                    FROM    dbo.ClienterTask AS ct ( NOLOCK )
+                    GROUP BY ct.TaskId
+                  ) AS Tx ON Tx.TaskId = rrt.id 
         ',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />

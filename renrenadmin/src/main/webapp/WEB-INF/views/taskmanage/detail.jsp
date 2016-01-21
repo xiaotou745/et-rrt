@@ -155,6 +155,39 @@ PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvi
 							</div>
 						</div>
 					</div>
+					<% if(taskInfo.getTaskType()!=1)
+					{%>
+					
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">下载地址: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="downUrl" id="downUrl" value="<%=taskInfo.getDownUrl()%>"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">扫码说明: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="scanTip" id="scanTip" value="<%=taskInfo.getScanTip()%>"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">温馨提示: </label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" name="reminder" id="reminder" value="<%=taskInfo.getReminder()%>"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<%} 
+					%>
+					
 				</div>
 			</div>
 		</fieldset>
