@@ -99,7 +99,7 @@ width: 100%;
 						<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 							style="margin-left: 3px;height:30px;">查询</button>
-							<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipay" onclick="return exportWithdraw()"
+							<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipayExport" onclick="return exportWithdraw()"
 							style="margin-left: 3px;height:30px;">导出</button>		
 							<button type="button" class="btn btn-w-m btn-primary" id="btnBatchAlipay" onclick="return BatchAlipay()"
 							style="margin-left: 3px;height:30px;display:none">批量支付宝付款</button>
