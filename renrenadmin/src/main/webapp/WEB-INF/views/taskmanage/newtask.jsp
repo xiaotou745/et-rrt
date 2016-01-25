@@ -533,6 +533,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 					style="margin-left: 3px; height: 30px;">保存</button>
 				<button type="button" class="btn btn-w-m btn-primary" id="jisuanqi"
 					style="margin-left: 3px; height: 30px;">分佣计算</button>
+					<span id="tip" style="color:red"></span>
 			</div>
 		</div>
 	</form> 
@@ -1026,13 +1027,16 @@ function savetask(){
     saveTaskReq.provinceCode=$('#provinceCode').val();
     saveTaskReq.cityCode=$('#cityCode').val();
     var json_data =JSON.stringify(saveTaskReq);
-	//console.log(json_data);
+    $("#tip").html("正在执行。。。");
+	$("#save").attr("disabled",true);
 		var url = "<%=basePath%>/taskmanage/savetask";
 		$.ajax({
 					type : 'POST',
 					url : url,
 					data : {"data":json_data},
 					success : function(result) {
+						$("#tip").html("");
+						$("#save").attr("disabled",false);
 						if (result > 0) {
 							alert("操作成功");
 							window.location.href = window.location.href;
@@ -1041,6 +1045,9 @@ function savetask(){
 						}else{
 							alert("操作失败:下载链接无法访问，请修改后重试");
 						}
+					},error:function(errordata){
+						$("#tip").html("");
+						$("#save").attr("disabled",false);
 					}
 		});
 }
