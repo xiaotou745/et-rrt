@@ -62,4 +62,11 @@ SELECT  id ,
 FROM    dbo.Article AS a ( NOLOCK )
 WHERE   a.Id = #{id,jdbcType=INTEGER}
 </select>
+
+<!-- 删除文章  -->
+<delete id="delArticle" parameterType="java.lang.Integer">
+		delete from Article where Id=#{id,jdbcType=BIGINT} 
+</delete>
+
+
 </mapper>

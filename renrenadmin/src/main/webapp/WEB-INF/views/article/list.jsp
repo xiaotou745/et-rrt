@@ -63,4 +63,32 @@ $("#btnSearch").click(function(){
 $('#addwen').click(function(){
 	window.location.href="<%=basePath%>/article/new";
 });
+//删除文章
+function delArticle(id){
+	if (confirm("确认删除该文章吗？")) {
+		var url = "<%=basePath%>/article/delarticle?articalid="+id;
+		$.ajax({
+			type : 'POST',
+			url : url,
+			data : {},
+			success : function(result) {
+				
+				console.log(result)
+				
+            	if (result.responseCode==0) {		
+					layer.alert("删除成功", {
+					    icon: 1
+					},function(){
+						window.location.reload();
+					});
+				}else
+				{
+					layer.alert(result.message, {
+					    icon: 2
+			    	});
+				}
+			}
+		});
+	}
+}
 </script>
