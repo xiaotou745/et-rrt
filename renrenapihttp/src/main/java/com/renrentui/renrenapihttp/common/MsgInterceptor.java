@@ -19,10 +19,10 @@ import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrencore.util.StreamUtils;
 import com.renrentui.renrencore.util.StringUtils;
-import com.renrentui.renrenentity.req.AesParameterReq;
-public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
+import com.renrentui.renrenentity.req.ParameterReq;
+public class MsgInterceptor  extends AbstractPhaseInterceptor<Message> {
 
-	public AESInterceptor() {
+	public MsgInterceptor() {
 		//接受参数时候调用
 		super(Phase.RECEIVE);
 	}
@@ -36,19 +36,19 @@ public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 			String inputMsg = StreamUtils.copyToStringNoclose(inputStream);
 			String interceptSwith = PropertyUtils.getProperty("InterceptSwith");// "1"// 开启加密										
 			if (interceptSwith.equals("1")) {
-				System.out.println("已开启AES解密拦截器");
+				System.out.println("已开启解密拦截器");
 				if (inputMsg.indexOf("data")<0) {
-					throw new RuntimeException("传递的入参是没有加密的字符串，但是apihttp项目开启了AES解密");
+					throw new RuntimeException("应该传入加密后的入参！");
 				}
-				AesParameterReq req = JsonUtil.str2obj(inputMsg,AesParameterReq.class);
+				ParameterReq req = JsonUtil.str2obj(inputMsg,ParameterReq.class);
 				encryptMsg = req.getData();
 				decryptMsg = AES.aesDecrypt(StringUtils.trimRight(req.getData(), "\n"));// AES解密
 			} else {
 				encryptMsg = inputMsg;
 				decryptMsg = inputMsg;
-				System.out.println("暂未开启AES解密拦截器");
+				System.out.println("暂未开启解密");
 				if (inputMsg.indexOf("data")>0) {
-					throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
+					throw new RuntimeException("应该传入未加密的入参");
 				}
 			}
 			InputStream stream = StreamUtils.StringToInputStream(decryptMsg);
@@ -62,7 +62,7 @@ public class AESInterceptor  extends AbstractPhaseInterceptor<Message> {
 		System.out.println("解密后的入参:" + decryptMsg);
 		logCustomerInfo(message, encryptMsg, decryptMsg);
 		if (decryptMsg.indexOf("{") < 0 && decryptMsg.indexOf("}") < 0) {
-			throw new RuntimeException("传递的入参是加密后的字符串，但是apihttp项目暂未开启AES解密");
+			throw new RuntimeException("解密后的参数必须是json格式的数据");
 		}
 	}
 	/**

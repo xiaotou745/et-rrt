@@ -46,7 +46,7 @@ import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
-import com.renrentui.renrenentity.req.AesParameterReq;
+import com.renrentui.renrenentity.req.ParameterReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
