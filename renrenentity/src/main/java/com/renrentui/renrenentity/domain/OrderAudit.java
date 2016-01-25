@@ -37,6 +37,7 @@ public class OrderAudit {
 	private int profit;
 	private Double profitAmount;
 	private String dataValue;
+	private String refuReason;
 	//订单导出
 	
 	public String getClienterInfo() {
@@ -181,5 +182,11 @@ public class OrderAudit {
 	}
 	public void setTimeAfter(int timeAfter) {
 		this.timeAfter = timeAfter;
+	}
+	public String getRefuReason() {
+		return refuReason;
+	}
+	public void setRefuReason(String refuReason) {
+		this.refuReason = refuReason;
 	}
 }

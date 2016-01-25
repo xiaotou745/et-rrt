@@ -9,6 +9,7 @@
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
 <%@page import="com.renrentui.renrencore.util.*"%>
+<%@page import="org.apache.commons.codec.binary.Base64"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
@@ -38,7 +39,21 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		<%
 			PagedResponse<OrderAudit> responsePageList = (PagedResponse<OrderAudit>)request.getAttribute("listData");
 			List<OrderAudit> data=responsePageList.getResultList();
-			for (int i = 0; i < data.size(); i++) {			
+			String datumString="";
+			int endIndex=0;
+			String fix="";
+			for (int i = 0; i < data.size(); i++) {		
+				datumString=data.get(i).getAuditStatus();
+				if(data.get(i).getRefuReason()!=null&&!data.get(i).getRefuReason().isEmpty()){
+					endIndex=data.get(i).getRefuReason().length();
+					fix="";
+					if(endIndex>40){
+						endIndex=40;
+						fix="...";
+					}
+					datumString=datumString+":"+data.get(i).getRefuReason().substring(0, endIndex)+fix;
+				}
+				datumString=new String(Base64.encodeBase64(datumString.getBytes("UTF-8")));  
 		%>
 		<tr>
 			<td><%=data.get(i).getId()%>
@@ -84,7 +99,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 			<%	
 			}
 			%>
-			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>,'<%=data.get(i).getClienterName()%>')">查看</a>
+			<a href="javascript:void(0)"  onclick="ShowInfo(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>,'<%=data.get(i).getClienterName()%>','<%=datumString%>')">查看</a>
 			<a href="javascript:void(0)"  onclick="saveFile(<%=data.get(i).getClienterId()%>,<%=data.get(i).getTaskId()%>,<%=data.get(i).getId()%>,'<%=data.get(i).getClienterName()%>')">下载</a>
 			</td>						
 		</tr>

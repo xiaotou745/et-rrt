@@ -9,6 +9,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<script src="<%=basePath%>/js/util.js"></script>
 <style type="text/css">
 #map_contain {
     height: 90%;
@@ -141,6 +142,7 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
+					<div style="text-align:left;color:red;" id="datumAuditStatus"></div>
 				<h4 class="modal-title">资料信息</h4>				
 			</div>
 			<small class="font-bold">
@@ -369,7 +371,7 @@ $(objDiv).css("display", "none");
 	 $('#RefuReasonBox').modal('show'); 
 
    }
-   function ShowInfo(userId,taskId,taskDatumId,name){
+   function ShowInfo(userId,taskId,taskDatumId,name,datumString){
 	   var paramaters = {"userId":userId,
 			   			  "taskId":taskId,
 			   			  "taskDatumId":taskDatumId};
@@ -382,8 +384,8 @@ $(objDiv).css("display", "none");
 		        type: 'POST',
 		        url: url,
 		        data: paramaters,
-		        success: function (result) {   	
-		        	//alert(result);
+		        success: function (result) { 
+		        	$("#datumAuditStatus").html(base64decode(datumString));
 		        	$('#infobox').html(result);
 		        	$('#alertbox').modal('show'); 
 		        	
