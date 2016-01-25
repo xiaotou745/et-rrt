@@ -10,7 +10,7 @@ private long auditNum;
 private long auditWaitNum;
 private long auditPassNum;
 private long auditRefuseNum;
-private long complateNum;
+private long completeNum;
 private long ctId;
 private String downUrl;
 private String scanTip;
@@ -67,11 +67,11 @@ public void setAuditPassNum(long auditPassNum) {
 	this.auditPassNum = auditPassNum;
 }
 
-public long getComplateNum() {
-	return complateNum;
+public long getCompleteNum() {
+	return completeNum;
 }
-public void setComplateNum(long complateNum) {
-	this.complateNum = complateNum;
+public void setCompleteNum(long completeNum) {
+	this.completeNum = completeNum;
 }
 public long getAuditRefuseNum() {
 	return auditRefuseNum;

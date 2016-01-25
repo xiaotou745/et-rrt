@@ -4,7 +4,7 @@ package com.renrentui.renrenentity.req;
  * @author ofmyi_000
  *
  */
-public class AesParameterReq {
+public class ParameterReq {
 	private String data;
 
 	public String getData() {

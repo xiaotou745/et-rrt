@@ -18,16 +18,18 @@
 	class="table table-striped table-bordered table-hover dataTables-example">
 	<thead>
 		<tr>
-			<th style="width: 80px;">编号</th>
-			<th style="width: 200px;">任务标题</th>
-			<th style="width: 150px;">创建人</th>
-			<th style="width: 150px;">创建时间</th>
-			<th style="width: 200px;">起止日期</th>
-			<th style="width: 100px;">商家名称</th>
-			<th style="width: 80px;">单次佣金</th>
-			<th style="width: 80px;">任务状态</th>
-			<th style="width: 80px;">任务类型</th>
-			<th style="width: 80px;">操作</th>
+			<th >编号</th>
+			<th >任务标题</th>
+			<th >参与人数</th>
+			<th >总完成次数</th>
+			<th >创建人</th>
+			<th >创建时间</th>
+			<th >起止日期</th>
+			<th >商家名称</th>
+			<th >单次佣金</th>
+			<th >任务状态</th>
+			<th >任务类型</th>
+			<th >操作</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -43,6 +45,8 @@
 		<tr>
 			<td><%=data.get(i).getId()%></td>
 			<td><a target="_blank" class="blue2" href="<%=basePath%>/taskmanage/detail?taskId=<%=data.get(i).getId()%>"><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></a></td>
+			<td><%=data.get(i).getPartnerNum()%> </td>
+			<td><%=data.get(i).getCompleteNum()%> </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getCreateName())%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getBeginTime(),"yyyy-MM-dd")+"/"+ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-MM-dd")%></td>
@@ -61,10 +65,16 @@
 		    if(data.get(i).getStatus()==TaskStatus.WaitAudit.value()||data.get(i).getStatus()==TaskStatus.Reject.value()){%>
 			<a href="javascript:setTaskStatus('<%=data.get(i).getId()%>',5,<%=data.get(i).getStatus() %>,'<%=ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-M-d") %>')">取消</a>
 			<a href="<%=basePath%>/taskmanage/newtask?taskId=<%=data.get(i).getId()%>" target="_blank">修改任务</a>
-			<%}	%>
-<!-- 			if(data.get(i).getCanSettlement().equals(1)){%> -->
-<%-- 					<a href="javascript:settlementtask('<%=data.get(i).getId()%>')">结算</a> --%>
-<%-- 				<%} --%>
+			<%}	
+			
+			if((data.get(i).getStatus()==TaskStatus.Audited.value()
+					||data.get(i).getStatus()==TaskStatus.Expired.value()
+					||data.get(i).getStatus()==TaskStatus.Stop.value()
+					)&&data.get(i).getTaskType()==1)
+			{%>
+				<a href="<%=basePath%>/taskmanage/taskexport?taskId=<%=data.get(i).getId()%>" target="_blank">导出资料数据</a>
+			<%}
+			%>
 			</td>
 		</tr>
 		<%

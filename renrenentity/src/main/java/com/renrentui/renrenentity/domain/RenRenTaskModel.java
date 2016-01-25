@@ -6,6 +6,13 @@ public class RenRenTaskModel extends RenRenTask{
     private String businessName;
     private String templateName;
 	//private  Integer canSettlement;
+    private Integer completeNum;
+	public Integer getCompleteNum() {
+		return completeNum;
+	}
+	public void setCompleteNum(Integer completeNum) {
+		this.completeNum = completeNum;
+	}
 	public String getBusinessName() {
 		return businessName;
 	}

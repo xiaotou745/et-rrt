@@ -40,4 +40,15 @@ public class ArticleDao extends DaoBase  implements IArticleDao {
 		return getReadOnlySqlSessionUtil().selectOne("IArticleDao.getDetail", id);
 	}
 
+	/**
+	 * 删除文章
+	 * @author CaoHeYang
+	 * @param id 文章id
+	 * @date 20160125
+	 */
+	@Override
+	public int delArticle(Long id) {
+		return getMasterSqlSessionUtil().delete("IArticleDao.delArticle",id);
+	}
+
 }

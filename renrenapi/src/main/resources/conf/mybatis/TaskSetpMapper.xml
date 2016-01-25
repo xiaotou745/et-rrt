@@ -9,4 +9,11 @@ WHERE   ts.TaskId = #{taskId,jdbcType=BIGINT}
 ORDER BY SetpType ASC ,
         ts.SortNo ASC
 </select>
+<!-- 查询某一个文章对应的任务数量  -->
+ <select id="selectCountByArticle" resultType="java.lang.Integer" parameterType="java.lang.Long" >
+select COUNT(1) as  counts
+ from TaskSetp where SetpType=3
+and charindex('/article/detail?id=',Content)>0
+and CONVERT(BIGINT,SUBSTRING(Content,charindex('id=',Content)+3,len(Content)))=#{articleId}
+</select>
 </mapper>

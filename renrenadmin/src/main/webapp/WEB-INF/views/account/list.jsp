@@ -86,7 +86,7 @@ List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
 	</div>
 </div>
 <div class="modal inmodal fade" id="myModal" tabindex="-1" role="dialog"  aria-hidden="true">
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-sm">
     <div class="modal-content">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -125,6 +125,8 @@ var jss={
 		reset:function(){
 			$("#txtUserName").val("");
 			$("#txtLoginName").val("");
+            $("#txtUserName").removeAttr("disabled");
+            $("#txtLoginName").removeAttr("disabled");
 			$("#txtPwd").val("");
 			$("#txtConfirmPwd").val("");
 		    $("#radyes").attr("checked","checked");
@@ -150,8 +152,10 @@ function modify(id) {
 			success : function(result) {
 				$("#txtUserName").val(result.userName);
 				$("#txtLoginName").val(result.loginName);
-				$("#txtPwd").val();
-				$("#txtConfirmPwd").val();
+		        $("#txtUserName").attr("disabled", "true");
+		        $("#txtLoginName").attr("disabled", "true");
+				$("#txtPwd").val("");
+				$("#txtConfirmPwd").val("");
 				if(result.status==1){
 					$("#radyes").prop('checked','checked')
 				}

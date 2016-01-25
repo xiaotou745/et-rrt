@@ -20,4 +20,16 @@ public class TaskSetpDao extends DaoBase implements ITaskSetpDao {
 		return getReadOnlySqlSessionUtil().selectList("ITaskSetpDao.getSetpsByTaskId",taskID);
 	}
 
+	/**
+	 * 查询某一个文章对应的任务数量
+	 * @author CaoHeYang
+	 * @date  20160125
+	 * @param articleId
+	 * @return
+	 */
+	@Override
+	public int selectCountByArticle(long articleId) {
+		return getReadOnlySqlSessionUtil().selectOne("ITaskSetpDao.selectCountByArticle",articleId);
+	}
+
 }

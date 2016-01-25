@@ -78,6 +78,7 @@ import com.renrentui.renrenentity.domain.CheckCancelOrder;
 import com.renrentui.renrenentity.domain.CheckSubmitTask;
 import com.renrentui.renrenentity.domain.ClienterTask;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
+import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.domain.ReceiveNum;
@@ -317,27 +318,28 @@ public class RenRenTaskService implements IRenRenTaskService {
 		taskDatum.setTaskId(req.getTaskId());
 		//查询当前分佣策略
 		Strategy stra=strategyDao.getCruuentStrategy();
+		long strategyId=0l;
+		Double subCommisson=0.00;//累计分佣金额
 		if(stra!=null){
-			taskDatum.setStrategyId(stra.getId());
-		}else {
-			taskDatum.setStrategyId(Long.valueOf("0"));
-		}
-		//计算上级累计分佣
-		//1.查找我的层级
-		int  ClienterLevel=clienterRelationDao.getLevelByClienterId(req.getUserId());
-		//查找我绑定的分佣关系
-		List<StrategyChild> strChilds=strategyDao.getStrategyChildById(stra.getId());
-		Double SubCommisson=0.00;//累计分佣金额
-		if(ClienterLevel>1&&strChilds!=null&&strChilds.size()>0)
-		{
-			//取等级 或者 层级 最小的进行循环 上级分佣人次数应该是 我的层级-1 或者分佣等级(取两个中的最小)
-			int size=ClienterLevel-1>strChilds.size()?strChilds.size():ClienterLevel-1;
-			for (int i = 0; i < size; i++) {
-				//任务累计分佣+=等级比例*任务金额*0.01 因为比例存的是0-99.99 Doule
-				SubCommisson+=(strChilds.get(i).getPercentage()*check.getTaskAmount()*0.01);
+			strategyId=stra.getId();
+			//计算上级累计分佣
+			//1.查找我的层级
+			int  ClienterLevel=clienterRelationDao.getLevelByClienterId(req.getUserId());
+			//查找我绑定的分佣关系
+			List<StrategyChild> strChilds=strategyDao.getStrategyChildById(strategyId);
+			if(ClienterLevel>1&&strChilds!=null&&strChilds.size()>0)
+			{
+				//取等级 或者 层级 最小的进行循环 上级分佣人次数应该是 我的层级-1 或者分佣等级(取两个中的最小)
+				int size=ClienterLevel-1>strChilds.size()?strChilds.size():ClienterLevel-1;
+				for (int i = 0; i < size; i++) {
+					//任务累计分佣+=等级比例*任务金额*0.01 因为比例存的是0-99.99 Doule
+					subCommisson+=(strChilds.get(i).getPercentage()*check.getTaskAmount()*0.01);
+				}
 			}
 		}
-		taskDatum.setSubCommisson(SubCommisson);
+
+		taskDatum.setStrategyId(strategyId);
+		taskDatum.setSubCommisson(subCommisson);
 		taskDatumDao.insertTaskDatum(taskDatum);
 		//2.插入合同详细数据
 		for (int i = 0; i < req.getValueInfo().size(); i++) {
@@ -561,7 +563,19 @@ public class RenRenTaskService implements IRenRenTaskService {
  */
 	@Override
 	public List<MyReceiveTask> getMyReceivedTaskList(TaskReq req) {
-		return renRenTaskDao.getMyReceivedTaskList(req);	
+		List<MyReceiveTask> resultList= renRenTaskDao.getMyReceivedTaskList(req);
+		String downUrl="%s/clienter/sharetask?taskId=%s&clienterId=%s&downUrl=%s";
+		String adminHost=PropertyUtils.getProperty("java.renrenadmin.url");
+		String finalDownUrl="";
+		for (MyReceiveTask task : resultList) {
+			if (task.getTaskType()!=TaskType.ContractTask.value()&&
+		 		task.getDownUrl()!=null&&
+		 		!task.getDownUrl().isEmpty()){
+				finalDownUrl=String.format(downUrl,adminHost,task.getTaskId(),req.getUserId(),task.getDownUrl());
+		 		task.setDownUrl(finalDownUrl);	
+			}
+		}
+		return resultList;
 	}
 
 	@Override
@@ -1049,5 +1063,14 @@ public class RenRenTaskService implements IRenRenTaskService {
 			groups.add(groupaGroup);		
 			}
 		return groups;
+	}
+	
+	/**
+	 * 资料数据导出
+	 * 茹化肖
+	 */
+	@Override
+	public List<OrderAudit> taskDaumExport(Long taskId) {
+		return renRenTaskDao.taskDaumExport(taskId );
 	}
 }

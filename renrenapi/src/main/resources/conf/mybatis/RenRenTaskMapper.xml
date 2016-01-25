@@ -140,9 +140,16 @@ WHERE   EndTime > GETDATE()
         Pusher ,
         Amount ,
         Status ,
-        TaskType
+        TaskType,
+        ISNULL(Tx.CompleteNum, 0) AS CompleteNum,
+        PartnerNum
         ',
-		' dbo.RenRenTask AS rrt (NOLOCK)  
+		' dbo.RenRenTask AS rrt (NOLOCK) 
+		  LEFT JOIN ( SELECT  ct.TaskId ,
+                            SUM(CompleteNum) AS CompleteNum
+                    FROM    dbo.ClienterTask AS ct ( NOLOCK )
+                    GROUP BY ct.TaskId
+                  ) AS Tx ON Tx.TaskId = rrt.id 
         ',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />
@@ -248,11 +255,12 @@ statementType="CALLABLE">
  rrt.Reminder,
  rrt.status,
  b.Logo,
- ct.CompleteNum,
+ case  rrt.TaskType when 1 then  ISNULL(CTD.auditWaitNum,0)+ISNULL(CTD.auditPassNum,0)+ISNULL(CTD.auditRefuseNum,0)
+ else  ct.CompleteNum end as CompleteNum,
  ct.id as CtId,
- CTD.auditWaitNum,
- CTD.auditPassNum,
- CTD.auditRefuseNum
+ isnull(CTD.auditWaitNum,0) as auditWaitNum,
+ isnull(CTD.auditPassNum,0) as auditPassNum,
+ isnull(CTD.auditRefuseNum,0) as auditRefuseNum
 FROM dbo.ClienterTask AS ct  (NOLOCK)
 INNER JOIN dbo.RenRenTask AS rrt(NOLOCK) ON ct.TaskId=rrt.id
 INNER JOIN dbo.Business AS b (NOLOCK) ON rrt.BusinessId=b.id
@@ -533,5 +541,64 @@ SELECT TOP 1
         rrt.Amount as taskAmount
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 WHERE   rrt.id = ${taskId}
+  </select>
+  <!-- 任务下资料数据导出 茹化肖 -->
+  <select id="taskDaumExport" parameterType="java.lang.Long" resultType="com.renrentui.renrenentity.domain.OrderAudit">
+DECLARE @TaskId BIGINT =#{taskId,jdbcType=BIGINT}
+SELECT * INTO #RenRenTask FROM dbo.RenRenTask AS rrt(NOLOCK) WHERE id=@TaskId
+SELECT * into #TaskDatum FROM dbo.TaskDatum AS TD (NOLOCK) WHERE TD.TaskId=@TaskId 
+SELECT * INTO #ClienterTask FROM dbo.ClienterTask AS ct (NOLOCK) WHERE ct.TaskId=@TaskId
+SELECT c.* INTO #Clienter  FROM dbo.Clienter AS c (NOLOCK)
+JOIN #ClienterTask AS ct ON ct.ClienterId=c.id
+SELECT tdc.* INTO #TaskDatumChild FROM #TaskDatum 
+JOIN TaskDatumChild AS TDC (NOLOCK) ON TDC.TaskDatumId=#TaskDatum.id 
+SELECT * INTO #TemplateGroup FROM dbo.TemplateGroup AS tg(nolock)WHERE tg.TaskId=@TaskId
+SELECT td.* INTO #TemplateDetail FROM #TemplateGroup
+JOIN dbo.TemplateDetail AS td(NOLOCK) ON td.TemplateGroupId=#TemplateGroup.Id
+SELECT td.id ,
+        td.ClienterId ,
+        c.ClienterName ,
+        rrt.Pusher ,
+        rrt.TaskTitle ,
+        rrt.Status AS taskStatus ,
+        ct.CompleteNum ,
+        ct.Amount ,
+        td.CreateDate AS finishTime ,
+        td.AuditTime ,
+        td.Status AS auditStatus ,
+        rrt.id AS TaskId ,
+        c.PhoneNo ,
+        rrt.TotalAmount ,
+        td.SubCommisson ,
+        CASE WHEN ( ct.Amount + td.SubCommisson ) > rrt.TotalAmount THEN -1
+             ELSE 1
+        END AS Profit ,
+        ( rrt.TotalAmount - ( ct.Amount + td.SubCommisson ) ) AS ProfitAmount ,
+        ( SELECT    ISNULL(td2.Title, 'A') + ':' + ISNULL(T1.ControlValue, 'B')
+                    + ';'
+          FROM      #TemplateGroup AS tg ( NOLOCK )
+                    LEFT JOIN #TemplateDetail AS td2 ( NOLOCK ) ON td2.TemplateGroupId = tg.Id
+                    JOIN ( SELECT   tdc.ControlValue ,
+                                    ControlName
+                           FROM     #TaskDatumChild AS tdc ( NOLOCK )
+                           WHERE    tdc.TaskDatumId = td.id
+                         ) AS T1 ON T1.ControlName = td2.Name
+          WHERE     tg.TaskId = RRT.ID
+                    AND td2.ControlId = 1
+        FOR
+          XML PATH('')
+        ) AS dataValue
+ FROM   #TaskDatum AS td ( NOLOCK )
+        LEFT JOIN #ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
+        LEFT JOIN #RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
+        LEFT JOIN #Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id
+DROP TABLE #RenRenTask
+DROP TABLE #TaskDatum
+DROP TABLE #ClienterTask
+DROP TABLE #Clienter
+DROP TABLE #TaskDatumChild
+DROP TABLE #TemplateGroup
+DROP TABLE #TemplateDetail
+  
   </select>
 </mapper>

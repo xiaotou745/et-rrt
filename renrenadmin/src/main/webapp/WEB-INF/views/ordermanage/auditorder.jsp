@@ -9,6 +9,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+<script src="<%=basePath%>/js/util.js"></script>
 <style type="text/css">
 #map_contain {
     height: 90%;
@@ -141,6 +142,7 @@ width: 100%;
 				<button class="close" type="button" data-dismiss="modal">
 					<span aria-hidden="true">×</span><span class="sr-only">关闭</span>
 				</button>
+					<div style="text-align:left;color:red;" id="datumAuditStatus"></div>
 				<h4 class="modal-title">资料信息</h4>				
 			</div>
 			<small class="font-bold">
@@ -170,6 +172,7 @@ width: 100%;
 				<inupt type="hidden" id="hiduserId" value="">
 				<inupt type="hidden" id="hidamount" value="">
 				<inupt type="hidden" id="hidorderNo" value="">
+				<inupt type="hidden" id="hidtaskTitle" value="">
 				<textarea id="reasontxt" cols="30" rows="5" maxlength="150">
 				</textarea>
 				</div>
@@ -286,7 +289,8 @@ $('#btnRefu').click(function(){
 			 "userId":userId,
 			 "amount":amount,
 			 "orderNo":orderNo,
-			 "refuReason":RefuReason
+			 "refuReason":RefuReason,
+			 "taskTitle":$("#hidtaskTitle").val()
 			 };
 	var url = "<%=basePath%>/ordermanage/orderaudit";
 	 $.ajax({
@@ -303,9 +307,120 @@ $('#btnRefu').click(function(){
 		        		 $('#hidamount').val('');
 		        		 $('#hidorderNo').val('');
 		        		 $('#reasontxt').html('');
+		        		 $('#hidtaskTitle').val('');
 		        		jss.search(1);
 		        		}//if
 		        }//success
 		    });//ajax
 });
+//鼠标悬停显示
+function Myshow(obj,id) {
+	
+	var objDiv = $("#TipBox");
+	var url="<%=basePath%>/ordermanage/getsubtip";
+	var par={"orderId":id}
+	$.post(url,par,function(d){
+		$("#TipBox").html(d);
+	});
+		$(objDiv).css("display","block");
+		$(objDiv).css("left", event.clientX-200);
+		$(objDiv).css("top", event.clientY-100);
+	}
+//悬停隐藏
+function Myhide(obj) {
+var objDiv = $("#TipBox");
+$(objDiv).css("display", "none");
+} 
+   //订单审核
+   function Audit(orderId,auditStatus,userId,amount,orderNo,taskTitle){
+	   if(!confirm("确定操作该审核结果?")){
+		   return false;
+		   }
+	   var RefuReason="";//拒绝原因
+	   var paramaters = { 				 
+				 "auditStatus":auditStatus,
+				 "orderId":orderId,
+				 "userId":userId,
+				 "amount":amount,
+				 "orderNo":orderNo,
+				 "refuReason":RefuReason,
+				 "taskTitle":taskTitle
+				 };
+		   var url = "<%=basePath%>/ordermanage/orderaudit";
+		   $.ajax({
+		        type: 'POST',
+		        url: url,
+		        data: paramaters,
+		        success: function (result) {   	
+		        	if(result=='1'||result==1){
+		        		alert('操作成功!')
+		        		jss.search(1);
+		        		}
+		        }
+		    });
+   }
+ //订单审核
+   function AuditRe(orderId,auditStatus,userId,amount,orderNo,taskTitle){
+	 $('#hidauditStatus').val(auditStatus);
+	 $('#hidorderId').val(orderId);
+	 $('#hiduserId').val(userId);
+	 $('#hidamount').val(amount);
+	 $('#hidorderNo').val(orderNo);
+	 $('#reasontxt').val('');
+	 $("#hidtaskTitle").val(taskTitle);
+	 $('#RefuReasonBox').modal('show'); 
+
+   }
+   function ShowInfo(userId,taskId,taskDatumId,name,datumString){
+	   var paramaters = {"userId":userId,
+			   			  "taskId":taskId,
+			   			  "taskDatumId":taskDatumId};
+	   $('#btndown').unbind("click");
+	   $('#btndown').click(function(){
+		   saveFile(userId,taskId,taskDatumId,name);
+	   });
+		   var url = "<%=basePath%>/ordermanage/orderchildInfo?tag=0&name="+name;
+		   $.ajax({
+		        type: 'POST',
+		        url: url,
+		        data: paramaters,
+		        success: function (result) { 
+		        	$("#datumAuditStatus").html(base64decode(datumString));
+		        	$('#infobox').html(result);
+		        	$('#alertbox').modal('show'); 
+		        	
+		        }
+		    });
+	   
+   }
+   //取消订单
+   function CancelOrder(orderId,userId){
+	   if(!confirm("确定取消该订单吗?")){
+		   return false;
+		   }
+	   var paramaters = {"orderId":orderId,"userId":userId};
+		   var url = "<%=basePath%>/ordermanage/cancelorder";
+		   $.ajax({
+		        type: 'POST',
+		        url: url,
+		        data: paramaters,
+		        success: function (result) {   	
+		        	if(result=='200'||result==200)
+		        	{
+		        		alert('取消成功!')
+		        		jss.search(1);
+		        	}
+		        	else
+		        		{
+		        		alert('取消任务失败!');
+		        		}
+		        }
+		    });
+	   
+   }
+ //保存
+   function saveFile(userId,taskId,taskDatumId,name){
+	   var url = "<%=basePath%>/ordermanage/orderdownload?userId="+userId+"&taskId="+taskId+"&taskDatumId="+taskDatumId+"&name="+name;
+	   window.open(url);
+   }
 </script>

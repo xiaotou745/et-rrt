@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.service.inter;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.renrentui.renrenentity.common.PagedResponse;
@@ -33,6 +35,7 @@ public interface IOrderService {
 //	public OrderChildInfoModel getOrderChildInfo(OrderChildReq req);
 	
 	public String downLoadOrderInfo(TaskDatumDetailReq req);
+
 //	public int cancelOrder(CancelTaskReq req);
 //	public Double getOrderTotalAmount(Long taskId);
 }

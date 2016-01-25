@@ -84,7 +84,7 @@ $("#update").click(function(){
 					alert("操作成功");
 					window.location.href = "<%=basePath %>/account/logoff";
 				} else {
-					alert("操作失败");
+					alert("操作失败：旧密码不正确");
 				}
 			}
 		});

@@ -44,6 +44,15 @@ public class RenRenTask {
     private String reminder;
     private Double totalAmount;
     private Integer estimatedTime;
+    private Integer partnerNum;
+	public Integer getPartnerNum() {
+		return partnerNum;
+	}
+
+	public void setPartnerNum(Integer partnerNum) {
+		this.partnerNum = partnerNum;
+	}
+
 	public Double getTotalAmount() {
 		return totalAmount;
 	}

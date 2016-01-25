@@ -255,6 +255,7 @@ WHERE id=${orderId}
         c.PhoneNo ,
         rrt.TotalAmount ,
         td.SubCommisson ,
+        td.RefuReason,
         CASE WHEN ( ct.Amount + td.SubCommisson) > rrt.TotalAmount
              THEN -1
              ELSE 1
@@ -262,10 +263,9 @@ WHERE id=${orderId}
         (rrt.TotalAmount-( ct.Amount + td.SubCommisson)) AS ProfitAmount
 		',
 		' dbo.TaskDatum AS td ( NOLOCK )
-        LEFT JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
-        LEFT JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
-        LEFT JOIN dbo.Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id 
-        LEFT JOIN dbo.Strategy AS s ( NOLOCK ) ON s.id = td.StrategyId',
+         JOIN dbo.ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
+         JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
+         JOIN dbo.Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id ',
 		'
 		<include refid="getOrderAuditListWhere" />
 		',
