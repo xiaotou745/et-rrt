@@ -1,6 +1,7 @@
 package com.renrentui.renrenapi.service.inter;
 
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.domain.Article;
 import com.renrentui.renrenentity.req.PagedArticleReq;
 
@@ -26,4 +27,11 @@ public interface IArticleService {
 	 * @return
 	 */
 	Article getDetail(Long id);
+	
+	/**
+	 * 删除文章
+	 * @param id
+	 * @return
+	 */
+	ResponseBase delArticle(long id);
 }
