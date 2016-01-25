@@ -27,7 +27,7 @@ public class ActiveMqService {
 	private Destination queueDestination;
 	@Autowired
 	private Destination serviceLogQueueDestination;
-	private static   ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3); 
+	private static   ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5); 
 
 	/**
 	 * 异步发送mq消息
