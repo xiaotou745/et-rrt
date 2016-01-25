@@ -73,7 +73,7 @@ width: 100%;
 							<div class="col-sm-8">
 								<select id="typewithdraw" class="form-control m-b">
 								<option value="-1">全部</option>
-								<option value="1">支付宝</option>
+								<option value="1" selected = "selected">支付宝</option>
 								</select> 
 							</div>
 						</div>

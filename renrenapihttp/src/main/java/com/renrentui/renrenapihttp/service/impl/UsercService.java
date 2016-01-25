@@ -35,6 +35,7 @@ import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.domain.AlipayBatchCallBackModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.domain.PartnerModel;
@@ -468,7 +469,10 @@ public class UsercService implements IUsercService {
 
 //	@Override
 //	public void wangchao(String id) {  
-//		clienterWithdrawFormService.AliBatchNotifyTransferCallback();
+//		AlipayBatchCallBackModel a = new AlipayBatchCallBackModel();
+//		a.setBatchNo("2016012508113134625844");
+//		a.setFailDetails("187^dou631@163.com^白玉2^1.00^F^ACCOUN_NAME_NOT_MATCH^20151020528661961^20151020090839|");
+//		clienterWithdrawFormService.AliBatchNotifyTransferCallbackBusinessDeal(a);
 //	}
 
 	/**

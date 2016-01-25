@@ -87,14 +87,16 @@ public class ClienterFinanceAcountDao extends DaoBase implements
 	 */
 	@Override
 	public boolean ClienterWithdrawPayFailed(ClienterWithdrawLogModel cwlModel) {
-		return getMasterSqlSessionUtil().update(
-				"IClienterFinanceAcountDao.clienterWithdrawPayFailed", cwlModel)>0;
+		int k= getMasterSqlSessionUtil().update(
+				"IClienterFinanceAcountDao.clienterWithdrawPayFailed", cwlModel);
+		return k>0;
 	}
 
 	@Override
 	public boolean ModifyClienterAmountInfo(ClienterWithdrawLogModel cwlModel) {
-		return getMasterSqlSessionUtil().update(
-				"IClienterFinanceAcountDao.modifyClienterAmountInfo", cwlModel)>0;
+		int k= getMasterSqlSessionUtil().update(
+				"IClienterFinanceAcountDao.modifyClienterAmountInfo", cwlModel);
+		return k>0;
 	}
 
 }
