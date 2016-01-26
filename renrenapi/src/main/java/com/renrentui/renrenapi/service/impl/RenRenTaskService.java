@@ -527,7 +527,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 			TaskMsg itemMsg=new TaskMsg();
 			itemMsg.setClienterId(list.get(i));
 			itemMsg.setTaskId(task.getId());
-			itemMsg.setTitle("任务未过期但管理员手动终止");
+			itemMsg.setTitle("任务关闭通知");
 			itemMsg.setCreateName("admin");
 			itemMsg.setMsg("《"+task.getTaskTitle()+"》已经提前结束，您可以继续完成其他任务哦。如有疑问，请联系地推小管家：010-57173598");
 			itemMsg.setMsgType(0);
