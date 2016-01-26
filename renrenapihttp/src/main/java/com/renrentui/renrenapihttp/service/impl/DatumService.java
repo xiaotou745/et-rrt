@@ -7,11 +7,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ITaskDatumService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IDatumService;
 import com.renrentui.renrencore.enums.DatumAuditStatus;
 import com.renrentui.renrencore.enums.TaskCode;
+import com.renrentui.renrencore.enums.TaskStatus;
+import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskDatumGroup;
 import com.renrentui.renrenentity.domain.TaskDatumModel;
@@ -22,6 +25,8 @@ import com.renrentui.renrenentity.req.TaskDatumReq;
 public class DatumService implements IDatumService{
 	@Autowired
 	ITaskDatumService taskDatumService;
+	@Autowired
+	IRenRenTaskService  renRenTaskService;
 	/**
 	 * 获取资料模板或资料详情
 	 * @param req
@@ -61,6 +66,10 @@ public class DatumService implements IDatumService{
 			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
 			return hrm;
 		} 
+		if(req.getTaskId()<=0){
+			hrm.setCode(TaskCode.TaskId.value()).setMsg(TaskCode.TaskId.desc());			
+			return hrm;
+		} 
 		DatumAuditStatus auditStatus=DatumAuditStatus.getEnum(req.getAuditStatus());
 		if(auditStatus!=DatumAuditStatus.Audited&&
 				auditStatus!=DatumAuditStatus.WaitAudit&&
@@ -68,8 +77,19 @@ public class DatumService implements IDatumService{
 					hrm.setCode(TaskCode.DatumAuditStatus.value()).setMsg(TaskCode.DatumAuditStatus.desc());			
 					return hrm;
 				} 
-		List<TaskDatumModel> result=taskDatumService.getMyTaskDatumList(req);
+		RenRenTask taskInfo=renRenTaskService.getTaskInfo((long)req.getTaskId());
+		if (taskInfo==null) {
+			hrm.setCode(TaskCode.TaskNotExit.value()).setMsg(TaskCode.TaskNotExit.desc());			
+			return hrm;
+		}
 		TabModel<TaskDatumModel> td = new TabModel<TaskDatumModel>();
+		td.setTaskStatus(taskInfo.getStatus());
+		if (taskInfo.getStatus()==TaskStatus.Audited.value()) {
+			td.setTaskStatusName("进行中");
+		}else {
+			td.setTaskStatusName("已过期");
+		}
+		List<TaskDatumModel> result=taskDatumService.getMyTaskDatumList(req);
 		td.setContent(result);
 		td.setCount(result.size());
 		List<Map<String, Integer>> totalResult=taskDatumService.getMyTaskDatumListTotal(req);
@@ -88,6 +108,7 @@ public class DatumService implements IDatumService{
 		if(result!=null && result.size()>0){
 			td.setNextId(result.get(result.size()-1).getTaskDatumId());
 		}
+
 		if (auditStatus==DatumAuditStatus.Audited) {
 			td.setTitle("已通过("+td.getCount()+")");
 		}

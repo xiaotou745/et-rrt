@@ -14,7 +14,8 @@ public enum TaskCode {
 	MsgOpType(1107, "消息的操作类型只能为删除(1)或已读(2)"), 
 	DatumAuditStatus(1108, "资料审核状态只能为待审核(1)或审核通过(2)或审核拒绝(3)"),  
 	TaskId(1109, "任务id不能<=0"),  
-	OrderByErr(1110, "排序方式只能为(1是佣金,2是审核周期,3是预计用时,4是参与人数,5是发布时间)"),  
+	OrderByErr(1110, "排序方式只能为(1是佣金,2是审核周期,3是预计用时,4是参与人数,5是发布时间)"), 
+	TaskNotExit(1111, "任务不存在"),  
 	Fail(1146, "系统错误");
 	private int value = 0;
 	private String desc;
