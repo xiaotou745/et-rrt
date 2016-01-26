@@ -589,16 +589,18 @@ public class ClienterWithdrawFormService implements
 			cwlModel.setIsCallBack(1);
 			cwlModel.setCallBackRequestId(faillist.get(i).getAlipayInnerNo());
 			// 更新骑士 确认打款
-			clienterFinanceAcountService.ClienterWithdrawPayFail(cwlModel);
-			// //获取骑士相关金融账户信息 发送消息
-			ClienterFinanceAcountModel cfaModel = new ClienterFinanceAcountModel();
-			cfaModel = clienterFinanceAcountService
-					.GetClienterFinanceAccount(faillist.get(i).getWithdrawId());
-			cfaModel.setPayFailedReason(reString);
-			if (cfaModel != null) {
-				AddCPlayMoneyFailMessage(cfaModel);
+			boolean bfail = clienterFinanceAcountService.ClienterWithdrawPayFail(cwlModel);
+			if(bfail){
+				// //获取骑士相关金融账户信息 发送消息
+				ClienterFinanceAcountModel cfaModel = new ClienterFinanceAcountModel();
+				cfaModel = clienterFinanceAcountService
+						.GetClienterFinanceAccount(faillist.get(i).getWithdrawId());
+				cfaModel.setPayFailedReason(reString);
+				if (cfaModel != null) {
+					AddCPlayMoneyFailMessage(cfaModel);
+				}
 			}
-		}//for 失败
+		}//for 失败 
 		AlipayBatchModel alipayBatchModel2 = new AlipayBatchModel();
 		alipayBatchModel2.setSuccessTimes(successlist.size());
 		alipayBatchModel2.setFailTimes(faillist.size());

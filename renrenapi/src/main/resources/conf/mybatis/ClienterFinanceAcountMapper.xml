@@ -247,7 +247,7 @@
   </update>
   <!-- 修改骑士提款流水状态 wangchao -->
   <update id="modifyClienterBalanceRecordStatus" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
-    UPDATE ClienterBalanceRecord SET [Status] = 1 WHERE OrderId = #{withwardId,jdbcType=BIGINT} AND [Status]=2
+    UPDATE ClienterBalanceRecord SET [Status] = 1 WHERE OrderId = #{withwardId,jdbcType=BIGINT} AND [Status]=2 and RecordType IN(2,6)
   </update>
     <!-- 骑士提现打款确认后修改骑士表累计提款金额 wangchao -->
   <update id="modifyClienterTotalAmount" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
@@ -288,10 +288,10 @@
     <!-- 骑士提现打款失败后修改骑士表累计提款金额 wangchao -->
   <update id="modifyClienterAmountInfo" parameterType="com.renrentui.renrenentity.domain.ClienterWithdrawLogModel" >
    update c
-		set    c.Balance=ISNULL(c.Balance, 0)+ISNULL(cwf.Amount,0),
-		       c.Withdraw=ISNULL(c.Withdraw,0)+ISNULL(cwf.Amount,0)
-		from dbo.ClienterBalance c
-		join [ClienterWithdrawForm] cwf on c.ClienterId=cwf.ClienterId
+		set  c.Balance=ISNULL(c.Balance, 0)+ISNULL(cwf.Amount,0),
+		      c.Withdraw=ISNULL(c.Withdraw,0)+ISNULL(cwf.Amount,0)
+		from dbo.ClienterBalance(nolock) c
+		join [ClienterWithdrawForm](nolock) cwf on c.ClienterId=cwf.ClienterId
 		where cwf.Id=#{withwardId,jdbcType=BIGINT};
   </update>
   
