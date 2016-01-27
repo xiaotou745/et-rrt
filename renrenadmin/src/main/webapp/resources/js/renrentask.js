@@ -29,9 +29,9 @@ function CheckSave(){
 		alert('审核周期必须大于1天');
 		return false;
 	}
-	if(parseFloat($('#amount').val())<=0||isNaN(parseFloat($('#amount').val())))
+	if(parseFloat($('#amount').val())<0.01||isNaN(parseFloat($('#amount').val())))
 	{
-		alert('地推员佣金必须大于0元');
+		alert('地推员佣金必须大于等于0.01元');
 		return false;
 	}
 	if(!isInt($('#estimatedTime').val()))
@@ -44,9 +44,9 @@ function CheckSave(){
 		alert('预计完成消耗必须大于等于1分钟');
 		return false;
 	}
-	if(parseFloat($('#totalAmount').val())<=0||isNaN(parseFloat($('#totalAmount').val())))
+	if(parseFloat($('#totalAmount').val())<0.01||isNaN(parseFloat($('#totalAmount').val())))
 	{
-		alert('任务总佣金必须大于0元');
+		alert('任务总佣金必须大于等于0.01元');
 		return false;
 	}
 	if(parseFloat($('#totalAmount').val())<parseFloat($('#amount').val()))

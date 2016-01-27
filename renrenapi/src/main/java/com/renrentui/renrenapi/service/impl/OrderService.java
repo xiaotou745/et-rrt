@@ -18,6 +18,7 @@ import com.renrentui.renrenapi.dao.inter.IStrategyDao;
 import com.renrentui.renrenapi.dao.inter.ITaskDatumDao;
 import com.renrentui.renrenapi.service.inter.IOrderService;
 import com.renrentui.renrencore.enums.CancelTaskCode;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.ClienterRelation;
@@ -207,17 +208,17 @@ public class OrderService implements IOrderService{
 		for (int i = 0; i < size; i++) {
 				Long cid=crlist.get(i).getOtherClienterId();//分给谁
 				Double pre=childs.get(i).getPercentage();//百分比
-				Double SubMoney=baseMoe*pre*0.01;//分出去的金额
+				Double subMoney=ParseHelper.subNum(baseMoe*pre*0.01, 2);//分出去的金额
 				//1.审核通过 将合同的单价添加到骑士余额和可提现余额
-				if(SubMoney>0.01d)
+				if(subMoney.doubleValue()>=0.01d)
 				{
 					ClienterBalanceReq cBReq=new ClienterBalanceReq();
 					cBReq.setUserId(cid);
-					cBReq.setAmount(SubMoney);
+					cBReq.setAmount(subMoney);
 					int cbId= clienterBalanceDao.updateMoneyByKey(cBReq);
 				    ClienterBalanceRecord clienterBalanceRecordModel=new ClienterBalanceRecord();
 					clienterBalanceRecordModel.setClienterId(cid);
-					clienterBalanceRecordModel.setAmount(SubMoney);		
+					clienterBalanceRecordModel.setAmount(subMoney);		
 					clienterBalanceRecordModel.setRecordType((short)5);		
 					clienterBalanceRecordModel.setOptName(OptName);
 					clienterBalanceRecordModel.setOrderId(OrderId);

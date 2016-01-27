@@ -324,16 +324,19 @@ public class RenRenTaskService implements IRenRenTaskService {
 			strategyId=stra.getId();
 			//计算上级累计分佣
 			//1.查找我的层级
-			int  ClienterLevel=clienterRelationDao.getLevelByClienterId(req.getUserId());
+			int  clienterLevel=clienterRelationDao.getLevelByClienterId(req.getUserId());
 			//查找我绑定的分佣关系
 			List<StrategyChild> strChilds=strategyDao.getStrategyChildById(strategyId);
-			if(ClienterLevel>1&&strChilds!=null&&strChilds.size()>0)
+			if(clienterLevel>1&&strChilds!=null&&strChilds.size()>0)
 			{
 				//取等级 或者 层级 最小的进行循环 上级分佣人次数应该是 我的层级-1 或者分佣等级(取两个中的最小)
-				int size=ClienterLevel-1>strChilds.size()?strChilds.size():ClienterLevel-1;
+				int size=clienterLevel-1>strChilds.size()?strChilds.size():clienterLevel-1;
+				Double singleMoney=0.00;
 				for (int i = 0; i < size; i++) {
 					//任务累计分佣+=等级比例*任务金额*0.01 因为比例存的是0-99.99 Doule
-					subCommisson+=(strChilds.get(i).getPercentage()*check.getTaskAmount()*0.01);
+					//0.019需要舍弃为0.01,需要先舍后加，否则累计分佣和给每个上级的分佣之和对不上
+					singleMoney=strChilds.get(i).getPercentage()*check.getTaskAmount()*0.01;
+					subCommisson+=ParseHelper.subNum(singleMoney, 2);
 				}
 			}
 		}

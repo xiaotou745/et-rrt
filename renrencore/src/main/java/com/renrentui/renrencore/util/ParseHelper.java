@@ -313,7 +313,7 @@ public class ParseHelper {
 		}
 	}
 	/**
-	 * 按照指定的精度保留n位小数
+	 * 按照指定的精度保留n位小数（四舍五入）
 	 * @param numVaule 要处理的数值
 	 * @param digits 小数位数
 	 * @date 20151013
@@ -321,8 +321,6 @@ public class ParseHelper {
 	 * @return
 	 */
 	public static String digitsNum(Object numVaule, int digits){
-		
-		
 		if (digits<0) {
 			digits=2;
 		}
@@ -333,6 +331,27 @@ public class ParseHelper {
 		DecimalFormat    df   = new DecimalFormat(formatString);  
 		return df.format(numVaule);
 
+	}
+	/**
+	 *  按照指定的精度保留n位小数（不会四舍五入，直接截取小数点后digits位）
+	 * @param in
+	 * @param digits
+	 * @date 20160127
+	 * @author hailongzhao
+	 * @return
+	 */
+	public static Double subNum(Double in,int digits){
+		if (digits<1) {
+			digits=2;
+		}
+		String money=in.toString();
+		String resultMoney="";
+		int index=money.indexOf(".");
+		if (index>0&&money.substring(index+1).length()>digits) {
+			resultMoney=money.substring(0, index+digits+1);
+			return Double.parseDouble(resultMoney);
+		}
+		return in;
 	}
 	/**
 	 * 
