@@ -482,7 +482,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 							<div class="form-group">
 								<label class="col-sm-4 control-label">关联商户: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", taskInfo.getBusinessId(),null, "全部")%>
+									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", (taskInfo==null?null:taskInfo.getBusinessId()),null, "全部")%>
 								</div>
 							</div>
 						</div>
