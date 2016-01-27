@@ -17,6 +17,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.ClienterLoginLog;
@@ -243,9 +244,10 @@ public class ClienterService implements IClienterService {
 	@Override
 	public PagedResponse<ClienterResp> queryClienterList(ClienterReq req) {
 		List<String> head=clienterDao.getClienterheadimg();
+		String imgPath=PropertyUtils.getProperty("FileUploadPath");
 		for (String string : head) {
 			try {
-				String diskPath = "/usr/local/renrenimgmountpoint/"+ string;
+				String diskPath = imgPath+"/"+ string;
 				File uploadedFile = new File(diskPath);
 				if (uploadedFile.exists()) {
 					int index=diskPath.lastIndexOf(".");
