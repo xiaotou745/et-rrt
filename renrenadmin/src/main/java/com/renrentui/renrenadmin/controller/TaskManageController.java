@@ -101,6 +101,7 @@ public class TaskManageController {
 			model.addObject("taskSetps", taskSetps);
 			model.addObject("taskInfo", taskInfo);
 			model.addObject("taskID", taskId);
+			model.addObject("task_city", publicProvinceCityService.getTaskCity(taskId));
 			
 		}
 		List<Business> datalist=businessService.getAllList();
