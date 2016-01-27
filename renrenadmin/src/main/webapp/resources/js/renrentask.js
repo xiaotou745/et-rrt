@@ -61,6 +61,10 @@ function CheckSave(){
 			alert('下载链接不能为空');
 			return false;
 			}
+		if($('#downUrl').val().length>200){
+		alert('下载链接不能大于200个字符');
+		return false;
+		}
 		if($('#scanTip').val().length>20)
 		{
 		alert('扫码说明不能大于20个字符');
@@ -99,9 +103,13 @@ function CheckSave(){
 		var flag=true;
 		//步骤信息不能为空
 		$('#setpbox input').each(function(id,el){
-			if($(el).val().length<1)
-			{
+			if($(el).val().length<1){
 				alert('步骤信息不能为空');
+				flag=false;
+				return false;
+			}
+			if($(el).val().length>100){
+				alert('步骤信息不能大于100个字符');
 				flag=false;
 				return false;
 			}
@@ -109,10 +117,14 @@ function CheckSave(){
 		if(!flag) return flag;
 		//遍历补充说明
 		$('#setpbox2 input').each(function(id,el){
-			if($(el).val().length<1)
-			{
+			if($(el).val().length<1){
 				flag=false;
 				alert('补充说明不能为空');
+				return false;
+			}
+			if($(el).val().length>100){
+				flag=false;
+				alert('补充说明不能大于100个字符');
 				return false;
 			}
 	   	});
@@ -124,10 +136,19 @@ function CheckSave(){
 	   			flag=false;
 				return false;
 	   			}
-	   		if($(el).find('.elurl').val().length<1)
-	   			{
+	   		if($(el).find('.eltitle').val().length>100){
+	   			alert('细则链接标题不能大于100个字符');
+	   			flag=false;
+				return false;
+	   			}
+	   		if($(el).find('.elurl').val().length<1){
 	   			flag=false;
 	   			alert('细则链接地址不能为空');
+				return false;
+	   			}
+	   		if($(el).find('.elurl').val().length>100){
+	   			flag=false;
+	   			alert('细则链接地址不能大于100个字符');
 				return false;
 	   			}
 	   		//if(!flag) return flag;
@@ -147,9 +168,19 @@ function CheckSave(){
 				flag=false;
 				return false;
 				}
+				if($(el).find('.cltxt').val().length>50){
+					alert('文本组标题不能大于50个字符');
+					flag=false;
+					return false;
+					}
 				$(el).find('.textGroup .textitem').each(function(id2,el2){
 					if($(el2).find('.cltitle').val().length<1){
 						alert('文本控件说明不能为空');
+						flag=false;
+						return false;
+						}//文本标题
+					if($(el2).find('.cltitle').val().length>100){
+						alert('文本控件说明不能大于100个字符');
 						flag=false;
 						return false;
 						}//文本标题
@@ -163,12 +194,22 @@ function CheckSave(){
 					flag=false;
 					return false;
 				}
+				if($(el).find('.climg').val().length>50){
+					alert('图片组标题不能大于50个字符');
+					flag=false;
+					return false;
+				}
 				if(!flag) return flag;
 				//遍历控件
 				$(el).find('.imgGroup .imgitem').each(function(id2,el2){
 
 					if($(el2).find('.cltitle').val().length<1){
 						alert('图片控件说明不能为空');
+						flag=false;
+						return false;
+					}
+					if($(el2).find('.cltitle').val().length>100){
+						alert('图片控件说明不能大于100个字符');
 						flag=false;
 						return false;
 					}
@@ -179,6 +220,11 @@ function CheckSave(){
 			else{
 				if($(el).find('.clmoreimg').val().length<1){
 					alert('多图组标题不能为空');
+					flag=false;
+					return false;
+				}
+				if($(el).find('.clmoreimg').val().length>50){
+					alert('多图组标题不能大于50个字符');
 					flag=false;
 					return false;
 				}
