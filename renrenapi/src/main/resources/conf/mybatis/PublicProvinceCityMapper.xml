@@ -32,7 +32,7 @@
 	from    PublicProvinceCity d with ( nolock )
 	        join PublicProvinceCity c with ( nolock ) on d.ParentCode = c.code
 	        join PublicProvinceCity p with ( nolock ) on c.ParentCode = p.code
-	 where   1 = 1  and d.jibie=4 
+	 where   d.jibie=4 
 	 <if test="cityName != null" >
 	     and c.name like '%${cityName}%'
      </if>
