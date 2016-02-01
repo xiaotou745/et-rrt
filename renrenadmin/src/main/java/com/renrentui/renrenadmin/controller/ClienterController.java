@@ -92,7 +92,7 @@ public class ClienterController {
 	 * @return
 	 */
 	@RequestMapping("recordlist")
-	public ModelAndView recordlist(String phoneNo,String name,Double blance,Double hadWithdraw,Long id){	
+	public ModelAndView recordlist(String phoneNo,String name,double blance,double hadWithdraw,long id){	
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "地推员管理");
 		model.addObject("currenttitle", "地推员交易列表");
@@ -184,15 +184,15 @@ public class ClienterController {
 			req.getDownUrl().isEmpty()) {
 			return;
 		}
-		try {
-			HttpUtil.sendGet(req.getDownUrl(), "");
+//		try {
+//			HttpUtil.sendGet(req.getDownUrl(), "");
 			TaskShareStatistics record=new TaskShareStatistics();
 			record.setClienterid(req.getClienterId());
 			record.setTaskid(req.getTaskId());
 			taskShareStatisticsService.insert(record);
-		} catch (Exception e) {
-			//e.printStackTrace();
-		}
+//		} catch (Exception e) {
+//			//e.printStackTrace();
+//		}
 
 		response.sendRedirect(req.getDownUrl());
 	}

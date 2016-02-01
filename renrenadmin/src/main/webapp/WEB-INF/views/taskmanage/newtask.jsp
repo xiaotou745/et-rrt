@@ -18,6 +18,7 @@ String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");//省份
 String pro_city = (String) request.getAttribute("pro_city");//城市字符串
+PublicProvinceCity city=request.getAttribute("task_city")==null?null:(PublicProvinceCity) request.getAttribute("task_city");
 Long taskID=request.getAttribute("taskID")==null?0:(Long)request.getAttribute("taskID");
 RenRenTask taskInfo =request.getAttribute("taskInfo")==null?null:(RenRenTask)request.getAttribute("taskInfo");
 List<TaskSetp> taskSetps=request.getAttribute("taskSetps")==null?null:(List<TaskSetp>)request.getAttribute("taskSetps");
@@ -481,7 +482,7 @@ var imgPath="<%=basePath%>/img/11235.png";
 							<div class="form-group">
 								<label class="col-sm-4 control-label">关联商户: </label>
 								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", null,null, "全部")%>
+									<%=HtmlHelper.getSelect("businessId", businessData, "companyName", "id", (taskInfo==null?null:taskInfo.getBusinessId()),null, "全部")%>
 								</div>
 							</div>
 						</div>
@@ -667,27 +668,7 @@ $('input:radio[name="rTaskType"]').change(function(){
 			$('#mubanbox').hide();
 		}	
 });
-<%if(taskInfo==null){
-	%>
-	$('input:radio[name="rTaskType"]').change();
-	<%}
-else{
-	%>
-	$('input:radio[name="rTaskType"]').attr('disabled','disabled');
-	$("#businessId").val(<%=taskInfo.getBusinessId()%>);
-	var id=$('input[name="rTaskType"]:checked').val();
-	if(id==1){
-		$('#tasktype2').hide();
-		$('#tasktype3').hide();
-		$('#mubanbox').show();
-	}else{
-		$('#tasktype2').show();
-		$('#tasktype3').show();
-		$('#mubanbox').hide();
-	}	
-	<%
-}
-%>
+
 //失去焦点
 function HttpC(obj){
 	var str=$(obj).val();
@@ -741,6 +722,33 @@ var jss={
 		}
 	}
   $(document).ready(function() {
+	  <%if(taskInfo==null){%>
+		$('input:radio[name="rTaskType"]').change();
+	<%}else{%>
+		$('input:radio[name="rTaskType"]').attr('disabled','disabled');
+		$("#businessId").val(<%=taskInfo.getBusinessId()%>);
+		var id=$('input[name="rTaskType"]:checked').val();
+		if(id==1){
+			$('#tasktype2').hide();
+			$('#tasktype3').hide();
+			$('#mubanbox').show();
+		}else{
+			$('#tasktype2').show();
+			$('#tasktype3').show();
+			$('#mubanbox').hide();
+		}	
+	<%
+		if(city!=null){
+			if(city.getJiBie()==2){%>
+				$("#provinceCode").val(<%=city.getCode()%>);
+				$('#provinceCode').change();
+			<%}else{%>
+				$("#provinceCode").val(<%=city.getParentCode()%>);
+				$('#provinceCode').change();
+				$("#cityCode").val(<%=city.getCode()%>);
+			<%}
+		}
+	}%>
 	  //初始化时间控件
 	  $(' .input-group.date').datepicker({
 	        todayBtn: "linked",

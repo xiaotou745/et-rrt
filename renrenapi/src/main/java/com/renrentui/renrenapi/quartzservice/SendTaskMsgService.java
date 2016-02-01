@@ -46,7 +46,7 @@ public class SendTaskMsgService implements IJobDo{
 						TaskMsg itemMsg=new TaskMsg();
 						itemMsg.setClienterId(list.get(j));
 						itemMsg.setTaskId(tasklist.get(i).getId());
-						itemMsg.setTitle("该任务还有1天过期");
+						itemMsg.setTitle("任务提醒");
 						itemMsg.setCreateName("admin");
 						itemMsg.setMsg("您领取的《"+tasklist.get(i).getTaskTitle()+"》还有1天就到期啦，如有未提交的资料，记得尽快提交哦。");
 						itemMsg.setMsgType(0);

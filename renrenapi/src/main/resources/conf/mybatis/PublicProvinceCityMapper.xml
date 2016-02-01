@@ -32,7 +32,7 @@
 	from    PublicProvinceCity d with ( nolock )
 	        join PublicProvinceCity c with ( nolock ) on d.ParentCode = c.code
 	        join PublicProvinceCity p with ( nolock ) on c.ParentCode = p.code
-	 where   1 = 1  and d.jibie=4 
+	 where   d.jibie=4 
 	 <if test="cityName != null" >
 	     and c.name like '%${cityName}%'
      </if>
@@ -121,7 +121,7 @@
   </update>
   <!-- 获取任务投放区域 -->
   <select id="getTaskCity"  resultType="com.renrentui.renrenentity.PublicProvinceCity" parameterType="java.lang.Long"  >
-	SELECT TOP 1 tcr.CityName AS Name,tcr.CityCode AS Code,ppc.Jibie FROM dbo.TaskCityRelation AS tcr  (NOLOCK)
+	SELECT TOP 1 tcr.CityName AS Name,tcr.CityCode AS Code,ppc.Jibie,ppc.ParentCode FROM dbo.TaskCityRelation AS tcr  (NOLOCK)
 JOIN dbo.PublicProvinceCity AS ppc (NOLOCK) ON tcr.CityCode=ppc.Code
 WHERE taskid=#{taskId,jdbcType=BIGINT}
   </select>

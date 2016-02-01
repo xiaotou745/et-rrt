@@ -19,6 +19,8 @@ public class TabModel<T> {
 	private long waitTotal;
 	private long passTotal;
 	private long refuseTotal;
+    private int taskStatus;
+    private String taskStatusName;
 	private List<T> content;
 	public long getWaitTotal() {
 		return waitTotal;
@@ -84,5 +86,21 @@ public class TabModel<T> {
 
 	public void setTotal(long total) {
 		this.total = total;
+	}
+
+	public int getTaskStatus() {
+		return taskStatus;
+	}
+
+	public void setTaskStatus(int taskStatus) {
+		this.taskStatus = taskStatus;
+	}
+
+	public String getTaskStatusName() {
+		return taskStatusName;
+	}
+
+	public void setTaskStatusName(String taskStatusName) {
+		this.taskStatusName = taskStatusName;
 	}
 }
