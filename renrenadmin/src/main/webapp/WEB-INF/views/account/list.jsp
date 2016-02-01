@@ -80,7 +80,6 @@ List<RoleInfo> roleData = (List<RoleInfo>) request.getAttribute("roleData");
 					id="userroleid" type="hidden" name="userroleid" />
 				<button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
 				<button type="button" class="btn btn-primary" id="saveauth">保存</button>
-
 			</div>
 		</div>
 	</div>
