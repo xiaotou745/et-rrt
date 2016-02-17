@@ -27,7 +27,7 @@ public class QuartzService implements IQuartzService {
 	 * @date 20151211
 	 * */
 	@Override
-	public int mainJob(QuartzUpdateReq req) {
+	public int updateStatus(QuartzUpdateReq req) {
 		QuartzServiceModel item=quartzServiceDao.selectById(req.getId());
 		String jobName = item.getBeanName();
 		if(req.getStatus()==1){

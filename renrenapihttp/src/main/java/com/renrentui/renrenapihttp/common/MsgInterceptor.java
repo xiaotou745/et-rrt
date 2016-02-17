@@ -34,6 +34,10 @@ public class MsgInterceptor  extends AbstractPhaseInterceptor<Message> {
 		try {
 			InputStream inputStream = message.getContent(InputStream.class);
 			String inputMsg = StreamUtils.copyToStringNoclose(inputStream);
+			logCustomerInfo(message, encryptMsg, decryptMsg);
+			if (inputMsg==null||inputMsg.isEmpty()) {
+				return;
+			}
 			String interceptSwith = PropertyUtils.getProperty("InterceptSwith");// "1"// 开启加密										
 			if (interceptSwith.equals("1")) {
 				System.out.println("已开启解密拦截器");

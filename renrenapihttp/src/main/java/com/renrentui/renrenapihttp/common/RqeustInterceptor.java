@@ -23,8 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 
+
+
 import com.renrentui.renrenapi.common.LogServiceBLL;
 import com.renrentui.renrencore.util.JsonUtil;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.util.SystemUtils;
 import com.renrentui.renrencore.util.ParseHelper;
@@ -125,7 +128,12 @@ public class RqeustInterceptor extends AbstractPhaseInterceptor<Message> {
 			String contentType = (String) inMessage.get(Message.CONTENT_TYPE);
 			String httpRequestMethod = (String) inMessage.get(Message.HTTP_REQUEST_METHOD);
 			String url = (String) inMessage.get(Message.REQUEST_URL);
-				
+			//如果quartz是异步执行的，则此处不记录请求日志，由服务自己记录
+			//zhaohl，20160217
+			String isAsynQuartz=PropertyUtils.getProperty("IsAsynQuartz");
+			if (isAsynQuartz.equals("1")&&url.indexOf("/httpquartzservice/")>0) {
+				return ;
+			}
 			HttpServletRequest request = (HttpServletRequest) inMessage.get(AbstractHTTPDestination.HTTP_REQUEST);// 这句可以获取到request
 			String clientIp = SystemUtils.getClientIp(request);
 			

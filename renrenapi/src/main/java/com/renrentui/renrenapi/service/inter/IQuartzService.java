@@ -20,5 +20,5 @@ public interface IQuartzService {
 	 * @author haichao
 	 * @date 2015年12月10日 10:18:44 设置启动关闭服务
 	 * */
-	int mainJob(QuartzUpdateReq req);
+	int updateStatus(QuartzUpdateReq req);
 }

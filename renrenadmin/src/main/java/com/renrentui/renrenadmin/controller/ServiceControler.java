@@ -56,7 +56,7 @@ public class ServiceControler {
 	public int updateStatus(QuartzUpdateReq req,HttpServletRequest request) {
 		UserContext context=UserContext.getCurrentContext(request);
 		req.setUpdateName(context.getUserName());
-		return quartzService.mainJob(req);
+		return quartzService.updateStatus(req);
 	}
 	/**
 	 * 新增一个服务

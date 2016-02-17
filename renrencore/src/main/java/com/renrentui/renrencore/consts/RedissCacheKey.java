@@ -30,4 +30,5 @@ public class RedissCacheKey {
     public static final String RR_PublicProvinceCity_Version = "RR_PublicProvinceCity_Version"; //城市版本号
     
     public static final String Ets_AlipayBatchNo = "Ets_AlipayBatchNo_%s";
+    public static final String HttpQuartz_Key = "HttpQuartz_Key_";//HttpQuartz,redis锁 ，防止服务重复执行
 }
