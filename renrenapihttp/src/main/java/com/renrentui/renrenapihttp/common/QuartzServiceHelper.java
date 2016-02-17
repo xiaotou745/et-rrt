@@ -31,6 +31,12 @@ public class QuartzServiceHelper {
 	private static RedisService redisService=SpringBeanHelper.getCustomBeanByType(RedisService.class);
 	private static LogServiceBLL logServiceBLL=SpringBeanHelper.getCustomBeanByType(LogServiceBLL.class);
 	
+	/**
+	 * 根据beanName同步或异步调用run方法，并记录日志
+	 * @author hailongzhao
+	 * @date 20160217
+	 * @return
+	 */
 	public static HttpResultModel<String> doSend(String beanName){
 		String isAsynQuartz=PropertyUtils.getProperty("IsAsynQuartz");
 		if (isAsynQuartz.equals("1")) {
