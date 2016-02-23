@@ -128,7 +128,7 @@ var jss={
             $("#txtLoginName").removeAttr("disabled");
 			$("#txtPwd").val("");
 			$("#txtConfirmPwd").val("");
-		    $("#radyes").attr("checked","checked");
+		    $("#radyes").prop("checked",true);
 		},
 		reloadInfo:function(){
 			
