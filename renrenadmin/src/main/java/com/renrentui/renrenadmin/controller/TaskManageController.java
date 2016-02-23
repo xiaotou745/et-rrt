@@ -16,14 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
-
 import com.renrentui.renrenadmin.common.UserContext;
 import com.renrentui.renrenapi.service.inter.IBusinessBalanceService;
 import com.renrentui.renrenapi.service.inter.IBusinessService;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ISubCommissionService;
+import com.renrentui.renrenapi.service.inter.ITaskCityRelationService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.enums.TaskType;
@@ -32,21 +31,17 @@ import com.renrentui.renrencore.util.ExcelUtils;
 import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
-import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
-import com.renrentui.renrenentity.TaskShareStatistics;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.OrderAudit;
-import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
-import com.renrentui.renrenentity.req.ParameterReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
@@ -68,6 +63,8 @@ public class TaskManageController {
 	private IBusinessBalanceService businessBalanceService;
 	@Autowired
 	private ISubCommissionService  subCommissionService;
+	@Autowired
+	private ITaskCityRelationService taskCityRelationService;
 	
 	/**
 	 * 新建任务页面
@@ -101,7 +98,7 @@ public class TaskManageController {
 			model.addObject("taskSetps", taskSetps);
 			model.addObject("taskInfo", taskInfo);
 			model.addObject("taskID", taskId);
-			model.addObject("task_city", publicProvinceCityService.getTaskCity(taskId));
+			model.addObject("task_city", taskCityRelationService.getTaskCity(taskId));
 			
 		}
 		List<Business> datalist=businessService.getAllList();
@@ -161,16 +158,7 @@ public class TaskManageController {
 
 		return resultBuilder.toString();
 	}
-//	private List<PublicProvinceCity> getOpenCityByJiBie(List<PublicProvinceCity> list,int jiBie)
-//	{
-//		List<PublicProvinceCity> listnew = new ArrayList<PublicProvinceCity>();
-//		for (PublicProvinceCity item : list) {
-//			if (item.getJiBie() == jiBie) {
-//				listnew.add(item);
-//			}
-//		}
-//		return listnew;
-//	}
+
 	/**
 	 * 保存.修改
 	 * 茹化肖
@@ -323,35 +311,10 @@ public class TaskManageController {
 		
 		model.addObject("taskInfo", taskInfo);
 //		//4 获取投放放范围
-//		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
-//		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
-		model.addObject("pro_city", publicProvinceCityService.getTaskCity(taskId));
+		model.addObject("pro_city", taskCityRelationService.getTaskCity(taskId));
 		return model;
 	}
 	
-	/**
-	 * 更新任务 .V1.0.2删除 茹化肖
-	 * 备注.任务修改和新建任务放在同一接口
-	 * @param request
-	 * @param taskItem
-	 * @param beginDate
-	 * @param endDate
-	 * @return
-	 */
-//	@RequestMapping("updatetask")
-//	@ResponseBody
-//	public int updateTask(HttpServletRequest request,RenRenTask taskItem,String beginDate,String endDate) {
-//		taskItem.setPusher("");
-//		taskItem.setStatus(TaskStatus.WaitAudit.value());
-//		taskItem.setBeginTime(ParseHelper.ToDate(beginDate));
-//		taskItem.setEndTime(ParseHelper.ToDate(endDate));
-//		taskItem.setAvailableCount(taskItem.getTaskTotalCount());
-//		UserContext context=UserContext.getCurrentContext(request);
-//		taskItem.setModifyName(context.getUserName());
-//		List<Integer> regionCodes=getRegionCodeList(request,null);
-//		List<Attachment> attachments=getAttachList(request);
-//		return renRenTaskService.updateTask(taskItem, regionCodes,attachments);
-//	}
 	@RequestMapping("getbusinessbanlance")
 	@ResponseBody
 	public String getBusinessBanlance(Long businessId){
@@ -392,18 +355,4 @@ public class TaskManageController {
 		ExcelUtils.export2Excel(fileName, "资料审核列表", columnTitiles,records, request, response);
 		return;
 	}
-//	/**
-//	 * 任务结账
-//	 * @param request
-//	 * @param taskId
-//	 * @author hailongzhao
-//	 * @date 20151014
-//	 * @return
-//	 */
-//	@RequestMapping("settlementtask")
-//	@ResponseBody
-//	public int settlementTask(HttpServletRequest request,Long taskId){
-//		UserContext context=UserContext.getCurrentContext(request);
-//		return renRenTaskService.settlementTask(taskId, context.getUserName());
-//	}
 }

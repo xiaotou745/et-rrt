@@ -52,13 +52,5 @@ public interface IPublicProvinceCityService {
 	  * wangchao
 	  */
 	int modifyCity(ModifyCityReq modifyCityReq);
-	/**
-	 * 获取任务的投放区域  任务详情页展示用
-	 * 茹化肖
-	 * 2015年12月23日11:25:37
-	 * @param taskId
-	 * @return
-	 */
-	PublicProvinceCity getTaskCity(Long taskId);
 
 }

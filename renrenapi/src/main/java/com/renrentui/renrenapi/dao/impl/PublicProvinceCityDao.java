@@ -51,12 +51,6 @@ public class PublicProvinceCityDao extends DaoBase implements
 		 }
 		return getMasterSqlSessionUtil().update("IPublicProvinceCityDao.modifyCity", modifyCityDomain);
 	}
-	/**
-	 * 获取任务投放区域
-	 */
-	@Override
-	public PublicProvinceCity getTaskCity(Long taskId) {
-		return getReadOnlySqlSessionUtil().selectOne("IPublicProvinceCityDao.getTaskCity", taskId);
-	}
+
 
 }

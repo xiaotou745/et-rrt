@@ -123,11 +123,5 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 
 
 
-	/**
-	 * 获取任务投放区域
-	 */
-	@Override
-	public PublicProvinceCity getTaskCity(Long taskId) {
-		return publicProvinceCityDao.getTaskCity(taskId);
-	}
+
 }
