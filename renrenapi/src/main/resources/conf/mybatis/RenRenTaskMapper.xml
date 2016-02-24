@@ -651,7 +651,7 @@ statementType="CALLABLE">
 	AND d.ClienterId = a.ClienterId
 	WHERE 1=1 
 	<if test="taskTitle !=null and taskTitle!=''">
-	 and b.TaskTitle like ''%${taskTitle}%''
+	 and b.TaskTitle = ''${taskTitle}''
 	</if>
 	<if test="clienterName !=null and clienterName!=''">
 		 and  c.ClienterName like ''%${clienterName}%''
