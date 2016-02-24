@@ -21,9 +21,9 @@
 			<th >编号</th>
 			<th >参与人手机号</th>
 			<th >参与人姓名</th>
-			<th >任务名称</th>
-			<th >任务类型</th>
-			<th >任务状态</th>
+<!-- 			<th >任务名称</th> -->
+<!-- 			<th >任务类型</th> -->
+<!-- 			<th >任务状态</th> -->
 			<th >领取城市</th>
 			<th >领取时间</th>
 			<th >总完成次数</th>
@@ -51,9 +51,9 @@
 			<td><%=data.get(i).getClienterId()%></td>
 			<td><%=data.get(i).getPhoneNo()%></td>
 			<td><%=data.get(i).getClienterName()%></td>
-			<td><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></td>
-			<td><%=TaskType.getEnum(data.get(i).getTaskType()).desc()%> </td>
-			<td><%=TaskStatus.getEnum(data.get(i).getTaskStatus()).desc()%></td>
+<%-- 			<td><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></td> --%>
+<%-- 			<td><%=TaskType.getEnum(data.get(i).getTaskType()).desc()%> </td> --%>
+<%-- 			<td><%=TaskStatus.getEnum(data.get(i).getTaskStatus()).desc()%></td> --%>
 			<td><%=data.get(i).getCityName()%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getReceiveDate())%></td>
 			<td>

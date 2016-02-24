@@ -171,12 +171,12 @@ width: 100%;
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
-				<inupt type="hidden" id="hidauditStatus" value="">
-				<inupt type="hidden" id="hidorderId" value="">
-				<inupt type="hidden" id="hiduserId" value="">
-				<inupt type="hidden" id="hidamount" value="">
-				<inupt type="hidden" id="hidorderNo" value="">
-				<inupt type="hidden" id="hidtaskTitle" value="">
+				<input type="hidden" id="hidauditStatus" value="">
+				<input type="hidden" id="hidorderId" value="">
+				<input type="hidden" id="hiduserId" value="">
+				<input type="hidden" id="hidamount" value="">
+				<input type="hidden" id="hidorderNo" value="">
+				<input type="hidden" id="hidtaskTitle" value="">
 				<textarea id="reasontxt" cols="30" rows="5" maxlength="150">
 				</textarea>
 				</div>

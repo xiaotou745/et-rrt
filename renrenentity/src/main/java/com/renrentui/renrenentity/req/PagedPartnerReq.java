@@ -3,6 +3,7 @@ package com.renrentui.renrenentity.req;
 import com.renrentui.renrenentity.common.PagedRequestBase;
 
 public class PagedPartnerReq  extends PagedRequestBase {
+	private long taskId;
     private String taskTitle;
 	private String clienterName;
     private String clienterPhoneNo;
@@ -51,6 +52,12 @@ public class PagedPartnerReq  extends PagedRequestBase {
 	}
 	public void setCityName(String cityName) {
 		this.cityName = cityName;
+	}
+	public long getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(long taskId) {
+		this.taskId = taskId;
 	}
 
 }

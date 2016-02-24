@@ -40,7 +40,13 @@
 			if (data == null) {
 				data = new ArrayList<RenRenTaskModel>();
 			}
+			String baseOrderPath="";
 			for (int i = 0; i < data.size(); i++) {
+				baseOrderPath=basePath+"/taskmanage/partnerlist?taskTitle="+
+						java.net.URLEncoder.encode(data.get(i).getTaskTitle(), "utf-8")+
+						"&taskType="+java.net.URLEncoder.encode(TaskType.getEnum(data.get(i).getTaskType()).desc(), "utf-8")+
+						"&taskId="+data.get(i).getId()+
+						"&taskStatus="+java.net.URLEncoder.encode(TaskStatus.getEnum(data.get(i).getStatus()).desc(), "utf-8");
 		%>
 		<tr>
 			<td><%=data.get(i).getId()%></td>
@@ -48,7 +54,7 @@
 			<td>
 			<%
 				if(data.get(i).getCompleteNum()>0){%>
-					<a href="<%=basePath%>/taskmanage/partnerlist?taskTitle=<%=java.net.URLEncoder.encode(ParseHelper.ShowString(data.get(i).getTaskTitle()), "utf-8")%>" target="_blank"><%=data.get(i).getPartnerNum()%></a>
+					<a href="<%=baseOrderPath%>" target="_blank"><%=data.get(i).getPartnerNum()%></a>
 				<%}else{%>
 					<%=data.get(i).getCompleteNum()%>
 				<%}

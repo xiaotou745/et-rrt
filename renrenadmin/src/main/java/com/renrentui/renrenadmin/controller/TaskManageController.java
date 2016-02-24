@@ -360,20 +360,28 @@ public class TaskManageController {
 		return;
 	}
 	@RequestMapping("partnerlist")
-	public ModelAndView partnerList(String taskTitle){
+	public ModelAndView partnerList(Long taskId,String taskTitle,String taskType,String taskStatus){
+		if (taskId==null||taskId.longValue()<=0) {
+			return null;
+		}
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "任务管理");
 		model.addObject("currenttitle", "任务参与人列表");
 		model.addObject("viewPath", "taskmanage/partnerlist");
+		model.addObject("taskId", taskId);
 		model.addObject("taskTitle", taskTitle==null?"":taskTitle);
+		model.addObject("taskType", taskType==null?"":taskType);
+		model.addObject("taskStatus", taskStatus==null?"":taskStatus);
 		return model;
 	}
 	@RequestMapping("partnerlistdo")
 	public ModelAndView partnerListdo(PagedPartnerReq req){
-		if (req.getTaskTitle()==null||req.getTaskTitle().isEmpty()) {
+		if (req==null||req.getTaskId()<0) {
 			return null;
 		}
-		req.setTaskTitle(req.getTaskTitle().trim());
+		if (req.getTaskTitle()!=null) {
+			req.setTaskTitle(req.getTaskTitle().trim());
+		}
 		if (req.getCityName()!=null) {
 			req.setCityName(req.getCityName().trim());
 		}

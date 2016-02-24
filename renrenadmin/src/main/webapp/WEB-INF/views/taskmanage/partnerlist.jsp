@@ -3,30 +3,49 @@
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
+
+long taskId = Integer.parseInt(request.getAttribute("taskId").toString());
 String taskTitle = (String) request.getAttribute("taskTitle");
+String taskType = (String) request.getAttribute("taskType");
+String taskStatus = (String) request.getAttribute("taskStatus");
 %>
 <link rel="stylesheet"
 	href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script
 	src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
-
 	<div class="row">
 		<div class="col-lg-12">
-			<form method="POST" action="#" class="form-horizontal"
-				id="searchForm">
-				<input type="hidden" name="currentPage" id="_hiddenCurrentPage"
-					value="1" />
+			<form method="POST" action="#" class="form-horizontal" id="searchForm">
+			<input type="hidden" id="taskId" name="taskId" value="<%=taskId%>">
+				<input type="hidden" name="currentPage" id="_hiddenCurrentPage" value="1" />
 				<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">任务标题:</label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="taskTitle" placeholder="任务标题"
-									id="taskTitle" value="<%=taskTitle%>"/>
+							<div class="col-sm-8 control-label" style="text-align: left;">
+								<label><%=taskTitle%></label>
 							</div>
 						</div>
 					</div>
+										<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">任务类型:</label>
+							<div class="col-sm-8 control-label" style="text-align: left;">
+								<label><%=taskType%></label>
+							</div>
+						</div>
+					</div>
+										<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">任务状态:</label>
+							<div class="col-sm-8 control-label" style="text-align: left;">
+								<label><%=taskStatus%></label>
+							</div>
+						</div>
+					</div>
+					</div>
+					<div class="row">
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">地推员名称:</label>

@@ -650,8 +650,11 @@ statementType="CALLABLE">
 	LEFT JOIN TaskDatum d WITH ( NOLOCK ) ON d.TaskId = b.id
 	AND d.ClienterId = a.ClienterId
 	WHERE 1=1 
+	<if test="taskId !=null and taskId>0">
+	 and a.TaskId = ${taskId}
+	</if>
 	<if test="taskTitle !=null and taskTitle!=''">
-	 and b.TaskTitle = ''${taskTitle}''
+	 and b.TaskTitle like ''%${taskTitle}%''
 	</if>
 	<if test="clienterName !=null and clienterName!=''">
 		 and  c.ClienterName like ''%${clienterName}%''
