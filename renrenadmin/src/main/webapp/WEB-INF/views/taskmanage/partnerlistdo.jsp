@@ -58,7 +58,7 @@
 			<td><%=ParseHelper.ToDateString(data.get(i).getReceiveDate())%></td>
 			<td>
 			<%
-				if(data.get(i).getCompleteNum()>0){%>
+				if(data.get(i).getCompleteNum()>0&&data.get(i).getTaskType()==TaskType.ContractTask.value()){%>
 					<a href="<%=baseOrderPath+"0"%>" target="_blank"><%=data.get(i).getCompleteNum()%></a>
 				<%}else{%>
 					<%=data.get(i).getCompleteNum()%>
@@ -67,7 +67,7 @@
 			
 			 </td>
 			<td>
-				<%if(data.get(i).getWaitAuditNum()>0){%>
+				<%if(data.get(i).getWaitAuditNum()>0&&data.get(i).getTaskType()==TaskType.ContractTask.value()){%>
 					<a href="<%=baseOrderPath+"1"%>" target="_blank"><%=data.get(i).getWaitAuditNum()%></a>
 				<%}else{%>
 					<%=data.get(i).getWaitAuditNum()%>
@@ -75,14 +75,14 @@
 			
 			</td>
 			<td>
-				<%if(data.get(i).getAuditPassNum()>0){%>
+				<%if(data.get(i).getAuditPassNum()>0&&data.get(i).getTaskType()==TaskType.ContractTask.value()){%>
 					<a href="<%=baseOrderPath+"2"%>" target="_blank"><%=data.get(i).getAuditPassNum()%></a>
 				<%}else{%>
 					<%=data.get(i).getAuditPassNum()%>
 				<%}%>
 			</td>
 			<td>
-				<%if(data.get(i).getAuditRefuseNum()>0){%>
+				<%if(data.get(i).getAuditRefuseNum()>0&&data.get(i).getTaskType()==TaskType.ContractTask.value()){%>
 					<a href="<%=baseOrderPath+"3"%>" target="_blank"><%=data.get(i).getAuditRefuseNum()%></a>
 				<%}else{%>
 					<%=data.get(i).getAuditRefuseNum()%>
