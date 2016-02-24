@@ -11,7 +11,9 @@ import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenentity.ClienterRelation;
 import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.ClienterRelationModel;
+import com.renrentui.renrenentity.domain.PartnerItem;
 import com.renrentui.renrenentity.req.CRelationReq;
+import com.renrentui.renrenentity.req.PagedPartnerListReq;
 @Repository
 public class ClienterRelationDao extends DaoBase implements IClienterRelationDao {
 	/**
@@ -51,6 +53,10 @@ public class ClienterRelationDao extends DaoBase implements IClienterRelationDao
 	public List<ClienterRelationLevelModel> getClienterRelationModelsByJibie(
 			CRelationReq req) {
 		return getReadOnlySqlSessionUtil().selectList("IClienterRelationDao.getClienterRelationModelsByJibie", req);
+	}
+	@Override	
+	public List<PartnerItem> getPagedPartnerListByUserId(PagedPartnerListReq req) {
+		return getReadOnlySqlSessionUtil().selectList("IClienterRelationDao.getPagedPartnerListByUserId", req);
 	}
 
 }

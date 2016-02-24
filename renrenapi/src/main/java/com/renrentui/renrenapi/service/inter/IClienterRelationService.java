@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.ClienterRelationModel;
+import com.renrentui.renrenentity.domain.PartnerItem;
 import com.renrentui.renrenentity.req.CRelationReq;
+import com.renrentui.renrenentity.req.PagedPartnerListReq;
 
 /**
  * 层级关系
@@ -25,5 +27,6 @@ public interface IClienterRelationService {
 	 * @return
 	 */
 	List<ClienterRelationLevelModel> getClienterRelationModelsByJibie(CRelationReq req);
+	List<PartnerItem> getPagedPartnerListByUserId(PagedPartnerListReq req);
 
 }

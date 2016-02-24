@@ -15,6 +15,7 @@ public enum GetTaskCode {
 	TaskHad(1144, "该任务已领取且尚未完成"),
 	TaskNoBlance(1145, "任务余量不足"),
 	TaskMore(1147, "您当前领取的任务够多了,先完成一些吧"),
+	CityCodeErr(1148, "城市编码错误"),
 	Fail(1146, "系统错误");
 	private int value = 0;
 	private String desc;

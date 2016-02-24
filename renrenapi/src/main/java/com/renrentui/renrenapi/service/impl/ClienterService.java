@@ -299,7 +299,7 @@ public class ClienterService implements IClienterService {
 		ClienterLog log = new ClienterLog();
 		log.setClienterId(Long.valueOf(req.getUserId()));
 		log.setOptName("地推员UserID");
-		log.setRemark("地推员修改密码");
+		log.setRemark("地推员修改个人基础信息");
 		int reslog = clienterLogDao.addClienterLog(log);// 记录C端日志
 		Clienter clienter = new Clienter();
 		clienter.setId(req.getUserId());

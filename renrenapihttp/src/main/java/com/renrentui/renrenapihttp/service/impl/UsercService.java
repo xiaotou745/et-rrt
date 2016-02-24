@@ -13,6 +13,7 @@ import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterFinanceAcountService;
+import com.renrentui.renrenapi.service.inter.IClienterRelationService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IClienterWithdrawFormService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
@@ -38,6 +39,7 @@ import com.renrentui.renrenentity.ClienterBalanceRecord;
 import com.renrentui.renrenentity.domain.AlipayBatchCallBackModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
+import com.renrentui.renrenentity.domain.PartnerItem;
 import com.renrentui.renrenentity.domain.PartnerModel;
 import com.renrentui.renrenentity.domain.TabModel;
 import com.renrentui.renrenentity.domain.TaskModel;
@@ -48,6 +50,7 @@ import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.GetIncomeReq;
 import com.renrentui.renrenentity.req.GetUserCReq;
 import com.renrentui.renrenentity.req.ModifyUserCReq;
+import com.renrentui.renrenentity.req.PagedPartnerListReq;
 import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.req.ModifyPwdReq;
@@ -81,6 +84,8 @@ public class UsercService implements IUsercService {
 
 	@Autowired
 	private IClienterBalanceRecordService clienterBalanceRecordService;
+	@Autowired
+	private IClienterRelationService clienterRelationService;
 	/**
 	 * C端忘记密码 茹化肖 2015年9月28日10:44:52
 	 * 
@@ -344,11 +349,11 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> modifyuserc(ModifyUserCReq req) {
 		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-		if (req.getAge() == null || req.getAge() <= 0) {
-			return resultModel.setCode(ModifyUserCReturnCode.AgeError.value())
-					.setMsg(ModifyUserCReturnCode.AgeError.desc());
-		}
-		if (req.getSex() == null || (req.getSex() != 1 && req.getSex() != 2)) {
+//		if (req.getAge() == null || req.getAge().intValue() <= 0) {
+//			return resultModel.setCode(ModifyUserCReturnCode.AgeError.value())
+//					.setMsg(ModifyUserCReturnCode.AgeError.desc());
+//		}
+		if (req.getSex() == null || (req.getSex().intValue() != 1 && req.getSex().intValue() != 2)) {
 			return resultModel.setCode(ModifyUserCReturnCode.SexError.value())
 					.setMsg(ModifyUserCReturnCode.SexError.desc());
 		}
@@ -467,36 +472,27 @@ public class UsercService implements IUsercService {
 		return hrm;
 	}
 
-//	@Override
-//	public void wangchao(String id) {  
-//		AlipayBatchCallBackModel a = new AlipayBatchCallBackModel();
-//		a.setBatchNo("2016012508113134625844");
-//		a.setFailDetails("187^dou631@163.com^白玉2^1.00^F^ACCOUN_NAME_NOT_MATCH^20151020528661961^20151020090839|");
-//		clienterWithdrawFormService.AliBatchNotifyTransferCallbackBusinessDeal(a);
-//	}
+	@Override
+	public HttpResultModel<TabModel<PartnerItem>> getPartnerList(
+			PagedPartnerListReq req) {
+		HttpResultModel<TabModel<PartnerItem>> hrm = new HttpResultModel<TabModel<PartnerItem>>();
+		hrm.setCode(TaskCode.Success.value()).setMsg(TaskCode.Success.desc());
+		if(req.getUserId()<=0){
+			hrm.setCode(TaskCode.UserIdErr.value()).setMsg(TaskCode.UserIdErr.desc());			
+			return hrm;
+		} 
 
-	/**
-	 * 上传文件
-	 * 
-	 * @author 胡灵波
-	 * @date 2015年10月12日 15:58:42
-	 * @return
-	 */
-	/*
-	 * @Override public HttpResultModel<Object> FileUpload(FileUploadReq req) {
-	 * HttpResultModel<Object> resultModel=new HttpResultModel<Object>();
-	 * 
-	 * byte [] bytes=req.getBytes(); String fileName=req.getFileName(); int
-	 * uploadForm=req.getUploadForm();
-	 * 
-	 * FileOutputStream fos = null; try{ fos = new
-	 * FileOutputStream("F:\\"+fileName);
-	 * 
-	 * //将字节数组bytes中的数据，写入文件输出流fos中 fos.write(bytes); fos.flush(); }catch
-	 * (Exception e){ e.printStackTrace(); }finally{ try { fos.close(); } catch
-	 * (IOException e) { e.printStackTrace(); } }
-	 * 
-	 * return resultModel; }
-	 */
+		List<PartnerItem> result=clienterRelationService.getPagedPartnerListByUserId(req);
 
+		TabModel<PartnerItem> td = new TabModel<PartnerItem>();
+		td.setContent(result);
+		td.setCount(result.size());
+		if(result.size()>0){
+			td.setNextId(result.get(result.size()-1).getId());
+			PartnerModel detail=clienterService.getPartnerInfo(req.getUserId());
+			td.setTotal(detail.getPartnerNum());
+		}
+		hrm.setData(td); 
+		return hrm;
+	}
 }

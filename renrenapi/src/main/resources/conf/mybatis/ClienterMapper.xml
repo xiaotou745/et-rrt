@@ -141,73 +141,50 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.renrentui.renrenentity.Clienter" >
     update Clienter
     <set >
-      <if test="clienterName != null" >
+      <if test="clienterName != null and clienterName!=''" >
         ClienterName = #{clienterName,jdbcType=NVARCHAR},
       </if>
-      <if test="phoneNo != null" >
+      <if test="phoneNo != null and phoneNo!=''" >
         PhoneNo = #{phoneNo,jdbcType=VARCHAR},
       </if>
-      <if test="passWord != null" >
+      <if test="passWord != null and passWord!=''" >
         Password = #{passWord,jdbcType=VARCHAR},
       </if>
-      <if test="loginName != null" >
+      <if test="loginName != null and loginName!=''" >
         LoginName = #{loginName,jdbcType=VARCHAR},
       </if>
-      <if test="headImage != null" >
+      <if test="headImage != null and headImage!=''" >
         HeadImage = #{headImage,jdbcType=VARCHAR},
       </if>
-      <if test="cityName != null" >
+      <if test="cityName != null and cityName!=''" >
         CityName = #{cityName,jdbcType=NVARCHAR},
       </if>
-      <if test="cityCode != null" >
+      <if test="cityCode != null and cityCode>0" >
         CityCode = #{cityCode,jdbcType=INTEGER},
       </if>
-      <if test="sex != null" >
+      <if test="sex != null and sex>0" >
         Sex = #{sex,jdbcType=SMALLINT},
       </if>
-      <if test="age != null" >
+      <if test="age != null and age>0" >
         Age = #{age,jdbcType=INTEGER},
       </if>
-      <if test="education != null" >
+      <if test="education != null and education!=''" >
         Education = #{education,jdbcType=NVARCHAR},
       </if>
       <if test="lastLoginTime != null" >
         LastLoginTime = #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createTime != null" >
-        CreateTime = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
+      <if test="status != null and status>=0" >
         Status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="lastOptName != null" >
+      <if test="lastOptName != null and lastOptName!=''" >
         LastOptName = #{lastOptName,jdbcType=NVARCHAR},
       </if>
-      <if test="lastOptTime != null" >
-        LastOptTime = getdate(),
-      </if>
+        LastOptTime = getdate()
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.renrentui.renrenentity.Clienter" >
-    update Clienter
-    set ClienterName = #{clientername,jdbcType=NVARCHAR},
-      PhoneNo = #{phoneno,jdbcType=VARCHAR},
-      Password = #{password,jdbcType=VARCHAR},
-      LoginName = #{loginname,jdbcType=VARCHAR},
-      HeadImage = #{headimage,jdbcType=VARCHAR},
-      CityName = #{cityname,jdbcType=NVARCHAR},
-      CityCode = #{citycode,jdbcType=INTEGER},
-      Sex = #{sex,jdbcType=SMALLINT},
-      Age = #{age,jdbcType=INTEGER},
-      Education = #{education,jdbcType=NVARCHAR},
-      LastLoginTime = #{lastlogintime,jdbcType=TIMESTAMP},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      Status = #{status,jdbcType=INTEGER},
-      LastOptName = #{lastoptname,jdbcType=NVARCHAR},
-      LastOptTime = #{lastopttime,jdbcType=TIMESTAMP}
-    where Id = #{id,jdbcType=BIGINT}
-  </update>
+
   <!-- 验证手机号是否存在 2015年9月28日11:56:13 茹化肖 -->
   <select id="isExistPhone" resultType="int" parameterType="java.util.HashMap" >
     SELECT COUNT(1) FROM  dbo.Clienter AS C (NOLOCK)

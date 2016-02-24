@@ -6,6 +6,10 @@
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
+String taskTitle = (String)request.getAttribute("taskTitle");
+String clienterName = (String)request.getAttribute("clienterName");
+String clienterPhoneNo = (String)request.getAttribute("clienterPhoneNo");
+int auditStatus = Integer.parseInt(request.getAttribute("auditStatus").toString());
 %>
 <link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
 <script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -34,7 +38,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">地推员手机号:</label>
 							<div class="col-sm-8">						
-								<input type="text" class="form-control" name="clienterPhone"  id="clienterPhone" />
+								<input value="<%=clienterPhoneNo%>" type="text" class="form-control" name="clienterPhone"  id="clienterPhone" />
 							</div>
 						</div>
 					</div>
@@ -42,7 +46,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">地推员名称:</label>
 							<div class="col-sm-8">						
-								<input type="text" class="form-control" name="clienterName"  id="clienterName" />
+								<input value="<%=clienterName%>" type="text" class="form-control" name="clienterName"  id="clienterName" />
 							</div>
 						</div>
 					</div>
@@ -71,10 +75,10 @@ width: 100%;
 							<label class="col-sm-4 control-label">审核状态</label>
 							<div class="col-sm-8">
 								<select id="auditStatus" class="form-control m-b">
-								<option value=-1>全部</option>
-								<option value=1>待审核</option>
-								<option value=2>审核通过</option>
-								<option value=3>审核拒绝</option>
+								<option value="-1">全部</option>
+								<option value="1" <%=auditStatus==1?"selected='selected'":"" %>>待审核</option>
+								<option value="2" <%=auditStatus==2?"selected='selected'":"" %>>审核通过</option>
+								<option value="3" <%=auditStatus==3?"selected='selected'":"" %>>审核拒绝</option>
 								</select>
 							</div>
 						</div>
@@ -83,7 +87,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">任务名称:</label>
 							<div class="col-sm-8">								
-								<input type="text" class="form-control" name="taskName"  id="taskName" />
+								<input value="<%=taskTitle%>" type="text" class="form-control" name="taskName"  id="taskName" />
 							</div>
 						</div>
 					</div>
@@ -167,12 +171,12 @@ width: 100%;
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
-				<inupt type="hidden" id="hidauditStatus" value="">
-				<inupt type="hidden" id="hidorderId" value="">
-				<inupt type="hidden" id="hiduserId" value="">
-				<inupt type="hidden" id="hidamount" value="">
-				<inupt type="hidden" id="hidorderNo" value="">
-				<inupt type="hidden" id="hidtaskTitle" value="">
+				<input type="hidden" id="hidauditStatus" value="">
+				<input type="hidden" id="hidorderId" value="">
+				<input type="hidden" id="hiduserId" value="">
+				<input type="hidden" id="hidamount" value="">
+				<input type="hidden" id="hidorderNo" value="">
+				<input type="hidden" id="hidtaskTitle" value="">
 				<textarea id="reasontxt" cols="30" rows="5" maxlength="150">
 				</textarea>
 				</div>

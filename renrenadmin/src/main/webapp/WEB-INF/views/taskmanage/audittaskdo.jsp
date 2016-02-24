@@ -40,12 +40,27 @@
 			if (data == null) {
 				data = new ArrayList<RenRenTaskModel>();
 			}
+			String baseOrderPath="";
 			for (int i = 0; i < data.size(); i++) {
+				baseOrderPath=basePath+"/taskmanage/partnerlist?taskTitle="+
+						java.net.URLEncoder.encode(data.get(i).getTaskTitle(), "utf-8")+
+						"&taskType="+java.net.URLEncoder.encode(TaskType.getEnum(data.get(i).getTaskType()).desc(), "utf-8")+
+						"&taskId="+data.get(i).getId()+
+						"&taskStatus="+java.net.URLEncoder.encode(TaskStatus.getEnum(data.get(i).getStatus()).desc(), "utf-8");
 		%>
 		<tr>
 			<td><%=data.get(i).getId()%></td>
 			<td><a target="_blank" class="blue2" href="<%=basePath%>/taskmanage/detail?taskId=<%=data.get(i).getId()%>"><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></a></td>
-			<td><%=data.get(i).getPartnerNum()%> </td>
+			<td>
+			<%
+				if(data.get(i).getCompleteNum()>0){%>
+					<a href="<%=baseOrderPath%>" target="_blank"><%=data.get(i).getPartnerNum()%></a>
+				<%}else{%>
+					<%=data.get(i).getCompleteNum()%>
+				<%}
+			%>
+			
+			</td>
 			<td><%=data.get(i).getCompleteNum()%> </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getCreateName())%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>

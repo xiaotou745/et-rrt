@@ -149,4 +149,24 @@ GROUP BY #T1.ClienterId
 DROP TABLE #CR
 DROP TABLE #T1
 </select>
+  <!-- 分页查询我的合伙人列表20160224,zhaohl-->
+  <select id="getPagedPartnerListByUserId" resultType="com.renrentui.renrenentity.domain.PartnerItem" 
+  parameterType="com.renrentui.renrenentity.req.PagedPartnerListReq" >
+	select 
+	<if test="itemsCount != 0" >
+		top  ${itemsCount} 
+	</if>
+   		b.id ,
+        b.createtime ,
+        b.ClienterName ,
+        b.HeadImage ,
+        b.PhoneNo
+ FROM   dbo.ClienterRelation a WITH ( NOLOCK )
+        LEFT JOIN clienter b WITH ( NOLOCK ) ON a.ClienterId = b.id
+ WHERE  a.OtherClienterId = #{userId,jdbcType=BIGINT}
+ <if test="nextId != 0" >
+	and   ${nextId}>b.id
+</if>
+order by b.id desc;
+</select>
 </mapper>

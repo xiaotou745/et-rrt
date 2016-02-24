@@ -68,6 +68,8 @@ public class TaskService implements ITaskService{
 			return new HttpResultModel<Object>().setCode(GetTaskCode.TaskIdErr.value()).setMsg(GetTaskCode.TaskIdErr.desc());
 		if(req.getUserId()<=0)//用户ID
 			return new HttpResultModel<Object>().setCode(GetTaskCode.UserIdErr.value()).setMsg(GetTaskCode.UserIdErr.desc());
+		if(req.getCityCode()<=0)//城市编码
+			return new HttpResultModel<Object>().setCode(GetTaskCode.CityCodeErr.value()).setMsg(GetTaskCode.CityCodeErr.desc());
 		OrderRetrunModel code=rrTaskServcie.getTask(req);//领取任务
 		return new HttpResultModel<Object>().setCode(code.getCode().value()).setMsg(code.getCode().desc()).setData(code.getOrderId());
 	}
