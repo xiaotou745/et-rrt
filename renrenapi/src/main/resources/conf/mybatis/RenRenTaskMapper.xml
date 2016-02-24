@@ -421,13 +421,15 @@ VALUES  ( ${taskId} ,
 		          ClienterId ,
 		          BusinessId ,
 		          Amount ,
-		          TaskType
+		          TaskType,
+		          cityCode
 		        )
 		VALUES  ( ${taskId} , 
 		          ${clienterId} , 
 		          ${businessId} , 
 		          ${amount} , 
-		          ${taskType} 
+		          ${taskType},
+		          ${cityCode} 
 		        ); 
 	SELECT @@IDENTITY
 	END
@@ -601,4 +603,81 @@ DROP TABLE #TemplateGroup
 DROP TABLE #TemplateDetail
   
   </select>
+      <!-- 任务参与人列表  20160224 zhaohl-->
+  <select id="getPagedTaskPartnerList" resultType="com.renrentui.renrenentity.domain.TaskPartnerItem" 
+parameterType="com.renrentui.renrenentity.req.PagedPartnerReq" 
+statementType="CALLABLE">
+		{call Sp_CustomPage2015_V1(
+		'tb.CompleteNum desc',
+		'*',
+		'<include refid="getPagedTaskPartnerListTable" />',
+		'1=1',
+		#{pageSize,mode=IN,jdbcType=INTEGER},
+		#{currentPage,mode=IN,jdbcType=INTEGER}
+		,1,
+		#{totalRecord,mode=OUT,jdbcType=INTEGER},
+		#{totalPage,mode=OUT,jdbcType=INTEGER}
+		)}
+  </select>  
+  <sql id="getPagedTaskPartnerListTable">
+	(SELECT a.ClienterId ,
+	isnull(c.PhoneNo,'''') as PhoneNo,
+	isnull(c.ClienterName,'''') as ClienterName ,
+	a.CityCode ,
+	isnull(ct.Name,'''') as cityName,
+	a.CreateDate AS receiveDate ,
+	a.CompleteNum ,
+	b.id AS taskId ,
+	b.TaskTitle ,
+	b.Status AS taskStatus ,
+	b.taskType,
+	SUM(CASE d.Status
+	WHEN 1 THEN 1
+	ELSE 0
+	END) AS waitAuditNum ,
+	SUM(CASE d.Status
+	WHEN 2 THEN 1
+	ELSE 0
+	END) AS auditPassNum ,
+	SUM(CASE d.Status
+	WHEN 3 THEN 1
+	ELSE 0
+	END) AS auditRefuseNum
+	FROM dbo.ClienterTask a WITH ( NOLOCK )
+	JOIN dbo.RenRenTask b WITH ( NOLOCK ) ON a.TaskId = b.id
+	left join PublicProvinceCity ct with(nolock) on a.CityCode=ct.code and ct.Jibie=3 AND ct.IsPublic=1
+	LEFT JOIN dbo.Clienter c WITH ( NOLOCK ) ON a.ClienterId = c.id
+	LEFT JOIN TaskDatum d WITH ( NOLOCK ) ON d.TaskId = b.id
+	AND d.ClienterId = a.ClienterId
+	WHERE 1=1 
+	<if test="taskTitle !=null and taskTitle!=''">
+	 and b.TaskTitle like ''%${taskTitle}%''
+	</if>
+	<if test="clienterName !=null and clienterName!=''">
+		 and  c.ClienterName like ''%${clienterName}%''
+	</if>
+	<if test="clienterPhoneNo !=null and clienterPhoneNo!=''">
+		  and c.PhoneNo=''${clienterPhoneNo}''
+	</if>
+	<if test="cityName !=null and cityName!=''">
+		  and ct.Name like ''%${cityName}%'' 
+	</if>
+	<if test="receiveTimeBegin !=null and receiveTimeBegin!=''">
+		 and a.CreateDate>=''${receiveTimeBegin} 00:00:00''  
+	</if>
+	<if test="receiveTimeEnd !=null and receiveTimeEnd!=''">
+		and  ''${receiveTimeEnd} 23:59:59''>=a.CreateDate
+	</if>
+GROUP BY a.ClienterId ,
+        c.PhoneNo ,
+        c.ClienterName ,
+        a.CityCode ,
+        ct.Name,
+        a.CreateDate ,
+        a.CompleteNum ,
+        b.id ,
+        b.TaskTitle ,
+        b.Status,
+        b.taskType) as tb
+</sql>
 </mapper>

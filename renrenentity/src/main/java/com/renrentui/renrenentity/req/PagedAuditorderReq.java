@@ -13,6 +13,10 @@ public class PagedAuditorderReq extends PagedRequestBase{
 	private String taskName;
 	private String beginDate;
 	private String endDate;
+	private String orderNo;
+	private String companyName;
+	private String clienterName;
+	private int auditStatus;
 	public String getClienterPhone() {
 		return clienterPhone;
 	}
@@ -43,17 +47,12 @@ public class PagedAuditorderReq extends PagedRequestBase{
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-	private String clienterName;
 	public String getClienterName() {
 		return clienterName;
 	}
 	public void setClienterName(String clienterName) {
 		this.clienterName = clienterName;
 	}
-	private String orderNo;
-	private String companyName;
-	
-	private int auditStatus;
 
 	public int getAuditStatus() {
 		return auditStatus;

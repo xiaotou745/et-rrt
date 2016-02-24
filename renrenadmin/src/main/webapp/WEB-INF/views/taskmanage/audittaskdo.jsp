@@ -45,7 +45,16 @@
 		<tr>
 			<td><%=data.get(i).getId()%></td>
 			<td><a target="_blank" class="blue2" href="<%=basePath%>/taskmanage/detail?taskId=<%=data.get(i).getId()%>"><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></a></td>
-			<td><%=data.get(i).getPartnerNum()%> </td>
+			<td>
+			<%
+				if(data.get(i).getCompleteNum()>0){%>
+					<a href="<%=basePath%>/taskmanage/partnerlist?taskTitle=<%=java.net.URLEncoder.encode(ParseHelper.ShowString(data.get(i).getTaskTitle()), "utf-8")%>" target="_blank"><%=data.get(i).getPartnerNum()%></a>
+				<%}else{%>
+					<%=data.get(i).getCompleteNum()%>
+				<%}
+			%>
+			
+			</td>
 			<td><%=data.get(i).getCompleteNum()%> </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getCreateName())%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>

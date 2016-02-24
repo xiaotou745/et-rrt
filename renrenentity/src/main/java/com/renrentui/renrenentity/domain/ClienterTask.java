@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ClienterTask {
 	private Long id;
+	private long cityCode;
 	public Long getId() {
 		return id;
 	}
@@ -97,6 +98,12 @@ public class ClienterTask {
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+	public long getCityCode() {
+		return cityCode;
+	}
+	public void setCityCode(long cityCode) {
+		this.cityCode = cityCode;
 	}
 
 }

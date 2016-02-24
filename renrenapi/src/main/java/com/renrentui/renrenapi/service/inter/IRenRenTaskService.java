@@ -1,38 +1,24 @@
 package com.renrentui.renrenapi.service.inter;
 
 
-import com.renrentui.renrencore.enums.CancelTaskCode;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.renrentui.renrencore.enums.SubmitTaskCode;
+import com.renrentui.renrenentity.Attachment;
+import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.MyReceiveTask;
 import com.renrentui.renrenentity.domain.OrderAudit;
+import com.renrentui.renrenentity.domain.OrderRetrunModel;
 import com.renrentui.renrenentity.domain.ReceiveNum;
-import com.renrentui.renrenentity.domain.RenRenTaskDetail;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.domain.TaskPartnerItem;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
-import com.renrentui.renrenentity.domain.TemplateInfo;
-import com.renrentui.renrencore.enums.SubmitTaskCode;
-import com.renrentui.renrenentity.domain.OrderRetrunModel;
-import com.renrentui.renrenentity.Attachment;
-import com.renrentui.renrenentity.RenRenTask;
-
-
-
-
-
-
-
-
-
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.PagedPartnerReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
@@ -117,5 +103,6 @@ public interface IRenRenTaskService {
 		 * @return
 		 */
 		List<OrderAudit> taskDaumExport(Long taskId);
+	    PagedResponse<TaskPartnerItem> getPagedTaskPartnerList(PagedPartnerReq req);
 	
 }
