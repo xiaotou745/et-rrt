@@ -43,7 +43,7 @@
 			AND cwf.CreateTime>=''${startDate}''
 		</if>
 		<if test="endDate != null and endDate != ''">
-			AND ''${endDate}''>=cwf.CreateTime
+			AND DATEADD(d, 1, ''${endDate}'')>cwf.CreateTime
 		</if>
 	</sql>
 	
@@ -291,7 +291,8 @@ where   BatchNo = #{batchNo,jdbcType=VARCHAR}
         	BatchNo=#{newBatchNo,jdbcType=VARCHAR}
 		WHERE BatchNo = #{batchNo,jdbcType=VARCHAR}
   </update>
-  <select id="exportWithdrawExcel" resultType="com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel" parameterType="com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq">
+  <select id="exportWithdrawExcel" resultType="com.renrentui.renrenentity.domain.ClienterWithdrawFormExcel"
+   parameterType="com.renrentui.renrenentity.req.PagedClienterWithdrawFormReq">
 		select  cwf.AccountInfo ,
         cwf.TrueName ,
         c.ClienterName ,
@@ -313,7 +314,13 @@ where   BatchNo = #{batchNo,jdbcType=VARCHAR}
         end statusString
 from    dbo.ClienterWithdrawForm cwf ( nolock )
         join dbo.Clienter c ( nolock ) on cwf.ClienterId = c.Id where 
-        1=1	and cwf.CreateTime>='${startDate}' AND '${endDate}'>=cwf.CreateTime
+        1=1	 
+        <if test="startDate != null and startDate!=''">
+			and cwf.CreateTime>='${startDate}'
+		</if>		
+		<if test="endDate != null and endDate!=''">
+			AND DATEADD(d, 1, '${endDate}')>cwf.CreateTime
+		</if>
 		<if test="withdrawNo != null and withdrawNo!=''">
 			and cwf.withdrawNo=''${withdrawNo}''
 		</if>		

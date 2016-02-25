@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceRecordDao;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
-import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IStrategyDao;
@@ -37,8 +36,6 @@ import com.renrentui.renrenentity.req.PagedAuditorderReq;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 @Service
 public class OrderService implements IOrderService{
-	@Autowired
-	private IOrderDao orderDao;	
 	@Autowired
 	private IOrderLogDao orderLogDao;
 	@Autowired

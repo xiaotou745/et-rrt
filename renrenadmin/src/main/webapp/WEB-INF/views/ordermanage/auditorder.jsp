@@ -11,8 +11,6 @@ String clienterName = (String)request.getAttribute("clienterName");
 String clienterPhoneNo = (String)request.getAttribute("clienterPhoneNo");
 int auditStatus = Integer.parseInt(request.getAttribute("auditStatus").toString());
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script src="<%=basePath%>/js/util.js"></script>
 <style type="text/css">
 #map_contain {
@@ -189,20 +187,8 @@ width: 100%;
 	</div>
 </div>
 <div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;">
-dasda
 </div>
 <script>
-$(function(){
-	  //初始化时间控件
-	  $(' .input-group.date').datepicker({
-	        todayBtn: "linked",
-	        keyboardNavigation: false,
-	        forceParse: false,
-	        calendarWeeks: true,
-	        autoclose: true
-	    });
-	
-});
 var jss={
 		search:function(currentPage){	
 			 var clienterName = $("#clienterName").val();				   
@@ -222,7 +208,7 @@ var jss={
 					 "clienterPhone":clienterPhone,
 					 "taskName":taskName,
 					 "beginDate":beginDate,
-					 "endDate":endDate==''?'':endDate+' 23:59:59',
+					 "endDate":endDate,
 					 m:Math.round()
 					 };
 		        var url = "<%=basePath%>/ordermanage/auditorderdo";
@@ -256,7 +242,6 @@ $('#exportorder').click(function(){
 		 alert('导出数据开始时间或结束时间不能为空!');
 		 return;
 	}
-	  endDate=endDate==''?'':endDate+' 23:59:59';
 	   var url = "<%=basePath%>/ordermanage/auditorderexport?currentPage=1&clienterName="
 		+clienterName
 		+"&orderNo"+orderNo

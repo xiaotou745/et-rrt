@@ -16,10 +16,6 @@
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 List<Template> templatelist = (List<Template>) request.getAttribute("templatelist");
 %>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script
-	src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
@@ -135,15 +131,6 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 	</div>
 </div>
 <script>
- $(function(){
-	  $(' .input-group.date').datepicker({
-          todayBtn: "linked",
-          keyboardNavigation: false,
-          forceParse: false,
-          calendarWeeks: true,
-          autoclose: true
-      });
- });
 	var jss = {
 		search : function(currentPage) {
 		$("#_hiddenCurrentPage").val(currentPage);

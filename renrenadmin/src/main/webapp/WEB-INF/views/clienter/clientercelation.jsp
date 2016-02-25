@@ -7,8 +7,6 @@
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 
 	<div class="row">
@@ -67,17 +65,6 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 
 <!-- 弹窗 -->
 <script>
-$(function(){
-	  //初始化时间控件
-	  $(' .input-group.date').datepicker({
-	        todayBtn: "linked",
-	        keyboardNavigation: false,
-	        forceParse: false,
-	        calendarWeeks: true,
-	        autoclose: true
-	    });
-	
-});
 	$('#btnSearch').click(function(){
 		if($('#PhoneNo').val()=='')
 		{
@@ -87,7 +74,7 @@ $(function(){
 		var url='<%=basePath%>/clienter/rcelationdo';
 		var par={"phoneNo":$('#PhoneNo').val(),
 				"beginDate":$('#beginDate').val(),
-				"endDate":$('#endDate').val()==''?'':$('#endDate').val()+' 23:59:59',
+				"endDate":$('#endDate').val(),
 				}
 		$.post(url,par,function(d){
 			$('#content').html(d);

@@ -15,8 +15,6 @@
 <%	
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <style type="text/css">
 #map_contain {
     height: 90%;
@@ -57,24 +55,26 @@ width: 100%;
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">打款日期:</label>
-							<div class="col-sm-8">		
-								<div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input style="width:120px" placeholder="开始日期" type="text" class="form-control" value="" name="lastOptTimeStart" 
-                                        id="lastOptTimeStart" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'lastOptTimeStart\')||\'2020-10-01\'}'})"/>
-                                    </div>                                   					
+							<div class="col-sm-8">	
+							<div class="input-group date">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span> 
+										<input type="text"	class="form-control" name="lastOptTimeStart" id="lastOptTimeStart" placeholder="开始日期" value=""/>
+									</div>                                 					
 							</div>
 						</div>
 					</div>					
 					<div class="col-lg-3">
 						<div class="form-group">
 							<label class="col-sm-4 control-label">到</label>
-							<div class="col-sm-8">		
-								<div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <input style="width:120px" placeholder="结束日期" type="text" class="form-control" value="" 
-                                        name="lastOptTimeEnd" id="lastOptTimeEnd" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'lastOptTimeEnd\')||\'2020-10-01\'}'})"/>
-                                    </div>                                   					
+							<div class="col-sm-8">	
+							<div class="input-group date">
+										<span class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</span> 
+										<input type="text"	class="form-control" name="lastOptTimeEnd" id="lastOptTimeEnd" placeholder="结束日期" value=""/>
+									</div>     	                                 					
 							</div>
 						</div>
 					</div>					
