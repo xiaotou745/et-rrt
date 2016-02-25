@@ -58,9 +58,9 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 		<tr>
 			<td><%=data.get(i).getId()%>
 			</td>
-			<td><%=data.get(i).getPhoneNo()%>,<%=data.get(i).getClienterName()%></td>	
+			<td><%=data.get(i).getPhoneNo()%><br/><%=data.get(i).getClienterName()%></td>	
 			<td><%=data.get(i).getPusher()%></td>
-			<td><%=data.get(i).getTaskTitle()%></td>	
+			<td>ID:<%=data.get(i).getTaskId()%><br/><%=data.get(i).getTaskTitle()%></td>	
 			<td><%=data.get(i).getTaskStatus()%></td>	
 			<td><%=data.get(i).getCompleteNum()%></td>
 			<td><%=ParseHelper.digitsNum(data.get(i).getTotalAmount(), 2)%></td>	

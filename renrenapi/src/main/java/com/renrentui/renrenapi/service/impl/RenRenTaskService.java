@@ -26,7 +26,6 @@ import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
-import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
@@ -89,11 +88,13 @@ import com.renrentui.renrenentity.domain.TaskDatum;
 import com.renrentui.renrenentity.domain.TaskDatumChild;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.domain.TaskPartnerItem;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemCorModel;
 import com.renrentui.renrenentity.domain.TemplateGroup;
 import com.renrentui.renrenentity.req.BusinessBalanceReq;
 import com.renrentui.renrenentity.req.CancelTaskReq;
+import com.renrentui.renrenentity.req.PagedPartnerReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
@@ -115,8 +116,6 @@ public class RenRenTaskService implements IRenRenTaskService {
 	private ITemplateSnapshotDao templateSnapshotDao;
 	@Autowired
 	private ITemplateDetailSnapshotDao templateDetailSnapshotDao;
-	@Autowired
-	private IOrderDao orderDao;
 	@Autowired
 	private IClienterLogDao clienterLogDao;
 	@Autowired
@@ -211,6 +210,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 		cTask.setClienterId(req.getUserId());
 		cTask.setTaskId(req.getTaskId());
 		cTask.setTaskType(detail.getTaskType());
+		cTask.setCityCode(req.getCityCode());
 		Long res =renRenTaskDao.insertClienterTask(cTask);
 		if(res>-1)//成功插入
 		{
@@ -1075,5 +1075,11 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Override
 	public List<OrderAudit> taskDaumExport(Long taskId) {
 		return renRenTaskDao.taskDaumExport(taskId );
+	}
+
+	@Override
+	public PagedResponse<TaskPartnerItem> getPagedTaskPartnerList(
+			PagedPartnerReq req) {
+return renRenTaskDao.getPagedTaskPartnerList(req);
 	}
 }

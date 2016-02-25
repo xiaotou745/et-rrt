@@ -66,11 +66,16 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping("auditorder")
-	public ModelAndView list(){		
+	public ModelAndView list(String taskTitle,String clienterName,
+			String clienterPhoneNo,Integer auditStatus){		
 		ModelAndView model = new ModelAndView("adminView");
 		model.addObject("subtitle", "资料管理");
 		model.addObject("currenttitle", "资料审核");	
 		model.addObject("viewPath", "ordermanage/auditorder");
+		model.addObject("taskTitle", taskTitle==null?"":taskTitle);
+		model.addObject("clienterName", clienterName==null?"":clienterName);
+		model.addObject("clienterPhoneNo", clienterPhoneNo==null?"":clienterPhoneNo);
+		model.addObject("auditStatus", auditStatus==null?"0":auditStatus);
 		return model;
 	}	
 	

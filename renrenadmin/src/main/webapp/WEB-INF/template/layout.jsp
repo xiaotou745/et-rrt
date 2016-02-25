@@ -29,7 +29,6 @@
 <script src="<%=basePath%>/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="<%=basePath%>/My97DatePicker/WdatePicker.js"></script>
 
-
 <script src="<%=basePath%>/js/inspinia.js"></script>
 
 <!-- jQuery UI -->
@@ -37,7 +36,8 @@
 
 <!-- 第三方弹窗js -->
 <script src="<%=basePath%>/js/layer.js"></script>
-
+<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
+<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script>
     $(document).ajaxError( function(event, jqXHR, options, errorMsg){
    	 var content="内部服务器错误";
@@ -69,6 +69,14 @@
     });
     
 	$(document).ready(function() {
+		  //初始化时间控件
+		  $(' .input-group.date').datepicker({
+		        todayBtn: "linked",
+		        keyboardNavigation: false,
+		        forceParse: false,
+		        calendarWeeks: true,
+		        autoclose: true
+		    });
 		//当用户注销后，到登录页面，点击了浏览器的返回按钮时，
 		//由于浏览器的缓存，会显示一个复合页面：登录后的页面嵌套了一个登录页面
 		//因此，当这种情况时，页面定位到登录页面

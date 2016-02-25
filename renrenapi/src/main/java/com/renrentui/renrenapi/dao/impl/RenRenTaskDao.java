@@ -18,8 +18,10 @@ import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.ReceiveNum;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskModel;
+import com.renrentui.renrenentity.domain.TaskPartnerItem;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
+import com.renrentui.renrenentity.req.PagedPartnerReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.SubmitTaskReq;
 import com.renrentui.renrenentity.req.TaskDatumDetailReq;
@@ -277,5 +279,11 @@ public class RenRenTaskDao extends DaoBase implements IRenRenTaskDao {
 	@Override
 	public List<OrderAudit> taskDaumExport(Long taskId) {
 		return getReadOnlySqlSessionUtil().selectList("IRenRenTaskDao.taskDaumExport", taskId);
+	}
+
+	@Override
+	public PagedResponse<TaskPartnerItem> getPagedTaskPartnerList(
+			PagedPartnerReq req) {
+		return getMasterSqlSessionUtil().selectPageList("IRenRenTaskDao.getPagedTaskPartnerList", req);
 	}
 }

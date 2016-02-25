@@ -1,0 +1,51 @@
+use RenRenDB
+go 
+declare @ii int
+insert into dbo.AuthorityMenuClass
+        ( ParId ,
+          MenuName ,
+          BeLock ,
+          Url ,
+          IsButton ,
+          AuthCode
+        )
+values  ( 0 , -- ParId - int
+          '微信平台管理' , -- MenuName - varchar(50)
+          0 , -- BeLock - bit
+          '' , -- Url - varchar(500)
+          0 , -- IsButton - bit
+          'WeiXin_Manage'  -- AuthCode - varchar(500)
+        )
+select @ii= @@identity
+
+insert into dbo.AuthorityMenuClass
+        ( ParId ,
+          MenuName ,
+          BeLock ,
+          Url ,
+          IsButton ,
+          AuthCode
+        )
+values  ( @ii , -- ParId - int
+          '微信公众号用户列表' , -- MenuName - varchar(50)
+          0 , -- BeLock - bit
+          '/weixin/attentionuserlist' , -- Url - varchar(500)
+          0 , -- IsButton - bit
+          'WeiXin_AttentionUser'  -- AuthCode - varchar(500)
+        ) 
+insert into dbo.AuthorityMenuClass
+        ( ParId ,
+          MenuName ,
+          BeLock ,
+          Url ,
+          IsButton ,
+          AuthCode
+        )
+values  ( @ii , -- ParId - int
+          '活动管理' , -- MenuName - varchar(50)
+          0 , -- BeLock - bit
+          '/weixin/activitymanage' , -- Url - varchar(500)
+          0 , -- IsButton - bit
+          'WeiXin_ActivityManage'  -- AuthCode - varchar(500)
+        )
+go

@@ -9,7 +9,9 @@ import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.service.inter.IClienterRelationService;
 import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.ClienterRelationModel;
+import com.renrentui.renrenentity.domain.PartnerItem;
 import com.renrentui.renrenentity.req.CRelationReq;
+import com.renrentui.renrenentity.req.PagedPartnerListReq;
 @Service
 public class ClienterRelationService implements IClienterRelationService{
 	@Autowired
@@ -26,6 +28,10 @@ public class ClienterRelationService implements IClienterRelationService{
 	public List<ClienterRelationLevelModel> getClienterRelationModelsByJibie(
 			CRelationReq req) {
 		return clienterRelationDao.getClienterRelationModelsByJibie(req);
+	}
+	@Override
+	public List<PartnerItem> getPagedPartnerListByUserId(PagedPartnerListReq req) {
+		return clienterRelationDao.getPagedPartnerListByUserId(req);
 	}
 
 }

@@ -38,10 +38,14 @@ import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
+import com.renrentui.renrenentity.domain.TaskPartnerItem;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
+import com.renrentui.renrenentity.req.CRelationReq;
+import com.renrentui.renrenentity.req.PagedPartnerReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
 import com.renrentui.renrenentity.req.SaveTaskReq;
@@ -354,5 +358,42 @@ public class TaskManageController {
 		columnTitiles.put("资料数据", "dataValue");
 		ExcelUtils.export2Excel(fileName, "资料审核列表", columnTitiles,records, request, response);
 		return;
+	}
+	@RequestMapping("partnerlist")
+	public ModelAndView partnerList(Long taskId,String taskTitle,String taskType,String taskStatus){
+		if (taskId==null||taskId.longValue()<=0) {
+			return null;
+		}
+		ModelAndView model = new ModelAndView("adminView");
+		model.addObject("subtitle", "任务管理");
+		model.addObject("currenttitle", "任务参与人列表");
+		model.addObject("viewPath", "taskmanage/partnerlist");
+		model.addObject("taskId", taskId);
+		model.addObject("taskTitle", taskTitle==null?"":taskTitle);
+		model.addObject("taskType", taskType==null?"":taskType);
+		model.addObject("taskStatus", taskStatus==null?"":taskStatus);
+		return model;
+	}
+	@RequestMapping("partnerlistdo")
+	public ModelAndView partnerListdo(PagedPartnerReq req){
+		if (req==null||req.getTaskId()<0) {
+			return null;
+		}
+		if (req.getTaskTitle()!=null) {
+			req.setTaskTitle(req.getTaskTitle().trim());
+		}
+		if (req.getCityName()!=null) {
+			req.setCityName(req.getCityName().trim());
+		}
+		if (req.getClienterName()!=null) {
+			req.setClienterName(req.getClienterName().trim());
+		}
+		if (req.getClienterPhoneNo()!=null) {
+			req.setClienterPhoneNo(req.getClienterPhoneNo().trim());
+		}
+		ModelAndView model = new ModelAndView("taskmanage/partnerlistdo");
+		PagedResponse<TaskPartnerItem> list=renRenTaskService.getPagedTaskPartnerList(req);
+		model.addObject("listData", list);
+		return model;
 	}
 }

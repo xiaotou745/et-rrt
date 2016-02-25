@@ -72,10 +72,10 @@ FROM    #T2
         LEFT JOIN dbo.TaskDatum AS td ( NOLOCK ) ON td.ClienterId = #T2.ClienterId
                                                     AND TD.Status = 2
                                                     <if test="beginDate != null and beginDate!= ''" >
- 													AND td.CreateDate>'${beginDate}'
+ 													AND td.CreateDate>='${beginDate}'
      												</if>
                                                     <if test="endDate != null and endDate!= ''" >
- 													AND '${endDate}'>td.CreateDate
+ 													AND DATEADD(d, 1, '${endDate}')>td.CreateDate
      												</if>
         LEFT JOIN dbo.ClienterBalanceRecord AS cbr (nolock)ON td.id = cbr.OrderId AND  RecordType = 1  AND cbr.ClienterId = #T2.ClienterId
 		LEFT JOIN dbo.ClienterBalanceRecord AS cbr2 (nolock)ON td.id = cbr2.OrderId
@@ -136,10 +136,10 @@ FROM    #T1
         LEFT JOIN dbo.TaskDatum AS td ( NOLOCK ) ON td.ClienterId = #T1.ClienterId
                                                     AND TD.Status = 2
                                                      <if test="beginDate != null and beginDate!= ''" >
- 													AND td.CreateDate>'${beginDate}'
+ 													AND td.CreateDate>='${beginDate}'
      												</if>
                                                     <if test="endDate != null and endDate!= ''" >
- 													AND '${endDate}'>td.CreateDate
+ 													AND DATEADD(d, 1, '${endDate}')>td.CreateDate
      												</if>
         LEFT JOIN dbo.ClienterBalanceRecord AS cbr(NOLOCK) ON td.id = cbr.OrderId AND  RecordType = 1  AND cbr.ClienterId = #T1.ClienterId
         LEFT JOIN dbo.ClienterBalanceRecord AS cbr2 (nolock)ON td.id = cbr2.OrderId
@@ -148,5 +148,25 @@ FROM    #T1
 GROUP BY #T1.ClienterId
 DROP TABLE #CR
 DROP TABLE #T1
+</select>
+  <!-- 分页查询我的合伙人列表20160224,zhaohl-->
+  <select id="getPagedPartnerListByUserId" resultType="com.renrentui.renrenentity.domain.PartnerItem" 
+  parameterType="com.renrentui.renrenentity.req.PagedPartnerListReq" >
+	select 
+	<if test="itemsCount != 0" >
+		top  ${itemsCount} 
+	</if>
+   		b.id ,
+        b.createtime ,
+        b.ClienterName ,
+        b.HeadImage ,
+        b.PhoneNo
+ FROM   dbo.ClienterRelation a WITH ( NOLOCK )
+        LEFT JOIN clienter b WITH ( NOLOCK ) ON a.ClienterId = b.id
+ WHERE  a.OtherClienterId = #{userId,jdbcType=BIGINT}
+ <if test="nextId != 0" >
+	and   ${nextId}>b.id
+</if>
+order by b.id desc;
 </select>
 </mapper>

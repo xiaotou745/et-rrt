@@ -50,7 +50,7 @@
 			and createTime >=''${createTimeBegin}''
 		</if>
 		<if test="createTimeEnd != null and createTimeEnd!=''">
-			and ''${createTimeEnd} 23:59:59''>createTime
+			and DATEADD(d, 1, ''${createTimeEnd}'')>createTime
 		</if>
 		<if test="businessId != null and businessId>0">
 			and businessId = ${businessId}

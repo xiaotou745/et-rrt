@@ -6,9 +6,12 @@
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
+String taskTitle = (String)request.getAttribute("taskTitle");
+String clienterName = (String)request.getAttribute("clienterName");
+String clienterPhoneNo = (String)request.getAttribute("clienterPhoneNo");
+int auditStatus = Integer.parseInt(request.getAttribute("auditStatus").toString());
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 <script src="<%=basePath%>/js/util.js"></script>
 <style type="text/css">
 #map_contain {
@@ -34,7 +37,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">地推员手机号:</label>
 							<div class="col-sm-8">						
-								<input type="text" class="form-control" name="clienterPhone"  id="clienterPhone" />
+								<input value="<%=clienterPhoneNo%>" type="text" class="form-control" name="clienterPhone"  id="clienterPhone" />
 							</div>
 						</div>
 					</div>
@@ -42,7 +45,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">地推员名称:</label>
 							<div class="col-sm-8">						
-								<input type="text" class="form-control" name="clienterName"  id="clienterName" />
+								<input value="<%=clienterName%>" type="text" class="form-control" name="clienterName"  id="clienterName" />
 							</div>
 						</div>
 					</div>
@@ -71,10 +74,10 @@ width: 100%;
 							<label class="col-sm-4 control-label">审核状态</label>
 							<div class="col-sm-8">
 								<select id="auditStatus" class="form-control m-b">
-								<option value=-1>全部</option>
-								<option value=1>待审核</option>
-								<option value=2>审核通过</option>
-								<option value=3>审核拒绝</option>
+								<option value="-1">全部</option>
+								<option value="1" <%=auditStatus==1?"selected='selected'":"" %>>待审核</option>
+								<option value="2" <%=auditStatus==2?"selected='selected'":"" %>>审核通过</option>
+								<option value="3" <%=auditStatus==3?"selected='selected'":"" %>>审核拒绝</option>
 								</select>
 							</div>
 						</div>
@@ -83,7 +86,7 @@ width: 100%;
 						<div class="form-group">
 							<label class="col-sm-4 control-label">任务名称:</label>
 							<div class="col-sm-8">								
-								<input type="text" class="form-control" name="taskName"  id="taskName" />
+								<input value="<%=taskTitle%>" type="text" class="form-control" name="taskName"  id="taskName" />
 							</div>
 						</div>
 					</div>
@@ -167,12 +170,12 @@ width: 100%;
 			</div>
 			<small class="font-bold">
 				<div class="modal-body">
-				<inupt type="hidden" id="hidauditStatus" value="">
-				<inupt type="hidden" id="hidorderId" value="">
-				<inupt type="hidden" id="hiduserId" value="">
-				<inupt type="hidden" id="hidamount" value="">
-				<inupt type="hidden" id="hidorderNo" value="">
-				<inupt type="hidden" id="hidtaskTitle" value="">
+				<input type="hidden" id="hidauditStatus" value="">
+				<input type="hidden" id="hidorderId" value="">
+				<input type="hidden" id="hiduserId" value="">
+				<input type="hidden" id="hidamount" value="">
+				<input type="hidden" id="hidorderNo" value="">
+				<input type="hidden" id="hidtaskTitle" value="">
 				<textarea id="reasontxt" cols="30" rows="5" maxlength="150">
 				</textarea>
 				</div>
@@ -184,21 +187,10 @@ width: 100%;
 		</div>
 	</div>
 </div>
-<div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;">
+<div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;z-index:99999">
 dasda
 </div>
 <script>
-$(function(){
-	  //初始化时间控件
-	  $(' .input-group.date').datepicker({
-	        todayBtn: "linked",
-	        keyboardNavigation: false,
-	        forceParse: false,
-	        calendarWeeks: true,
-	        autoclose: true
-	    });
-	
-});
 var jss={
 		search:function(currentPage){	
 			 var clienterName = $("#clienterName").val();				   
@@ -218,7 +210,7 @@ var jss={
 					 "clienterPhone":clienterPhone,
 					 "taskName":taskName,
 					 "beginDate":beginDate,
-					 "endDate":endDate==''?'':endDate+' 23:59:59',
+					 "endDate":endDate,
 					 m:Math.round()
 					 };
 		        var url = "<%=basePath%>/ordermanage/auditorderdo";
@@ -252,7 +244,6 @@ $('#exportorder').click(function(){
 		 alert('导出数据开始时间或结束时间不能为空!');
 		 return;
 	}
-	  endDate=endDate==''?'':endDate+' 23:59:59';
 	   var url = "<%=basePath%>/ordermanage/auditorderexport?currentPage=1&clienterName="
 		+clienterName
 		+"&orderNo"+orderNo
@@ -315,6 +306,8 @@ $('#btnRefu').click(function(){
 });
 //鼠标悬停显示
 function Myshow(obj,id) {
+	var theEvent = window.event || arguments.callee.caller.arguments[0];
+	console.log(theEvent.pageX+","+theEvent.pageY);
 	
 	var objDiv = $("#TipBox");
 	var url="<%=basePath%>/ordermanage/getsubtip";
@@ -322,14 +315,17 @@ function Myshow(obj,id) {
 	$.post(url,par,function(d){
 		$("#TipBox").html(d);
 	});
-		$(objDiv).css("display","block");
-		$(objDiv).css("left", event.clientX-200);
-		$(objDiv).css("top", event.clientY-100);
+	//$(objDiv).css("display","block");
+	$(objDiv).show();
+	$(objDiv).css("left", theEvent.pageX-200);
+	$(objDiv).css("top", theEvent.pageY-100);
+		
 	}
 //悬停隐藏
 function Myhide(obj) {
 var objDiv = $("#TipBox");
-$(objDiv).css("display", "none");
+$(objDiv).hide();
+//$(objDiv).css("display", "none");
 } 
    //订单审核
    function Audit(orderId,auditStatus,userId,amount,orderNo,taskTitle){

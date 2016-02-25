@@ -24,7 +24,9 @@ public enum CBalanceRecordType {
 	 */
 	Bonus(5, "合伙人分红"),
 	
-	WithDrawHandCharge(6,"提现申请手续费");
+	WithDrawHandCharge(6,"提现申请手续费"),
+	
+	ActivityRewards(7,"活动奖励");
 	
 	private int value = 0;
 	private String desc;
