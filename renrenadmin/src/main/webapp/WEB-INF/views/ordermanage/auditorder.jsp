@@ -11,6 +11,7 @@ String clienterName = (String)request.getAttribute("clienterName");
 String clienterPhoneNo = (String)request.getAttribute("clienterPhoneNo");
 int auditStatus = Integer.parseInt(request.getAttribute("auditStatus").toString());
 %>
+
 <script src="<%=basePath%>/js/util.js"></script>
 <style type="text/css">
 #map_contain {
@@ -186,7 +187,8 @@ width: 100%;
 		</div>
 	</div>
 </div>
-<div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;">
+<div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;z-index:99999">
+dasda
 </div>
 <script>
 var jss={
@@ -304,6 +306,8 @@ $('#btnRefu').click(function(){
 });
 //鼠标悬停显示
 function Myshow(obj,id) {
+	var theEvent = window.event || arguments.callee.caller.arguments[0];
+	console.log(theEvent.pageX+","+theEvent.pageY);
 	
 	var objDiv = $("#TipBox");
 	var url="<%=basePath%>/ordermanage/getsubtip";
@@ -311,14 +315,17 @@ function Myshow(obj,id) {
 	$.post(url,par,function(d){
 		$("#TipBox").html(d);
 	});
-		$(objDiv).css("display","block");
-		$(objDiv).css("left", event.clientX-200);
-		$(objDiv).css("top", event.clientY-100);
+	//$(objDiv).css("display","block");
+	$(objDiv).show();
+	$(objDiv).css("left", theEvent.pageX-200);
+	$(objDiv).css("top", theEvent.pageY-100);
+		
 	}
 //悬停隐藏
 function Myhide(obj) {
 var objDiv = $("#TipBox");
-$(objDiv).css("display", "none");
+$(objDiv).hide();
+//$(objDiv).css("display", "none");
 } 
    //订单审核
    function Audit(orderId,auditStatus,userId,amount,orderNo,taskTitle){
