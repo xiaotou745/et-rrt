@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IClienterWxDao">
+	<insert id="insert" parameterType="com.renrentui.renrenentity.ClienterWx">
+		insert into dbo.ClienterWx ( OpenId, FromUserName, WxId, FollowStatus,
+                              FollowTime, UnFollowTime, ClienterId )
+		values  ( #{openId,jdbcType=VARCHAR},
+          #{fromUserName,jdcbType=VARCHAR},
+          #{wxId,jdbcType=VARCHAR},
+          #{followStatus,jdbcType=INTEGER},
+          #{followTime,jdbcType=TIMESTAMP},
+          #{unFollowTime,jdcbType=TIMESTAMP}
+          #{clienterId,jdbcType=INTEGER}
+          )
+	</insert>
+	
+	<update id="unFollow" parameterType="java.lang.String">
+		update dbo.ClienterWx set FollowStatus=0 where OpenId=#{openId,jdbcType=VARCHAR}
+	</update>
+</mapper>

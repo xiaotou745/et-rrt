@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.renrentui.renrenapi.redis.RedisService;
+import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
@@ -36,6 +37,8 @@ public class WxController {
 	// token标识
 	private static final String TOKEN = "chenkai2016";
 
+	@Autowired
+	IClienterWxService clienterWxService;
 	@Autowired
 	private RedisService redisService;
 
@@ -143,15 +146,18 @@ public class WxController {
 			else if (msg instanceof WxRecvEventMsg) {
 				WxRecvEventMsg recvMsg = (WxRecvEventMsg) msg;
 				String event = recvMsg.getEvent();
-
+				String fromUserName = recvMsg.getFromUser();// 关注 人的OPENID
+				String createTime = recvMsg.getCreateDt();// 操作时间
 				if ("subscribe".equals(event)) {
 					// 订阅消息
 					sendMsg = new WxSendTextMsg(sendMsg, "谢谢您的订阅。");
 					WeiXinTools.send(sendMsg, response.getOutputStream());
+					clienterWxService.follow(fromUserName, fromUserName,
+							createTime);
 					return;
 				} else if ("unsubscribe".equals(event)) {
 					// 取消订阅
-
+					clienterWxService.unfollow(fromUserName);
 					return;
 
 				} else if ("CLICK".equals(event)) {
