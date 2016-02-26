@@ -1,0 +1,12 @@
+  USE RenRenDB
+alter table dbo.RenRenTask add TagId int NOT NULL DEFAULT(0)
+--ÃÌº”¡–◊¢ Õ
+EXEC sys.sp_addextendedproperty @name=N'MS_Description',
+  @value=N'±Í«©id' ,
+  @level0type=N'SCHEMA',
+  @level0name=N'dbo', 
+  @level1type=N'TABLE',
+  @level1name=N'RenRenTask', 
+  @level2type=N'COLUMN',
+  @level2name=N'TagId'
+GO

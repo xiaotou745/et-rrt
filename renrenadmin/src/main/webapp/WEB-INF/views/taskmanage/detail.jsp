@@ -18,6 +18,7 @@
 <%@page import="com.renrentui.renrenentity.domain.TaskSetp"%>
 <%@page import="com.renrentui.renrenentity.domain.TemplateGroup"%>
 <%@page import="com.renrentui.renrenentity.PublicProvinceCity"%>
+<%@page import="com.renrentui.renrenentity.TaskTag"%>
 
 <%
 String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
@@ -26,6 +27,7 @@ List<TaskSetp> taskSetps=(List<TaskSetp>) request.getAttribute("taskSetps");
 List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
 
 PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvinceCity) request.getAttribute("pro_city");
+List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
 %>
 <script src="<%=basePath%>/js/ajaxfileupload.js"></script>
 <script src="<%=basePath%>/js/renrentask.js"></script>
@@ -149,6 +151,22 @@ PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvi
 									<label>分享任务</label>
 									<input id="rTaskType3" name="rTaskType" type="radio" value="3" <%=taskInfo.getTaskType()==3?"checked" : ""%>> 
 									<label>下载任务</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">任务标签: </label>
+								<div class="col-sm-8">
+								<%
+								for (int i = 0; i < tagList.size(); i++) {
+								%>
+									<input id="taskTag<%=i%>" name="rTaskTagId" type="radio" value="<%=tagList.get(i).getId() %>" 
+									 <%=(taskInfo.getTagId()<=0&&i==0)?"checked":(taskInfo.getTagId()==tagList.get(i).getId().longValue()?"checked" : "")%>> 
+									<label><%=tagList.get(i).getTagName() %></label>
+									<%}%>
 								</div>
 							</div>
 						</div>
@@ -406,5 +424,5 @@ PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvi
 <script>
 $('input').attr('readonly','readonly');
 $('[name="rTaskType"]').attr('disabled','disabled');
-
+$('[name="rTaskTagId"]').attr('disabled','disabled');
 </script>
