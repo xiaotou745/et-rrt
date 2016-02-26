@@ -12,6 +12,7 @@
 <%@page import="com.renrentui.renrenentity.domain.TemplateGroup"%>
 <%@page import="com.renrentui.renrenentity.RenRenTask"%>
 <%@page import="com.renrentui.renrenentity.StrategyChild"%>
+<%@page import="com.renrentui.renrenentity.TaskTag"%>
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%
 String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
@@ -24,6 +25,7 @@ RenRenTask taskInfo =request.getAttribute("taskInfo")==null?null:(RenRenTask)req
 List<TaskSetp> taskSetps=request.getAttribute("taskSetps")==null?null:(List<TaskSetp>)request.getAttribute("taskSetps");
 List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<TemplateGroup>)request.getAttribute("groups");
 List<StrategyChild> chiList=request.getAttribute("childs")==null?null:(List<StrategyChild>)request.getAttribute("childs");
+List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
 %>
 <script>
 var imgPath="<%=basePath%>/img/11235.png";
@@ -151,6 +153,22 @@ var imgPath="<%=basePath%>/img/11235.png";
 									<label>分享任务</label>
 									<input id="rTaskType3" name="rTaskType" type="radio" value="3" <%=taskInfo==null?"":(taskInfo.getTaskType()==3?"checked" : "")%>> 
 									<label>下载任务</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">任务标签: </label>
+								<div class="col-sm-8">
+								<%
+								for (int i = 0; i < tagList.size(); i++) {
+								%>
+									<input id="taskTag<%=i%>" name="rTaskTagId" type="radio" value="<%=tagList.get(i).getId() %>" 
+									 <%=((taskInfo==null||taskInfo.getTagId()<=0)&&i==0)?"checked":(taskInfo.getTagId()==tagList.get(i).getId().longValue()?"checked" : "")%>> 
+									<label><%=tagList.get(i).getTagName() %></label>
+									<%}%>
 								</div>
 							</div>
 						</div>
@@ -900,6 +918,11 @@ function createTaskPar(){
 	task.auditCycle=$('#auditCycle').val();
 	task.hotLine=$('#hotline').val();
 	task.taskType=$('input[name="rTaskType"]:checked').val();
+	task.tagId=0;
+	if($('input[name="rTaskTagId"]:checked').length>0){
+		task.tagId=$('input[name="rTaskTagId"]:checked').val();
+	}
+	
 	task.downUrl=$('#downUrl').val();
 	task.scanTip=$('#scanTip').val();
 	task.reminder=$('#reminder').val();

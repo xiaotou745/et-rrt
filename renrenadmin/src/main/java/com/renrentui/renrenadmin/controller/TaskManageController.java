@@ -23,6 +23,7 @@ import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
 import com.renrentui.renrenapi.service.inter.ISubCommissionService;
 import com.renrentui.renrenapi.service.inter.ITaskCityRelationService;
+import com.renrentui.renrenapi.service.inter.ITaskTagService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.enums.TaskType;
@@ -36,6 +37,7 @@ import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.RenRenTask;
+import com.renrentui.renrenentity.TaskTag;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
@@ -69,6 +71,8 @@ public class TaskManageController {
 	private ISubCommissionService  subCommissionService;
 	@Autowired
 	private ITaskCityRelationService taskCityRelationService;
+	@Autowired
+	private ITaskTagService taskTagService;
 	
 	/**
 	 * 新建任务页面
@@ -111,6 +115,8 @@ public class TaskManageController {
 		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
 		model.addObject("pro_city", getCityStr(citylistlist));//构建城市字符串
 		model.addObject("childs",subCommissionService.getCruuentStrategyChild());
+		List<TaskTag> tagList=taskTagService.getAll();
+		model.addObject("tagList", tagList);
 		return model;
 	}
 
@@ -316,6 +322,8 @@ public class TaskManageController {
 		model.addObject("taskInfo", taskInfo);
 //		//4 获取投放放范围
 		model.addObject("pro_city", taskCityRelationService.getTaskCity(taskId));
+		List<TaskTag> tagList=taskTagService.getAll();
+		model.addObject("tagList", tagList);
 		return model;
 	}
 	
