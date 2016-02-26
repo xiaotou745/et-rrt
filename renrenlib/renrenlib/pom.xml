@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>renrentui</groupId>
 	<artifactId>renrenlib</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>renrenlib Maven Webapp</name>
 	<url>http://maven.apache.org</url>

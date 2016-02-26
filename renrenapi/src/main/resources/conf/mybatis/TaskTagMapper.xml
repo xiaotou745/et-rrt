@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renrentui.renrenapi.dao.inter.ITaskTagDao" >
+  <select id="getAll" resultType="com.renrentui.renrenentity.TaskTag">
+  	select id,tagName,tagColorCode,tagStatus,createTime,createName,updateTime,updateName
+  	 from TaskTag with(nolock)
+  </select>
+  <update id="update" parameterType="com.renrentui.renrenentity.TaskTag">
+IF not  EXISTS ( SELECT  1
+            FROM    TaskTag with(nolock)
+            WHERE   tagName = #{tagName,jdbcType=NVARCHAR} )
+update TaskTag set tagName = #{tagName,jdbcType=NVARCHAR},
+            tagColorCode=#{tagColorCode,jdbcType=NVARCHAR} ,
+            updateTime=getdate(),
+            updateName=#{updateName,jdbcType=NVARCHAR} 
+            where id=#{id,jdbcType=INTEGER}
+	</update>
+	  <insert id="insert" parameterType="com.renrentui.renrenentity.TaskTag"> 
+IF not  EXISTS ( SELECT  1
+            FROM    TaskTag with(nolock)
+            WHERE   tagName = #{tagName,jdbcType=NVARCHAR} )
+    INSERT  INTO TaskTag
+            ( tagName,tagColorCode,createTime,createName,updateTime,updateName)
+    VALUES  ( #{tagName,jdbcType=INTEGER}, #{tagColorCode,jdbcType=INTEGER},
+    getdate(),#{createName,jdbcType=NVARCHAR},getdate(),#{updateName,jdbcType=NVARCHAR} )
+	</insert>
+</mapper>
