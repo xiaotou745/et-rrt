@@ -28,8 +28,6 @@ List<StrategyChild> chiList=request.getAttribute("childs")==null?null:(List<Stra
 <script>
 var imgPath="<%=basePath%>/img/11235.png";
 </script>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
  <script src="<%=basePath%>/js/renrentask.js"></script> 
 <script src="<%=basePath%>/js/renrentemplate.js"></script>
 
@@ -749,14 +747,6 @@ var jss={
 			<%}
 		}
 	}%>
-	  //初始化时间控件
-	  $(' .input-group.date').datepicker({
-	        todayBtn: "linked",
-	        keyboardNavigation: false,
-	        forceParse: false,
-	        calendarWeeks: true,
-	        autoclose: true
-	    });
 		//添加步骤控件行
 		$("#setpadd").click(function() {
 			//var clone = add.clone();

@@ -26,7 +26,6 @@ import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IOrderChildDao;
-import com.renrentui.renrenapi.dao.inter.IOrderDao;
 import com.renrentui.renrenapi.dao.inter.IOrderLogDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskDao;
 import com.renrentui.renrenapi.dao.inter.IRenRenTaskLogDao;
@@ -117,8 +116,6 @@ public class RenRenTaskService implements IRenRenTaskService {
 	private ITemplateSnapshotDao templateSnapshotDao;
 	@Autowired
 	private ITemplateDetailSnapshotDao templateDetailSnapshotDao;
-	@Autowired
-	private IOrderDao orderDao;
 	@Autowired
 	private IClienterLogDao clienterLogDao;
 	@Autowired

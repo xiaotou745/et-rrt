@@ -217,10 +217,10 @@ WHERE id=${orderId}
 		</if>
 		
 		<if test="beginDate != null and beginDate!=''">
-			AND td.CreateDate >''${beginDate}''
+			AND td.CreateDate >=''${beginDate}''
 		</if>
 		<if test="endDate != null and endDate!=''">
-			AND ''${endDate}''>td.CreateDate
+			AND DATEADD(d, 1, ''${endDate}'')>td.CreateDate
 		</if>
 		
 		<if test="taskName != null and taskName!=''">

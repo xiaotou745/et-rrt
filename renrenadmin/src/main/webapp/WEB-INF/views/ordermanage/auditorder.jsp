@@ -11,8 +11,7 @@ String clienterName = (String)request.getAttribute("clienterName");
 String clienterPhoneNo = (String)request.getAttribute("clienterPhoneNo");
 int auditStatus = Integer.parseInt(request.getAttribute("auditStatus").toString());
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 <script src="<%=basePath%>/js/util.js"></script>
 <style type="text/css">
 #map_contain {
@@ -188,21 +187,10 @@ width: 100%;
 		</div>
 	</div>
 </div>
-<div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;">
+<div id="TipBox" style="position:absolute;display:none;border:1px solid silver;background:pink;z-index:99999">
 dasda
 </div>
 <script>
-$(function(){
-	  //初始化时间控件
-	  $(' .input-group.date').datepicker({
-	        todayBtn: "linked",
-	        keyboardNavigation: false,
-	        forceParse: false,
-	        calendarWeeks: true,
-	        autoclose: true
-	    });
-	
-});
 var jss={
 		search:function(currentPage){	
 			 var clienterName = $("#clienterName").val();				   
@@ -222,7 +210,7 @@ var jss={
 					 "clienterPhone":clienterPhone,
 					 "taskName":taskName,
 					 "beginDate":beginDate,
-					 "endDate":endDate==''?'':endDate+' 23:59:59',
+					 "endDate":endDate,
 					 m:Math.round()
 					 };
 		        var url = "<%=basePath%>/ordermanage/auditorderdo";
@@ -256,7 +244,6 @@ $('#exportorder').click(function(){
 		 alert('导出数据开始时间或结束时间不能为空!');
 		 return;
 	}
-	  endDate=endDate==''?'':endDate+' 23:59:59';
 	   var url = "<%=basePath%>/ordermanage/auditorderexport?currentPage=1&clienterName="
 		+clienterName
 		+"&orderNo"+orderNo
@@ -319,6 +306,8 @@ $('#btnRefu').click(function(){
 });
 //鼠标悬停显示
 function Myshow(obj,id) {
+	var theEvent = window.event || arguments.callee.caller.arguments[0];
+	console.log(theEvent.pageX+","+theEvent.pageY);
 	
 	var objDiv = $("#TipBox");
 	var url="<%=basePath%>/ordermanage/getsubtip";
@@ -326,14 +315,17 @@ function Myshow(obj,id) {
 	$.post(url,par,function(d){
 		$("#TipBox").html(d);
 	});
-		$(objDiv).css("display","block");
-		$(objDiv).css("left", event.clientX-200);
-		$(objDiv).css("top", event.clientY-100);
+	//$(objDiv).css("display","block");
+	$(objDiv).show();
+	$(objDiv).css("left", theEvent.pageX-200);
+	$(objDiv).css("top", theEvent.pageY-100);
+		
 	}
 //悬停隐藏
 function Myhide(obj) {
 var objDiv = $("#TipBox");
-$(objDiv).css("display", "none");
+$(objDiv).hide();
+//$(objDiv).css("display", "none");
 } 
    //订单审核
    function Audit(orderId,auditStatus,userId,amount,orderNo,taskTitle){

@@ -104,13 +104,13 @@ WHERE   EndTime > GETDATE()
 			and createTime >=''${createTimeBegin}''
 		</if>
 		<if test="createTimeEnd != null and createTimeEnd!=''">
-			and ''${createTimeEnd} 23:59:59''>createTime
+			and DATEADD(d, 1, ''${createTimeEnd}'')>createTime
 		</if>
 	    <if test="beginTime != null and beginTime!=''">
 			and endTime>=''${beginTime}''
 		</if>
 		<if test="endTime != null and endTime != ''">
-			and ''${endTime} 23:59:59''>=beginTime
+			and DATEADD(d, 1, ''${endTime}'')>beginTime
 		</if>
 	    <if test="status != null and status>-1">
 			and status=${status}
@@ -669,7 +669,7 @@ statementType="CALLABLE">
 		 and a.CreateDate>=''${receiveTimeBegin} 00:00:00''  
 	</if>
 	<if test="receiveTimeEnd !=null and receiveTimeEnd!=''">
-		and  ''${receiveTimeEnd} 23:59:59''>=a.CreateDate
+		and  DATEADD(d, 1, ''${receiveTimeEnd}'')>a.CreateDate
 	</if>
 GROUP BY a.ClienterId ,
         c.PhoneNo ,

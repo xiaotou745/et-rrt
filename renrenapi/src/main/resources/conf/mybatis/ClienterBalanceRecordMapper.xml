@@ -215,10 +215,10 @@
 			AND cbr.orderId=${orderId}
 		</if>
 		<if test="beginDate != null and beginDate != ''">
-			AND cbr.OperateTime > ''${beginDate}''
+			AND cbr.OperateTime >= ''${beginDate}''
 		</if>
 		<if test="endDate != null and endDate != ''">
-			AND  ''${endDate}''> cbr.OperateTime
+			AND  DATEADD(d, 1, ''${endDate}'')> cbr.OperateTime
 		</if>
 	</sql>
   <select id="getRecordListPage" resultType="com.renrentui.renrenentity.ClienterBalanceRecord" 

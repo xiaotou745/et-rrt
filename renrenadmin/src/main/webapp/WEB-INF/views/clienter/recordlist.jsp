@@ -11,8 +11,6 @@ Double blance = (Double)request.getAttribute("blance");
 Double hadWithdraw = (Double)request.getAttribute("hadWithdraw");
 Long id = (Long)request.getAttribute("id");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 
 	<div class="row">
@@ -116,24 +114,13 @@ Long id = (Long)request.getAttribute("id");
 
 
 <script>
-$(function(){
-	  //初始化时间控件
-	  $(' .input-group.date').datepicker({
-	        todayBtn: "linked",
-	        keyboardNavigation: false,
-	        forceParse: false,
-	        calendarWeeks: true,
-	        autoclose: true
-	    });
-	
-});
 	var jss={
 			search:function(currentPage){	
 				 var paramaters = { 
 						 "recordType":$('#recordType').val(),
 						 "orderId": $('#orderId').val()==''?0:$('#orderId').val(),
 						 "beginDate":$('#beginDate').val(),
-						 "endDate": $('#endDate').val()==''?'':$('#endDate').val()+' 23:59:59',
+						 "endDate": $('#endDate').val(),
 						 "clienterId":<%=id%>,
 						 "currentPage":currentPage,
 						 };  
@@ -158,7 +145,7 @@ $(function(){
 	//数据导出
 	$('#export').click(function(){
 		var be=$('#beginDate').val();
-		var end=$('#endDate').val()==''?'':$('#endDate').val()+' 23:59:59';
+		var end=$('#endDate').val();
 		var type=$('#recordType').val();
 		if(be==''||end=='')
 		{

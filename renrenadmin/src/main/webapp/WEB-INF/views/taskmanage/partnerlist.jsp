@@ -9,10 +9,7 @@ String taskTitle = (String) request.getAttribute("taskTitle");
 String taskType = (String) request.getAttribute("taskType");
 String taskStatus = (String) request.getAttribute("taskStatus");
 %>
-<link rel="stylesheet"
-	href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script
-	src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
 		<div class="col-lg-12">
@@ -115,15 +112,6 @@ String taskStatus = (String) request.getAttribute("taskStatus");
 	</div>
 </div>
 <script>
- $(function(){
-	  $(' .input-group.date').datepicker({
-          todayBtn: "linked",
-          keyboardNavigation: false,
-          forceParse: false,
-          calendarWeeks: true,
-          autoclose: true
-      });
- });
 	var jss = {
 		search : function(currentPage) {
 			if($("#taskTitle").val()==""){

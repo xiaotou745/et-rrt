@@ -45,6 +45,7 @@ public class RenRenTask {
     private Double totalAmount;
     private Integer estimatedTime;
     private Integer partnerNum;
+    private int tagId;
 	public Integer getPartnerNum() {
 		return partnerNum;
 	}
@@ -346,5 +347,13 @@ public class RenRenTask {
 
 	public void setTaskTypeName(String taskTypeName) {
 		this.taskTypeName = taskTypeName;
+	}
+
+	public int getTagId() {
+		return tagId;
+	}
+
+	public void setTagId(int tagId) {
+		this.tagId = tagId;
 	} 
 }

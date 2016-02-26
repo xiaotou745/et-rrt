@@ -27,8 +27,6 @@ List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
 
 PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvinceCity) request.getAttribute("pro_city");
 %>
-<link rel="stylesheet" href="<%=basePath%>/css/plugins/datapicker/datepicker3.css" />
-<script src="<%=basePath%>/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 <script src="<%=basePath%>/js/ajaxfileupload.js"></script>
 <script src="<%=basePath%>/js/renrentask.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
