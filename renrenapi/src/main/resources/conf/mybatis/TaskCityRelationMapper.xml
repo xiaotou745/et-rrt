@@ -10,11 +10,16 @@
     from TaskCityRelation
     where taskId = #{taskId,jdbcType=BIGINT}
   </select>
-    <!-- 获取任务投放区域 -->
-  <select id="getTaskCity"  resultType="com.renrentui.renrenentity.PublicProvinceCity" parameterType="java.lang.Long"  >
-	SELECT TOP 1 tcr.CityName AS Name,tcr.CityCode AS Code,ppc.Jibie,ppc.ParentCode FROM dbo.TaskCityRelation AS tcr  (NOLOCK)
-JOIN dbo.PublicProvinceCity AS ppc (NOLOCK) ON tcr.CityCode=ppc.Code
-WHERE taskid=#{taskId,jdbcType=BIGINT}
+  <select id="selectByTaskIds" resultType="com.renrentui.renrenentity.TaskCityRelation"
+   parameterType="java.util.List" >
+    select 
+    <include refid="Base_Column_List" />
+    from TaskCityRelation with(nolock) 
+    where taskId in
+    <foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
   </select>
   <delete id="deleteByTaskId" parameterType="java.lang.Long" >
     delete from TaskCityRelation

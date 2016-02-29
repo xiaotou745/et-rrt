@@ -3,6 +3,7 @@ package com.renrentui.renrenapi.service.inter;
 import java.util.List;
 import java.util.Map; 
 
+import com.renrentui.renrencore.enums.AreaLevel;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.OpenCityModel;
 import com.renrentui.renrenentity.req.HotAndPublicCityReq;
@@ -34,12 +35,13 @@ public interface IPublicProvinceCityService {
 	 List<PublicProvinceCity> getOpenCityListFromRedis();
 	 
 	 Map<Integer,String> getOpenCityMap();
+	 Map<Integer,PublicProvinceCity> getOpenCityDetailMap();
 	 /**
 	  * 获取开通市
 	  * 赵海龙(1是国家，2是省份，3是城市级别，4是区域)
 	  * 2015年7月29日 10:40:36
 	  * */
-	 List<PublicProvinceCity> getOpenCityByJiBie(int jiBie);
+	 List<PublicProvinceCity> getOpenCityByJiBie(AreaLevel jiBie);
 	 
 	 
 	/**

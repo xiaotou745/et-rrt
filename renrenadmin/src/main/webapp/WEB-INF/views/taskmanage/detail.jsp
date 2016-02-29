@@ -12,6 +12,9 @@
 <%@page import="com.renrentui.renrenentity.PublicProvinceCity"%>
 <%@page import="com.renrentui.renrenentity.RenRenTask"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
 <%@page import="com.renrentui.renrenadmin.common.UserContext"%>
@@ -25,8 +28,9 @@ String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 RenRenTask taskInfo = (RenRenTask) request.getAttribute("taskInfo");
 List<TaskSetp> taskSetps=(List<TaskSetp>) request.getAttribute("taskSetps");
 List<TemplateGroup> groups=(List<TemplateGroup>) request.getAttribute("groups");
-
-PublicProvinceCity city=request.getAttribute("pro_city")==null?null:(PublicProvinceCity) request.getAttribute("pro_city");
+List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");//省份
+Map<Integer, List<PublicProvinceCity>> provinceCityMap = (Map<Integer, List<PublicProvinceCity>>) request.getAttribute("provinceCityMap");//省份
+String taskCityInfo=request.getAttribute("taskCityInfo")==null?"":(String) request.getAttribute("taskCityInfo");
 List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
 %>
 <script src="<%=basePath%>/js/ajaxfileupload.js"></script>
@@ -371,48 +375,32 @@ List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
 			<legend>投放范围</legend>
 			<div class="row">
 				<div class="col-lg-12">
+						<div class="row">
+							<div class="controls">
+							已选择的区域:<div id="selectedregions"></div>
+							<button class="btn btn-success" id="btnExpanAll" type="button">展开/折叠</button>
+							<button class="btn btn-success" id="btn-check-all" type="button">全选/全消</button>
+						</div>
+					</div>
 					<div class="row">
-					<% 
-					if(city==null)
-					{
-						%>
-						<div class="col-lg-3">
-								<div class="form-group">
-									<label class="col-sm-4 control-label">区域: </label>
-									<div class="col-sm-8">
-										<input type="text" value="全部区域"/>
+						<div id="taskregion" style="height: 300px; overflow: auto; width: 800px;">
+							<%for(int i=0;i<provincelist.size();i++){%>
+								<span style="cursor: pointer;" name="prospan" id="<%=provincelist.get(i).getCode() %>">+</span>
+								<input id="chkTaskPro<%=provincelist.get(i).getCode() %>" name="chkTaskPro" type="checkbox" value="<%=provincelist.get(i).getCode()%>"> 
+								<label><%=provincelist.get(i).getName()%></label>
+								<br/>
+									<div class="citydiv" style="display: none;" id="taskCity<%=provincelist.get(i).getCode() %>">
+										<%List<PublicProvinceCity> cityList=provinceCityMap.get(provincelist.get(i).getCode());
+										for(int j=0;j<cityList.size();j++){%>
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="chkTaskCity<%=cityList.get(j).getCode()%>" parentCode="<%=provincelist.get(i).getCode() %>" name="chkTaskCity" type="checkbox" value="<%=cityList.get(j).getCode()%>"> 
+											<label><%=cityList.get(j).getName()%></label>
+											<%if(j!=0&&j%5==0){%>
+												<br/>
+											<%} %>
+										<%}%>
 									</div>
-								</div>
-							</div>
-						<%
-					}
-					else if(city.getJiBie()==2)
-					{
-						%>
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label class="col-sm-4 control-label">省份: </label>
-								<div class="col-sm-8">
-								<input type="text" value="<%=city.getName() %>"/>
-								</div>
-							</div>
+							<%}%>
 						</div>
-						<%
-					}
-					else
-					{
-					%>
-					<div class="col-lg-3">
-							<div class="form-group">
-								<label class="col-sm-4 control-label">城市: </label>
-								<div class="col-sm-8">
-									<input type="text" value="<%=city.getName() %>"/>
-								</div>
-							</div>
-						</div>
-					<%
-						
-					}%>
 					</div>
 				</div>
 			</div>
@@ -422,7 +410,70 @@ List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
 </div>
 
 <script>
+//展开/折叠
+var expandstatus=0;
+$('#btnExpanAll').on('click', function (e) {
+	if(expandstatus==0){
+		expandstatus=1;
+		//所有的城市都展开(显示)出来
+		 $(".citydiv").show();
+		  $("span[name='prospan']").html("-");
+      }else{
+    	  expandstatus=0;
+    	  $(".citydiv").hide();
+    	  $("span[name='prospan']").html("+");
+      }
+  
+});
+//全选全消
+var checkstatus=0;
+$('#btn-check-all').on('click', function (e) {
+      if(checkstatus==0){
+    	  checkstatus=1;
+    	  $("input[name='chkTaskPro']").prop("checked","checked");//所有的省都选中
+    	  $("input[name='chkTaskCity']").prop("checked","checked");//所有的市都选中
+      }else{
+    	  checkstatus=0;
+    	  $("input[name='chkTaskPro']").removeAttr("checked");//所有的省都取消选中
+    	  $("input[name='chkTaskCity']").removeAttr("checked");//所有的省都取消选中
+      }
+      gettaskregionremark();
+});
+//省份前面的加号点击事件
+$("span[name='prospan']").on('click', function (e) {
+    if($(this).html()=="+"){
+    	$(this).html("-");
+    	$("#taskCity"+$(this).attr("id")).show();
+    }else{
+    	$(this).html("+");
+    	$("#taskCity"+$(this).attr("id")).hide();
+    }
+});
+//省份选中时，省内的所有城市都选中
+$('input:checkbox[name="chkTaskPro"]').change(function(){
+	var citydivid="#taskCity"+$(this).val();
+	if($(this).is(':checked')){
+		$(citydivid+" input[type='checkbox']").prop("checked","checked");
+	}else{
+		$(citydivid+" input[type='checkbox']").removeAttr("checked");
+	}
+	 gettaskregionremark();
+});
+//某个省内的城市选中时，城市所属的省也选中
+$('input:checkbox[name="chkTaskCity"]').change(function(){
+	var parentid="#chkTaskPro"+$(this).attr("parentCode");
+	if($(this).is(':checked')){
+		$(parentid).prop("checked","checked");
+	}else{
+		var citydivid="#taskCity"+$(this).attr("parentCode");
+		if($(citydivid+" input[type='checkbox']:checked").length==0){
+			$(parentid).removeAttr("checked");
+		}
+	}	
+	 gettaskregionremark();
+});
 $('input').attr('readonly','readonly');
 $('[name="rTaskType"]').attr('disabled','disabled');
 $('[name="rTaskTagId"]').attr('disabled','disabled');
+initTaskRegion("<%=taskCityInfo%>");
 </script>

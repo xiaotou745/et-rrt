@@ -7,25 +7,31 @@
 <%@page import="com.renrentui.renrenentity.Template"%>
 <%@page import="com.renrentui.renrenentity.PublicProvinceCity"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%@page import="com.renrentui.renrenentity.domain.TaskSetp"%>
 <%@page import="com.renrentui.renrenentity.domain.TemplateGroup"%>
 <%@page import="com.renrentui.renrenentity.RenRenTask"%>
 <%@page import="com.renrentui.renrenentity.StrategyChild"%>
 <%@page import="com.renrentui.renrenentity.TaskTag"%>
+<%@page import="com.renrentui.renrenentity.TaskCityRelation"%>
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%
 String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 List<PublicProvinceCity> provincelist = (List<PublicProvinceCity>) request.getAttribute("provincelist");//省份
-String pro_city = (String) request.getAttribute("pro_city");//城市字符串
-PublicProvinceCity city=request.getAttribute("task_city")==null?null:(PublicProvinceCity) request.getAttribute("task_city");
+Map<Integer, List<PublicProvinceCity>> provinceCityMap = (Map<Integer, List<PublicProvinceCity>>) request.getAttribute("provinceCityMap");//省份
+List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
+
+String taskCityInfo=request.getAttribute("taskCityInfo")==null?"":(String) request.getAttribute("taskCityInfo");
 Long taskID=request.getAttribute("taskID")==null?0:(Long)request.getAttribute("taskID");
 RenRenTask taskInfo =request.getAttribute("taskInfo")==null?null:(RenRenTask)request.getAttribute("taskInfo");
 List<TaskSetp> taskSetps=request.getAttribute("taskSetps")==null?null:(List<TaskSetp>)request.getAttribute("taskSetps");
 List<TemplateGroup> groups=request.getAttribute("groups")==null?null:(List<TemplateGroup>)request.getAttribute("groups");
 List<StrategyChild> chiList=request.getAttribute("childs")==null?null:(List<StrategyChild>)request.getAttribute("childs");
-List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
+
 %>
 <script>
 var imgPath="<%=basePath%>/img/11235.png";
@@ -521,24 +527,31 @@ var imgPath="<%=basePath%>/img/11235.png";
 			<legend>投放范围</legend>
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="row">
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label class="col-sm-4 control-label">省份: </label>
-								<div class="col-sm-8">
-									<%=HtmlHelper.getSelect("provinceCode", provincelist, "name", "code", null,-1, "全部")%>
-								</div>
+						<div class="row">
+							<div class="controls">
+							已选择的区域:<div id="selectedregions"></div>
+							<button class="btn btn-success" id="btnExpanAll" type="button">展开/折叠</button>
+							<button class="btn btn-success" id="btn-check-all" type="button">全选/全消</button>
 							</div>
 						</div>
-						<div class="col-lg-3">
-							<div class="form-group">
-								<label class="col-sm-4 control-label">城市: </label>
-								<div class="col-sm-8">
-									<select id="cityCode" name="cityCode"  class="form-control m-b">
-										<option value="-1">全部城市</option>
-									</select>
-								</div>
-							</div>
+					<div class="row">
+						<div id="taskregion" style="height: 300px; overflow: auto; width: 800px;">
+							<%for(int i=0;i<provincelist.size();i++){%>
+								<span style="cursor: pointer;" name="prospan" id="<%=provincelist.get(i).getCode() %>">+</span>
+								<input id="chkTaskPro<%=provincelist.get(i).getCode() %>" name="chkTaskPro" type="checkbox" value="<%=provincelist.get(i).getCode()%>"> 
+								<label><%=provincelist.get(i).getName()%></label>
+								<br/>
+									<div class="citydiv" style="display: none;" id="taskCity<%=provincelist.get(i).getCode() %>">
+										<%List<PublicProvinceCity> cityList=provinceCityMap.get(provincelist.get(i).getCode());
+										for(int j=0;j<cityList.size();j++){%>
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="chkTaskCity<%=cityList.get(j).getCode()%>" parentCode="<%=provincelist.get(i).getCode() %>" name="chkTaskCity" type="checkbox" value="<%=cityList.get(j).getCode()%>"> 
+											<label><%=cityList.get(j).getName()%></label>
+											<%if(j!=0&&j%5==0){%>
+												<br/>
+											<%} %>
+										<%}%>
+									</div>
+							<%}%>
 						</div>
 					</div>
 				</div>
@@ -554,7 +567,6 @@ var imgPath="<%=basePath%>/img/11235.png";
 			</div>
 		</div>
 	</form> 
-	<input type="hidden" id="pro_city" value="<%=pro_city %>" /> 
 </div>
 <div tabindex="-1" class="modal inmodal" id="alertbox" role="dialog" aria-hidden="true" style="display: none;">	
 	
@@ -669,63 +681,95 @@ var imgPath="<%=basePath%>/img/11235.png";
 </div>
 	<!-- 结束 -------------------------------------------------------------------------------------------------- -->
 <script>
-
-//任务类型切换事件
-$('input:radio[name="rTaskType"]').change(function(){
-		var id=$('input[name="rTaskType"]:checked').val();
-		if(id==1){
+//展开/折叠
+var expandstatus=0;
+$('#btnExpanAll').on('click', function (e) {
+	if(expandstatus==0){
+		expandstatus=1;
+		//所有的城市都展开(显示)出来
+		 $(".citydiv").show();
+		  $("span[name='prospan']").html("-");
+      }else{
+    	  expandstatus=0;
+    	  $(".citydiv").hide();
+    	  $("span[name='prospan']").html("+");
+      }
+  
+});
+//全选全消
+var checkstatus=0;
+$('#btn-check-all').on('click', function (e) {
+      if(checkstatus==0){
+    	  checkstatus=1;
+    	  $("input[name='chkTaskPro']").prop("checked","checked");//所有的省都选中
+    	  $("input[name='chkTaskCity']").prop("checked","checked");//所有的市都选中
+      }else{
+    	  checkstatus=0;
+    	  $("input[name='chkTaskPro']").removeAttr("checked");//所有的省都取消选中
+    	  $("input[name='chkTaskCity']").removeAttr("checked");//所有的省都取消选中
+      }
+      gettaskregionremark();
+});
+//省份前面的加号点击事件
+$("span[name='prospan']").on('click', function (e) {
+    if($(this).html()=="+"){
+    	$(this).html("-");
+    	$("#taskCity"+$(this).attr("id")).show();
+    }else{
+    	$(this).html("+");
+    	$("#taskCity"+$(this).attr("id")).hide();
+    }
+});
+//省份选中时，省内的所有城市都选中
+$('input:checkbox[name="chkTaskPro"]').change(function(){
+	var citydivid="#taskCity"+$(this).val();
+	if($(this).is(':checked')){
+		$(citydivid+" input[type='checkbox']").prop("checked","checked");
+	}else{
+		$(citydivid+" input[type='checkbox']").removeAttr("checked");
+	}
+	 gettaskregionremark();
+});
+//某个省内的城市选中时，城市所属的省也选中
+$('input:checkbox[name="chkTaskCity"]').change(function(){
+	var parentid="#chkTaskPro"+$(this).attr("parentCode");
+	if($(this).is(':checked')){
+		$(parentid).prop("checked","checked");
+	}else{
+		var citydivid="#taskCity"+$(this).attr("parentCode");
+		if($(citydivid+" input[type='checkbox']:checked").length==0){
+			$(parentid).removeAttr("checked");
+		}
+	}	
+	 gettaskregionremark();
+});
+	//任务类型切换事件
+	$('input:radio[name="rTaskType"]').change(function() {
+		var id = $('input[name="rTaskType"]:checked').val();
+		if (id == 1) {
 			$('#tasktype2').hide();
 			$('#tasktype3').hide();
 			$('#mubanbox').show();
-		}
-		else{
+		} else {
 			$('#tasktype2').show();
 			$('#tasktype3').show();
 			$('#mubanbox').hide();
-		}	
-});
+		}
+	});
 
-//失去焦点
-function HttpC(obj){
-	var str=$(obj).val();
-	if(str.indexOf('http://')<0)
-	{
-		str="http://"+str;
+	//失去焦点
+	function HttpC(obj) {
+		var str = $(obj).val();
+		if (str.indexOf('http://') < 0) {
+			str = "http://" + str;
+		}
+		$(obj).val(str);
 	}
-	$(obj).val(str);
-}
-//省市联动
-$('#provinceCode').on('change',function(){
-	 try{  
-	        var pro=$(this).val();  
-	        var pro_city=$("#pro_city").val().split("#");
-	        
-	        var i,j,tmpprocity=new Array();  
-	        var tmpkeyvalue=new Array();  
-	        for(i=0;i<pro_city.length;i++){
-	        	tmpcity=pro_city[i].split("=");
-	            if(pro==tmpcity[0]){  
-	                tmpcity=tmpcity[1].split(";");  
-	                $("#cityCode").html("<option value='-1'>全部城市</option>");  
-	                for(j=0;j<tmpcity.length;j++){  
-	                	tmpkeyvalue=tmpcity[j].split("|");
-	                    $("#cityCode").append("<option value='"+tmpkeyvalue[0]+"'>"+tmpkeyvalue[1]+"</option>");     
-	                }
-	                break;
-	            }  
-	        }
-	        $("#divregion").html(""); 
-	        $("#selectAll").prop("checked",false);
-	    }catch(e){  
-	        alert(e);     
-	    }  
-});
 
-   
-var article="";//选择文章对象
-var jss={
-		search:function(currentPage){
-			var url="<%=basePath%>/article/listdofortask";
+	var article = "";//选择文章对象
+	var jss = {
+		search : function(currentPage) {
+			var url = "<%=basePath%>/article/listdofortask";
 			var par={currentPage:currentPage,
 					id:$('#artid').val(),
 					title:$('#arttitle').val(),
@@ -752,19 +796,9 @@ var jss={
 			$('#tasktype2').show();
 			$('#tasktype3').show();
 			$('#mubanbox').hide();
-		}	
-	<%
-		if(city!=null){
-			if(city.getJiBie()==2){%>
-				$("#provinceCode").val(<%=city.getCode()%>);
-				$('#provinceCode').change();
-			<%}else{%>
-				$("#provinceCode").val(<%=city.getParentCode()%>);
-				$('#provinceCode').change();
-				$("#cityCode").val(<%=city.getCode()%>);
-			<%}
 		}
-	}%>
+		initTaskRegion("<%=taskCityInfo%>");
+	<%}%>
 		//添加步骤控件行
 		$("#setpadd").click(function() {
 			//var clone = add.clone();
@@ -1045,8 +1079,11 @@ function savetask(){
     saveTaskReq.renRenTask=createTaskPar();
     saveTaskReq.taskSetps=createTaskSetpPar();
     saveTaskReq.templateGroup=createGroupPar();
-    saveTaskReq.provinceCode=$('#provinceCode').val();
-    saveTaskReq.cityCode=$('#cityCode').val();
+    saveTaskReq.taskRegions=gettaskregion();
+    if(saveTaskReq.taskRegions.length==0){
+    	alert("投放范围不能为空!");
+    	return;
+    }
     var json_data =JSON.stringify(saveTaskReq);
     $("#tip").html("正在执行。。。");
 	$("#save").attr("disabled",true);

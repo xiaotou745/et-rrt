@@ -14,6 +14,7 @@ import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapihttp.common.HttpResultModel;
 import com.renrentui.renrenapihttp.service.inter.IRegionService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
+import com.renrentui.renrencore.enums.AreaLevel;
 import com.renrentui.renrencore.enums.RegionCode;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.PublicProvinceCity;
@@ -59,7 +60,7 @@ public class RegionService implements IRegionService{
 		List<PublicProvinceCity> hotRegionModel = new ArrayList<PublicProvinceCity>(); 
 		//调用接口返回的数据库原始结果集
 		List<PublicProvinceCity> prcList = new ArrayList<PublicProvinceCity>();
-		prcList = iPublicProvinceCityService.getOpenCityByJiBie(3);
+		prcList = iPublicProvinceCityService.getOpenCityByJiBie(AreaLevel.City);
 		prcList =  prcList.stream().filter(k->k.getIsPublic().equals(1)).collect(Collectors.toList());
 		//过滤热门城市,ishot为1且开放
 		hotRegionModel = prcList.stream().filter(k->k.getIsHot().equals(1) && k.getIsPublic().equals(1)).collect(Collectors.toList());

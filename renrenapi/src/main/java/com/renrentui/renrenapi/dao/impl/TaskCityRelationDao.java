@@ -33,11 +33,12 @@ public class TaskCityRelationDao extends DaoBase implements
 				.delete("ITaskCityRelationDao.deleteByTaskId",
 						taskId);
 	}
-	/**
-	 * 获取任务投放区域
-	 */
+
 	@Override
-	public PublicProvinceCity getTaskCity(Long taskId) {
-		return getReadOnlySqlSessionUtil().selectOne("ITaskCityRelationDao.getTaskCity", taskId);
+	public List<TaskCityRelation> selectByTaskIds(List<Long> taskIds) {
+		return getMasterSqlSessionUtil()
+				.selectList("ITaskCityRelationDao.selectByTaskIds",
+						taskIds);
 	}
+
 }
