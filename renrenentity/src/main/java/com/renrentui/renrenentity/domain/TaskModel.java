@@ -17,6 +17,8 @@ public class TaskModel implements Serializable {
 	private int auditCycle;
 	private int estimatedTime;
 	private int partnerNum;
+	private String tagName;
+	private String tagColorCode;
 	public int getAuditCycle() {
 		return auditCycle;
 	}
@@ -106,5 +108,21 @@ public class TaskModel implements Serializable {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getTagName() {
+		return tagName;
+	}
+
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
+
+	public String getTagColorCode() {
+		return tagColorCode;
+	}
+
+	public void setTagColorCode(String tagColorCode) {
+		this.tagColorCode = tagColorCode;
 	}
 }

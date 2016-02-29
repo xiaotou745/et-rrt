@@ -586,20 +586,6 @@ public class RenRenTaskService implements IRenRenTaskService {
 		return renRenTaskDao.getMyReceivedTaskListTotal(req);
 	}
 
-	@Override
-	public List<TaskModel> getSubmittedTaskList(TaskReq req) {
-		// 这里判断逻辑，是否可以继续领取任务
-		// 1、如果任务结束时间大于当前时间
-		// 2、剩余任务量大于0
-		// 3、如果当前任务未接单
-		return renRenTaskDao.getSubmittedTaskList(req);
-	}
-
-	@Override
-	public int getSubmittedTaskListTotal(TaskReq req) {
-		return renRenTaskDao.getSubmittedTaskListTotal(req);
-	}
-
 	/**
 	 * 超时取消任务服务
 	 * 

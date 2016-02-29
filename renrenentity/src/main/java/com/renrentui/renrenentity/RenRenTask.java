@@ -46,6 +46,8 @@ public class RenRenTask {
     private Integer estimatedTime;
     private Integer partnerNum;
     private int tagId;
+	private String tagName;
+	private String tagColorCode;
 	public Integer getPartnerNum() {
 		return partnerNum;
 	}
@@ -355,5 +357,21 @@ public class RenRenTask {
 
 	public void setTagId(int tagId) {
 		this.tagId = tagId;
+	}
+
+	public String getTagName() {
+		return tagName;
+	}
+
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
+
+	public String getTagColorCode() {
+		return tagColorCode;
+	}
+
+	public void setTagColorCode(String tagColorCode) {
+		this.tagColorCode = tagColorCode;
 	} 
 }

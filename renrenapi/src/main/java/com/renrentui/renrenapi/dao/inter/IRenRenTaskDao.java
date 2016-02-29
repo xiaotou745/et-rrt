@@ -50,10 +50,6 @@ public interface IRenRenTaskDao {
 	List<MyReceiveTask> getMyReceivedTaskList(TaskReq req);
 
 	ReceiveNum  getMyReceivedTaskListTotal(TaskReq req);
-
-	List<TaskModel> getSubmittedTaskList(TaskReq req);
-
-	int getSubmittedTaskListTotal(TaskReq req);
 	
 	/**
 	 * 超时取消任务服务
