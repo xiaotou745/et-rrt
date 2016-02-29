@@ -32,7 +32,9 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 				!request.getServletPath().equals("/clienter/sharetask")&&
 				!request.getServletPath().equals("/account/code") &&
 				!request.getServletPath().equals("/clienterwithdraw/alibatchnotifytransfercallback") &&
-				!request.getServletPath().equals("/clienterwithdraw/batchalinotify"))
+				!request.getServletPath().equals("/clienterwithdraw/batchalinotify") &&
+				!request.getServletPath().contains("/wx/")
+					)
 				{
 				if(isAjax(request)){
 					throw new AjaxNotLoginRunTimeException("请重新登录");

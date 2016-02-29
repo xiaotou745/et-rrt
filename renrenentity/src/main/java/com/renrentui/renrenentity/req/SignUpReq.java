@@ -7,6 +7,8 @@ public class SignUpReq {
 	private String verifyCode;//验证码
 	private String name;  //用户名
 	private String recommendPhone;//推荐人手机号 
+	
+	private String operSystem;  //注册来源 android iOS
 	public String getRecommendPhone() {
 		return recommendPhone;
 	}
@@ -43,5 +45,11 @@ public class SignUpReq {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getOperSystem() {
+		return operSystem;
+	}
+	public void setOperSystem(String operSystem) {
+		this.operSystem = operSystem;
 	} 
 }

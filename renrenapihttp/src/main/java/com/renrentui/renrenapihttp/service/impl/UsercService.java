@@ -184,6 +184,10 @@ public class UsercService implements IUsercService {
 		if (clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
 			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
 					.setMsg(SignUpCode.PhoneFormatError.desc());
+		if(req.getOperSystem() == null || req.getOperSystem().equals("")){
+			return resultModel.setCode(SignUpCode.NoOperSystem.value())
+					.setMsg(SignUpCode.NoOperSystem.desc());
+		}
 		if (req.getVerifyCode().equals(""))// 验证码不能为空
 			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
 					SignUpCode.VerCodeNull.desc());

@@ -38,6 +38,8 @@ public enum SignUpCode {
 	 * 系统错误
 	 */
 	RecommendPhoneNoRelation (1019, "推荐人没有层级关系"), 
+	
+	NoOperSystem(1020,"注册来源手机系统不能为空"),
 	/**
 	 * 
 	 */
