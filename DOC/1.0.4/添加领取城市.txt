@@ -12,7 +12,16 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description',
 GO
 
 UPDATE  a
-SET     a.CityCode = b.CityCode
+SET     a.citycode = k.citycode
 FROM    ClienterTask a
-        JOIN TaskCityRelation b ON a.TaskId = b.TaskId
-WHERE   b.CityCode > 0
+        JOIN ( SELECT   b.taskid ,
+                        b.CityCode
+               FROM     TaskCityRelation b
+                        JOIN PublicProvinceCity c ON b.CityCode = c.Code
+                                                     AND c.Jibie = 3
+             ) k ON a.TaskId = k.TaskId
+
+GO
+UPDATE  TaskCityRelation
+SET     CityName = 'È«¹ú'
+WHERE   CityCode = -1

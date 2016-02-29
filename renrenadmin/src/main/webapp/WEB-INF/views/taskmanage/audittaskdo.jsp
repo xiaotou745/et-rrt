@@ -4,6 +4,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.lang.Double"%>
+<%@page import="java.util.Map"%>
 <%@page import="com.renrentui.renrencore.util.PageHelper"%>
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
@@ -22,6 +23,7 @@
 			<th >任务标题</th>
 			<th >参与人数</th>
 			<th >总完成次数</th>
+			<th >投放城市</th>
 			<th >创建人</th>
 			<th >创建时间</th>
 			<th >起止日期</th>
@@ -34,8 +36,8 @@
 	</thead>
 	<tbody>
 		<%
-			PagedResponse<RenRenTaskModel> responsePageList = (PagedResponse<RenRenTaskModel>) request
-					.getAttribute("listData");
+			PagedResponse<RenRenTaskModel> responsePageList = (PagedResponse<RenRenTaskModel>) request.getAttribute("listData");
+			Map<Long,String> taskRegionMap = (Map<Long,String>) request.getAttribute("taskRegionMap");
 			List<RenRenTaskModel> data = responsePageList.getResultList();
 			if (data == null) {
 				data = new ArrayList<RenRenTaskModel>();
@@ -53,15 +55,16 @@
 			<td><a target="_blank" class="blue2" href="<%=basePath%>/taskmanage/detail?taskId=<%=data.get(i).getId()%>"><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></a></td>
 			<td>
 			<%
-				if(data.get(i).getCompleteNum()>0){%>
+				if(data.get(i).getPartnerNum()>0){%>
 					<a href="<%=baseOrderPath%>" target="_blank"><%=data.get(i).getPartnerNum()%></a>
 				<%}else{%>
-					<%=data.get(i).getCompleteNum()%>
+					<%=data.get(i).getPartnerNum()%>
 				<%}
 			%>
 			
 			</td>
 			<td><%=data.get(i).getCompleteNum()%> </td>
+			<td><%=taskRegionMap.get(data.get(i).getId())%> </td>
 			<td><%=ParseHelper.ShowString(data.get(i).getCreateName())%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getBeginTime(),"yyyy-MM-dd")+"/"+ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-MM-dd")%></td>
