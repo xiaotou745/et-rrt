@@ -119,7 +119,8 @@ public class WxController {
 
 		WxToken wxToken = JsonUtil.str2obj(getData, WxToken.class);
 		tokenStr = wxToken.getAccess_token();
-//		redisService.set(tokenKey, tokenStr, wxToken.getExpires_in() - 1000);// 担心会时间不准，把无效时间往前一点
+		// redisService.set(tokenKey, tokenStr, wxToken.getExpires_in() -
+		// 1000);// 担心会时间不准，把无效时间往前一点
 		System.out.println("非缓存：" + tokenStr);
 		return tokenStr;
 	}
@@ -148,7 +149,7 @@ public class WxController {
 	 * */
 	public void eventListen(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+	
 	}
 
 	/**
