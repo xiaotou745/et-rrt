@@ -40,6 +40,7 @@ import com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
+import com.renrentui.renrencore.enums.AreaLevel;
 import com.renrentui.renrencore.enums.BBalanceRecordType;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.DatumAuditStatus;
@@ -463,6 +464,18 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Override
 	public PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(
 			PagedRenRenTaskReq req) {
+		if (req.getCityName()!=null&&!req.getCityName().isEmpty()) {
+			List<PublicProvinceCity> cityLists=publicProvinceCityService.getOpenCityByJiBie(AreaLevel.City);
+			List<PublicProvinceCity> citys=cityLists.stream().filter(k->k.getName().contains(req.getCityName())).collect(Collectors.toList());
+			List<Integer> cityCodes=citys.stream().map(k->k.getCode()).collect(Collectors.toList());
+			List<Integer> proCodes=citys.stream().map(k->k.getParentCode()).collect(Collectors.toList());
+			req.setAreaCodeList(new ArrayList<Integer>());
+			req.getAreaCodeList().add(-1);
+			if (cityCodes.size()>0||proCodes.size()>0) {
+				req.getAreaCodeList().addAll(proCodes);
+				req.getAreaCodeList().addAll(cityCodes);
+			}
+		}
 		return renRenTaskDao.getPagedRenRenTaskList(req);
 	}
 	/**
