@@ -1,5 +1,7 @@
 package com.renrentui.renrenapi.service.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.stereotype.Service;
 
 import com.renrentui.renrenapi.dao.inter.IPublicProvinceCityDao;
@@ -66,7 +69,8 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		return list
 				.stream()
 				.filter(k -> k.getJiBie().intValue() == jiBie.value())
-				.collect(Collectors.toList());
+				.sorted((a, b) -> a.getFirstLetter().compareTo(
+						b.getFirstLetter())).collect(Collectors.toList());
 	}
 	
 	/**
