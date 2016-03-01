@@ -16,7 +16,9 @@ public enum CodeType {
 	/**
 	 * 绑定支付宝
 	 */
-	BindAliPay(4, "绑定支付宝");
+	BindAliPay(4, "绑定支付宝"),
+	
+	FetchRedBag(5,"绑定微信领红包");
 	private int value = 0;
 	private String desc;
 	private CodeType(int value, String desc) { 

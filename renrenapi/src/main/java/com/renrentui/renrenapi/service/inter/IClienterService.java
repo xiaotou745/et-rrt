@@ -5,9 +5,11 @@ import java.util.List;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenentity.common.ResultModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.domain.PartnerModel;
+import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
@@ -54,7 +56,7 @@ public interface IClienterService {
 	 */
 	boolean modifyPwdUserc(ModifyPwdReq req);
 
-	long signup(SignUpReq req);
+	ResultModel<Object> signup(SignUpReq req);
 	/**
 	* @Des 查询C端用户信息  
 	* @Author WangXuDan
@@ -126,4 +128,6 @@ public interface IClienterService {
 	 * @return
 	 */
 	Clienter getClienterById(Long cid);
+
+	ResponseBase sendcode(CSendCodeReq req);	 
 }

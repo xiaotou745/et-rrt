@@ -36,6 +36,8 @@ import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrencore.enums.SignInCode;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalanceRecord;
+import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenentity.common.ResultModel;
 import com.renrentui.renrenentity.domain.AlipayBatchCallBackModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
@@ -177,50 +179,53 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> signup(SignUpReq req) {
 		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-		if (req.getPhoneNo().equals("")) {
-			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(
-					SignUpCode.PhoneNull.desc());
-		}
-		if (clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
-			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
-					.setMsg(SignUpCode.PhoneFormatError.desc());
-		if(req.getOperSystem() == null || req.getOperSystem().equals("")){
-			return resultModel.setCode(SignUpCode.NoOperSystem.value())
-					.setMsg(SignUpCode.NoOperSystem.desc());
-		}
-		if (req.getVerifyCode().equals(""))// 验证码不能为空
-			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
-					SignUpCode.VerCodeNull.desc());
-		if (req.getName() == null) {
-			req.setName("");
-		}
-		String key = RedissCacheKey.RR_Clienter_sendcode_register
-				+ req.getPhoneNo();// 注册key
-		String redisValueString = redisService.get(key, String.class);
-		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
-			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
-					SignUpCode.VerCodeError.desc());
-		long id = clienterService.signup(req);
-		if(id==(long)-1)
-		{
-			return resultModel.setCode(SignUpCode.RecommendPhoneNoExist.value()).setMsg(
-					SignUpCode.RecommendPhoneNoExist.desc());
-		}
-		if(id==(long)-2)
-		{
-			return resultModel.setCode(SignUpCode.RecommendPhoneNoRelation.value()).setMsg(
-					SignUpCode.RecommendPhoneNoRelation.desc());
-		}
-		if (id > 0) {// 注册成功
-			SignUpResp sur = new SignUpResp();
-			sur.setUserId(id);
-			sur.setUserName(req.getName());
-			resultModel.setData(sur).setCode(SignUpCode.Success.value())
-					.setMsg(SignUpCode.Success.desc());
-			return resultModel;
-		}
-		return resultModel.setCode(SignUpCode.Fail.value()).setMsg(
-				SignUpCode.Fail.desc());// 注册失败
+		ResultModel<Object> rModel= clienterService.signup(req);
+		resultModel.setCode(rModel.getCode()).setMsg(rModel.getMsg()).setData(rModel.getData());	
+		return resultModel;
+//		if (req.getPhoneNo().equals("")) {
+//			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(
+//					SignUpCode.PhoneNull.desc());
+//		}
+//		if (clienterService.isExistPhoneC(req.getPhoneNo()))// 手机号不正确
+//			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
+//					.setMsg(SignUpCode.PhoneFormatError.desc());
+//		if(req.getOperSystem() == null || req.getOperSystem().equals("")){
+//			return resultModel.setCode(SignUpCode.NoOperSystem.value())
+//					.setMsg(SignUpCode.NoOperSystem.desc());
+//		}
+//		if (req.getVerifyCode().equals(""))// 验证码不能为空
+//			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
+//					SignUpCode.VerCodeNull.desc());
+//		if (req.getName() == null) {
+//			req.setName("");
+//		}
+//		String key = RedissCacheKey.RR_Clienter_sendcode_register
+//				+ req.getPhoneNo();// 注册key
+//		String redisValueString = redisService.get(key, String.class);
+//		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
+//			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
+//					SignUpCode.VerCodeError.desc());
+//		long id = clienterService.signup(req);
+//		if(id==(long)-1)
+//		{
+//			return resultModel.setCode(SignUpCode.RecommendPhoneNoExist.value()).setMsg(
+//					SignUpCode.RecommendPhoneNoExist.desc());
+//		}
+//		if(id==(long)-2)
+//		{
+//			return resultModel.setCode(SignUpCode.RecommendPhoneNoRelation.value()).setMsg(
+//					SignUpCode.RecommendPhoneNoRelation.desc());
+//		}
+//		if (id > 0) {// 注册成功
+//			SignUpResp sur = new SignUpResp();
+//			sur.setUserId(id);
+//			sur.setUserName(req.getName());
+//			resultModel.setData(sur).setCode(SignUpCode.Success.value())
+//					.setMsg(SignUpCode.Success.desc());
+//			return resultModel;
+//		}
+//		return resultModel.setCode(SignUpCode.Fail.value()).setMsg(
+//				SignUpCode.Fail.desc());// 注册失败
 	}
 
 	/**
@@ -258,60 +263,11 @@ public class UsercService implements IUsercService {
 	 * */
 	@Override
 	public HttpResultModel<Object> sendcode(CSendCodeReq req) {
-		try {
-			HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-			String key = "";
-			String phoneNo = req.getPhoneNo();
-			String content = "";// "欢迎您的使用，验证码：#验证码#，请妥善保管相关信息。若非您本人操作，请忽略。";
-			// 类型 1注册 2修改密码 3忘记密码
-			CodeType codeType=CodeType.getEnum(req.getsType());
-			if (codeType==null) {
-				return resultModel.setCode(SendSmsType.CodeTypeError.value()).setMsg(SendSmsType.CodeTypeError.desc());
-			}
-			boolean checkPhoneNo = clienterService.isExistPhoneC(phoneNo);
-			if (codeType!=CodeType.Register&&!checkPhoneNo) {
-				return resultModel.setCode(SendSmsType.PhoneNotExists.value())
-						.setMsg(SendSmsType.PhoneNotExists.desc());// 该手机号不存在，不能修改或忘记密码
-			}
-			switch (codeType) {
-			case Register:
-				if (checkPhoneNo) { // 手机号存在
-					return resultModel.setCode(SendSmsType.PhoneExists.value())
-							.setMsg(SendSmsType.PhoneExists.desc());// 该手机号已经存在，不能注册
-				}
-				key = RedissCacheKey.RR_Clienter_sendcode_register + phoneNo;
-				content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于注册，如非本人操作，请不要理会";
-				break;
-			case UpdatePasswrd:
-				key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd+ phoneNo;
-				content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
-				break;
-			case ForgetPassword:
-				key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword+ phoneNo;
-				content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于找回密码，如非本人操作，请不要理会";
-				break;
-			case BindAliPay:
-				key = RedissCacheKey.RR_Clienter_sendcode_bindAliPay+ phoneNo;
-				content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于绑定支付宝，如非本人操作，请不要理会";
-				break;
-			default:
-				break;
-			}
-
-			String code = RandomCodeStrGenerator.generateCodeNum(6);// 获取随机数
-			content = content.replace("#验证码#", code);
-			redisService.set(key, code, 60 * 5);
-			long resultValue = SmsUtils.sendSMS(phoneNo, content);
-			if (resultValue <= 0) {
-				return resultModel.setCode(SendSmsType.Fail.value()).setMsg(
-						SendSmsType.Fail.desc());// 发送失败
-			}
-			return resultModel.setCode(SendSmsType.Success.value()).setMsg(
-					SendSmsType.Success.desc());// 设置成功
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return null;
+		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
+		ResponseBase responseBase=clienterService.sendcode(req); 
+		resultModel.setCode(responseBase.getResponseCode());
+		resultModel.setMsg(responseBase.getMessage()); 
+		return resultModel;
 	}
 
 	/**
