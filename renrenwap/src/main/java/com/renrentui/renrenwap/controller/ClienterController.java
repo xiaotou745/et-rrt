@@ -1,4 +1,6 @@
 package com.renrentui.renrenwap.controller; 
+import java.util.Properties;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.FetchRedbagEnum;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.common.ResultModel;
@@ -66,6 +69,7 @@ public class ClienterController {
 		ResultModel<Object> resultModel = new ResultModel<Object>(); 
 		String openid=request.getParameter("openid");
 		String truename = request.getParameter("truename");
+		String basePath=PropertyUtils.getProperty("java.renrenwap.url");
 		if(openid==""||openid==null || truename=="" || truename == null){
 			return resultModel.setCode(FetchRedbagEnum.ParaError.value()).setMsg(FetchRedbagEnum.ParaError.desc());
 		}
@@ -77,23 +81,22 @@ public class ClienterController {
 		String keyString=RedissCacheKey.RR_Clienter_sendcode_fetchRedBag+ req.getPhoneNo();
 		String codeRedisString=redisService.get(keyString, String.class);
 		if (!req.getCode().equals(codeRedisString)) // 验证码 查缓存
-			return resultModel.setCode(FetchRedbagEnum.VerCodeError.value()).setMsg(
-					FetchRedbagEnum.VerCodeError.desc()); 
+			return resultModel.setCode(FetchRedbagEnum.VerCodeError.value()).setMsg(FetchRedbagEnum.VerCodeError.desc()); 
 		int clienterId=clienterService.getClienterIdByPhone(req.getPhoneNo());
 		if (clienterId<=0)//验证该手机号是否注册过人人推
-			return resultModel.setCode(FetchRedbagEnum.PhoneNotRegister.value()).setMsg(FetchRedbagEnum.PhoneNotRegister.desc());
+			return resultModel.setCode(FetchRedbagEnum.PhoneNotRegister.value()).setMsg(FetchRedbagEnum.PhoneNotRegister.desc()).setData("<div class=\"to_reg c3\"><div class=\"title\">领取失败</div>该手机号尚未注册人人推，请点击下方按钮前往APP注册后 <a href=\"'"+basePath+"/clienter/fetchredbag"+"'\" class=\"rebind stress\">重新绑定</a><a href=\"'"+basePath+"/clienter/register"+"'\" class=\"sub-btn\">马上注册</a></div>");
 		else{
 			//判断是否绑定过微信
 			if(!clienterService.isBindWx(clienterId,req.getOpenid())){
 				// 未绑定，添加绑定关系，增加地推员余额，添加流水记录
 				boolean result=clienterBalanceService.fetchRedbag(clienterId,req.getOpenid());
 				if(result){
-					return resultModel.setCode(FetchRedbagEnum.Success.value()).setMsg(FetchRedbagEnum.Success.desc());
+					return resultModel.setCode(FetchRedbagEnum.Success.value()).setMsg(FetchRedbagEnum.Success.desc()).setData("<div class=\"success c1\"><p>恭喜您获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号'"+req.getPhoneNo()+"'<a href=\"#\" class=\"sub-btn\">前往查看</a></div>");
 				}else{
-					return resultModel.setCode(FetchRedbagEnum.Fail.value()).setMsg(FetchRedbagEnum.Fail.desc());
+					return resultModel.setCode(FetchRedbagEnum.Fail.value()).setMsg(FetchRedbagEnum.Fail.desc()).setData("<div class=\"to_reg c3\"><div class=\"title\">领取失败</div>请稍后再试 <a href=\"'"+basePath+"/clienter/fetchredbag"+"'\" class=\"rebind stress\">重新领取</a></div>");
 				}
 			}else{  //已经绑定过
-				return resultModel.setCode(FetchRedbagEnum.HadBindThisActivity.value()).setMsg(FetchRedbagEnum.HadBindThisActivity.desc());
+				return resultModel.setCode(FetchRedbagEnum.HadBindThisActivity.value()).setMsg(FetchRedbagEnum.HadBindThisActivity.desc()).setData("<div class=\"to_reg to_bind c4\"><div class=\"title\">领取失败</div>该手机号已被绑定，使用其他号码重新绑定<a href=\"'"+basePath+"/clienter/fetchredbag"+"'\" class=\"sub-btn rebind\">返回重新绑定</a></div>");
 			}		 
 		}
 	}	
