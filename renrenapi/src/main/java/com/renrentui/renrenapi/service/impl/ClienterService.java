@@ -17,6 +17,7 @@ import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterLog;
@@ -295,6 +296,7 @@ public class ClienterService implements IClienterService {
 	 * @Return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int modifyuserc(ModifyUserCReq req) {
 		ClienterLog log = new ClienterLog();
 		log.setClienterId(Long.valueOf(req.getUserId()));
@@ -309,6 +311,10 @@ public class ClienterService implements IClienterService {
 		clienter.setLastOptName(req.getUserId() + "");
 		clienter.setLastOptTime(new Date());
 		clienter.setHeadImage(req.getHeadImage());
+		if (req.getBirthDay()!=null&&!req.getBirthDay().isEmpty()) {
+			clienter.setBirthDay(ParseHelper.ToDate(req.getBirthDay()));
+		}
+
 		return clienterDao.updateByPrimaryKeySelective(clienter);
 	}
 

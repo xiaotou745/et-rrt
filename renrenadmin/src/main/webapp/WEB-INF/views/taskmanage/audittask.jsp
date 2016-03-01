@@ -16,6 +16,7 @@
 List<Business> businessData = (List<Business>) request.getAttribute("businessData");
 List<Template> templatelist = (List<Template>) request.getAttribute("templatelist");
 %>
+<script src="<%=basePath%>/js/util.js"></script>
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="row">
@@ -113,7 +114,17 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 						</div>
 					</div>
 				</div>
-
+				<div class="row">
+					<div class="col-lg-3">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">领取城市:</label>
+							<div class="col-sm-8">
+								<input id="cityName" type="text" name="cityName"
+									placeholder="领取城市" class="form-control" />
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-lg-3">
 						<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
@@ -129,6 +140,29 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 			<div class="ibox-content" id="content"></div>
 		</div>
 	</div>
+</div>
+<div tabindex="-1" class="modal inmodal" id="regiontipdiv" role="dialog" aria-hidden="true" style="display: none;">	
+	
+	<div class="modal-dialog">
+		<div class="modal-content animated bounceInRight">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h5 class="modal-title" id="regiontipdivtitle"></h5>				
+			</div>
+			<small class="font-bold">
+				<div class="modal-body">
+				投放城市:
+					 <div class="ibox-content" id="regiontipdivcontent">
+                     </div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-white" type="button" data-dismiss="modal">关闭</button>
+				</div>
+			</small>
+		</div>
+		<small class="font-bold"> </small>
+	</div>
+	<small class="font-bold"> </small>	
 </div>
 <script>
 	var jss = {
@@ -166,6 +200,11 @@ List<Template> templatelist = (List<Template>) request.getAttribute("templatelis
 	    }
 		jss.search(1);
 	});
+	function showregiondetail(tasktitle,hideid){
+		$("#regiontipdivtitle").html(base64decode(tasktitle));
+		$("#regiontipdivcontent").html(base64decode($("#"+hideid).val()));
+		$('#regiontipdiv').modal('show');
+	}
 	function setTaskStatus(taskID,status,oldStatus,endtime){
 		var optype="";
 		switch(status){

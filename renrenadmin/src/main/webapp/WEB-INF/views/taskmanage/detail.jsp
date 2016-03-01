@@ -379,7 +379,6 @@ List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
 							<div class="controls">
 							已选择的区域:<div id="selectedregions"></div>
 							<button class="btn btn-success" id="btnExpanAll" type="button">展开/折叠</button>
-							<button class="btn btn-success" id="btn-check-all" type="button">全选/全消</button>
 						</div>
 					</div>
 					<div class="row">
@@ -425,20 +424,7 @@ $('#btnExpanAll').on('click', function (e) {
       }
   
 });
-//全选全消
-var checkstatus=0;
-$('#btn-check-all').on('click', function (e) {
-      if(checkstatus==0){
-    	  checkstatus=1;
-    	  $("input[name='chkTaskPro']").prop("checked","checked");//所有的省都选中
-    	  $("input[name='chkTaskCity']").prop("checked","checked");//所有的市都选中
-      }else{
-    	  checkstatus=0;
-    	  $("input[name='chkTaskPro']").removeAttr("checked");//所有的省都取消选中
-    	  $("input[name='chkTaskCity']").removeAttr("checked");//所有的省都取消选中
-      }
-      gettaskregionremark();
-});
+
 //省份前面的加号点击事件
 $("span[name='prospan']").on('click', function (e) {
     if($(this).html()=="+"){
@@ -476,4 +462,6 @@ $('input').attr('readonly','readonly');
 $('[name="rTaskType"]').attr('disabled','disabled');
 $('[name="rTaskTagId"]').attr('disabled','disabled');
 initTaskRegion("<%=taskCityInfo%>");
+$('[name="chkTaskPro"]').attr('disabled','disabled');
+$('[name="chkTaskCity"]').attr('disabled','disabled');
 </script>

@@ -1,6 +1,7 @@
 package com.renrentui.renrenentity.req;
 
 import java.util.Date;
+import java.util.List;
 
 import com.renrentui.renrenentity.common.PagedRequestBase;
 
@@ -13,6 +14,9 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
     private String endTime;
     private Integer status;
     private Integer taskType;
+    private long cityCode;
+    private String cityName;
+    private List<Integer> areaCodeList;
 	public String getTaskTitle() {
 		return taskTitle;
 	}
@@ -60,6 +64,24 @@ public class PagedRenRenTaskReq extends PagedRequestBase{
 	}
 	public void setTaskType(Integer taskType) {
 		this.taskType = taskType;
+	}
+	public long getCityCode() {
+		return cityCode;
+	}
+	public void setCityCode(long cityCode) {
+		this.cityCode = cityCode;
+	}
+	public String getCityName() {
+		return cityName;
+	}
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+	public List<Integer> getAreaCodeList() {
+		return areaCodeList;
+	}
+	public void setAreaCodeList(List<Integer> areaCodeList) {
+		this.areaCodeList = areaCodeList;
 	}
 
 	

@@ -103,7 +103,25 @@ WHERE   EndTime > GETDATE()
         AND rrt.id = ${taskId}
   </select>
 
-  
+  <sql id="getPagedRenRenTaskListTable">
+  dbo.RenRenTask AS rrt (NOLOCK) 
+      <if test="areaCodeList != null" >
+		 JOIN ( SELECT   TaskId
+               FROM     TaskCityRelation WITH ( NOLOCK )
+                where CityCode in
+			    	<foreach item="item" index="index" collection="areaCodeList" open="("
+						separator="," close=")">
+						${item}
+					</foreach>
+             ) tcr ON rrt.Id = tcr.TaskId
+   	  </if> 
+		  left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+		  LEFT JOIN ( SELECT  ct.TaskId ,
+                            SUM(CompleteNum) AS CompleteNum
+                    FROM    dbo.ClienterTask AS ct ( NOLOCK )
+                    GROUP BY ct.TaskId
+                  ) AS Tx ON Tx.TaskId = rrt.id 	
+</sql>
     	<!-- 获取任务列表 WHERE茹化肖 2015年11月24日13:51:51 -->
   <sql id="getPagedRenRenTaskListWhere">
 		1=1		
@@ -154,13 +172,7 @@ WHERE   EndTime > GETDATE()
         isnull(k.tagName,'''') as tagName,
         isnull(k.tagColorCode,'''') as tagColorCode
         ',
-		' dbo.RenRenTask AS rrt (NOLOCK) 
-		  left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
-		  LEFT JOIN ( SELECT  ct.TaskId ,
-                            SUM(CompleteNum) AS CompleteNum
-                    FROM    dbo.ClienterTask AS ct ( NOLOCK )
-                    GROUP BY ct.TaskId
-                  ) AS Tx ON Tx.TaskId = rrt.id 
+		' <include refid="getPagedRenRenTaskListTable" />
         ',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />

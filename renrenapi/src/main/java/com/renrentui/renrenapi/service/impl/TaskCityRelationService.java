@@ -14,6 +14,7 @@ import com.renrentui.renrenapi.dao.inter.ITaskCityRelationDao;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.ITaskCityRelationService;
 import com.renrentui.renrencore.enums.AreaLevel;
+import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.TaskCityRelation;
 import com.renrentui.renrenentity.domain.TaskRegion;
@@ -50,11 +51,11 @@ public class TaskCityRelationService implements ITaskCityRelationService{
 					PublicProvinceCity cityDetail=cityMap.get(taskCityRelation.getCityCode());
 					TaskRegion taskRegion=new TaskRegion();
 					taskRegion.setTaskId(taskId);
-					taskRegion.setCityCode(taskCityRelation.getCityCode());
+					taskRegion.setCityCode(cityDetail.getCode());
 					taskRegion.setCityName(cityDetail.getName());
 					if (cityDetail.getJiBie().intValue()==AreaLevel.City.value()) {
 						PublicProvinceCity provinceDetail=cityMap.get(cityDetail.getParentCode());
-						taskRegion.setParentCode(cityDetail.getCode());
+						taskRegion.setParentCode(provinceDetail.getCode());
 						taskRegion.setParentName(provinceDetail.getName());
 					}
 					taskRegions.add(taskRegion);
