@@ -25,7 +25,7 @@ public class PublicProvinceCity implements Serializable {
     /*
      * 首字母
      */
-	@JsonIgnore
+//	@JsonIgnore
     private String firstLetter;
     /*
      * 是否热门城市
