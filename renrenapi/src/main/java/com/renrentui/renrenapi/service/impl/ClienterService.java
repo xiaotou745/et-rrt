@@ -25,6 +25,7 @@ import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.CodeType;
 import com.renrentui.renrencore.enums.SendSmsType;
 import com.renrentui.renrencore.enums.SignUpCode;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrencore.util.RandomCodeStrGenerator;
 import com.renrentui.renrencore.util.SmsUtils;
