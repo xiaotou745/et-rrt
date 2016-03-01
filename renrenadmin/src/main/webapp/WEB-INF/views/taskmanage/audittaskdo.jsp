@@ -60,10 +60,9 @@
 				for(int k=0;k<tempRegion.length;k++){
 					if(k==0){
 						regionInfo=tempRegion[k];	
-					}else{
+					}else if(k==1){
 						regionInfo+=("<br/>"+tempRegion[k]);
-					}
-					if(k>=1){
+					}else{
 						regionInfo+="<br/>...";
 					  break;	
 					}
