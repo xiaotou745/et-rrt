@@ -129,5 +129,11 @@ public interface IClienterService {
 	 */
 	Clienter getClienterById(Long cid);
 
-	ResponseBase sendcode(CSendCodeReq req);	 
+	ResponseBase sendcode(CSendCodeReq req);
+
+	boolean isBindWx(int clienterId,String openid);
+
+	boolean clienterBindWx(int clienterId, String openid);
+
+	int getClienterIdByPhone(String phoneNo);	 
 }

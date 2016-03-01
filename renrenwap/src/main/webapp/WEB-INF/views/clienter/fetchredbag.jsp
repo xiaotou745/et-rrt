@@ -8,7 +8,8 @@
 <%@page import="com.renrentui.renrencore.util.HtmlHelper"%>
 <%@page import="com.renrentui.renrencore.util.EnumHelper"%>
 <%
-	String basePath =PropertyUtils.getProperty("java.renrenwap.url");
+	String basePath=PropertyUtils.getProperty("java.renrenwap.url");
+	String openid=(String)request.getAttribute("openid");
 %>
 <!-- 引用block时，可以指定参数 -->
 <!DOCTYPE html>
@@ -21,7 +22,10 @@
     <link rel="stylesheet" href="<%=basePath%>/css/home.css" />
     <link rel="shortcut icon" href="<%=basePath%>/img/favicon.ico" type="image/x-icon" />
     <script type="text/javascript">
-		var sendcodeurl="<%=basePath%>/clienter/sendcode";
+    	var basepath="<%=basePath%>";
+		var sendcodeurl=basepath+"/clienter/sendcode";
+		var fetchredbagurl=basepath+"/clienter/fetchredbagsubmit";
+		var openid="<%=openid%>";
 	</script>
 </head>
 

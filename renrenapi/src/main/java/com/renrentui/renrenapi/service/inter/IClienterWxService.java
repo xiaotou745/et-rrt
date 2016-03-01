@@ -8,4 +8,10 @@ public interface IClienterWxService {
 	
 	/**取消关注 窦海超  2016年2月25日 16:00:51*/
 	boolean unfollow(String openId);
+
+
+	boolean isAttentionWx(String openid);
+
+
+	int hadFetchRedbag(String openid);
 }

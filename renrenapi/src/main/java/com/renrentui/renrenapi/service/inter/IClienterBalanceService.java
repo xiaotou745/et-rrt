@@ -9,5 +9,7 @@ public interface IClienterBalanceService {
 	
 
 	ClienterBalance selectByPrimaryKey(Long id);
+
+	boolean fetchRedbag(int clienterId,String openid);
 	
 }

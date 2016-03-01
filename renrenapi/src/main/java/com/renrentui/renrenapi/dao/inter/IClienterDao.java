@@ -135,4 +135,13 @@ public interface IClienterDao {
 	 */
 	Clienter getClienterById(Long cid);
 	List<String> getClienterheadimg();
+
+
+	boolean isBindWx(int clienterId,String openid);
+
+
+	boolean updateClienterBindWx(int clienterId, String openid);
+
+
+	int getClienterIdByPhone(String phoneNo);
 }
