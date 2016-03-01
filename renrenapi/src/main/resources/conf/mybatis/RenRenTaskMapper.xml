@@ -106,14 +106,7 @@ WHERE   EndTime > GETDATE()
   <sql id="getPagedRenRenTaskListTable">
   dbo.RenRenTask AS rrt (NOLOCK) 
       <if test="areaCodeList != null" >
-		 JOIN ( SELECT   TaskId
-               FROM     TaskCityRelation WITH ( NOLOCK )
-                where CityCode in
-			    	<foreach item="item" index="index" collection="areaCodeList" open="("
-						separator="," close=")">
-						${item}
-					</foreach>
-             ) tcr ON rrt.Id = tcr.TaskId
+		 JOIN  TaskCityRelation as tcr WITH (NOLOCK) ON rrt.Id = tcr.TaskId
    	  </if> 
 		  left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
 		  LEFT JOIN ( SELECT  ct.TaskId ,
@@ -126,29 +119,36 @@ WHERE   EndTime > GETDATE()
   <sql id="getPagedRenRenTaskListWhere">
 		1=1		
 		<if test="createTimeBegin != null and createTimeBegin!=''">
-			and createTime >=''${createTimeBegin}''
+			and rrt.createTime >=''${createTimeBegin}''
 		</if>
 		<if test="createTimeEnd != null and createTimeEnd!=''">
-			and DATEADD(d, 1, ''${createTimeEnd}'')>createTime
+			and DATEADD(d, 1, ''${createTimeEnd}'')>rrt.createTime
 		</if>
 	    <if test="beginTime != null and beginTime!=''">
-			and endTime>=''${beginTime}''
+			and rrt.endTime>=''${beginTime}''
 		</if>
 		<if test="endTime != null and endTime != ''">
-			and DATEADD(d, 1, ''${endTime}'')>beginTime
+			and DATEADD(d, 1, ''${endTime}'')>rrt.beginTime
 		</if>
 	    <if test="status != null and status>-1">
-			and status=${status}
+			and rrt.status=${status}
 		</if>
 		<if test="taskType != null and taskType>0">
-			and taskType=${taskType}
+			and rrt.taskType=${taskType}
 		</if>
 		<if test="taskTitle != null and taskTitle!=''">
-			and taskTitle like ''%${taskTitle}%''
+			and rrt.taskTitle like ''%${taskTitle}%''
 		</if>	
 		<if test="pusher != null and pusher!=''">
-			and pusher like ''%${pusher}%''
+			and rrt.pusher like ''%${pusher}%''
 		</if>	
+		 <if test="areaCodeList != null" >
+		 and tcr.CityCode in
+		    	<foreach item="item" index="index" collection="areaCodeList" open="("
+					separator="," close=")">
+					${item}
+				</foreach>
+   	  </if> 
 	</sql>
   	<!-- 获取任务列表 茹化肖 2015年11月24日13:51:51 -->
   	<select id="getPagedRenRenTaskList" resultType="com.renrentui.renrenentity.domain.RenRenTaskModel"
@@ -200,6 +200,7 @@ WHERE   EndTime > GETDATE()
 <sql id="getNewTaskListWhere">	
 	a.Status = 1
  	and getdate()>=a.BeginTime and a.EndTime>getdate()  
+ 	and  tcr.CityCode in(${cityCode},${provinceCode},-1)
     <if test="userId != 0" >
    	   AND c.id IS NULL
    	</if> 
@@ -207,7 +208,7 @@ WHERE   EndTime > GETDATE()
 <sql id="getNewTaskListTable">	
 	RenRenTask a WITH(nolock)
     JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
-    JOIN (select TaskId from  TaskCityRelation  WITH(nolock) where CityCode = ${cityCode} or CityCode =${provinceCode} or CityCode=-1) tcr ON a.Id = tcr.TaskId
+    JOIN TaskCityRelation tcr  WITH(nolock)  ON a.Id = tcr.TaskId
    left JOIN dbo.TaskTag k WITH(NOLOCK) ON a.tagId=k.id
     <if test="userId != 0" >
        LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
@@ -252,12 +253,13 @@ statementType="CALLABLE">
    	select count(1) 
    	FROM      RenRenTask a WITH(nolock)
    	  JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
-   	  JOIN (select TaskId from  TaskCityRelation  WITH(nolock) where CityCode = ${cityCode} or CityCode =${provinceCode} or CityCode=-1) tcr ON a.Id = tcr.TaskId
+   	  JOIN TaskCityRelation as tcr  WITH(nolock) ON a.Id = tcr.TaskId
             <if test="userId != 0" >
             LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
   			</if> 
   WHERE     a.Status = 1
   			and getdate()>=a.BeginTime and a.EndTime>getdate()  
+  			and  tcr.CityCode in(${cityCode},${provinceCode},-1)
 		    <if test="userId != 0" >
 		   	   AND c.id IS NULL
 		   	</if> 

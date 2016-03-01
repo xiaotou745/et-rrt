@@ -308,13 +308,31 @@ public class TaskManageController {
 		return model;
 	}
 	private String getTaskRegions(long taskId){
-		List<Long> taskIds=new ArrayList<>();
+		List<Long> taskIds = new ArrayList<>();
 		taskIds.add(taskId);
-		Map<Long,List<TaskRegion>> resultMap=taskCityRelationService.getTaskCityRelationDetailList(taskIds);
-		List<TaskRegion> reslut= resultMap.get(taskId);
-		List<String> proCodes=reslut.stream().filter(m->m.getParentCode()==0).map(k->k.getCityCode()+"").collect(Collectors.toList());
-		List<String> cityCodes=reslut.stream().filter(m->m.getParentCode()>0).map(k->k.getCityCode()+"").collect(Collectors.toList());
-		return String.join(",", proCodes)+"#"+String.join(",", cityCodes);
+		Map<Long, List<TaskRegion>> taskRegionMap = taskCityRelationService.getTaskCityRelationDetailList(taskIds);
+		List<TaskRegion> reslut = taskRegionMap.get(taskId);
+
+		List<String> cityCodeList = new ArrayList<>();
+		if (reslut.size() == 1 && reslut.get(0).getCityCode() == -1) {
+			cityCodeList.add(reslut.get(0).getCityCode() + "");
+		} else {
+			Map<Integer, List<TaskRegion>> group = reslut.stream().collect(Collectors.groupingBy(TaskRegion::getParentCode));
+			for (Integer parentCode : group.keySet()) {
+				if (parentCode.intValue() > 0) {
+					List<String> cityCodes = group.get(parentCode).stream()
+							.map(m -> m.getCityCode() + "")
+							.collect(Collectors.toList());
+					cityCodeList.add(parentCode + ":"+ String.join(",", cityCodes));
+				} else {
+					List<String> proCodes = group.get(parentCode).stream()
+							.map(m -> m.getCityCode() + "")
+							.collect(Collectors.toList());
+					cityCodeList.add(":" + String.join(",", proCodes));
+				}
+			}
+		}
+		return String.join("#", cityCodeList);
 	}
 	@RequestMapping("getbusinessbanlance")
 	@ResponseBody

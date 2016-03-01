@@ -336,23 +336,32 @@ function initTaskRegion(taskCityInfo){
 		return;
 	}
 	//如果是全国，则选中所有的checkbox
-	if(taskCityInfo=="-1#"){
-		$('#btn-check-all').click();
+	if(taskCityInfo=="-1"){
+  	  $("input[name='chkTaskPro']").prop("checked","checked");//所有的省都选中
+	  $("input[name='chkTaskCity']").prop("checked","checked");//所有的市都选中
+		gettaskregionremark();
 		return;
 	}
 	var procity=taskCityInfo.split("#");
-	if(procity.length!=2){
-		return;
-	}
-	var pro=procity[0].split(",");
-	for(var i=0;i<pro.length;i++){
-		$("#chkTaskPro"+pro[i]).prop("checked","checked");
-		$("#chkTaskPro"+pro[i]).change();
-	}
-	var citys=procity[1].split(",");
-	for(var i=0;i<citys.length;i++){
-		$("#chkTaskCity"+citys[i]).prop("checked","checked");
-		$("#chkTaskCity"+citys[i]).change();
+	var temp="";
+	var tempcity="";
+	for(var i=0;i<procity.length;i++){
+		temp=procity[i].split(":");
+		tempcity=temp[1].split(",");
+		if(temp[0]==""){//上级为空，则表示全省
+			for(var k=0;k<tempcity.length;k++){
+				$("#chkTaskPro"+tempcity[k]).prop("checked","checked");
+				//省内的所有城市都选中
+				$("#chkTaskPro"+tempcity[k]).change();
+			}
+		}else{
+			//省份选中
+			$("#chkTaskPro"+temp[0]).prop("checked","checked");
+			//省内的城市也选中
+			for(var j=0;j<tempcity.length;j++){
+				$("#chkTaskCity"+tempcity[j]).prop("checked","checked");
+			}
+		}
 	}
 	gettaskregionremark();
 }
