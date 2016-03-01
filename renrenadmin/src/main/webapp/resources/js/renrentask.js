@@ -246,3 +246,122 @@ function isInt(n)
 {
      return n == Math.abs( parseInt( n ) );
 }
+
+
+//获取任务投放区域字符串，页面显示用
+function gettaskregionremark(){
+	var result="";
+	var allLength=$("#taskregion input[type='checkbox']").length;
+	var checkedAllLength=$("#taskregion input[type='checkbox']:checked").length;
+	//如果全部都选中了，则表示全国
+	if(allLength==checkedAllLength){
+		result= "全国";
+	}else{
+		$('input:checkbox[name=chkTaskPro]:checked').each(function(indexPro,objPro) {
+			var citydivid="#taskCity"+$(objPro).val();
+	   		var allCitysLength=$(citydivid+" input[type='checkbox']").length;
+	   		var checkedCitys=$(citydivid+" input[type='checkbox']:checked");
+	   		var proName=$(objPro).next().html();
+	   		//如果选中的是全省，则只保存省份的数据
+	   		if(checkedCitys.length==allCitysLength){
+	   			result+=(proName+":全省<br/>");
+	   		}else{
+	   			result+=(proName+":");
+	   			//遍历省内选中的城市
+	   			$(checkedCitys).each(function(indexCity,objCity) {
+	   				if(indexCity==0){
+	   					result+=$(objCity).next().html();
+	   				}else{
+	   					result+=(","+$(objCity).next().html());
+	   				}
+	   			});
+	   			result+="<br/>";
+	   		}
+		});
+	}
+	$("#selectedregions").html(result);	
+}
+//任务投放区域数据
+function gettaskregion(){
+	var septsArr=new Array();
+	var taskId=$('#hdtaskid').val();
+	
+	var allLength=$("#taskregion input[type='checkbox']").length;
+	var checkedAllLength=$("#taskregion input[type='checkbox']:checked").length;
+	//如果全部都选中了，则表示全国
+	if(allLength==checkedAllLength){
+		var all=new Object();
+		all.taskId=taskId;
+		all.parentCode=0;
+		all.parentName="";
+		all.cityCode=-1;
+		all.cityName="全国";
+   		septsArr.push(all);
+   		return septsArr;
+	}
+	$('input:checkbox[name=chkTaskPro]:checked').each(function(indexPro,objPro) {
+		var citydivid="#taskCity"+$(objPro).val();
+   		var allCitysLength=$(citydivid+" input[type='checkbox']").length;
+   		var checkedCitys=$(citydivid+" input[type='checkbox']:checked");
+   		var proCode=$(objPro).val();
+   		var proName=$(objPro).next().html();
+   		//如果选中的是全省，则只保存省份的数据
+   		if(checkedCitys.length==allCitysLength){
+   	   		var pro=new Object();
+   	   		pro.taskId=taskId;
+   	   		pro.parentCode=0;
+   	   		pro.parentName="";
+   	   		pro.cityCode=proCode;
+   	   		pro.cityName=proName;
+   	   		septsArr.push(pro);
+   		}else{
+   			//遍历省内选中的城市
+   			$(checkedCitys).each(function(indexCity,objCity) {
+   		   		var city=new Object();
+				city.taskId=taskId;
+				city.parentCode=proCode;
+				city.parentName=proName;
+				city.cityCode=$(objCity).val();
+				city.cityName=$(objCity).next().html();
+				septsArr.push(city);
+   			});
+   		}
+
+	});
+	 return septsArr;
+}
+//修改任务时，初始化任务投放区域
+function initTaskRegion(taskCityInfo){
+	if(taskCityInfo==""){
+		return;
+	}
+	//如果是全国，则选中所有的checkbox
+	if(taskCityInfo=="-1"){
+  	  $("input[name='chkTaskPro']").prop("checked","checked");//所有的省都选中
+	  $("input[name='chkTaskCity']").prop("checked","checked");//所有的市都选中
+		gettaskregionremark();
+		return;
+	}
+	var procity=taskCityInfo.split("#");
+	var temp="";
+	var tempcity="";
+	for(var i=0;i<procity.length;i++){
+		temp=procity[i].split(":");
+		tempcity=temp[1].split(",");
+		if(temp[0]==""){//上级为空，则表示全省
+			for(var k=0;k<tempcity.length;k++){
+				$("#chkTaskPro"+tempcity[k]).prop("checked","checked");
+				//省内的所有城市都选中
+				$("#chkTaskPro"+tempcity[k]).change();
+			}
+		}else{
+			//省份选中
+			$("#chkTaskPro"+temp[0]).prop("checked","checked");
+			//省内的城市也选中
+			for(var j=0;j<tempcity.length;j++){
+				$("#chkTaskCity"+tempcity[j]).prop("checked","checked");
+			}
+		}
+	}
+	gettaskregionremark();
+}

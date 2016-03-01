@@ -2,6 +2,8 @@ package com.renrentui.renrenentity;
 
 import java.util.Date;
 
+import com.renrentui.renrencore.util.ParseHelper;
+
 public class Clienter {
     private Long id;
 
@@ -35,6 +37,8 @@ public class Clienter {
 
     private Date lastOptTime;
     private String recommendPhone;
+    private Date birthDay;
+    private String operSystem;
     public String getRecommendPhone() {
 		return recommendPhone;
 	}
@@ -62,6 +66,9 @@ public class Clienter {
     }
 
     public Integer getAge() {
+    	if (this.birthDay!=null) {
+			return ParseHelper.GetInDate(new Date(), 1)-ParseHelper.GetInDate(this.birthDay, 1);
+		}
         return age;
     }
 
@@ -174,6 +181,22 @@ public class Clienter {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+	public Date getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	public String getOperSystem() {
+		return operSystem;
+	}
+
+	public void setOperSystem(String operSystem) {
+		this.operSystem = operSystem;
+	}
 
     
 }

@@ -28,3 +28,13 @@ go
              )
     update  t
     set     t.cop = t.OperSystem;
+
+go
+ alter table dbo.Clienter
+ add BirthDay DateTime null;
+ go
+ exec sys.sp_addextendedproperty @name = N'MS_Description', @value = N'地推员生日',
+    @level0type = N'SCHEMA', @level0name = N'dbo', @level1type = N'TABLE',
+    @level1name = N'Clienter', @level2type = N'COLUMN',
+    @level2name = N'BirthDay';
+go

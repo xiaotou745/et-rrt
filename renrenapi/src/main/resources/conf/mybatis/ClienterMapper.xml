@@ -18,10 +18,11 @@
     <result column="Status" property="status" jdbcType="INTEGER" />
     <result column="LastOptName" property="lastoptname" jdbcType="NVARCHAR" />
     <result column="LastOptTime" property="lastopttime" jdbcType="TIMESTAMP" />
+    <result column="birthDay" property="birthDay" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
     Id, ClienterName, PhoneNo, Password, LoginName, HeadImage, CityName, CityCode, Sex, 
-    Age, Education, LastLoginTime, CreateTime, Status, LastOptName, LastOptTime
+    Age, Education, LastLoginTime, CreateTime, Status, LastOptName, LastOptTime,RecommendPhone,OperSystem,birthDay
   </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from Clienter
@@ -180,6 +181,9 @@
       <if test="lastOptName != null and lastOptName!=''" >
         LastOptName = #{lastOptName,jdbcType=NVARCHAR},
       </if>
+      <if test="birthDay != null and birthDay!=''" >
+        birthDay = #{birthDay,jdbcType=TIMESTAMP},
+      </if>
         LastOptTime = getdate()
     </set>
     where Id = #{id,jdbcType=BIGINT}
@@ -256,6 +260,7 @@ SELECT  c.[Id] ,
         c.[CityCode] ,
         c.[Sex] ,
         c.[Age] ,
+        c.[BirthDay] ,
         c.[Education] ,
         c.[LastLoginTime] ,
         c.[CreateTime] ,
@@ -288,6 +293,7 @@ WHERE   c.Id = #{userId}
       ,c.[CityCode]
       ,c.[Sex]
       ,c.[Age]
+      ,c.[BirthDay]
       ,c.[Education]
       ,c.[LastLoginTime]
       ,c.[CreateTime]

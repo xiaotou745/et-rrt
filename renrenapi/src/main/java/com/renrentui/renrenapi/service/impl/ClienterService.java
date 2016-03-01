@@ -343,6 +343,7 @@ public class ClienterService implements IClienterService {
 	 * @Return
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class, timeout = 30)
 	public int modifyuserc(ModifyUserCReq req) {
 		ClienterLog log = new ClienterLog();
 		log.setClienterId(Long.valueOf(req.getUserId()));
@@ -357,6 +358,10 @@ public class ClienterService implements IClienterService {
 		clienter.setLastOptName(req.getUserId() + "");
 		clienter.setLastOptTime(new Date());
 		clienter.setHeadImage(req.getHeadImage());
+		if (req.getBirthDay()!=null&&!req.getBirthDay().isEmpty()) {
+			clienter.setBirthDay(ParseHelper.ToDate(req.getBirthDay()));
+		}
+
 		return clienterDao.updateByPrimaryKeySelective(clienter);
 	}
 

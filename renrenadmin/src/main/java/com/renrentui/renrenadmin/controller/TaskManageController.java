@@ -2,10 +2,13 @@ package com.renrentui.renrenadmin.controller;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +28,7 @@ import com.renrentui.renrenapi.service.inter.ISubCommissionService;
 import com.renrentui.renrenapi.service.inter.ITaskCityRelationService;
 import com.renrentui.renrenapi.service.inter.ITaskTagService;
 import com.renrentui.renrenapi.service.inter.ITemplateService;
+import com.renrentui.renrencore.enums.AreaLevel;
 import com.renrentui.renrencore.enums.TaskStatus;
 import com.renrentui.renrencore.enums.TaskType;
 import com.renrentui.renrencore.enums.TemplateStatus;
@@ -32,7 +36,6 @@ import com.renrentui.renrencore.util.ExcelUtils;
 import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.ParseHelper;
-import com.renrentui.renrenentity.Attachment;
 import com.renrentui.renrenentity.Business;
 import com.renrentui.renrenentity.BusinessBalance;
 import com.renrentui.renrenentity.PublicProvinceCity;
@@ -40,13 +43,12 @@ import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.TaskTag;
 import com.renrentui.renrenentity.Template;
 import com.renrentui.renrenentity.common.PagedResponse;
-import com.renrentui.renrenentity.domain.ClienterRelationLevelModel;
 import com.renrentui.renrenentity.domain.OrderAudit;
 import com.renrentui.renrenentity.domain.RenRenTaskModel;
 import com.renrentui.renrenentity.domain.TaskPartnerItem;
+import com.renrentui.renrenentity.domain.TaskRegion;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemplateGroup;
-import com.renrentui.renrenentity.req.CRelationReq;
 import com.renrentui.renrenentity.req.PagedPartnerReq;
 import com.renrentui.renrenentity.req.PagedRenRenTaskReq;
 import com.renrentui.renrenentity.req.PagedTemplateReq;
@@ -106,45 +108,22 @@ public class TaskManageController {
 			model.addObject("taskSetps", taskSetps);
 			model.addObject("taskInfo", taskInfo);
 			model.addObject("taskID", taskId);
-			model.addObject("task_city", taskCityRelationService.getTaskCity(taskId));
+			model.addObject("taskCityInfo", getTaskRegions(taskId));
 			
 		}
 		List<Business> datalist=businessService.getAllList();
 		model.addObject("businessData", datalist);
-		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(2));//省份
-		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(3);//城市
-		model.addObject("pro_city", getCityStr(citylistlist));//构建城市字符串
+	
 		model.addObject("childs",subCommissionService.getCruuentStrategyChild());
 		List<TaskTag> tagList=taskTagService.getAll();
 		model.addObject("tagList", tagList);
+		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(AreaLevel.Province));//省份
+		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(AreaLevel.City);//城市
+		Map<Integer, List<PublicProvinceCity>> provinceCityMap =citylistlist.stream().collect(Collectors.groupingBy(PublicProvinceCity::getParentCode));
+		model.addObject("provinceCityMap", provinceCityMap);
 		return model;
 	}
 
-	private String getTemplateList() {
-		PagedTemplateReq req=new PagedTemplateReq();
-		List<Template> templateList= templateService.getAllList(req);
-		Map<Long, StringBuilder> resulMap=new HashMap<Long, StringBuilder>();
-		for (Template item : templateList) {
-			if (resulMap.containsKey(item.getBusinessId())) {
-				resulMap.get(item.getBusinessId()).append(";"+item.getId()+"|"+item.getTemplateName()+"|"+item.getStatus());
-			}else {
-				StringBuilder builder=new StringBuilder();
-				builder.append(item.getId()+"|"+item.getTemplateName()+"|"+item.getStatus());
-				resulMap.put(item.getBusinessId(), builder);
-			}
-		}
-		StringBuilder resultBuilder=new StringBuilder();
-		for (Map.Entry<Long, StringBuilder> entry : resulMap.entrySet()) {  
-			if (resultBuilder.toString().isEmpty()) {
-				resultBuilder.append(entry.getKey()+"="+entry.getValue().toString());
-			}else {
-				resultBuilder.append("#"+entry.getKey()+"="+entry.getValue().toString());
-			}
-			
-		}  
-
-		return resultBuilder.toString();
-	}
 	private String getCityStr(List<PublicProvinceCity> list){
 		Map<Integer, StringBuilder> resulMap=new HashMap<Integer, StringBuilder>();
 		for (PublicProvinceCity item : list) {
@@ -200,45 +179,9 @@ public class TaskManageController {
 		UserContext context=UserContext.getCurrentContext(request);
 		taskItem.setCreateName(context.getUserName());
 		taskItem.setModifyName(context.getUserName());
-		List<Integer> regionCodes=getRegionCodeList(request,req);//获取城市信息
-		List<Attachment> attachments=null;//TODO 暂时将附件去掉
-		return renRenTaskService.insert(req, regionCodes,attachments);
+		return renRenTaskService.insert(req);
 	}
-	/**
-	 * 组建任务区域
-	 * @param request
-	 * @return
-	 */
-	private List<Integer> getRegionCodeList(HttpServletRequest req,SaveTaskReq request){
-		List<Integer> regionCodes=new ArrayList<>();
-		Integer provinceCode=ParseHelper.ToInt(request.getProvinceCode(),0);
-		if (provinceCode>-1) {
-			Integer cityCode=ParseHelper.ToInt(request.getCityCode(),0);
-			if (cityCode>-1) {
-				regionCodes.add(cityCode);
-			}else {
-				regionCodes.add(provinceCode);
-			}
-		}else {
-			regionCodes.add(-1);
-		}
-		return regionCodes;
-	}
-	private List<Attachment> getAttachList(HttpServletRequest request){
-		List<Attachment> attachments=new ArrayList<>();
-		String attachs=request.getParameter("attachmentfiles");
-		if (attachs!=null&&!attachs.isEmpty()) {
-			String [] attachList=attachs.split(";");
-			for (String fileinfo : attachList) {
-				String [] fileNames=fileinfo.split("#");
-				Attachment attach=new Attachment();
-				attach.setAttachmentName(fileNames[0]);
-				attach.setAttachUrl(fileNames[1]);
-				attachments.add(attach);
-			}
-		}
-		return attachments;
-	}
+
 	/**
 	 * 审核任务 列表
 	 * @return
@@ -267,7 +210,39 @@ public class TaskManageController {
 		ModelAndView model = new ModelAndView("taskmanage/audittaskdo");
 		PagedResponse<RenRenTaskModel> resp=renRenTaskService.getPagedRenRenTaskList(req);
 		model.addObject("listData", resp);
+		List<Long> taskIds=resp.getResultList().stream().map(k->k.getId()).collect(Collectors.toList());
+		model.addObject("taskRegionMap", getTaskRegionMap(taskIds));
 		return model;
+	}
+	private Map<Long,String> getTaskRegionMap(List<Long> taskIds){
+		Map<Long, List<TaskRegion>> taskRegionMap = taskCityRelationService.getTaskCityRelationDetailList(taskIds);
+		Map<Long, String> regionMap = new HashMap<>();
+		for (Long taskId : taskRegionMap.keySet()) {
+			List<String> cityStrList = new ArrayList<>();
+			if (taskRegionMap.get(taskId).size() == 1&& taskRegionMap.get(taskId).get(0).getCityCode() == -1) {
+				cityStrList.add(taskRegionMap.get(taskId).get(0).getCityName());
+			} else {
+				Map<Integer, List<TaskRegion>> group = taskRegionMap.get(taskId)
+						.stream().collect(Collectors.groupingBy(TaskRegion::getParentCode));
+				for (Integer parentCode : group.keySet()) {
+					if (parentCode.intValue() > 0) {
+						String proName = group.get(parentCode).get(0).getParentName();
+						List<String> cityNames = group.get(parentCode).stream().map(m -> m.getCityName()).collect(Collectors.toList());
+						cityStrList.add(proName + ":"+ String.join(",", cityNames));
+					} else {
+						List<String> cityNames = group.get(parentCode).stream().map(m -> m.getCityName() + ":全省").collect(Collectors.toList());
+						cityStrList.addAll(cityNames);
+					}
+				}
+				Collections.sort(cityStrList, new Comparator<String>() {
+					public int compare(String arg0, String arg1) {
+						return new Integer(arg0.length()).compareTo(new Integer(arg1.length()));
+					}
+				});
+			}
+			regionMap.put(taskId, String.join("<br/>", cityStrList));
+		}
+		return regionMap;
 	}
 	/**
 	 * 修改任务状态 (审核 取消.驳回,终止)
@@ -320,13 +295,45 @@ public class TaskManageController {
 		model.addObject("taskSetps", taskSetps);
 		
 		model.addObject("taskInfo", taskInfo);
-//		//4 获取投放放范围
-		model.addObject("pro_city", taskCityRelationService.getTaskCity(taskId));
+
 		List<TaskTag> tagList=taskTagService.getAll();
 		model.addObject("tagList", tagList);
+		
+		model.addObject("provincelist", publicProvinceCityService.getOpenCityByJiBie(AreaLevel.Province));//省份
+		List<PublicProvinceCity> citylistlist =publicProvinceCityService.getOpenCityByJiBie(AreaLevel.City);//城市
+		Map<Integer, List<PublicProvinceCity>> provinceCityMap =citylistlist.stream().collect(Collectors.groupingBy(PublicProvinceCity::getParentCode));
+		model.addObject("provinceCityMap", provinceCityMap);
+//		//4 获取投放放范围
+		model.addObject("taskCityInfo", getTaskRegions(taskId));
 		return model;
 	}
-	
+	private String getTaskRegions(long taskId){
+		List<Long> taskIds = new ArrayList<>();
+		taskIds.add(taskId);
+		Map<Long, List<TaskRegion>> taskRegionMap = taskCityRelationService.getTaskCityRelationDetailList(taskIds);
+		List<TaskRegion> reslut = taskRegionMap.get(taskId);
+
+		List<String> cityCodeList = new ArrayList<>();
+		if (reslut.size() == 1 && reslut.get(0).getCityCode() == -1) {
+			cityCodeList.add(reslut.get(0).getCityCode() + "");
+		} else {
+			Map<Integer, List<TaskRegion>> group = reslut.stream().collect(Collectors.groupingBy(TaskRegion::getParentCode));
+			for (Integer parentCode : group.keySet()) {
+				if (parentCode.intValue() > 0) {
+					List<String> cityCodes = group.get(parentCode).stream()
+							.map(m -> m.getCityCode() + "")
+							.collect(Collectors.toList());
+					cityCodeList.add(parentCode + ":"+ String.join(",", cityCodes));
+				} else {
+					List<String> proCodes = group.get(parentCode).stream()
+							.map(m -> m.getCityCode() + "")
+							.collect(Collectors.toList());
+					cityCodeList.add(":" + String.join(",", proCodes));
+				}
+			}
+		}
+		return String.join("#", cityCodeList);
+	}
 	@RequestMapping("getbusinessbanlance")
 	@ResponseBody
 	public String getBusinessBanlance(Long businessId){

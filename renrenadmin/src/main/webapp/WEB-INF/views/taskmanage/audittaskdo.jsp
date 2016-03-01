@@ -4,6 +4,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.lang.Double"%>
+<%@page import="java.util.Map"%>
 <%@page import="com.renrentui.renrencore.util.PageHelper"%>
 <%@page import="com.renrentui.renrencore.util.ParseHelper"%>
 <%@page import="com.renrentui.renrenentity.common.PagedResponse"%>
@@ -11,6 +12,7 @@
 <%@page import="com.renrentui.renrencore.enums.TaskStatus"%>
 <%@page import="com.renrentui.renrencore.enums.TaskType"%>
 <%@page import="com.renrentui.renrencore.util.PropertyUtils"%>
+<%@page import="org.apache.commons.codec.binary.Base64"%>
 <%
 	String basePath = PropertyUtils.getProperty("java.renrenadmin.url");
 %>
@@ -22,6 +24,7 @@
 			<th >任务标题</th>
 			<th >参与人数</th>
 			<th >总完成次数</th>
+			<th >投放城市</th>
 			<th >创建人</th>
 			<th >创建时间</th>
 			<th >起止日期</th>
@@ -34,34 +37,58 @@
 	</thead>
 	<tbody>
 		<%
-			PagedResponse<RenRenTaskModel> responsePageList = (PagedResponse<RenRenTaskModel>) request
-					.getAttribute("listData");
+			PagedResponse<RenRenTaskModel> responsePageList = (PagedResponse<RenRenTaskModel>) request.getAttribute("listData");
+			Map<Long,String> taskRegionMap = (Map<Long,String>) request.getAttribute("taskRegionMap");
 			List<RenRenTaskModel> data = responsePageList.getResultList();
 			if (data == null) {
 				data = new ArrayList<RenRenTaskModel>();
 			}
 			String baseOrderPath="";
+			String regionInfo="";
+			String tasknameinfo="";
+			String fullregioninfo="";
+			String [] tempRegion=null;
 			for (int i = 0; i < data.size(); i++) {
 				baseOrderPath=basePath+"/taskmanage/partnerlist?taskTitle="+
 						java.net.URLEncoder.encode(data.get(i).getTaskTitle(), "utf-8")+
 						"&taskType="+java.net.URLEncoder.encode(TaskType.getEnum(data.get(i).getTaskType()).desc(), "utf-8")+
 						"&taskId="+data.get(i).getId()+
 						"&taskStatus="+java.net.URLEncoder.encode(TaskStatus.getEnum(data.get(i).getStatus()).desc(), "utf-8");
+				tempRegion=taskRegionMap.get(data.get(i).getId()).split("<br/>");
+				tasknameinfo=new String(Base64.encodeBase64(data.get(i).getTaskTitle().getBytes("utf-8")));  
+				fullregioninfo=new String(Base64.encodeBase64(taskRegionMap.get(data.get(i).getId()).getBytes("utf-8")));
+				for(int k=0;k<tempRegion.length;k++){
+					if(k==0){
+						regionInfo=tempRegion[k];	
+					}else{
+						regionInfo+=("<br/>"+tempRegion[k]);
+					}
+					if(k>=1){
+						regionInfo+="<br/>...";
+					  break;	
+					}
+				}
 		%>
 		<tr>
 			<td><%=data.get(i).getId()%></td>
 			<td><a target="_blank" class="blue2" href="<%=basePath%>/taskmanage/detail?taskId=<%=data.get(i).getId()%>"><%=ParseHelper.ShowString(data.get(i).getTaskTitle())%></a></td>
 			<td>
 			<%
-				if(data.get(i).getCompleteNum()>0){%>
+				if(data.get(i).getPartnerNum()>0){%>
 					<a href="<%=baseOrderPath%>" target="_blank"><%=data.get(i).getPartnerNum()%></a>
 				<%}else{%>
-					<%=data.get(i).getCompleteNum()%>
+					<%=data.get(i).getPartnerNum()%>
 				<%}
 			%>
 			
 			</td>
 			<td><%=data.get(i).getCompleteNum()%> </td>
+			<td><%=regionInfo%>
+			<input type="hidden" id="hid<%=data.get(i).getId()%>" value="<%=fullregioninfo%>"></input>
+			<%if(regionInfo.endsWith("...")){%>
+				<a href="javascript:showregiondetail('<%=tasknameinfo %>','hid<%=data.get(i).getId()%>')">查看全部</a></td>
+			<%} %>
+			
 			<td><%=ParseHelper.ShowString(data.get(i).getCreateName())%> </td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getCreateTime())%></td>
 			<td><%=ParseHelper.ToDateString(data.get(i).getBeginTime(),"yyyy-MM-dd")+"/"+ParseHelper.ToDateString(data.get(i).getEndTime(),"yyyy-MM-dd")%></td>

@@ -83,10 +83,12 @@ SELECT TOP 1  rrt.id,
         rrt.Reminder,
 		rrt.status,
 		rrt.estimatedTime,
-		rrt.tagId,k.tagName,k.tagColorCode
+		rrt.tagId,
+		isnull(k.tagName,'') as tagName,
+		isnull(k.tagColorCode,'') as tagColorCode
 		FROM    dbo.RenRenTask AS rrt ( NOLOCK )
         JOIN dbo.Business AS b ( NOLOCK ) ON rrt.BusinessId = b.id
-         JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+         left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
         LEFT JOIN dbo.ClienterTask AS ct ON ct.TaskId=rrt.id AND ct.ClienterId=${userId}
 WHERE   rrt.id =  ${taskId}
   </select>
@@ -101,34 +103,52 @@ WHERE   EndTime > GETDATE()
         AND rrt.id = ${taskId}
   </select>
 
-  
+  <sql id="getPagedRenRenTaskListTable">
+  dbo.RenRenTask AS rrt (NOLOCK) 
+      <if test="areaCodeList != null" >
+		 JOIN  TaskCityRelation as tcr WITH (NOLOCK) ON rrt.Id = tcr.TaskId
+   	  </if> 
+		  left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+		  LEFT JOIN ( SELECT  ct.TaskId ,
+                            SUM(CompleteNum) AS CompleteNum
+                    FROM    dbo.ClienterTask AS ct ( NOLOCK )
+                    GROUP BY ct.TaskId
+                  ) AS Tx ON Tx.TaskId = rrt.id 	
+</sql>
     	<!-- 获取任务列表 WHERE茹化肖 2015年11月24日13:51:51 -->
   <sql id="getPagedRenRenTaskListWhere">
 		1=1		
 		<if test="createTimeBegin != null and createTimeBegin!=''">
-			and createTime >=''${createTimeBegin}''
+			and rrt.createTime >=''${createTimeBegin}''
 		</if>
 		<if test="createTimeEnd != null and createTimeEnd!=''">
-			and DATEADD(d, 1, ''${createTimeEnd}'')>createTime
+			and DATEADD(d, 1, ''${createTimeEnd}'')>rrt.createTime
 		</if>
 	    <if test="beginTime != null and beginTime!=''">
-			and endTime>=''${beginTime}''
+			and rrt.endTime>=''${beginTime}''
 		</if>
 		<if test="endTime != null and endTime != ''">
-			and DATEADD(d, 1, ''${endTime}'')>beginTime
+			and DATEADD(d, 1, ''${endTime}'')>rrt.beginTime
 		</if>
 	    <if test="status != null and status>-1">
-			and status=${status}
+			and rrt.status=${status}
 		</if>
 		<if test="taskType != null and taskType>0">
-			and taskType=${taskType}
+			and rrt.taskType=${taskType}
 		</if>
 		<if test="taskTitle != null and taskTitle!=''">
-			and taskTitle like ''%${taskTitle}%''
+			and rrt.taskTitle like ''%${taskTitle}%''
 		</if>	
 		<if test="pusher != null and pusher!=''">
-			and pusher like ''%${pusher}%''
+			and rrt.pusher like ''%${pusher}%''
 		</if>	
+		 <if test="areaCodeList != null" >
+		 and tcr.CityCode in
+		    	<foreach item="item" index="index" collection="areaCodeList" open="("
+					separator="," close=")">
+					${item}
+				</foreach>
+   	  </if> 
 	</sql>
   	<!-- 获取任务列表 茹化肖 2015年11月24日13:51:51 -->
   	<select id="getPagedRenRenTaskList" resultType="com.renrentui.renrenentity.domain.RenRenTaskModel"
@@ -136,26 +156,23 @@ WHERE   EndTime > GETDATE()
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		' rrt.Id DESC ',
-		'id ,
-        TaskTitle ,
-        CreateName ,
-        CreateTime ,
-        BeginTime ,
-        EndTime ,
-        Pusher ,
-        Amount ,
-        Status ,
-        TaskType,
+		'rrt.id ,
+        rrt.TaskTitle ,
+        rrt.CreateName ,
+        rrt.CreateTime ,
+        rrt.BeginTime ,
+        rrt.EndTime ,
+        rrt.Pusher ,
+        rrt.Amount ,
+        rrt.Status ,
+        rrt.TaskType,
         ISNULL(Tx.CompleteNum, 0) AS CompleteNum,
-        PartnerNum,rrt.tagId,k.tagName,k.tagColorCode
+        rrt.PartnerNum,
+        rrt.tagId,
+        isnull(k.tagName,'''') as tagName,
+        isnull(k.tagColorCode,'''') as tagColorCode
         ',
-		' dbo.RenRenTask AS rrt (NOLOCK) 
-		  JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
-		  LEFT JOIN ( SELECT  ct.TaskId ,
-                            SUM(CompleteNum) AS CompleteNum
-                    FROM    dbo.ClienterTask AS ct ( NOLOCK )
-                    GROUP BY ct.TaskId
-                  ) AS Tx ON Tx.TaskId = rrt.id 
+		' <include refid="getPagedRenRenTaskListTable" />
         ',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />
@@ -183,16 +200,16 @@ WHERE   EndTime > GETDATE()
 <sql id="getNewTaskListWhere">	
 	a.Status = 1
  	and getdate()>=a.BeginTime and a.EndTime>getdate()  
-    AND (b.CityCode = ${cityCode} or b.CityCode =${provinceCode} or b.CityCode=-1)
+ 	and  tcr.CityCode in(${cityCode},${provinceCode},-1)
     <if test="userId != 0" >
    	   AND c.id IS NULL
    	</if> 
 </sql>
 <sql id="getNewTaskListTable">	
 	RenRenTask a WITH(nolock)
-    JOIN TaskCityRelation b WITH(nolock) ON a.Id = b.TaskId
     JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
-    JOIN dbo.TaskTag k WITH(NOLOCK) ON a.tagId=k.id
+    JOIN TaskCityRelation tcr  WITH(nolock)  ON a.Id = tcr.TaskId
+   left JOIN dbo.TaskTag k WITH(NOLOCK) ON a.tagId=k.id
     <if test="userId != 0" >
        LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
 	</if> 
@@ -220,7 +237,9 @@ statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		'<include refid="getNewTaskListOrderBy" />',
 		'a.Id as taskId ,a.taskGeneralInfo ,a.taskTitle as taskName ,a.tasktype,
-        a.amount,a.AuditCycle,a.EstimatedTime,a.status,a.PartnerNum,m.logo,k.tagName,k.tagColorCode',
+        a.amount,a.AuditCycle,a.EstimatedTime,a.status,a.PartnerNum,m.logo,
+        isnull(k.tagName,'''') as tagName,
+        isnull(k.tagColorCode,'''') as tagColorCode',
 		'<include refid="getNewTaskListTable" />',
 		'<include refid="getNewTaskListWhere" />',
 		#{pageSize,mode=IN,jdbcType=INTEGER},
@@ -233,14 +252,14 @@ statementType="CALLABLE">
    <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
    	select count(1) 
    	FROM      RenRenTask a WITH(nolock)
-            JOIN TaskCityRelation b WITH(nolock) ON a.Id = b.TaskId
-            JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
+   	  JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
+   	  JOIN TaskCityRelation as tcr  WITH(nolock) ON a.Id = tcr.TaskId
             <if test="userId != 0" >
             LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
   			</if> 
   WHERE     a.Status = 1
   			and getdate()>=a.BeginTime and a.EndTime>getdate()  
-            AND (b.CityCode = ${cityCode} or b.CityCode=-1)
+  			and  tcr.CityCode in(${cityCode},${provinceCode},-1)
 		    <if test="userId != 0" >
 		   	   AND c.id IS NULL
 		   	</if> 
@@ -262,8 +281,8 @@ statementType="CALLABLE">
  rrt.Reminder,
  rrt.status,
  b.Logo,
- k.tagName,
- k.tagColorCode,
+ isnull(k.tagName,'') as tagName,
+ isnull(k.tagColorCode,'') as tagColorCode,
  case  rrt.TaskType when 1 then  ISNULL(CTD.auditWaitNum,0)+ISNULL(CTD.auditPassNum,0)+ISNULL(CTD.auditRefuseNum,0)
  else  ct.CompleteNum end as CompleteNum,
  ct.id as CtId,
@@ -273,7 +292,7 @@ statementType="CALLABLE">
 FROM dbo.ClienterTask AS ct  (NOLOCK)
 INNER JOIN dbo.RenRenTask AS rrt(NOLOCK) ON ct.TaskId=rrt.id
 INNER JOIN dbo.Business AS b (NOLOCK) ON rrt.BusinessId=b.id
-JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
 LEFT JOIN (SELECT  CtId ,
 SUM(CASE [Status] WHEN 1 THEN 1 ELSE 0 END) AS auditWaitNum,
 SUM(CASE [Status] WHEN 2 THEN 1 ELSE 0 END) AS auditPassNum,

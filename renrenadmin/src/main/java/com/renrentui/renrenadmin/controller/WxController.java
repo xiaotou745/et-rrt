@@ -6,31 +6,26 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jdom.JDOMException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
-import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrenentity.WxAccess_token;
 import com.renrentui.renrenentity.WxToken;
-import com.using.weixin.common.ApiTools;
 import com.using.weixin.wxtools.WeiXinTools;
 import com.using.weixin.wxtools.vo.recv.WxRecvEventMsg;
 import com.using.weixin.wxtools.vo.recv.WxRecvGeoMsg;
 import com.using.weixin.wxtools.vo.recv.WxRecvMsg;
 import com.using.weixin.wxtools.vo.recv.WxRecvPicMsg;
-import com.using.weixin.wxtools.vo.recv.WxRecvTextMsg;
 import com.using.weixin.wxtools.vo.recv.WxRecvVoiceMsg;
 import com.using.weixin.wxtools.vo.send.WxSendMsg;
-import com.using.weixin.wxtools.vo.send.WxSendMusicMsg;
-import com.using.weixin.wxtools.vo.send.WxSendNewsMsg;
 import com.using.weixin.wxtools.vo.send.WxSendTextMsg;
 
 @Controller
@@ -146,15 +141,90 @@ public class WxController {
 
 	/**
 	 * 事件监听 窦海超 2016年2月25日 11:21:52
+	 * 
+	 * @throws JDOMException
 	 * */
+	@RequestMapping("eventlisten")
 	public void eventListen(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-	
+			HttpServletResponse response) throws ServletException, IOException,
+			JDOMException {
+		try {
+			System.out.println("进入方法了");
+			WxRecvMsg msg = WeiXinTools.recv(request.getInputStream());
+			WxSendMsg sendMsg = WeiXinTools.builderSendByRecv(msg);
+
+			/** -------------------2.接受到的事件消息-------------------------- */
+			if (msg instanceof WxRecvEventMsg) {
+				WxRecvEventMsg recvMsg = (WxRecvEventMsg) msg;
+				String event = recvMsg.getEvent();
+				String fromUserName = recvMsg.getFromUser();// 关注 人的OPENID
+				String createTime = recvMsg.getCreateDt();// 操作时间
+				System.out.println("订阅:fromUserName" + fromUserName
+						+ ",createTime:" + createTime);
+				if ("subscribe".equals(event)) {
+					// 订阅消息
+					sendMsg = new WxSendTextMsg(sendMsg, "谢谢您的订阅。");
+					WeiXinTools.send(sendMsg, response.getOutputStream());
+					System.out.println("订阅");
+					clienterWxService.follow(fromUserName, fromUserName,
+							createTime);
+					return;
+				} else if ("unsubscribe".equals(event)) {
+					// 取消订阅
+					System.out.println("取消订阅");
+
+					clienterWxService.unfollow(fromUserName);
+					return;
+
+				} else if ("CLICK".equals(event)) {
+					// 自定义菜单点击事件
+					String eventKey = recvMsg.getEventKey();
+
+					// 判断自定义菜单中的key回复消息
+					if ("自定义菜单中的key".equals(eventKey)) {
+
+						return;
+					}
+				} else {
+					// 无法识别的事件消息
+					return;
+				}
+
+			}
+
+			/** -------------------3.接受到的地理位置信息-------------------------- */
+			else if (msg instanceof WxRecvGeoMsg) {
+				WxRecvGeoMsg recvMsg = (WxRecvGeoMsg) msg;
+
+				return;
+			}
+
+			/** -------------------4.接受到的音频消息-------------------------- */
+			else if (msg instanceof WxRecvVoiceMsg) {
+				WxRecvVoiceMsg recvMsg = (WxRecvVoiceMsg) msg;
+
+				return;
+			}
+
+			/** -------------------5.接受到的图片消息-------------------------- */
+			else if (msg instanceof WxRecvPicMsg) {
+				WxRecvPicMsg recvMsg = (WxRecvPicMsg) msg;
+
+				return;
+			}
+			/** ------------------6.接受到的未能识别的消息-------------------- */
+			else {
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * get请求进行验证服务器是否正常
 	 */
+
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		/*

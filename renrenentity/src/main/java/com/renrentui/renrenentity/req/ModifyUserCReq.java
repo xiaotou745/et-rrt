@@ -11,6 +11,7 @@ public class ModifyUserCReq {
 	private  Short sex;
 	private  Integer age;
 	private String headImage;
+	private String birthDay;
 	public String getHeadImage() {
 		return headImage;
 	}
@@ -72,6 +73,12 @@ public class ModifyUserCReq {
 	 */
 	public void setAge(Integer age) {
 		this.age = age;
+	}
+	public String getBirthDay() {
+		return birthDay;
+	}
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
 	}
 
 }

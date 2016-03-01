@@ -1,10 +1,10 @@
 package com.renrentui.renrenapi.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import com.renrentui.renrenapi.dao.inter.IPublicProvinceCityDao;
 import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
+import com.renrentui.renrencore.enums.AreaLevel;
 import com.renrentui.renrenentity.PublicProvinceCity;
 import com.renrentui.renrenentity.domain.OpenCityModel;
 import com.renrentui.renrenentity.req.HotAndPublicCityReq;
@@ -49,7 +50,7 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		List<PublicProvinceCity> listdata=redisService.get(RedissCacheKey.RR_PublicProvinceCity, List.class); 
 		if (listdata==null||listdata.size()==0) {
 			listdata=publicProvinceCityDao.getAllOpenCity();
-			if (listdata!=null||listdata.size()>0) {
+			if (listdata!=null&&listdata.size()>0) {
 				redisService.set(RedissCacheKey.RR_PublicProvinceCity, listdata,360,TimeUnit.DAYS);
 			}
 		}
@@ -59,17 +60,13 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	 * 根据级别获取开发城市数据
 	 */
 	@Override
-	public List<PublicProvinceCity> getOpenCityByJiBie(int jiBie)
+	public List<PublicProvinceCity> getOpenCityByJiBie(AreaLevel jiBie)
 	{
 		List<PublicProvinceCity> list = getOpenCityListFromRedis();
-		List<PublicProvinceCity> listnew = new ArrayList<PublicProvinceCity>();
-
-		for (PublicProvinceCity item : list) {
-			if (item.getJiBie() == jiBie) {
-				listnew.add(item);
-			}
-		}
-		return listnew;
+		return list
+				.stream()
+				.filter(k -> k.getJiBie().intValue() == jiBie.value())
+				.collect(Collectors.toList());
 	}
 	
 	/**
@@ -79,14 +76,11 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 	@Override
 	public List<PublicProvinceCity> getOpenCityDistrict(int cityId) {
 		List<PublicProvinceCity> list = getOpenCityListFromRedis();
-		List<PublicProvinceCity> listnew = new ArrayList<PublicProvinceCity>();
-
-		for (PublicProvinceCity item : list) {
-			if (item.getJiBie() == 3&&item.getCode()==cityId) {
-				listnew.add(item);
-			}
-		}
-		return listnew;
+		return list
+				.stream()
+				.filter(k -> k.getJiBie().intValue() == AreaLevel.District
+						.value() && k.getParentCode().intValue() == cityId)
+				.collect(Collectors.toList());
 	}
 
 
@@ -119,6 +113,22 @@ public class PublicProvinceCityService implements IPublicProvinceCityService {
 		}
 
 		return result;
+	}
+
+
+
+
+	@Override
+	public Map<Integer, PublicProvinceCity> getOpenCityDetailMap() {
+		List<PublicProvinceCity> list = getOpenCityListFromRedis();
+		Map<Integer, PublicProvinceCity> listnew = new HashMap<>();
+
+		for (PublicProvinceCity item : list) {
+			if (!listnew.containsKey(item.getCode())) {
+				listnew.put(item.getCode(), item);
+			}
+		}
+		return listnew;
 	}
 
 

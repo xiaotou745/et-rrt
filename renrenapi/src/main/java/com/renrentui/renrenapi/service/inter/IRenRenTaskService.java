@@ -54,7 +54,7 @@ public interface IRenRenTaskService {
 	 * @return
 	 */
 	 SubmitTaskCode submitTask(SubmitTaskReq req);
-	 int insert(SaveTaskReq taskreq,List<Integer> regionCodes,List<Attachment> attachments);
+	 int insert(SaveTaskReq taskreq);
 	/**
 	 * 修改任务 V1.0.2删除
 	 * 茹化肖

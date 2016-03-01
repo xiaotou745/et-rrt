@@ -40,6 +40,7 @@ import com.renrentui.renrenapi.dao.inter.ITemplateDetailSnapshotDao;
 import com.renrentui.renrenapi.dao.inter.ITemplateSnapshotDao;
 import com.renrentui.renrenapi.service.inter.IPublicProvinceCityService;
 import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
+import com.renrentui.renrencore.enums.AreaLevel;
 import com.renrentui.renrencore.enums.BBalanceRecordType;
 import com.renrentui.renrencore.enums.CancelTaskCode;
 import com.renrentui.renrencore.enums.DatumAuditStatus;
@@ -89,6 +90,7 @@ import com.renrentui.renrenentity.domain.TaskDatumChild;
 import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.domain.TaskModel;
 import com.renrentui.renrenentity.domain.TaskPartnerItem;
+import com.renrentui.renrenentity.domain.TaskRegion;
 import com.renrentui.renrenentity.domain.TaskSetp;
 import com.renrentui.renrenentity.domain.TemCorModel;
 import com.renrentui.renrenentity.domain.TemplateGroup;
@@ -366,7 +368,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public int insert(SaveTaskReq taskreq, List<Integer> regionCodes,List<Attachment> attachments) {
+	public int insert(SaveTaskReq taskreq) {
 	    RenRenTask	task=taskreq.getRenRenTask();
 	    //1.插入任务信息
 	    if(task.getId()>0)
@@ -393,10 +395,13 @@ public class RenRenTaskService implements IRenRenTaskService {
 	 		logRecord.setOptType((short) TaskOpType.NewTask.value());
 	 		logRecord.setRemark(TaskOpType.NewTask.desc());
 	 		renRenTaskLogDao.insert(logRecord);
+		    for (TaskCityRelation taskRegion : taskreq.getTaskRegions()) {
+		    	taskRegion.setTaskId(task.getId());
+			}
 		}
 	   
 	    //2. 插入步骤信息
-	    ArrayList<TaskSetp> setplist=taskreq.getTaskSetps();
+	    List<TaskSetp> setplist=taskreq.getTaskSetps();
 	    for (int i = 0; i < setplist.size(); i++) {
 	    	TaskSetp setp=setplist.get(i);
 	    	setp.setTaskId(task.getId());//设置任务ID
@@ -407,8 +412,8 @@ public class RenRenTaskService implements IRenRenTaskService {
 	    	renRenTaskDao.insertTaskSetp(setp);
 		}
 	    //3.插入模板组信息
-	    ArrayList<TemplateGroup> groups=taskreq.getTemplateGroup();
-	    if(task.getTaskType()!=1)//非签约任务 没有模板信息
+	    List<TemplateGroup> groups=taskreq.getTemplateGroup();
+	    if(task.getTaskType()!=TaskType.ContractTask.value())//非签约任务 没有模板信息
 	    {
 	    	groups=new ArrayList<TemplateGroup>();
 	    }
@@ -425,8 +430,7 @@ public class RenRenTaskService implements IRenRenTaskService {
 			}
 		}
 	    //4.任务投放区域
-	    List<TaskCityRelation> recordList = getCityRelationList(task, regionCodes);
-		int relationResult = taskCityRelationDao.insertList(recordList);
+		taskCityRelationDao.insertList(taskreq.getTaskRegions());
 	    
 	    return 1;
 	}
@@ -460,6 +464,18 @@ public class RenRenTaskService implements IRenRenTaskService {
 	@Override
 	public PagedResponse<RenRenTaskModel> getPagedRenRenTaskList(
 			PagedRenRenTaskReq req) {
+		if (req.getCityName()!=null&&!req.getCityName().isEmpty()) {
+			List<PublicProvinceCity> cityLists=publicProvinceCityService.getOpenCityByJiBie(AreaLevel.City);
+			List<PublicProvinceCity> citys=cityLists.stream().filter(k->k.getName().contains(req.getCityName())).collect(Collectors.toList());
+			List<Integer> cityCodes=citys.stream().map(k->k.getCode()).collect(Collectors.toList());
+			List<Integer> proCodes=citys.stream().map(k->k.getParentCode()).collect(Collectors.toList());
+			req.setAreaCodeList(new ArrayList<Integer>());
+			req.getAreaCodeList().add(-1);
+			if (cityCodes.size()>0||proCodes.size()>0) {
+				req.getAreaCodeList().addAll(proCodes);
+				req.getAreaCodeList().addAll(cityCodes);
+			}
+		}
 		return renRenTaskDao.getPagedRenRenTaskList(req);
 	}
 	/**
@@ -607,279 +623,6 @@ public class RenRenTaskService implements IRenRenTaskService {
 		RenRenTask model = renRenTaskDao.selectById(taskId);
 		return model;
 	}
-	/**
-	 * 构建任务投放区域列表
-	 * 茹化肖
-	 * 2015年11月16日16:18:27
-	 * @param record
-	 * @param regionCodes
-	 * @return
-	 */
-	private List<TaskCityRelation> getCityRelationList(RenRenTask record,
-			List<Integer> regionCodes) {
-		Map<Integer, String> regionMap = publicProvinceCityService
-				.getOpenCityMap();
-		List<TaskCityRelation> recordList = new ArrayList<TaskCityRelation>();
-		for (Integer regionCode : regionCodes) {
-			TaskCityRelation taskCityRelation = new TaskCityRelation();
-			taskCityRelation.setTaskId(record.getId());
-			taskCityRelation.setCityCode(regionCode);
-			taskCityRelation.setCityName("");
-			if (regionMap.containsKey(regionCode)) {
-				taskCityRelation.setCityName(regionMap.get(regionCode));
-			} else if (regionCode == -1) {
-				taskCityRelation.setCityName("全部区域");
-			}
-			recordList.add(taskCityRelation);
-		}
-		return recordList;
-	}
-	/***
-	 * 修改任务.
-	 * V1.0.2需求删除
-	 * 备注:茹化肖将修改任务和新建任务放在一起
-	 * 
-	 */
-//	@Override
-//	@Transactional(rollbackFor = Exception.class, timeout = 30)
-//	public int updateTask(RenRenTask record, List<Integer> regionCodes,
-//			List<Attachment> attachments) {
-//		RenRenTask oldTaskModel = renRenTaskDao.selectById(record.getId());
-//		if (oldTaskModel == null
-//				|| (oldTaskModel.getStatus() != TaskStatus.Reject.value() && oldTaskModel
-//						.getStatus() != TaskStatus.WaitAudit.value())) {
-//			return -1;
-//		}
-//		BusinessBalance nowBalance = businessBalanceDao
-//				.selectByBusinessId(record.getBusinessId());
-//		if (nowBalance == null) {
-//			throw new TransactionalRuntimeException("没有找到id=" + record.getBusinessId()
-//					+ "的商户的余额信息");
-//		}
-//		Double oldTotalFee = oldTaskModel.getAmount()
-//				* oldTaskModel.getTaskTotalCount();
-//		Double totalFee = record.getAmount() * record.getTaskTotalCount();
-//
-//		if (record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
-//			Double difFee = totalFee - oldTotalFee;
-//			// 如果任务修改后，商户id没有变更,但是任务的费用增加了，则需要判断新增的费用是否小于商家余额
-//			if (difFee.compareTo(0d) > 0
-//					&& difFee.compareTo(nowBalance.getBalance()) > 0) {
-//				return -1;
-//			}
-//		} else if (totalFee.compareTo(nowBalance.getBalance()) > 0) {
-//			// 如果任务修改后，商户id变更了,需要判断变更后的商户的余额是否足够支付任务的费用
-//			return -1;
-//		}
-//		StringBuilder sbRemark = new StringBuilder();
-//
-//		// 如果任务的合同模板有变更，则重新生成模板的快照
-//		Long oldTemplateId = record.getSnapshotTemplateId();
-//		String templateremark = updateTemplateSnapshot(record, oldTaskModel);
-//		// 没有重新生成模板快照时，当前任务的模板快照id不变
-//		if (oldTemplateId.equals(record.getSnapshotTemplateId())) {
-//			record.setSnapshotTemplateId(oldTaskModel.getSnapshotTemplateId());
-//		}
-//		// 如果任务的属性或模板快照有变更，则更新db（在此之前必须先更新快照，否则模板id不对）
-//		String taskRemark = getUpdateRemark(record, oldTaskModel);
-//		if ((taskRemark != null && !taskRemark.isEmpty())
-//				|| !record.getSnapshotTemplateId().equals(
-//						oldTaskModel.getSnapshotTemplateId())) {
-//			int result = renRenTaskDao.update(record);
-//			if (result == 0) {
-//				throw new TransactionalRuntimeException("更新任务基础信息时失败");
-//			}
-//			sbRemark.append(taskRemark);
-//		}
-//		if (templateremark != null && !templateremark.isEmpty()) {
-//			sbRemark.append(templateremark);
-//		}
-//		// 如果任务的附件有变更，则重新保存附件信息
-//		String attachRemark = updateAttachment(record, attachments);
-//		if (attachRemark != null && !attachRemark.isEmpty()) {
-//			sbRemark.append(attachRemark);
-//		}
-//		// //如果任务的投放范围有变更，则重新投放范围信息
-//		String regionRemark = updateRegion(record, regionCodes);
-//		if (regionRemark != null && !regionRemark.isEmpty()) {
-//			sbRemark.append(regionRemark);
-//		}
-//		// 商家id发生了变更，则需要将钱返回给原来的商家
-//		if (!record.getBusinessId().equals(oldTaskModel.getBusinessId())) {
-//			BusinessBalance oldBalance = businessBalanceDao
-//					.selectByBusinessId(oldTaskModel.getBusinessId());
-//			if (oldBalance == null) {
-//				throw new TransactionalRuntimeException("没有找到id="
-//						+ oldTaskModel.getBusinessId() + "的商户的余额信息");
-//			}
-//			updateBusinessBalance(record.getId(), oldTaskModel.getBusinessId(),
-//					oldTotalFee, oldBalance.getBalance(),
-//					BBalanceRecordType.CancelTask, record.getModifyName());
-//			// 扣除当前商家的余额
-//			updateBusinessBalance(record.getId(), record.getBusinessId(), (-1)
-//					* totalFee, nowBalance.getBalance(),
-//					BBalanceRecordType.ReleaseTask, record.getModifyName());
-//		} else if (!oldTotalFee.equals(totalFee)) {
-//			// 商家id没变，但是任务的费用发生了变化，则对商户多退少补
-//			updateBusinessBalance(record.getId(), record.getBusinessId(),
-//					oldTotalFee - totalFee, nowBalance.getBalance(),
-//					BBalanceRecordType.UpdateTask, record.getModifyName());
-//		}
-//		// 记录操作日志
-//		if (!sbRemark.toString().isEmpty()) {
-//			RenRenTaskLog logRecord = new RenRenTaskLog();
-//			logRecord.setRenrenTaskId(record.getId());
-//			logRecord.setOptName(record.getModifyName());
-//			logRecord.setOptType((short) TaskOpType.Modify.value());
-//			logRecord.setRemark(sbRemark.toString());
-//			renRenTaskLogDao.insert(logRecord);
-//		}
-//
-//		return 1;
-//	}
-
-	private String updateRegion(RenRenTask record, List<Integer> regionCodes) {
-		boolean isExist = false;
-		StringBuilder sb = new StringBuilder();
-		List<TaskCityRelation> oldRelations = taskCityRelationDao
-				.selectByTaskId(record.getId());
-		List<TaskCityRelation> recordList = getCityRelationList(record,
-				regionCodes);
-
-		for (TaskCityRelation relation : recordList) {
-			isExist = false;
-			for (TaskCityRelation oldrelation : oldRelations) {
-				if (relation.getCityCode().equals(oldrelation.getCityCode())) {
-					isExist = true;
-					break;
-				}
-			}
-			if (!isExist) {
-				sb.append("投放范围新增了" + relation.getCityName() + ",");
-			}
-		}
-		for (TaskCityRelation oldrelation : oldRelations) {
-			isExist = false;
-			for (TaskCityRelation relation : recordList) {
-				if (relation.getCityCode().equals(oldrelation.getCityCode())) {
-					isExist = true;
-					break;
-				}
-			}
-			if (!isExist) {
-				sb.append("投放范围删除了" + oldrelation.getCityName() + ",");
-			}
-		}
-
-		if (!sb.toString().isEmpty()) {
-			taskCityRelationDao.deleteByTaskId(record.getId());
-			taskCityRelationDao.insertList(recordList);
-		}
-		return sb.toString();
-	}
-	/**
-	 * 更新附件 V1.0.2删除
-	 * @param record
-	 * @param attachments
-	 * @return
-	 */
-//	private String updateAttachment(RenRenTask record,
-//			List<Attachment> attachments) {
-//		if (attachments != null && attachments.size() > 0) {
-//			for (Attachment attachment : attachments) {
-//				attachment.setTaskId(record.getId());
-//			}
-//		}
-//
-//		boolean isExist = false;
-//		StringBuilder sb = new StringBuilder();
-//		List<Attachment> attachList = attachmentDao.selectByTaskId(record
-//				.getId());
-//
-//		for (Attachment attach : attachments) {
-//			isExist = false;
-//			for (Attachment oldAttach : attachList) {
-//				if (attach.getAttachUrl().equals(oldAttach.getAttachUrl())) {
-//					isExist = true;
-//					break;
-//				}
-//			}
-//			if (!isExist) {
-//				sb.append("附件新增了" + attach.getAttachmentName() + ",");
-//			}
-//		}
-//		for (Attachment oldAttach : attachList) {
-//			isExist = false;
-//			for (Attachment attach : attachments) {
-//				if (attach.getAttachUrl().equals(oldAttach.getAttachUrl())) {
-//					isExist = true;
-//					break;
-//				}
-//			}
-//			if (!isExist) {
-//				sb.append("附件删除了" + oldAttach.getAttachmentName() + ",");
-//			}
-//		}
-//
-//		if (!sb.toString().isEmpty()) {
-//			attachmentDao.deleteByTaskId(record.getId());
-//			attachmentDao.insertList(attachments);
-//		}
-//		return sb.toString();
-//	}
-	/**
-	 * 更新模板快照
-	 * V1.0.2需求删除
-	 * @param record
-	 * @param oldTaskmodel
-	 * @return
-	 */
-//	private String updateTemplateSnapshot(RenRenTask record,
-//			RenRenTask oldTaskmodel) {
-//		String result = "";
-//		boolean needReCreateSnapshot = false;
-//		Long newTemplateId = record.getSnapshotTemplateId();
-//		TemplateSnapshot oldSnapshotTemplate = templateSnapshotDao
-//				.detailById(oldTaskmodel.getSnapshotTemplateId());
-//		Template nowTemplate = templateDao.detail(newTemplateId);
-//		if (oldSnapshotTemplate != null
-//				&& oldSnapshotTemplate.getTemplateId().equals(newTemplateId)) {
-//			if (nowTemplate.getLastOptTime().getTime() != oldSnapshotTemplate
-//					.getLastOptTime().getTime()) {
-//				needReCreateSnapshot = true;
-//				result = "更新了合同模板;";
-//			}
-//		} else {
-//			needReCreateSnapshot = true;
-//			String oldName = "未知";
-//			if (oldSnapshotTemplate != null) {
-//				oldName = oldSnapshotTemplate.getTemplateName();
-//			}
-//			result = "合同模板从:" + oldName + "改为了:"
-//					+ nowTemplate.getTemplateName() + ";";
-//		}
-//		if (needReCreateSnapshot) {
-//			TemplateSnapshotReq req = new TemplateSnapshotReq();
-//			req.setTemplateId(newTemplateId);
-//			int snapshotResult = templateSnapshotDao.copySnapshot(req);
-//			if (snapshotResult == 0) {
-//				throw new TransactionalRuntimeException("生成任务的模板快照失败");
-//			}
-//			int detailSnapshotResult = templateDetailSnapshotDao.copySnapshot(
-//					req.getTemplateId(), req.getTemplateSnapshotId());
-//			if (detailSnapshotResult == 0) {
-//				throw new TransactionalRuntimeException("生成任务的模板详情快照失败");
-//			}
-//			// 重新生成了模板的快照数据之后，才删除原来的模板快照数据
-//			templateSnapshotDao
-//					.deleteById(oldTaskmodel.getSnapshotTemplateId());
-//			templateDetailSnapshotDao.deleteBySnapshotTemplateId(oldTaskmodel
-//					.getSnapshotTemplateId());
-//			// 将当前任务的模板id设置为模板快照表的id
-//			record.setSnapshotTemplateId(req.getTemplateSnapshotId());
-//		}
-//		return result;
-//	}
 
 	private String getUpdateRemark(RenRenTask record, RenRenTask oldModel) {
 		if (oldModel == null || record == null) {
