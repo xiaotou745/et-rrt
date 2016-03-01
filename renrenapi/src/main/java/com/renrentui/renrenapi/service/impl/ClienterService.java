@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+import javax.naming.spi.DirStateFactory.Result;
+
+import org.apache.ibatis.executor.ReuseExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,18 +19,27 @@ import com.renrentui.renrenapi.dao.inter.IClienterDao;
 import com.renrentui.renrenapi.dao.inter.IClienterLogDao;
 import com.renrentui.renrenapi.dao.inter.IClienterRelationDao;
 import com.renrentui.renrenapi.dao.inter.IClienterWithdrawFormDao;
+import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrencore.consts.RedissCacheKey;
+import com.renrentui.renrencore.enums.CodeType;
+import com.renrentui.renrencore.enums.SendSmsType;
+import com.renrentui.renrencore.enums.SignUpCode;
 import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
+import com.renrentui.renrencore.util.RandomCodeStrGenerator;
+import com.renrentui.renrencore.util.SmsUtils;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterLog;
 import com.renrentui.renrenentity.ClienterLoginLog;
 import com.renrentui.renrenentity.ClienterRelation;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.common.ResponseBase;
+import com.renrentui.renrenentity.common.ResultModel;
 import com.renrentui.renrenentity.domain.ClienterDetail;
 import com.renrentui.renrenentity.domain.PartnerDetail;
 import com.renrentui.renrenentity.domain.PartnerModel;
+import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.ClienterReq;
 import com.renrentui.renrenentity.req.ForgotPwdReq;
 import com.renrentui.renrenentity.req.ModifyClienterStatusReq;
@@ -37,12 +49,15 @@ import com.renrentui.renrenentity.req.PartnerListReq;
 import com.renrentui.renrenentity.req.SignInReq;
 import com.renrentui.renrenentity.req.SignUpReq;
 import com.renrentui.renrenentity.resp.ClienterResp;
+import com.renrentui.renrenentity.resp.SignUpResp;
 
 @Service
 public class ClienterService implements IClienterService {
 	@Autowired
 	private IClienterDao clienterDao;
-
+	
+	@Autowired
+	private RedisService redisService;
 	@Autowired
 	private IClienterBalanceDao clienterBalanceDao;
 
@@ -105,7 +120,31 @@ public class ClienterService implements IClienterService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public long signup(SignUpReq req) {
+	public ResultModel<Object> signup(SignUpReq req) {
+		ResultModel<Object> resultModel =new ResultModel<Object>();
+		if (req.getPhoneNo().equals("")) {
+			resultModel.setCode(SignUpCode.PhoneNull.value()).setMsg(
+					SignUpCode.PhoneNull.desc());
+		}
+		if (isExistPhoneC(req.getPhoneNo()))// 手机号不正确
+			return resultModel.setCode(SignUpCode.PhoneFormatError.value())
+					.setMsg(SignUpCode.PhoneFormatError.desc());
+		if(req.getOperSystem() == null || req.getOperSystem().equals("")){
+			return resultModel.setCode(SignUpCode.NoOperSystem.value())
+					.setMsg(SignUpCode.NoOperSystem.desc());
+		}
+		if (req.getVerifyCode().equals(""))// 验证码不能为空
+			return resultModel.setCode(SignUpCode.VerCodeNull.value()).setMsg(
+					SignUpCode.VerCodeNull.desc());
+		if (req.getName() == null) {
+			req.setName("");
+		}
+		String key = RedissCacheKey.RR_Clienter_sendcode_register
+				+ req.getPhoneNo();// 注册key
+		String redisValueString = redisService.get(key, String.class);
+		if (!req.getVerifyCode().equals(redisValueString)) // 验证码 查缓存
+			return resultModel.setCode(SignUpCode.VerCodeError.value()).setMsg(
+					SignUpCode.VerCodeError.desc()); 
 		//1.判断有没有填写推荐人
 		List<ClienterRelation> creRelations =null;
 		Clienter recomClienter=null;
@@ -115,13 +154,15 @@ public class ClienterService implements IClienterService {
 			 recomClienter=clienterDao.getClienterByPhoneNo(req.getRecommendPhone());
 			if(recomClienter==null)
 			{
-				return -1;//推荐人不存在
+				return resultModel.setCode(SignUpCode.RecommendPhoneNoExist.value()).setMsg(
+						SignUpCode.RecommendPhoneNoExist.desc());//推荐人不存在
 			}
 			//推荐人存在 查询推荐人的关系
 			creRelations=clienterRelationDao.getRelastionListByClienterId(recomClienter.getId(),1);
 			if(creRelations==null||creRelations.size()==0)
 			{
-				return -2;//推荐人没有推荐关系
+				return resultModel.setCode(SignUpCode.RecommendPhoneNoRelation.value()).setMsg(
+						SignUpCode.RecommendPhoneNoRelation.desc());//推荐人没有推荐关系
 			}
 		}
 		else {
@@ -167,14 +208,21 @@ public class ClienterService implements IClienterService {
 			if (clienterBalanceDao.insert(id) <= 0) 
 			{
 				throw new TransactionalRuntimeException("添加新用户余额记录失败");
+			}else {
+				SignUpResp sur = new SignUpResp();
+				sur.setUserId(id);
+				sur.setUserName(req.getName());
+				resultModel.setData(sur).setCode(SignUpCode.Success.value())
+						.setMsg(SignUpCode.Success.desc());
+				return resultModel; 
 			}
-			
 		} 
 		else
 		{
-			throw new TransactionalRuntimeException("添加新用户失败");
+			return resultModel.setCode(SignUpCode.Fail.value()).setMsg(
+					SignUpCode.Fail.desc());
+			//throw new TransactionalRuntimeException("添加新用户失败");
 		}
-		return id;
 	}
 
 	/**
@@ -338,5 +386,74 @@ public class ClienterService implements IClienterService {
 	@Override
 	public Clienter getClienterById(Long cid) {
 		return clienterDao.getClienterById(cid);
+	}
+
+	@Override
+	public ResponseBase sendcode(CSendCodeReq req) {
+		ResponseBase resultModel = new ResponseBase();
+		String key = "";
+		String phoneNo = req.getPhoneNo();
+		String content = "";// "欢迎您的使用，验证码：#验证码#，请妥善保管相关信息。若非您本人操作，请忽略。";
+		// 类型 1注册 2修改密码 3忘记密码
+		CodeType codeType=CodeType.getEnum(req.getsType());
+		if (codeType==null) {
+			 resultModel.setResponseCode(SendSmsType.CodeTypeError.value());
+			 resultModel.setMessage(SendSmsType.CodeTypeError.desc());
+			 return resultModel;
+		}
+		boolean checkPhoneNo = isExistPhoneC(phoneNo);
+		if (codeType!=CodeType.Register&&!checkPhoneNo) {
+			 resultModel.setResponseCode(SendSmsType.PhoneNotExists.value());
+			 resultModel.setMessage(SendSmsType.PhoneNotExists.desc());// 该手机号不存在，不能修改或忘记密码
+			 return resultModel;
+		}
+		switch (codeType) {
+		case Register:
+			if (checkPhoneNo) { // 手机号存在
+				resultModel.setResponseCode(SendSmsType.PhoneExists.value());
+				resultModel.setMessage(SendSmsType.PhoneExists.desc());// 该手机号已经存在，不能注册
+				return resultModel;
+			}
+			key = RedissCacheKey.RR_Clienter_sendcode_register + phoneNo;
+			content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于注册，如非本人操作，请不要理会";
+			break;
+		case UpdatePasswrd:
+			key = RedissCacheKey.RR_Celitner_sendcode_UpdatePasswrd+ phoneNo;
+			content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于修改密码，如非本人操作，请不要理会";
+			break;
+		case ForgetPassword:
+			key = RedissCacheKey.RR_Clienter_sendcode_forgetPassword+ phoneNo;
+			content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于找回密码，如非本人操作，请不要理会";
+			break;
+		case BindAliPay:
+			key = RedissCacheKey.RR_Clienter_sendcode_bindAliPay+ phoneNo;
+			content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于绑定支付宝，如非本人操作，请不要理会";
+			break;
+		case FetchRedBag:
+			key = RedissCacheKey.RR_Clienter_sendcode_fetchRedBag+ phoneNo;
+			content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于绑定微信领红包，如非本人操作，请不要理会";
+			break;
+		default:
+			break;
+		}
+
+		String code = RandomCodeStrGenerator.generateCodeNum(6);// 获取随机数
+		content = content.replace("#验证码#", code);
+		redisService.set(key, code, 60 * 5);
+		try{
+			long resultValue = SmsUtils.sendSMS(phoneNo, content);
+			if (resultValue <= 0) {
+				 resultModel.setResponseCode(SendSmsType.Fail.value());
+				 resultModel.setMessage(
+						SendSmsType.Fail.desc());// 发送失败
+				return resultModel;
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		resultModel.setResponseCode(SendSmsType.Success.value());
+		resultModel.setMessage(
+				SendSmsType.Success.desc());// 设置成功
+		return resultModel;
 	}
 }
