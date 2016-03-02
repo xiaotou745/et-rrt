@@ -98,7 +98,7 @@ SELECT  BusinessId ,
         Amount ,
         TaskType
 FROM    dbo.RenRenTask AS rrt(NOLOCK)
-WHERE   EndTime > GETDATE()
+WHERE   DATEADD(d, 1, rrt.EndTime) > GETDATE()
         AND rrt.Status = 1
         AND rrt.id = ${taskId}
   </select>
@@ -125,7 +125,7 @@ WHERE   EndTime > GETDATE()
 			and DATEADD(d, 1, ''${createTimeEnd}'')>rrt.createTime
 		</if>
 	    <if test="beginTime != null and beginTime!=''">
-			and rrt.endTime>=''${beginTime}''
+			and DATEADD(d, 1, rrt.EndTime)>''${beginTime}''
 		</if>
 		<if test="endTime != null and endTime != ''">
 			and DATEADD(d, 1, ''${endTime}'')>rrt.beginTime
@@ -199,7 +199,7 @@ WHERE   EndTime > GETDATE()
 
 <sql id="getNewTaskListWhere">	
 	a.Status = 1
- 	and getdate()>=a.BeginTime and a.EndTime>getdate()  
+ 	and getdate()>=a.BeginTime and DATEADD(d, 1, a.EndTime)>getdate()  
  	and  tcr.CityCode in(${cityCode},${provinceCode},-1)
     <if test="userId != 0" >
    	   AND c.id IS NULL
@@ -258,7 +258,7 @@ statementType="CALLABLE">
             LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
   			</if> 
   WHERE     a.Status = 1
-  			and getdate()>=a.BeginTime and a.EndTime>getdate()  
+  			and getdate()>=a.BeginTime and DATEADD(d, 1, a.EndTime)>getdate()  
   			and  tcr.CityCode in(${cityCode},${provinceCode},-1)
 		    <if test="userId != 0" >
 		   	   AND c.id IS NULL
@@ -334,7 +334,7 @@ FROM    dbo.ClienterTask AS ct ( NOLOCK )
                 '系统服务' ,
                 '超时任务自动过期'
                 INTO RenRenTasklog ( RenRenTaskId, OptType, OptName, Remark )
-        WHERE  Status = 1 AND GETDATE()>=EndTime
+        WHERE  Status = 1 AND GETDATE()>=DATEADD(d, 1, EndTime)
 	</update>
 	  <update id="update" parameterType="com.renrentui.renrenentity.RenRenTask" >
     update RenRenTask
@@ -500,8 +500,8 @@ SELECT  id ,
 FROM    dbo.RenRenTask AS rrt ( NOLOCK )
 WHERE   rrt.Status = 1
         AND IsSend = 0
-        AND GETDATE() > DATEADD(DAY, -1, rrt.EndTime)
-        AND rrt.EndTime > GETDATE()
+        AND GETDATE() >= rrt.EndTime
+        AND DATEADD(d, 1, rrt.EndTime) > GETDATE()
   </select>
   <!-- 设置任务为已经发过消息 -->
   <update id="setTaskSend" parameterType="java.lang.Long">
@@ -514,7 +514,7 @@ WHERE   rrt.Status = 1
     <!-- 验证合同是否可以提交  2015年9月30日13:36:59茹化肖 -->
   <select id="checkOrderSubmit" parameterType="com.renrentui.renrenentity.req.SubmitTaskReq" resultType="com.renrentui.renrenentity.domain.CheckSubmitTask">
 SELECT TOP 1
-        CASE WHEN  GETDATE()> rrt.EndTime OR Status!=1 THEN 1
+        CASE WHEN  GETDATE()>= DATEADD(d, 1, rrt.EndTime) OR Status!=1 THEN 1
              ELSE 0
         END AS TaskClosed,
         rrt.Amount as taskAmount
