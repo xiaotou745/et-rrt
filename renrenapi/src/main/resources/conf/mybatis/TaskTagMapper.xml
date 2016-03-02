@@ -6,15 +6,17 @@
   	 from TaskTag with(nolock)
   </select>
   <update id="update" parameterType="com.renrentui.renrenentity.TaskTag">
-  update RenRenTask set tagId=1 where tagId=0;
 IF not  EXISTS ( SELECT  1
             FROM    TaskTag with(nolock)
             WHERE id!=#{id,jdbcType=INTEGER} and   tagName = #{tagName,jdbcType=NVARCHAR})
+begin
 update TaskTag set tagName = #{tagName,jdbcType=NVARCHAR},
             tagColorCode=#{tagColorCode,jdbcType=NVARCHAR} ,
             updateTime=getdate(),
             updateName=#{updateName,jdbcType=NVARCHAR} 
-            where id=#{id,jdbcType=INTEGER}
+            where id=#{id,jdbcType=INTEGER};
+update RenRenTask set tagId=1 where tagId=0;
+end
 	</update>
 	  <insert id="insert" parameterType="com.renrentui.renrenentity.TaskTag"> 
 IF not  EXISTS ( SELECT  1

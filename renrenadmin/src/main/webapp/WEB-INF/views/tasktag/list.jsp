@@ -68,7 +68,7 @@ List<TaskTag> list = (List<TaskTag>) request.getAttribute("listData");
     <div class="modal-content">
 	<div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	    <h4 class="modal-title">添加新标签</h4>
+	    <h4 class="modal-title" id="tagtitle">添加新标签</h4>
 	</div>
 <div class="modal-body">
 标签名称：<input id="tagName" class="form-control"/><br/><br/>
@@ -91,6 +91,7 @@ function AddShow(){
 	$("#tagColorCode").val("");
 	$("#tagid").val("0");
 	$("#optype").val("1");
+	$("#tagtitle").html("添加新标签");
 	oldtagName="";
 	oldtagColorCode="";
     $('#myModal').modal('show');
@@ -103,6 +104,7 @@ function modify(id,tagName,tagColorCode) {
 	$("#tagColorCode").val(tagColorCode);
 	$("#tagid").val(id);
 	$("#optype").val("0");
+	$("#tagtitle").html("修改已有标签");
 	oldtagName=tagName;
 	oldtagColorCode=tagColorCode;
     $('#myModal').modal('show');
