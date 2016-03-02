@@ -77,6 +77,7 @@ List<TaskTag> list = (List<TaskTag>) request.getAttribute("listData");
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
 	    <button type="button" id="savetag" class="btn btn-primary">保存</button>
+	    <span id="tip" style="color:red"></span>
 	</div>
     </div>
 </div>
@@ -119,6 +120,8 @@ $("#savetag").click(function(){
 		alert("没有修改，不需要保存！");
 		return;
 	}
+	 $("#tip").html("正在执行。。。");
+	 $("#savetag").attr("disabled",true);
 	var paramaters = {
 			"id":$("#tagid").val(),
 			"tagName" :  $("#tagName").val().trim(),
@@ -133,6 +136,8 @@ $("#savetag").click(function(){
 			url : url,
 			data : paramaters,
 			success : function(result) {
+				 $("#tip").html("");
+				 $("#savetag").attr("disabled",false);
 				if (result>0) {
 					alert("操作成功");
 					window.location.href = window.location.href;
