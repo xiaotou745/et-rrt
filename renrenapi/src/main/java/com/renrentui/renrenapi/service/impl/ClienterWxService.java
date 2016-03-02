@@ -10,6 +10,9 @@ import com.renrentui.renrenapi.dao.inter.IClienterWxLogDao;
 import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrenentity.ClienterWx;
 import com.renrentui.renrenentity.ClienterWxLog;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterWxModel;
+import com.renrentui.renrenentity.req.PagedClienterWxReq;
 
 @Service
 public class ClienterWxService implements IClienterWxService {
@@ -82,6 +85,11 @@ public class ClienterWxService implements IClienterWxService {
 	@Override
 	public int hadFetchRedbag(String openid) {
 		return clienterWxDao.hadFetchRedbag(openid);
+	}
+
+	@Override
+	public PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req) {
+		return clienterWxDao.getlist(req);
 	}
 
 }

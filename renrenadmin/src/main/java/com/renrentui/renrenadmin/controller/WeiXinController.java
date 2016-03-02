@@ -8,19 +8,33 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenapi.service.inter.IActivityService;
+import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrenentity.Activity;  
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterWxModel;
+import com.renrentui.renrenentity.req.PagedClienterWxReq;
 import com.renrentui.renrenentity.req.UpdateActivityReq;
 @Controller
 @RequestMapping("weixin")
 public class WeiXinController {
 	@Autowired
 	private IActivityService iActivityService;
+	private IClienterWxService clienterWxService;
 	@RequestMapping("attentionuserlist")
 	public ModelAndView attentionUserList() {
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "微信平台管理");
 		view.addObject("currenttitle", "微信公众号用户管理");
 		view.addObject("viewPath", "weixin/attentionuserlist");
+		return view;
+	}
+	
+	@RequestMapping("attentionuserlistdo")
+	public ModelAndView attentionUserListDo(PagedClienterWxReq req) {
+		ModelAndView view = new ModelAndView("weixin/attentionuserlistdo");
+		PagedResponse<ClienterWxModel> modelPagedResponse = new PagedResponse<ClienterWxModel>();
+		modelPagedResponse= clienterWxService.getlist(req);
+		view.addObject("listdata", modelPagedResponse);
 		return view;
 	}
 	
@@ -57,6 +71,5 @@ public class WeiXinController {
 		//List<Activity> list= iActivityService.getActivityDetail();
 		//view.addObject("listData", list);  
 		return view;
-	}  
-	
+	}
 }

@@ -94,7 +94,7 @@ $(function() {
 
 function validateQualification(openid){
 	$.ajax({
-        url     :basepath+"/clienter/validateQualification",
+        url     :basepath+"/clienter/validatequalification",
         method  :'post',
         async:false,
         data    :{
