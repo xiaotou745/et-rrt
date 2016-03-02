@@ -18,6 +18,7 @@ import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.PropertyUtils;
+import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrenentity.WxAccess_token;
 import com.renrentui.renrenentity.WxToken;
 import com.using.weixin.wxtools.WeiXinTools;
@@ -40,9 +41,6 @@ public class WxController {
 	private static final String secret = "fa062d7088cc474b55148b86fc419820";
 
 	/** 跳转授权地址 */
-	// private static final String redirectUrlDomain =
-	// "http://eds_m.yitaoyun.net";
-
 	private static final String redirectUrlDomain = PropertyUtils
 			.getProperty("java.renrenwap.url");
 	@Autowired
@@ -55,7 +53,7 @@ public class WxController {
 	private void redirect(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?"
-				+ "appid=" + appid + "&redirect_uri=" + redirectUrlDomain
+				+ "appid=" + appid + "&redirect_uri=" + redirectUrlDomain.replace("http://", "")
 				+ "/wx/getuserinfo&" + "response_type=code&"
 				+ "scope=snsapi_base&" + "state=1" + "#wechat_redirect";
 		System.out.println(url);
@@ -101,17 +99,18 @@ public class WxController {
 		String data = HttpUtil.sendGet(url, "");
 		System.out.println("last info:" + data);
 
-		response.sendRedirect(redirectUrlDomain+"/clienter/fetchredbag?openid=" + wxAccess_token.getOpenid());
+		response.sendRedirect(redirectUrlDomain
+				+ "/clienter/fetchredbag?openid=" + wxAccess_token.getOpenid());
 	}
 
 	private String getToken() {
 		String tokenKey = RedissCacheKey.TokenKey;
-		String tokenStr = "";
-		// String tokenStr = redisService.get(tokenKey, String.class);
-		// if (!StringUtils.isEmpty(tokenStr)) {
-		// System.out.println("缓存：" + tokenStr);
-		// return tokenStr;
-		// }
+		// String tokenStr = "";
+		String tokenStr = redisService.get(tokenKey, String.class);
+		if (!StringUtils.isEmpty(tokenStr)) {
+			System.out.println("缓存：" + tokenStr);
+			return tokenStr;
+		}
 		String httpUrl = "https://api.weixin.qq.com/cgi-bin/token";
 		String getData = HttpUtil.sendGet(httpUrl,
 				"grant_type=client_credential&appid=" + appid + "&secret="
@@ -119,8 +118,7 @@ public class WxController {
 
 		WxToken wxToken = JsonUtil.str2obj(getData, WxToken.class);
 		tokenStr = wxToken.getAccess_token();
-		// redisService.set(tokenKey, tokenStr, wxToken.getExpires_in() -
-		// 1000);// 担心会时间不准，把无效时间往前一点
+		redisService.set(tokenKey, tokenStr, wxToken.getExpires_in() - 1000);// 担心会时间不准，把无效时间往前一点
 		System.out.println("非缓存：" + tokenStr);
 		return tokenStr;
 	}
@@ -130,7 +128,18 @@ public class WxController {
 		String token = getToken();
 		String menuUrl = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token="
 				+ token;
-		String menuData = "{     \"button\":[     {      \"name\":\"活动\",	      \"sub_button\":[		{		 \"type\":\"view\",		       \"name\":\"投票\",		       \"url\":\"http://mp.weixin.qq.com/s?__biz=MzA5NzQzOTk1Ng==&mid=402831696&idx=1&sn=ed73a8e94465a7ec20115a91d152b7c1#rd\"		},		{		 \"type\":\"view\",		       \"name\":\"绑定\",		       \"url\":\"http://mp.weixin.qq.com/s?__biz=MzA5NzQzOTk1Ng==&mid=402831696&idx=1&sn=ed73a8e94465a7ec20115a91d152b7c1#rd\"		}	      ]      },      {        \"type\":\"view\",               \"name\":\"合伙人招募\",               \"url\":\"https://jinshuju.net/f/ptT2lj\"	},	{        \"type\":\"view\",               \"name\":\"APP下载\",               \"url\":\"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\"	}	] }";
+
+		String hdBindUrl = redirectUrlDomain + "/wx/redirect";
+
+		String menuData = "{\"button\":[{ \"name\":\"活动\","
+				+ "\"sub_button\":[{\"type\":\"view\","
+				+ "\"name\":\"投票\","
+				+ "\"url\":\"http://mp.weixin.qq.com/s?__biz=MzA5NzQzOTk1Ng==&mid=402831696&idx=1&sn=ed73a8e94465a7ec20115a91d152b7c1#rd\"},"
+				+ "{ \"type\":\"view\",\"name\":\"绑定\",\"url\":\""
+				+ hdBindUrl
+				+ "\"	}]},"
+				+ "{\"type\":\"view\", \"name\":\"合伙人招募\",\"url\":\"https://jinshuju.net/f/ptT2lj\"},"
+				+ "{\"type\":\"view\", \"name\":\"APP下载\",\"url\":\"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\"}]}";
 		String resultData = HttpUtil.sendPost(menuUrl, menuData,
 				"application/json");
 		System.out.println(resultData);
@@ -153,6 +162,8 @@ public class WxController {
 	public void eventListen(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException,
 			JDOMException {
+		// doGet(request, response);
+		// return;
 		try {
 			System.out.println("进入方法了");
 			WxRecvMsg msg = WeiXinTools.recv(request.getInputStream());
