@@ -334,8 +334,7 @@ FROM    dbo.ClienterTask AS ct ( NOLOCK )
                 '系统服务' ,
                 '超时任务自动过期'
                 INTO RenRenTasklog ( RenRenTaskId, OptType, OptName, Remark )
-        WHERE   GETDATE()>=EndTime
-                AND Status = 1
+        WHERE  Status = 1 AND GETDATE()>=EndTime
 	</update>
 	  <update id="update" parameterType="com.renrentui.renrenentity.RenRenTask" >
     update RenRenTask
