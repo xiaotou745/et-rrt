@@ -55,8 +55,9 @@ $(function() {
             url     :fetchredbagurl,
             method  :'post',
             data    :{
-                phoneNo: tel.val(),
-                code : code
+                "phoneNo": tel.val(),
+                "code" : code,
+                "openid":openid
             },
             success:function(res){
             	var fetchurl=basepath+"/clienter/fetchredbag";
