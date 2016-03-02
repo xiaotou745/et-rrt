@@ -74,7 +74,7 @@ List<TaskTag> list = (List<TaskTag>) request.getAttribute("listData");
 	</div>
 <div class="modal-body">
 标签名称：<input id="tagName" class="form-control"/><br/><br/>
-颜色背景：<input  id="tagColorCode" class="form-control" value="#FF9999" onKeyUp="codeChange(this.value)"/><br/>
+颜色背景：<input  id="tagColorCode" class="form-control" value="#ffffff" onchange="codeChange(this.value)"/><br/>
 <div id="picker"></div>
 
 </div>
@@ -94,11 +94,22 @@ $(document).ready(function() {
 	mypicker=$('#picker').farbtastic('#tagColorCode');
 });
 function codeChange(newcode){
-	mypicker.setColor(newcode);
+
+	 if(newcode.toLowerCase()!="#ffffff"){
+	  //var type="#(?![fF]{6})[0-9a-fA-F]{6}";
+	  //var type = "^#[0-9a-fA-F]{6}{1}$";  
+	  //var re = new RegExp(type);  
+   		var type = /^#[0-9a-fA-F]{6}$/
+	    if (newcode.match(type) == null) {  
+			alert("错误的颜色代码");
+			$("#tagColorCode").val("#ffffff");
+		} 
+	 }
+	 mypicker.setColor($("#tagColorCode").val());
 }
 function AddShow(){
 	$("#tagName").val("");
-	$("#tagColorCode").val("#FF9999");
+	$("#tagColorCode").val("#ffffff");
 	mypicker.setColor($("#tagColorCode").val());
 	$("#tagid").val("0");
 	$("#optype").val("1");
