@@ -1,0 +1,6 @@
+use RenRenDB
+go
+alter table dbo.ClienterWxLog
+add [ClienterId] [int] not null
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'µØÍÆÔ±id' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ClienterWxLog', @level2type=N'COLUMN',@level2name=N'ClienterId'
+go
