@@ -947,7 +947,7 @@ function createTaskPar(){
 	task.businessId=$('#businessId').val();
 	task.pusher=$('#businessId').find("option:selected").text();
 	task.beginTime=$('#beginDate').val()+" 00:00:00";
-	task.endTime=$('#endDate').val()+" 23:59:59";
+	task.endTime=$('#endDate').val()+" 00:00:00";
 	task.amount=$('#amount').val();
 	task.status=0;
 	task.auditCycle=$('#auditCycle').val();

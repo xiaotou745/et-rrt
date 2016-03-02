@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
@@ -21,6 +22,7 @@ import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrencore.util.StringUtils;
 import com.renrentui.renrenentity.WxAccess_token;
 import com.renrentui.renrenentity.WxToken;
+import com.renrentui.renrenentity.WxUserInfo;
 import com.using.weixin.wxtools.WeiXinTools;
 import com.using.weixin.wxtools.vo.recv.WxRecvEventMsg;
 import com.using.weixin.wxtools.vo.recv.WxRecvGeoMsg;
@@ -53,9 +55,10 @@ public class WxController {
 	private void redirect(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?"
-				+ "appid=" + appid + "&redirect_uri=" + redirectUrlDomain.replace("http://", "")
-				+ "/wx/getuserinfo&" + "response_type=code&"
-				+ "scope=snsapi_base&" + "state=1" + "#wechat_redirect";
+				+ "appid=" + appid + "&redirect_uri=http://"
+				+ redirectUrlDomain.replace("http://", "") + "/wx/getuserinfo&"
+				+ "response_type=code&" + "scope=snsapi_base&" + "state=1"
+				+ "#wechat_redirect";
 		System.out.println(url);
 		response.sendRedirect(url);
 	}
@@ -89,18 +92,21 @@ public class WxController {
 			return;
 		}
 
-		System.out.println("output token:" + getToken());
-		System.out.println("output openid:" + wxAccess_token.getOpenid());
+		response.sendRedirect(redirectUrlDomain
+				+ "/clienter/fetchredbag?openid=" + openId);
+	}
+
+	/** 通过openid获取用户信息 窦海超 2016年3月2日 17:39:35 */
+	@SuppressWarnings("unused")
+	private WxUserInfo getUserInfoByOpenId(String openId) {
+		// System.out.println("output token:" + getToken());
+		System.out.println("output openid:" + openId);
 		String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="
-				+ getToken()
-				+ "&openid="
-				+ wxAccess_token.getOpenid()
-				+ "&lang=zh_CN";
+				+ getToken() + "&openid=" + openId + "&lang=zh_CN";
 		String data = HttpUtil.sendGet(url, "");
 		System.out.println("last info:" + data);
 
-		response.sendRedirect(redirectUrlDomain
-				+ "/clienter/fetchredbag?openid=" + wxAccess_token.getOpenid());
+		return JSONObject.parseObject(data, WxUserInfo.class);
 	}
 
 	private String getToken() {
@@ -173,23 +179,25 @@ public class WxController {
 			if (msg instanceof WxRecvEventMsg) {
 				WxRecvEventMsg recvMsg = (WxRecvEventMsg) msg;
 				String event = recvMsg.getEvent();
-				String fromUserName = recvMsg.getFromUser();// 关注 人的OPENID
+				String openId = recvMsg.getFromUser();// 关注 人的OPENID
 				String createTime = recvMsg.getCreateDt();// 操作时间
-				System.out.println("订阅:fromUserName" + fromUserName
-						+ ",createTime:" + createTime);
+				System.out.println("订阅:openId" + openId + ",createTime:"
+						+ createTime);
 				if ("subscribe".equals(event)) {
+
+					WxUserInfo wxUserInfo = getUserInfoByOpenId(openId);
 					// 订阅消息
 					sendMsg = new WxSendTextMsg(sendMsg, "谢谢您的订阅。");
 					WeiXinTools.send(sendMsg, response.getOutputStream());
 					System.out.println("订阅");
-					clienterWxService.follow(fromUserName, fromUserName,
+					clienterWxService.follow(openId, wxUserInfo.getNickname(),
 							createTime);
 					return;
 				} else if ("unsubscribe".equals(event)) {
 					// 取消订阅
 					System.out.println("取消订阅");
 
-					clienterWxService.unfollow(fromUserName);
+					clienterWxService.unfollow(openId);
 					return;
 
 				} else if ("CLICK".equals(event)) {
