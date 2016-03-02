@@ -1,0 +1,62 @@
+USE [RenRenDB]
+GO
+ 
+
+create table [dbo].[Activity](
+	[Id] [int] identity(1,1) not null,
+	[ActivityName] [nvarchar](200) not null,
+	[RewardMoney] [decimal](18, 2) not null,
+	[GrantProbability] [int] not null,
+	[HadRewardCount] [int] not null,
+	[HadRewardMoney] [decimal](18, 2) not null,
+	[StartTime] [datetime] not null,
+	[EndTime] [datetime] not null,
+	[Status] [int] not null,
+ constraint [PK_Activity] primary key clustered 
+(
+	[Id] asc
+)with (pad_index  = off, statistics_norecompute  = off, ignore_dup_key = off, allow_row_locks  = on, allow_page_locks  = on) on [PRIMARY]
+) on [PRIMARY]
+
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'主键' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Activity', @level2type=N'COLUMN',@level2name=N'Id'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'活动名称' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Activity', @level2type=N'COLUMN',@level2name=N'ActivityName'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'奖励金额' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Activity', @level2type=N'COLUMN',@level2name=N'RewardMoney'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'发放概率，整数' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Activity', @level2type=N'COLUMN',@level2name=N'GrantProbability'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'已发放数量' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Activity', @level2type=N'COLUMN',@level2name=N'HadRewardCount'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'已发放总金额' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Activity', @level2type=N'COLUMN',@level2name=N'HadRewardMoney'
+go
+
+exec sys.sp_addextendedproperty @name=N'MS_Description', @value=N'状态默认1进行中，0关闭' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Activity', @level2type=N'COLUMN',@level2name=N'Status'
+go
+
+alter table [dbo].[Activity] add  constraint [DF_Activity_ActivityName]  default ('') for [ActivityName]
+go
+
+alter table [dbo].[Activity] add  constraint [DF_Activity_RewardMoney]  default ((2)) for [RewardMoney]
+go
+
+alter table [dbo].[Activity] add  constraint [DF_Activity_GrantProbability]  default ((100)) for [GrantProbability]
+go
+
+alter table [dbo].[Activity] add  constraint [DF_Activity_HadRewardCount]  default ((0)) for [HadRewardCount]
+go
+
+alter table [dbo].[Activity] add  constraint [DF_Activity_HadRewardMoney]  default ((0)) for [HadRewardMoney]
+go
+
+alter table [dbo].[Activity] add  constraint [DF_Activity_Status]  default ((1)) for [Status]
+go
+
+
