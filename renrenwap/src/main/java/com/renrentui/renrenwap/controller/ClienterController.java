@@ -65,19 +65,16 @@ public class ClienterController {
 	 */
 	@RequestMapping("fetchredbagsubmit")
 	@ResponseBody
-	public ResultModel<Object> fetchredbagsubmit(HttpServletRequest request,FetchRedbagReq req){
+	public ResultModel<Object> fetchredbagsubmit(FetchRedbagReq req){
 		ResultModel<Object> resultModel = new ResultModel<Object>(); 
-		String openid=request.getParameter("openid");
-		String truename = request.getParameter("truename");
+		 
 		String basePath=PropertyUtils.getProperty("java.renrenwap.url");
-		if(openid==""||openid==null || truename=="" || truename == null){
+		if(req.getOpenid()==""||req.getOpenid()==null){
 			return resultModel.setCode(FetchRedbagEnum.ParaError.value()).setMsg(FetchRedbagEnum.ParaError.desc());
 		}
 		if(req.getPhoneNo()==""){
 			return resultModel.setCode(FetchRedbagEnum.PhoneNoError.value()).setMsg(FetchRedbagEnum.PhoneNoError.desc());
 		}
-		req.setOpenid(openid);
-		req.setTruename(truename);
 		String keyString=RedissCacheKey.RR_Clienter_sendcode_fetchRedBag+ req.getPhoneNo();
 		String codeRedisString=redisService.get(keyString, String.class);
 		if (!req.getCode().equals(codeRedisString)) // 验证码 查缓存
@@ -106,12 +103,11 @@ public class ClienterController {
 	 */
 	@RequestMapping("validateQualification")
 	@ResponseBody
-	public ResultModel<Object> validateQualification(HttpServletRequest request){
+	public ResultModel<Object> validateQualification(FetchRedbagReq req){
 		ResultModel<Object> resultModel = new ResultModel<Object>();
 		resultModel.setCode(FetchRedbagEnum.Success.value()).setMsg(FetchRedbagEnum.Success.desc());
-		String openid=request.getParameter("openid");
-		String truename = request.getParameter("truename");
-		if(openid==""||openid==null || truename=="" || truename == null){
+		String openid=req.getOpenid();
+		if(openid==""||openid==null){
 			//有无资格进入该页面 非法
 			return resultModel.setCode(FetchRedbagEnum.ParaError.value()).setMsg(FetchRedbagEnum.ParaError.desc()).setData("<div class=\"success c1\"><p>"+FetchRedbagEnum.ParaError.desc()+"</p></div>");
 		}

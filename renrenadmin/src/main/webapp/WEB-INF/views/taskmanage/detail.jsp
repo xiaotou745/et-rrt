@@ -168,7 +168,7 @@ List<TaskTag> tagList=(List<TaskTag>)request.getAttribute("tagList");
 								for (int i = 0; i < tagList.size(); i++) {
 								%>
 									<input id="taskTag<%=i%>" name="rTaskTagId" type="radio" value="<%=tagList.get(i).getId() %>" 
-									 <%=(taskInfo.getTagId()<=0&&i==0)?"checked":(taskInfo.getTagId()==tagList.get(i).getId().longValue()?"checked" : "")%>> 
+									 <%=(taskInfo.getTagId()==tagList.get(i).getId().longValue()?"checked" : "")%>> 
 									<label><%=tagList.get(i).getTagName() %></label>
 									<%}%>
 								</div>
