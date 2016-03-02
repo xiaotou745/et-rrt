@@ -1,4 +1,4 @@
-package com.renrentui.renrenadmin.controller;
+package com.renrentui.renrenwap.controller;
 
 import java.io.IOException;
 
@@ -39,7 +39,7 @@ public class WxController {
 	private static final String secret = "fa062d7088cc474b55148b86fc419820";
 
 	/** 跳转授权地址 */
-	private static final String redirectUrlDomain = "http://www.tuiguangtianxia.com";
+	private static final String redirectUrlDomain = "http://eds_m.yitaoyun.net";
 	@Autowired
 	IClienterWxService clienterWxService;
 	@Autowired
@@ -247,3 +247,4 @@ public class WxController {
 	}
 
 }
+

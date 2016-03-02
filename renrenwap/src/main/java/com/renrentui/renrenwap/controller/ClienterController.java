@@ -109,25 +109,25 @@ public class ClienterController {
 	public ResultModel<Object> validateQualification(HttpServletRequest request){
 		ResultModel<Object> resultModel = new ResultModel<Object>();
 		resultModel.setCode(FetchRedbagEnum.Success.value()).setMsg(FetchRedbagEnum.Success.desc());
-//		String openid=request.getParameter("openid");
-//		String truename = request.getParameter("truename");
-//		if(openid==""||openid==null || truename=="" || truename == null){
-//			//有无资格进入该页面 非法
-//			return resultModel.setCode(FetchRedbagEnum.ParaError.value()).setMsg(FetchRedbagEnum.ParaError.desc()).setData("<div class=\"success c1\"><p>"+FetchRedbagEnum.ParaError.desc()+"</p></div>");
-//		}
-//		//是否关注微信公众号
-//		boolean b=clienterWxService.isAttentionWx(openid);
-//		if(!b){
-//			return resultModel.setCode(FetchRedbagEnum.NoAttentionWx.value()).setMsg(FetchRedbagEnum.NoAttentionWx.desc()).setData("<div class=\"rcode_wrap c2\">进入<span class=\"stress\">公众号</span>点击<span class=\"stress\">“绑定账号送现金”</span>参与活动<img src=\"img/rcode.png\" alt=\"\">长按二维码扫描<br>关注[人人推官方平台]</div>");
-//		}
-//		//是否领取过奖励
-//		int clienterId=clienterWxService.hadFetchRedbag(openid);
-//		if(clienterId>0){
-//			resultModel.setCode(FetchRedbagEnum.HadFetchRedbag.value()).setMsg(FetchRedbagEnum.HadFetchRedbag.desc());
-//			Clienter clienter =clienterService.getClienterById((long)clienterId);
-//			resultModel.setData("<div class=\"success c1\"><p>您已参与过该活动，已获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号"+clienter.getPhoneNo().trim()+"<a href=\"#\" class=\"sub-btn\">前往查看</a></div>");
-//			return resultModel;
-//		}
+		String openid=request.getParameter("openid");
+		String truename = request.getParameter("truename");
+		if(openid==""||openid==null || truename=="" || truename == null){
+			//有无资格进入该页面 非法
+			return resultModel.setCode(FetchRedbagEnum.ParaError.value()).setMsg(FetchRedbagEnum.ParaError.desc()).setData("<div class=\"success c1\"><p>"+FetchRedbagEnum.ParaError.desc()+"</p></div>");
+		}
+		//是否关注微信公众号
+		boolean b=clienterWxService.isAttentionWx(openid);
+		if(!b){
+			return resultModel.setCode(FetchRedbagEnum.NoAttentionWx.value()).setMsg(FetchRedbagEnum.NoAttentionWx.desc()).setData("<div class=\"rcode_wrap c2\">进入<span class=\"stress\">公众号</span>点击<span class=\"stress\">“绑定账号送现金”</span>参与活动<img src=\"img/rcode.png\" alt=\"\">长按二维码扫描<br>关注[人人推官方平台]</div>");
+		}
+		//是否领取过奖励
+		int clienterId=clienterWxService.hadFetchRedbag(openid);
+		if(clienterId>0){
+			resultModel.setCode(FetchRedbagEnum.HadFetchRedbag.value()).setMsg(FetchRedbagEnum.HadFetchRedbag.desc());
+			Clienter clienter =clienterService.getClienterById((long)clienterId);
+			resultModel.setData("<div class=\"success c1\"><p>您已参与过该活动，已获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号"+clienter.getPhoneNo().trim()+"<a href=\"#\" class=\"sub-btn\">前往查看</a></div>");
+			return resultModel;
+		}
 		return resultModel;
 	}
 	
