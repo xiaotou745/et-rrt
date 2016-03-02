@@ -44,7 +44,7 @@
 			<!-- 表示开发的时候使用，发布的时候不会加载此包 -->
 			<scope>test</scope>
 		</dependency>
-		 <dependency>
+		<dependency>
 			<groupId>renrentui</groupId>
 			<artifactId>renrenapi</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
@@ -75,6 +75,11 @@
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 			<version>1.8</version>
+		</dependency>
+		<dependency>
+			<groupId>renrentui</groupId>
+			<artifactId>renrenlib</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<!-- 为了解决commons-digester的版本冲突，而添加以上两个jar -->
 	</dependencies>
