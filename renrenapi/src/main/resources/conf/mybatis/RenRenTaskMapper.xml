@@ -88,7 +88,7 @@ SELECT TOP 1  rrt.id,
 		isnull(k.tagColorCode,'') as tagColorCode
 		FROM    dbo.RenRenTask AS rrt ( NOLOCK )
         JOIN dbo.Business AS b ( NOLOCK ) ON rrt.BusinessId = b.id
-         left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+          JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
         LEFT JOIN dbo.ClienterTask AS ct ON ct.TaskId=rrt.id AND ct.ClienterId=${userId}
 WHERE   rrt.id =  ${taskId}
   </select>
@@ -108,7 +108,7 @@ WHERE   EndTime > GETDATE()
       <if test="areaCodeList != null" >
 		 JOIN  TaskCityRelation as tcr WITH (NOLOCK) ON rrt.Id = tcr.TaskId
    	  </if> 
-		  left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+		   JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
 		  LEFT JOIN ( SELECT  ct.TaskId ,
                             SUM(CompleteNum) AS CompleteNum
                     FROM    dbo.ClienterTask AS ct ( NOLOCK )
@@ -209,7 +209,7 @@ WHERE   EndTime > GETDATE()
 	RenRenTask a WITH(nolock)
     JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
     JOIN TaskCityRelation tcr  WITH(nolock)  ON a.Id = tcr.TaskId
-   left JOIN dbo.TaskTag k WITH(NOLOCK) ON a.tagId=k.id
+    JOIN dbo.TaskTag k WITH(NOLOCK) ON a.tagId=k.id
     <if test="userId != 0" >
        LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
 	</if> 
@@ -292,7 +292,7 @@ statementType="CALLABLE">
 FROM dbo.ClienterTask AS ct  (NOLOCK)
 INNER JOIN dbo.RenRenTask AS rrt(NOLOCK) ON ct.TaskId=rrt.id
 INNER JOIN dbo.Business AS b (NOLOCK) ON rrt.BusinessId=b.id
-left JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+ JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
 LEFT JOIN (SELECT  CtId ,
 SUM(CASE [Status] WHEN 1 THEN 1 ELSE 0 END) AS auditWaitNum,
 SUM(CASE [Status] WHEN 2 THEN 1 ELSE 0 END) AS auditPassNum,

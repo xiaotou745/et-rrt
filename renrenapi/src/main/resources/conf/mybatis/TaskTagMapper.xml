@@ -6,6 +6,7 @@
   	 from TaskTag with(nolock)
   </select>
   <update id="update" parameterType="com.renrentui.renrenentity.TaskTag">
+  update RenRenTask set tagId=1 where tagId=0;
 IF not  EXISTS ( SELECT  1
             FROM    TaskTag with(nolock)
             WHERE   tagName = #{tagName,jdbcType=NVARCHAR} )
