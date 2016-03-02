@@ -59,4 +59,14 @@ public class ClienterWxService implements IClienterWxService {
 		return false;
 	}
 
+	@Override
+	public boolean isAttentionWx(String openid) {
+		return clienterWxDao.isAttentionWx(openid);
+	}
+
+	@Override
+	public int hadFetchRedbag(String openid) {
+		return clienterWxDao.hadFetchRedbag(openid);
+	}
+
 }

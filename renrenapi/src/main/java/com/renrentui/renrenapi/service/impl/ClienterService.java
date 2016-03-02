@@ -456,4 +456,19 @@ public class ClienterService implements IClienterService {
 				SendSmsType.Success.desc());// 设置成功
 		return resultModel;
 	}
+
+	@Override
+	public boolean isBindWx(int clienterId,String openid) {
+		return clienterDao.isBindWx(clienterId,openid);
+	}
+
+	@Override
+	public boolean clienterBindWx(int clienterId, String openid) {
+		return clienterDao.updateClienterBindWx(clienterId,openid);
+	}
+
+	@Override
+	public int getClienterIdByPhone(String phoneNo) {
+		return clienterDao.getClienterIdByPhone(phoneNo);
+	}
 }

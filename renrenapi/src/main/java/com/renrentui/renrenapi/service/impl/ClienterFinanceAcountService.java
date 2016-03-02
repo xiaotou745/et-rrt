@@ -83,6 +83,6 @@ public class ClienterFinanceAcountService implements
 					reg=true; 
 				}
 			} 
-		return false;
+		return reg;
 	}
 }

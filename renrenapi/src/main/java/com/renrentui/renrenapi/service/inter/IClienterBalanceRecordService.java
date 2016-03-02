@@ -23,4 +23,6 @@ public interface IClienterBalanceRecordService {
 	 * @return
 	 */
 	String getSubmissionTip(Long orderId);
+	
+	int insert(ClienterBalanceRecord cbr);
 }

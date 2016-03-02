@@ -22,5 +22,22 @@ public class ClienterWxDao extends DaoBase implements IClienterWxDao {
 		getMasterSqlSessionUtil().update(
 				"IClienterWxLogDao.unFollow", openId);
 	}
+	/*
+	 * 是否关注微信公众号
+	 * wangchao
+	 */
+	@Override
+	public boolean isAttentionWx(String openid) {
+		int a= getReadOnlySqlSessionUtil().selectOne("IClienterWxDao.isAttentionWx",openid);
+		return a>0;
+	}
+	/*
+	 * 是否领取过奖励
+	 * wangchao
+	 */
+	@Override
+	public int hadFetchRedbag(String openid) {
+		return getReadOnlySqlSessionUtil().selectOne("IClienterWxDao.hadFetchRedbag",openid);
+	}
 
 }

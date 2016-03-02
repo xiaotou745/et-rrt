@@ -209,5 +209,34 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		return getMasterSqlSessionUtil().selectList("IClienterDao.getClienterheadimg");
 	}
 
+	@Override
+	public boolean isBindWx(int clienterId,String openid) {
+		String statement = "IClienterDao.isBindWx";
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("clienterId", clienterId);
+		paramMap.put("openid", openid);
+		int res = getReadOnlySqlSessionUtil().selectOne(statement, paramMap);
+		return res > 0;
+	}
+
+	@Override
+	public boolean updateClienterBindWx(int clienterId, String openid) {
+		String statement = "IClienterDao.updateClienterBindWx";
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("clienterId", clienterId);
+		paramMap.put("openid", openid);
+		int res = getMasterSqlSessionUtil().update(statement, paramMap);
+		return res>0;
+	}
+
+	@Override
+	public int getClienterIdByPhone(String phoneNo) {
+		String statement = "IClienterDao.getClienterIdByPhone";
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("phoneNo", phoneNo);
+		int res = getReadOnlySqlSessionUtil().selectOne(statement, paramMap);
+		return res;
+	}
+
 
 }

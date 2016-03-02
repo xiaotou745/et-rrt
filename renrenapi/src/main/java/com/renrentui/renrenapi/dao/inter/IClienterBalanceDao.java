@@ -54,8 +54,5 @@ public interface IClienterBalanceDao {
 
     int updateByPrimaryKeySelective(ClienterBalance record);
 
-    int updateByPrimaryKey(ClienterBalance record);
-   
-    
-
+    int updateByPrimaryKey(ClienterBalance record); 
 }

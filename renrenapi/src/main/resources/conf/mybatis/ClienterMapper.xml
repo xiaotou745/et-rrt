@@ -194,6 +194,28 @@
     SELECT COUNT(1) FROM  dbo.Clienter AS C (NOLOCK)
 	WHERE C.PhoneNo=#{phoneNo,jdbcType=VARCHAR}
   </select>
+  <!-- 根据地推员手机号获取id wangchao -->
+    <select id="getClienterId" resultType="int" parameterType="java.util.HashMap" >
+    SELECT top 1 Id FROM  dbo.Clienter AS C (NOLOCK)
+	WHERE C.PhoneNo=#{phoneNo,jdbcType=VARCHAR}
+  </select>
+    <!-- 验证手机号是否绑定过微信 wangchao -->
+  <select id="isBindWx" resultType="int" parameterType="java.util.HashMap" >
+    SELECT COUNT(1) FROM  dbo.ClienterWx AS C (NOLOCK)
+	WHERE C.ClienterId=#{clienterId,jdbcType=INTEGER} AND c.OpenId=#{openid,jdbcType=VARCHAR}
+  </select>
+  <!-- 更新地推员绑定微信记录和 日志 wangchao -->
+  <update  id="updateClienterBindWx" parameterType="java.util.HashMap" >
+	  update  dbo.ClienterWx
+		set     ClienterId = #{clienterId,jdbcType=INTEGER}
+		output  Inserted.OpenId ,
+		        Inserted.FollowStatus ,
+		        getdate() ,
+		        Inserted.ClienterId
+		        into dbo.ClienterWxLog ( OpenId, FollowStatus, OptTime, ClienterId )
+		where   OpenId = #{openid,jdbcType=VARCHAR}
+		        and FollowStatus = 1
+  </update>
   <!-- 通过手机号修改密码 -->
   <update  id="forgotPassword" parameterType="com.renrentui.renrenentity.req.ForgotPwdReq" >
     UPDATE dbo.Clienter SET Password='${passWord}' WHERE PhoneNo='${phoneNo}'

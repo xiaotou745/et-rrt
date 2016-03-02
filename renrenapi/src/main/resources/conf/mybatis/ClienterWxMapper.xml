@@ -17,4 +17,13 @@
 	<update id="unFollow" parameterType="java.lang.String">
 		update dbo.ClienterWx set FollowStatus=0 where OpenId=#{openId,jdbcType=VARCHAR}
 	</update>
+	<!-- 微信是否关注公众号 wangchao -->
+  <select id="isAttentionWx" resultType="int" parameterType="java.lang.Integer" >
+  	SELECT FollowStatus FROM dbo.ClienterWx(nolock) where OpenId=#{openid,jdbcType=VARCHAR} 
+  </select>
+  	<!-- 是否领取过奖励 wangchao -->
+  <select id="hadFetchRedbag" resultType="int" parameterType="java.lang.Integer" >
+  	select ClienterId from dbo.ClienterWx(nolock) where OpenId=#{openid,jdbcType=VARCHAR} 
+  </select>
+  
 </mapper>

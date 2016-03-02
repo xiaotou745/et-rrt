@@ -42,4 +42,8 @@ public class ClienterBalanceRecordService implements IClienterBalanceRecordServi
 		}
 		return sBuilder.toString();
 	}
+	@Override
+	public int insert(ClienterBalanceRecord cbr) {
+		return clienterBalanceRecordDao.insert(cbr);
+	}
 }
