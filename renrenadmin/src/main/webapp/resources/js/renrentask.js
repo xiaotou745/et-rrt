@@ -229,9 +229,9 @@ function CheckSave(){
 				}
 				if(!flag) return flag;
 				var num=$(el).find('.imgitemnumn').val();
-				if(Number(num)<1||parseInt(num)<1||isNaN(parseInt(num)))
+				if(Number(num)<1||parseInt(num)<1||isNaN(parseInt(num))||parseInt(num)>10)
 				{
-					alert('多图组图片控件数量不能小于1');
+					alert('多图组图片控件数量不能小于1或大于10');
 					flag=false;
 					return false;
 					}
