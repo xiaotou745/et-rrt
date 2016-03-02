@@ -17,6 +17,7 @@ import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
+import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.WxAccess_token;
 import com.renrentui.renrenentity.WxToken;
 import com.using.weixin.wxtools.WeiXinTools;
@@ -39,7 +40,11 @@ public class WxController {
 	private static final String secret = "fa062d7088cc474b55148b86fc419820";
 
 	/** 跳转授权地址 */
-	private static final String redirectUrlDomain = "http://eds_m.yitaoyun.net";
+	// private static final String redirectUrlDomain =
+	// "http://eds_m.yitaoyun.net";
+
+	private static final String redirectUrlDomain = PropertyUtils
+			.getProperty("java.renrenwap.url");
 	@Autowired
 	IClienterWxService clienterWxService;
 	@Autowired
@@ -96,7 +101,7 @@ public class WxController {
 		String data = HttpUtil.sendGet(url, "");
 		System.out.println("last info:" + data);
 
-		response.sendRedirect("http://tuiguangtianxia.com/weixin?data=" + data);
+		response.sendRedirect(redirectUrlDomain+"/clienter/fetchredbag?openid=" + wxAccess_token.getOpenid());
 	}
 
 	private String getToken() {
@@ -247,4 +252,3 @@ public class WxController {
 	}
 
 }
-
