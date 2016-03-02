@@ -9,6 +9,8 @@
 	String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 List<TaskTag> list = (List<TaskTag>) request.getAttribute("listData");
 %>
+ <script type="text/javascript" src="<%=basePath%>/js/farbtastic.js"></script>
+ <link href="<%=basePath%>/css/farbtastic.css" rel="stylesheet" />
 <div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 	<div class="row">
 		<div class="col-lg-12">
@@ -72,7 +74,9 @@ List<TaskTag> list = (List<TaskTag>) request.getAttribute("listData");
 	</div>
 <div class="modal-body">
 标签名称：<input id="tagName" class="form-control"/><br/><br/>
-颜色背景：<input id="tagColorCode" class="form-control colorwell colorwell-selected"/><br/>
+颜色背景：<input  id="tagColorCode" class="form-control" value="#FF9999" onKeyUp="codeChange(this.value)"/><br/>
+<div id="picker"></div>
+
 </div>
 	<div class="modal-footer">
 	    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
@@ -85,10 +89,17 @@ List<TaskTag> list = (List<TaskTag>) request.getAttribute("listData");
 <input type="hidden" name="tagid" id="tagid" value="0"/> 
 <input type="hidden" name="optype" id="optype" value="0"/> 
 <script>
-
+var mypicker;
+$(document).ready(function() {
+	mypicker=$('#picker').farbtastic('#tagColorCode');
+});
+function codeChange(newcode){
+	mypicker.setColor(newcode);
+}
 function AddShow(){
 	$("#tagName").val("");
-	$("#tagColorCode").val("");
+	$("#tagColorCode").val("#FF9999");
+	mypicker.setColor($("#tagColorCode").val());
 	$("#tagid").val("0");
 	$("#optype").val("1");
 	$("#tagtitle").html("添加新标签");
@@ -102,6 +113,7 @@ var oldtagColorCode="";
 function modify(id,tagName,tagColorCode) {
 	$("#tagName").val(tagName);
 	$("#tagColorCode").val(tagColorCode);
+	mypicker.setColor($("#tagColorCode").val());
 	$("#tagid").val(id);
 	$("#optype").val("0");
 	$("#tagtitle").html("修改已有标签");
