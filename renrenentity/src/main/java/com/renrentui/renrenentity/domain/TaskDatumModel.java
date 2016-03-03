@@ -24,6 +24,8 @@ public class TaskDatumModel {
     private List<String> titlesList;
     private long ctId;
     private String refuReason;
+    private String tagName;
+    private String tagColorCode;
 	 public long getCtId() {
 		return ctId;
 	}
@@ -124,6 +126,18 @@ public class TaskDatumModel {
 	}
 	public void setRefuReason(String refuReason) {
 		this.refuReason = refuReason;
+	}
+	public String getTagName() {
+		return tagName;
+	}
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
+	public String getTagColorCode() {
+		return tagColorCode;
+	}
+	public void setTagColorCode(String tagColorCode) {
+		this.tagColorCode = tagColorCode;
 	}
 	
 }

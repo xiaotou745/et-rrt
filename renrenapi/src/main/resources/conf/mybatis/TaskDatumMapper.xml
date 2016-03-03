@@ -70,9 +70,12 @@ VALUES  ( ${taskDatumId} ,
             a.CreateDate ,
             a.AuditTime,
             a.CtId,
-            a.refuReason
+            a.refuReason,
+            tt.tagName,
+			tt.tagColorCode
   FROM      TaskDatum a (nolock)
             JOIN RenRenTask b (nolock) ON a.TaskId = b.id
+            JOIN dbo.TaskTag tt WITH(NOLOCK) ON b.tagId=tt.id
   where a.ClienterId = ${userId} 
   		and a.status=${auditStatus}
   	<if test="taskId > 0" >
@@ -97,10 +100,13 @@ VALUES  ( ${taskDatumId} ,
             a.Status AS taskStatus ,
             b.Logo,
             k.id AS ctid,
+            tt.tagName,
+			tt.tagColorCode,
             COUNT(c.Id) AS taskDatumCount
   FROM      RenRenTask a ( NOLOCK )
             JOIN dbo.Business b ( NOLOCK ) ON a.BusinessId = b.id
             JOIN TaskDatum c ( NOLOCK ) ON c.TaskId = a.id
+            JOIN dbo.TaskTag tt WITH(NOLOCK) ON a.tagId=tt.id
             JOIN ClienterTask k ( NOLOCK ) ON a.Id=k.TaskId AND k.ClienterId=${userId}
   WHERE     c.ClienterId = ${userId} 
             AND c.Status = ${auditStatus}
@@ -113,7 +119,9 @@ VALUES  ( ${taskDatumId} ,
             a.Status ,
             a.Amount ,
             b.Logo,
-            k.id
+            k.id,
+            tt.tagName,
+			tt.tagColorCode
   order by a.id desc;
   </select>  
    <!--  查询我的资料审核列表中每个资料需要显示的内容，zhaohl,20151125 -->
