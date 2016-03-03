@@ -34,4 +34,6 @@ public class RedissCacheKey {
 	public static final String HttpQuartz_Key = "HttpQuartz_Key_";// HttpQuartz,redis锁
 																	// ，防止服务重复执行
 	public static final String TokenKey = "tokenKey";// 微信开发的token信息
+	
+	public static final String cookieOpenId="hd_openid";
 }
