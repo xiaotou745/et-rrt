@@ -15,6 +15,8 @@ public class TaskDatumGroup {
     private String taskStatus;
     private long taskDatumCount;
     private long ctId;
+    private String tagName;
+    private String tagColorCode;
     public String getLogo() {
 		if (this.logo != null && !this.logo.equals(""))
 			return PropertyUtils.getProperty("ImgShowUrl") + this.logo;
@@ -80,6 +82,18 @@ public class TaskDatumGroup {
 	}
 	public void setCtId(long ctId) {
 		this.ctId = ctId;
+	}
+	public String getTagColorCode() {
+		return tagColorCode;
+	}
+	public void setTagColorCode(String tagColorCode) {
+		this.tagColorCode = tagColorCode;
+	}
+	public String getTagName() {
+		return tagName;
+	}
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
 	}
 
 }

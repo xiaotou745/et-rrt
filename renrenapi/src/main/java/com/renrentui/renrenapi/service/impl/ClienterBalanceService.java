@@ -78,6 +78,8 @@ public class ClienterBalanceService implements IClienterBalanceService{
 		cbr.setOptName("系统操作");
 		cbr.setRemark("活动奖励");
 		cbr.setStatus((short)CBalanceRecordStatus.Success.value());
+		cbr.setOrderId(0l); 
+		cbr.setRelationNo("");
 		return clienterBalanceRecordService.insert(cbr);		
 	}
 
