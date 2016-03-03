@@ -240,9 +240,6 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 			return ParseHelper.ToInt(clienter.getId());
 		}else{
 			return 0;
-		}
-		
-	}
-
-
+		} 
+	} 
 }
