@@ -47,7 +47,6 @@ public class ClienterController {
 	@ResponseBody
 	public ResponseBase sendcode(CSendCodeReq req) {
 		ResponseBase responseBase = clienterService.sendcode(req);
-
 		return responseBase;
 	}
 
@@ -212,4 +211,15 @@ public class ClienterController {
 		resultModel = clienterService.signup(req);
 		return resultModel;
 	}
+	/*
+	 * 注册成功页面 wangchao
+	 */
+	@RequestMapping("registersuccess")
+	public ModelAndView registersuccess(String phoneNo) {
+		ModelAndView view = new ModelAndView();
+		view.addObject("phoneNo",phoneNo);
+		view.addObject("viewPath", "clienter/registersuccess");
+		return view;
+	}
+	
 }

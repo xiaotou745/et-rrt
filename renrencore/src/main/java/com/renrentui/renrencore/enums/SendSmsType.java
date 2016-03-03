@@ -1,7 +1,7 @@
 package com.renrentui.renrencore.enums;
 
 public enum SendSmsType {
-	Success(200,"Success"),
+	Success(200,"获取验证码成功"),
 	PhoneError(1001, "手机号码无效"),
 	Fail(1002,"发送失败"),
 	PhoneExists(1003,"该账号已经存在"),
