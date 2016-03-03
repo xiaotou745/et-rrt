@@ -61,16 +61,8 @@ public class ClienterController {
 		String openid = request.getParameter("openid");
 		String cookieOpenId = CookieUtils.getCookie(request,
 				RedissCacheKey.cookieOpenId);
-
-		System.out.println("============fetchredbag_cookie:" + cookieOpenId);
-		System.out.println("=============openid:" + openid);
 		if (openid == null || !openid.equals(cookieOpenId)) {
-			System.out.println("not eques");
 			view.addObject("openid", "");
-			// String openErrorUrl = PropertyUtils
-			// .getProperty("java.renrenwap.url") + "/wx/redirect";
-			// System.out.println("openErrorUrl" + openErrorUrl);
-			// response.sendRedirect(openErrorUrl);
 		} else {
 			view.addObject("openid", openid);
 		}
