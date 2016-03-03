@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>关注人人推微信公众号【人人推官方平台】后进行绑定能收到微信红包</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1.0,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
     <div id="astro-wrap" class="g-main">
 
         <div class="ctx_block">
-            <img src="<%=basePath%>/img/bg1.jpg" alt="">
+            <img src="<%=basePath%>/img/bg1.jpg" alt="领红包">
         </div>
         <div class="ctx_block bg2" data-size="640,415">
             <div class="b_wrap">
@@ -87,10 +87,11 @@
                 活动规则
             </div>
             <ul>
-                <li><span class="num">1</span>关注人人推微信公众号【人人推官方平台】后进行绑定才能收到微信红包；</li>
-                <li><span class="num">2</span>绑定的手机号必须已经注册为人人推用户；</li>
-                <li><span class="num">3</span>活动期间，单个微信/人人推账号只能绑定一次；</li>
-                <li><span class="num">4</span>绑定成功后，即可获得1-100元随机微信红包，由人人推官方平台公众号以微信红包形式发放，请及时返回公众号领取；</li>
+                <li><span class="num">1</span>关注人人推微信公众号【人人推官方平台】后进行绑定才能获得现金奖励</li>
+                <li><span class="num">2</span>绑定的手机号必须已经注册为人人推用户</li>
+                <li><span class="num">3</span>活动期间，单个微信/人人推账号只能绑定一次</li>
+                <li><span class="num">4</span>绑定成功后，即可获得1-100元随机现金奖励，奖励发放到您的人人推账户，请登录人人推APP进行查看</li>
+                <li><span class="num">5</span>本活动最终解释权归人人推网络科技（北京）有限公司所有</li>
             </ul>
         </div>
 
