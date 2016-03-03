@@ -1,6 +1,9 @@
 package com.renrentui.renrenapi.dao.inter;
 
 import com.renrentui.renrenentity.ClienterWx;
+import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.domain.ClienterWxModel;
+import com.renrentui.renrenentity.req.PagedClienterWxReq;
 
 public interface IClienterWxDao {
 	/**
@@ -25,4 +28,6 @@ public interface IClienterWxDao {
 	 * 是否领取过奖励 wangchao
 	 */
 	int hadFetchRedbag(String openid);
+
+	PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req);
 }

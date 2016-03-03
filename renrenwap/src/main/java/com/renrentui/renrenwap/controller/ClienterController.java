@@ -55,7 +55,11 @@ public class ClienterController {
 	public ModelAndView fetchredbag(HttpServletRequest request){
 		ModelAndView view = new ModelAndView();
 		String openid=request.getParameter("openid");
-		view.addObject("openid", openid);
+		if(openid==null){
+			view.addObject("openid", "");
+		}else{
+			view.addObject("openid", openid);
+		}
 		view.addObject("viewPath", "clienter/fetchredbag");
 		return view;
 	}
@@ -101,11 +105,12 @@ public class ClienterController {
 	 * 验证是否有资格进入领红包页面
 	 * wangchao
 	 */
-	@RequestMapping("validateQualification")
+	@RequestMapping("validatequalification")
 	@ResponseBody
 	public ResultModel<Object> validateQualification(FetchRedbagReq req){
 		ResultModel<Object> resultModel = new ResultModel<Object>();
 		resultModel.setCode(FetchRedbagEnum.Success.value()).setMsg(FetchRedbagEnum.Success.desc());
+		String basePath=PropertyUtils.getProperty("java.renrenwap.url");
 		String openid=req.getOpenid();
 		if(openid==""||openid==null){
 			//有无资格进入该页面 非法
@@ -114,7 +119,7 @@ public class ClienterController {
 		//是否关注微信公众号
 		boolean b=clienterWxService.isAttentionWx(openid);
 		if(!b){
-			return resultModel.setCode(FetchRedbagEnum.NoAttentionWx.value()).setMsg(FetchRedbagEnum.NoAttentionWx.desc()).setData("<div class=\"rcode_wrap c2\">进入<span class=\"stress\">公众号</span>点击<span class=\"stress\">“绑定账号送现金”</span>参与活动<img src=\"img/rcode.png\" alt=\"\">长按二维码扫描<br>关注[人人推官方平台]</div>");
+			return resultModel.setCode(FetchRedbagEnum.NoAttentionWx.value()).setMsg(FetchRedbagEnum.NoAttentionWx.desc()).setData("<div class=\"rcode_wrap c2\">进入<span class=\"stress\">公众号</span>点击<span class=\"stress\">“绑定账号送现金”</span>参与活动<img src=\""+basePath+"/img/rcode.png\" alt=\"\">长按二维码扫描<br>关注[人人推官方平台]</div>");
 		}
 		//是否领取过奖励
 		int clienterId=clienterWxService.hadFetchRedbag(openid);

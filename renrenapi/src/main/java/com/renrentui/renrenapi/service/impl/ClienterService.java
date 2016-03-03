@@ -431,7 +431,7 @@ public class ClienterService implements IClienterService {
 			break;
 		case FetchRedBag:
 			key = RedissCacheKey.RR_Clienter_sendcode_fetchRedBag+ phoneNo;
-			content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于绑定微信领红包，如非本人操作，请不要理会";
+			content = "您的验证码：#验证码#，请在5分钟内填写。此验证码只用于绑定微信领奖励，如非本人操作，请不要理会";
 			break;
 		default:
 			break;
