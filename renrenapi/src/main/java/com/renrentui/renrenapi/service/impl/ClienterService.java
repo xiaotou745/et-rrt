@@ -402,7 +402,7 @@ public class ClienterService implements IClienterService {
 			 return resultModel;
 		}
 		boolean checkPhoneNo = isExistPhoneC(phoneNo);
-		if (codeType!=CodeType.Register&&!checkPhoneNo) {
+		if (codeType!=CodeType.Register&&codeType!=CodeType.FetchRedBag&&!checkPhoneNo) {
 			 resultModel.setResponseCode(SendSmsType.PhoneNotExists.value());
 			 resultModel.setMessage(SendSmsType.PhoneNotExists.desc());// 该手机号不存在，不能修改或忘记密码
 			 return resultModel;

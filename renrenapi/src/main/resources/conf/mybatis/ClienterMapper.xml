@@ -393,7 +393,7 @@ VALUES  ( ${clienterId} , -- ClienterId - int
         )
   </insert>
   <!-- 通过手机号查询用户信息 -->
-  <select id="getClienterByPhoneNo" resultType="com.renrentui.renrenentity.Clienter" parameterType="java.lang.String">
+  <select id="getClienterIdByPhone" resultType="com.renrentui.renrenentity.Clienter" parameterType="java.lang.String">
   SELECT TOP 1   Id ,
         ClienterName ,
         PhoneNo ,

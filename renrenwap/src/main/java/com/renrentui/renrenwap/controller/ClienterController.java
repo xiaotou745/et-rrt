@@ -85,19 +85,19 @@ public class ClienterController {
 			return resultModel.setCode(FetchRedbagEnum.VerCodeError.value()).setMsg(FetchRedbagEnum.VerCodeError.desc()); 
 		int clienterId=clienterService.getClienterIdByPhone(req.getPhoneNo());
 		if (clienterId<=0)//验证该手机号是否注册过人人推
-			return resultModel.setCode(FetchRedbagEnum.PhoneNotRegister.value()).setMsg(FetchRedbagEnum.PhoneNotRegister.desc()).setData("<div class=\"to_reg c3\"><div class=\"title\">领取失败</div>该手机号尚未注册人人推，请点击下方按钮前往APP注册后 <a href=\"'"+basePath+"/clienter/fetchredbag"+"'\" class=\"rebind stress\">重新绑定</a><a href=\"'"+basePath+"/clienter/register"+"'\" class=\"sub-btn\">马上注册</a></div>");
+			return resultModel.setCode(FetchRedbagEnum.PhoneNotRegister.value()).setMsg(FetchRedbagEnum.PhoneNotRegister.desc()).setData("<div class=\"to_reg c3\"><div class=\"title\">领取失败</div>该手机号尚未注册人人推，请点击下方按钮前往APP注册后 <a href=\""+basePath+"/clienter/register"+"\" class=\"sub-btn\">马上注册</a></div>");
 		else{
 			//判断是否绑定过微信
 			if(!clienterService.isBindWx(clienterId,req.getOpenid())){
 				// 未绑定，添加绑定关系，增加地推员余额，添加流水记录
 				boolean result=clienterBalanceService.fetchRedbag(clienterId,req.getOpenid());
 				if(result){
-					return resultModel.setCode(FetchRedbagEnum.Success.value()).setMsg(FetchRedbagEnum.Success.desc()).setData("<div class=\"success c1\"><p>恭喜您获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号'"+req.getPhoneNo()+"'<a href=\"#\" class=\"sub-btn\">前往查看</a></div>");
+					return resultModel.setCode(FetchRedbagEnum.Success.value()).setMsg(FetchRedbagEnum.Success.desc()).setData("<div class=\"success c1\"><p>恭喜您获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号"+req.getPhoneNo()+"<a href=\"#\" class=\"sub-btn\">前往查看</a></div>");
 				}else{
-					return resultModel.setCode(FetchRedbagEnum.Fail.value()).setMsg(FetchRedbagEnum.Fail.desc()).setData("<div class=\"to_reg c3\"><div class=\"title\">领取失败</div>请稍后再试 <a href=\"'"+basePath+"/clienter/fetchredbag"+"'\" class=\"rebind stress\">重新领取</a></div>");
+					return resultModel.setCode(FetchRedbagEnum.Fail.value()).setMsg(FetchRedbagEnum.Fail.desc()).setData("<div class=\"to_reg c3\"><div class=\"title\">领取失败</div>请稍后再试 <a href=\""+basePath+"/clienter/fetchredbag?openid="+req.getOpenid()+"\" class=\"rebind stress\">重新领取</a></div>");
 				}
 			}else{  //已经绑定过
-				return resultModel.setCode(FetchRedbagEnum.HadBindThisActivity.value()).setMsg(FetchRedbagEnum.HadBindThisActivity.desc()).setData("<div class=\"to_reg to_bind c4\"><div class=\"title\">领取失败</div>该手机号已被绑定，使用其他号码重新绑定<a href=\"'"+basePath+"/clienter/fetchredbag"+"'\" class=\"sub-btn rebind\">返回重新绑定</a></div>");
+				return resultModel.setCode(FetchRedbagEnum.HadBindThisActivity.value()).setMsg(FetchRedbagEnum.HadBindThisActivity.desc()).setData("<div class=\"to_reg to_bind c4\"><div class=\"title\">领取失败</div>该手机号已被绑定，使用其他号码重新绑定<a href=\""+basePath+"/clienter/fetchredbag"+"\" class=\"sub-btn rebind\">返回重新绑定</a></div>");
 			}		 
 		}
 	}	

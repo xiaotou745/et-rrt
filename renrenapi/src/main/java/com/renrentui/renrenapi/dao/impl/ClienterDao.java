@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.common.TransactionalRuntimeException;
 import com.renrentui.renrenapi.dao.inter.IClienterDao;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.ClienterBalance;
 import com.renrentui.renrenentity.ClienterLoginLog;
@@ -234,8 +235,13 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		String statement = "IClienterDao.getClienterIdByPhone";
 		HashMap<String, Object> paramMap = new HashMap<>();
 		paramMap.put("phoneNo", phoneNo);
-		int res = getReadOnlySqlSessionUtil().selectOne(statement, paramMap);
-		return res;
+		Clienter clienter = getReadOnlySqlSessionUtil().selectOne(statement, paramMap);
+		if(clienter!=null){
+			return ParseHelper.ToInt(clienter.getId());
+		}else{
+			return 0;
+		}
+		
 	}
 
 
