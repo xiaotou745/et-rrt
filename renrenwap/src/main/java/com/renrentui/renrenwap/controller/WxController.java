@@ -197,7 +197,13 @@ public class WxController {
 
 					WxUserInfo wxUserInfo = getUserInfoByOpenId(openId);
 					// 订阅消息
-					sendMsg = new WxSendTextMsg(sendMsg, "谢谢您的订阅。");
+					String gzStr="什么？\n"
+							+ "你还不知道人家是干嘛的？人人推是专门做推广的啦."
+							+ "\n\n"
+							+ "我们APP上有很多赚钱的任务，例如下载注册一个APP得到5-40元佣金，签约一个周围的店上口碑外卖300元等等啦，年后会有大量BAT等一线互联网企业靠谱任务上线，欢迎大家体验人人推APP哟。"
+							+ "\n\n"
+							+ "PS：合伙人分佣系统上线，让团队作战更有价值！";
+					sendMsg = new WxSendTextMsg(sendMsg, gzStr);
 					WeiXinTools.send(sendMsg, response.getOutputStream());
 					System.out.println("订阅");
 					clienterWxService.follow(openId, wxUserInfo.getNickname(),

@@ -120,7 +120,7 @@ public class ClienterController {
 							.setData(
 									"<div class=\"success c1\"><p>恭喜您获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号"
 											+ req.getPhoneNo()
-											+ "<a href=\"#\" class=\"sub-btn\">前往查看</a></div>");
+											+ "<a href=\"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\" class=\"sub-btn\">前往查看</a></div>");
 				} else {
 					return resultModel
 							.setCode(FetchRedbagEnum.Fail.value())
@@ -186,7 +186,7 @@ public class ClienterController {
 			resultModel
 					.setData("<div class=\"success c1\"><p>您已参与过该活动，已获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号"
 							+ clienter.getPhoneNo().trim()
-							+ "<a href=\"#\" class=\"sub-btn\">前往查看</a></div>");
+							+ "<a href=\"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\" class=\"sub-btn\">前往查看</a></div>");
 			return resultModel;
 		}
 		return resultModel;
