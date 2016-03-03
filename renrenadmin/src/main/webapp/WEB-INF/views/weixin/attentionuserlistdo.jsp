@@ -9,7 +9,7 @@
 <%@page import="java.util.List"%>
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
-PagedResponse<ClienterWxModel> data = (PagedResponse<ClienterWxModel>) request.getAttribute("listData");
+PagedResponse<ClienterWxModel> data = (PagedResponse<ClienterWxModel>) request.getAttribute("listdata");
 %>
 <% if(data.getResultList()==null||data.getResultList().size()==0) 
 {%>
@@ -34,8 +34,9 @@ PagedResponse<ClienterWxModel> data = (PagedResponse<ClienterWxModel>) request.g
 			     <td><%=list.get(i).getFromUserName() %></td>
 			     <td><%=list.get(i).getWxId() %></td>
 			     <td><%=list.get(i).getOpenId() %></td>
-			     <td><%=list.get(i).getFollowTime() %></td>
-			     <td><%=list.get(i).getUnFollowTime() %></td>
+			     <td><%=list.get(i).getClienterPhoneNo() %></td>			     
+			     <td><%=ParseHelper.ToDateString(list.get(i).getFollowTime()) %></td>
+			     <td><%=ParseHelper.ToDateString(list.get(i).getUnFollowTime()) %></td>
 			     <td><%=list.get(i).getFollowStatusString() %></td>
 			</tr>
 		 <%}%> 	 	

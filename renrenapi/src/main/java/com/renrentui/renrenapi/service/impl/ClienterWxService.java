@@ -88,7 +88,7 @@ public class ClienterWxService implements IClienterWxService {
 	}
 
 	@Override
-	public PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req) {
+	public PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req) { 
 		return clienterWxDao.getlist(req);
 	}
 

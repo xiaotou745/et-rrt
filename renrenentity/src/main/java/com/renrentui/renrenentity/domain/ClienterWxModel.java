@@ -2,7 +2,8 @@ package com.renrentui.renrenentity.domain;
 
 import java.util.Date;
 
-public class ClienterWxModel {
+import com.renrentui.renrenentity.common.ResponseBase;  
+public class ClienterWxModel extends ResponseBase{
 	/**
 	 * 
 	 */

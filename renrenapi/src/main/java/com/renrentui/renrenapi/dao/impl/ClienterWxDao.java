@@ -61,7 +61,7 @@ public class ClienterWxDao extends DaoBase implements IClienterWxDao {
 	}
 
 	@Override
-	public PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req) {
+	public PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req) { 
 		return getReadOnlySqlSessionUtil().selectPageList("IClienterWxDao.getlist", req);
 	}
 

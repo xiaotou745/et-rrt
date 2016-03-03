@@ -56,7 +56,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">关注时间：</label>
 							<div class="col-sm-8">
-								<div class="input-group date">
+								<div class="input-group ">
 									<span class="input-group-addon"><i
 										class="fa fa-calendar"></i></span> 
 										<input type="text" class="form-control" value="" name="attentionstartDate" id="attentionstartDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'attentionendDate\')||\'2030-10-01\'}'})"/>
@@ -68,7 +68,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">到:</label>
 							<div class="col-sm-8">
-								<div class="input-group date">
+								<div class="input-group ">
 									<span class="input-group-addon"><i
 										class="fa fa-calendar"></i></span> 
 										<input type="text" class="form-control" value="" name="attentionendDate" id="attentionendDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'attentionstartDate\')}',maxDate:'2030-10-01'})"/>
@@ -80,7 +80,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">取消关注时间：</label>
 							<div class="col-sm-8">
-								<div class="input-group date">
+								<div class="input-group ">
 									<span class="input-group-addon"><i
 										class="fa fa-calendar"></i></span> 
 										<input type="text" class="form-control" value="" name="unattentionstartDate" id="unattentionstartDate" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'unattentionendDate\')||\'2030-10-01\'}'})"/>
@@ -92,7 +92,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">到:</label>
 							<div class="col-sm-8">
-								<div class="input-group date">
+								<div class="input-group ">
 									<span class="input-group-addon"><i
 										class="fa fa-calendar"></i></span> 
 										<input type="text" class="form-control" value="" name="unattentionendDate" id="unattentionendDate" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'unattentionstartDate\')}',maxDate:'2030-10-01'})"/>
@@ -106,7 +106,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						<div class="form-group">
 							<label class="col-sm-4 control-label">人人推账号：</label>
 							<div class="col-sm-8">								
-								<input id="txtWxId" type="text" name="txtClienterPhoneNo" placeholder="人人推账号" class="form-control"/>
+								<input id="txtClienterPhoneNo" type="text" name="txtClienterPhoneNo" placeholder="人人推账号" class="form-control"/>
 							</div>
 						</div>
 					</div>
@@ -116,10 +116,10 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 							<button type="button" class="btn btn-w-m btn-primary" id=btnSearch
 								style="margin-left: 3px;height:30px;">查询</button>			 
 						</div> 
-						<div class="col-lg-3">
-							<button type="button" class="btn btn-w-m btn-primary" id="exportdata"
-								style="margin-left: 3px;height:30px;">导出数据</button>			 
-						</div> 
+<!-- 						<div class="col-lg-3"> -->
+<!-- 							<button type="button" class="btn btn-w-m btn-primary" id="exportdata" -->
+<!-- 								style="margin-left: 3px;height:30px;">导出数据</button>			  -->
+<!-- 						</div>  -->
 				</div>
 			</div>
 
@@ -141,7 +141,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
                  var attentionendDate=$("#attentionendDate").val();
                  var unattentionstartDate=$("#unattentionstartDate").val();
                  var unattentionendDate=$("#unattentionendDate").val();
-                 var clienterPhoneNo=$("#txtClienterPhoneNo").val();
+                 var txtclienterPhoneNo=$("#txtClienterPhoneNo").val(); 
 				 var paramaters = { 
 						 "wxName":wxName,
 						 "wxId": wxId,
@@ -151,7 +151,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 						 "endAttentionDate":attentionendDate,
 						 "beiginUnAttentionDate":unattentionstartDate,
 						 "endUnAttentionDate":unattentionendDate,
-						 "clienterPhoneNo":clienterPhoneNo,
+						 "clienterPhoneNo":txtclienterPhoneNo,
 						 "currentPage":currentPage
 						 };        
 			        var url = "<%=basePath%>/weixin/attentionuserlistdo";
