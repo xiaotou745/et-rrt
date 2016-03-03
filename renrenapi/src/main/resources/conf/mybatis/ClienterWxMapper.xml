@@ -47,6 +47,21 @@
 	<!-- 获取微信公众关注列表where条件 wangchao -->
   	<sql id="getClienterWxList_Where">
 		1=1 
+		<if test="wxName != null and wxName !=''" >
+        	and cwx.FromUserName = '${wxName}'
+      </if>
+      <if test="wxId != null and wxId != ''" >
+        	and cwx.wxId = '${wxId}' 
+      </if> 
+      <if test="wxNo != null and wxNo!=''" >
+        	and cwx.openId = '${wxNo}' 
+      </if>
+      <if test="followStatus != null and followStatus!=''" >
+        	and cwx.followStatus = ${followStatus} 
+      </if>
+      <if test="clienterPhoneNo != null and clienterPhoneNo!=''" >
+        	and c.PhoneNo = '${clienterPhoneNo}'
+      </if>
 	</sql>
 	<sql id="getClienterWxList_Column">
 	   cwx.Id ,
