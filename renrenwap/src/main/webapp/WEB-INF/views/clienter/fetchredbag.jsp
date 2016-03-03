@@ -26,10 +26,18 @@
 		var sendcodeurl=basepath+"/clienter/sendcode";
 		var fetchredbagurl=basepath+"/clienter/fetchredbagsubmit";
 		var openid="<%=openid%>";
+		if(openid==""){
+			window.location="<%=basePath%>/wx/redirect";
+			//alert("1");
+		}
 	</script>
 </head>
 
 <body>
+
+<div style="height:0px;overflow:hidden;">
+    <img src="<%=basePath%>/img/weixinshare1.0c707072.png">
+</div>
     <div id="astro-wrap" class="g-main">
 
         <div class="ctx_block">
@@ -57,7 +65,7 @@
                 <a class="sub-btn gethb">领红包</a>
             </div>
             <!-- <div class="success c1">
-                <p>恭喜您获得现金红包</p>
+                <p>恭喜您获得现金奖励</p>
                 <p class="money">
                     ¥ 6 元
                 </p>

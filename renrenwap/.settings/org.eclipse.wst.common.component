@@ -17,6 +17,9 @@
         <dependent-module archiveName="renrenentity-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrenentity/renrenentity">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="renrenlib-0.0.2-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/renrenlib/renrenlib">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="renrenwap"/>
         <property name="java-output-path" value="/renrenwap/target/classes"/>
     </wb-module>
