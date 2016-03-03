@@ -33,7 +33,7 @@ PagedResponse<ClienterWxModel> data = (PagedResponse<ClienterWxModel>) request.g
 			 <tr> 
 			     <td><%=list.get(i).getFromUserName() %></td>
 			     <td><%=list.get(i).getWxId() %></td>
-			     <td><%=list.get(i).getWxId() %></td>
+			     <td><%=list.get(i).getOpenId() %></td>
 			     <td><%=list.get(i).getFollowTime() %></td>
 			     <td><%=list.get(i).getUnFollowTime() %></td>
 			     <td><%=list.get(i).getFollowStatusString() %></td>

@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.renrentui.renrenapi.redis.RedisService;
 import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
+import com.renrentui.renrencore.util.CookieUtils;
 import com.renrentui.renrencore.util.HttpUtil;
 import com.renrentui.renrencore.util.JsonUtil;
 import com.renrentui.renrencore.util.PropertyUtils;
@@ -45,6 +46,10 @@ public class WxController {
 	/** 跳转授权地址 */
 	private static final String redirectUrlDomain = PropertyUtils
 			.getProperty("java.renrenwap.url");
+	
+	private static final String cookieDomain=
+			redirectUrlDomain.replace("http://", "").substring(0, redirectUrlDomain.replace("http://", "").indexOf("/"));
+	
 	@Autowired
 	IClienterWxService clienterWxService;
 	@Autowired
@@ -91,7 +96,12 @@ public class WxController {
 			System.out.println("======get openid error=======");
 			return;
 		}
-
+		// 这里把当前的openid存到cookie里
+		// 为的是让打开页面时判断传的参和cookie的是否一至
+		System.out.println("==========opendId:" + openId);
+		
+		CookieUtils.setCookie(request, response, RedissCacheKey.cookieOpenId, openId, 
+				60*60*24, false, cookieDomain, null);
 		response.sendRedirect(redirectUrlDomain
 				+ "/clienter/fetchredbag?openid=" + openId);
 	}
