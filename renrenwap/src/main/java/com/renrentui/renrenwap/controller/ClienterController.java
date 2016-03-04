@@ -1,6 +1,8 @@
 package com.renrentui.renrenwap.controller;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +15,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenapi.redis.RedisService;
+import com.renrentui.renrenapi.service.inter.IActivityService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IClienterWxService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
+import com.renrentui.renrencore.enums.ActivityEnum;
 import com.renrentui.renrencore.enums.FetchRedbagEnum;
 import com.renrentui.renrencore.util.CookieUtils;
+import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
+import com.renrentui.renrenentity.Activity;
 import com.renrentui.renrenentity.Clienter;
 import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.common.ResultModel;
@@ -39,7 +45,8 @@ public class ClienterController {
 	private IClienterWxService clienterWxService;
 	@Autowired
 	private RedisService redisService;
-
+	@Autowired
+	private IActivityService activityService;
 	/*
 	 * 领红包页面获取验证码 wangchao
 	 */
@@ -60,8 +67,8 @@ public class ClienterController {
 		String openid = request.getParameter("openid");
 		String cookieOpenId = CookieUtils.getCookie(request,
 				RedissCacheKey.cookieOpenId);
-		//
-		if (openid == null || !openid.equals(cookieOpenId)) {
+		//|| !openid.equals(cookieOpenId)
+		if (openid == null ) {
 			view.addObject("openid", "");
 		} else {
 			view.addObject("openid", openid);
@@ -162,6 +169,34 @@ public class ClienterController {
 					.setData(
 							"<div class=\"success c1\"><p>"
 									+ FetchRedbagEnum.ParaError.desc()
+									+ "</p></div>");
+		}
+		Activity activity= activityService.getSingleActivity(ActivityEnum.BindWeiXinFetchRedBag.value()); //绑定微信领奖励活动
+		if(activity==null || activity.getStatus() == 0){
+			return resultModel
+					.setCode(FetchRedbagEnum.ParaError.value())
+					.setMsg(FetchRedbagEnum.ParaError.desc())
+					.setData(
+							"<div class=\"success c1\"><p>"
+									+ "活动已失效"
+									+ "</p></div>");
+		}
+		if(activity.getStartTime().after(new Date())){
+			return resultModel
+					.setCode(FetchRedbagEnum.ParaError.value())
+					.setMsg(FetchRedbagEnum.ParaError.desc())
+					.setData(
+							"<div class=\"success c1\"><p>"
+									+ "活动尚未开始"
+									+ "</p></div>");
+		}
+		if(activity.getEndTime().before(new Date())){
+			return resultModel
+					.setCode(FetchRedbagEnum.ParaError.value())
+					.setMsg(FetchRedbagEnum.ParaError.desc())
+					.setData(
+							"<div class=\"success c1\"><p>"
+									+ "活动已经结束"
 									+ "</p></div>");
 		}
 		// 是否关注微信公众号

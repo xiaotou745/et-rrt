@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.renrentui.renrenapi.dao.inter.IClienterBalanceDao;
+import com.renrentui.renrenapi.service.inter.IActivityService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceRecordService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
+import com.renrentui.renrencore.enums.ActivityEnum;
 import com.renrentui.renrencore.enums.CBalanceRecordStatus;
 import com.renrentui.renrencore.enums.CBalanceRecordType;
 import com.renrentui.renrencore.util.ParseHelper;
@@ -29,6 +31,8 @@ public class ClienterBalanceService implements IClienterBalanceService{
 	private IClienterBalanceRecordService clienterBalanceRecordService;
 	@Autowired
 	private IClienterService clienterService; 
+	@Autowired 
+	private IActivityService activityService;
 	@Override
 	public  ClienterBalance selectByPrimaryKey(Long id)
 	{
@@ -52,11 +56,17 @@ public class ClienterBalanceService implements IClienterBalanceService{
 			if(a>0){
 				int hongbao= modifyClienterBalanceByWx(clienterId); //增加余额
 				if(hongbao>0){
-					reg=true;
+					if(updateActityData(ActivityEnum.BindWeiXinFetchRedBag.value())>0){
+						reg=true;
+					}
 				}
 			}		
 		}
 		return reg;
+	}
+	
+	public int updateActityData(int id){
+		 return activityService.updateActityData(id);
 	}
 	
 	/*

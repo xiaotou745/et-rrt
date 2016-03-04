@@ -27,5 +27,13 @@ public class ActivityService implements  IActivityService{
 	public int startUpActivity(UpdateActivityReq req) {
 		return iActivityDao.startUpActivity(req);
 	}
+	@Override
+	public Activity getSingleActivity(int id) {
+		return iActivityDao.getSingleActivity(id);
+	}
+	@Override
+	public int updateActityData(int id) {
+		return iActivityDao.updateActityData(id);
+	}
 
 }

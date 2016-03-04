@@ -18,4 +18,18 @@
         EndTime ,
        [Status] FROM dbo.Activity(nolock) 
 </select> 
+<select id="getSingleActivity" resultType="com.renrentui.renrenentity.Activity" parameterType="java.lang.Integer" >
+   select  Id ,
+        ActivityName ,
+        RewardMoney ,
+        GrantProbability ,
+        HadRewardCount ,
+        HadRewardMoney ,
+        StartTime ,
+        EndTime ,
+       [Status] FROM dbo.Activity(nolock) where id=#{id,jdbcType=INTEGER}
+</select>
+  <update  id="updateActityData" parameterType="java.lang.Integer" >
+    update dbo.Activity set HadRewardCount=HadRewardCount+1,HadRewardMoney=RewardMoney*(HadRewardCount+1) where id=#{id,jdbcType=INTEGER}
+  </update>
 </mapper>

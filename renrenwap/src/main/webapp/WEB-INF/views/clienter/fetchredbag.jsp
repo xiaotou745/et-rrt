@@ -27,7 +27,7 @@
 		var fetchredbagurl=basepath+"/clienter/fetchredbagsubmit";
 		var openid="<%=openid%>";
 		if(openid==""){
-			window.location="<%=basePath%>/wx/redirect";
+			//window.location="<%=basePath%>/wx/redirect";
 			//alert("1");
 		}
 	</script>

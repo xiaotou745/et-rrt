@@ -1,0 +1,266 @@
+body {
+	font: 1.4rem Arial;
+	-webkit-text-size-adjust: none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	word-break: break-all;
+	word-wrap: break-word
+}
+
+html {
+	-ms-touch-action: none;
+	font-size: 62.5%;
+	height: 100%
+}
+
+body {
+	font-family: '微软雅黑',Helvetica,Arial,sans-serif;
+	margin: 0
+}
+
+p {
+	padding: 0;
+	margin: 0
+}
+
+ul,li {
+	margin: 0;
+	padding: 0;
+	list-style: none
+}
+
+.ctx_block {
+	position: relative;
+	font-size: 0
+}
+
+.ctx_block img {
+	width: 100%
+}
+
+@media screen and (min-width:360px) {
+	html {
+		font-size: 72.5%
+	}
+}
+
+body {
+	background-color: #e8e8e8
+}
+
+.icon {
+	display: inline-block;
+	width: 1.5rem;
+	height: 1.5rem;
+	background-size: 100% 100%;
+	background-repeat: none;
+	background-position: 0 0;
+	vertical-align: middle;
+	margin-right: .3rem
+}
+
+.i-view {
+	background-image: url(../img/iview.png)
+}
+
+.i-time {
+	background-image: url(../img/itime.png)
+}
+
+.i-phone {
+	background-image: url(../img/iphone.png)
+}
+
+.baseinfo {
+	padding: 1.25rem 0 0;
+	background-color: #fff
+}
+
+.baseinfo .base {
+	position: relative;
+	padding-left: 7.25rem;
+	padding-right: 9.5rem;
+	padding-bottom: 1.25rem;
+	height: 5.5rem;
+	border-bottom: 1px solid #e1e1e1
+}
+
+.baseinfo .base img {
+	position: absolute;
+	top: 0;
+	left: 1.25rem;
+	width: 5.5rem;
+	height: 5.5rem;
+	-webkit-border-radius: .5rem;
+	border-radius: .5rem
+}
+
+.baseinfo .base h2 {
+	color: #333;
+	font-size: 1.5rem;
+	margin: 0 0 .6rem;
+	padding: 0;
+	line-height: 1
+}
+
+.baseinfo .base .address {
+	color: #bbc0c7;
+	font-size: 1.2rem;
+	line-height: 1.5
+}
+
+.baseinfo .base .price {
+	position: absolute;
+	right: 0;
+	top: -1.25rem;
+	width: 9rem;
+	font-size: 1.2rem;
+	color: #888;
+	text-align: center;
+	padding-top: 3rem;
+	border-left: 1px solid #e1e1e1;
+	height: 5rem
+}
+
+.baseinfo .base .price .num {
+	font-size: 1.6rem;
+	display: block;
+	color: #f7585d
+}
+
+.baseinfo .base .sign {
+	position: absolute;
+	right: 0;
+	top: 0;
+	text-align: center;
+	background-color: #32bcf6;
+	color: #fff;
+	padding: 0 .8rem;
+	line-height: 1.5
+}
+
+.baseinfo .timeinfo {
+	padding: 1.25rem 1.25rem .75rem 1.25rem
+}
+
+.baseinfo .timeinfo li:nth-child(2n+1) {
+	width: 44%;
+	margin-bottom: .5rem
+}
+
+.baseinfo .timeinfo li {
+	display: inline-block;
+	width: 54%;
+	font-size: 1.2rem;
+	color: #333;
+	vertical-align: middle
+}
+
+.task {
+	margin-top: 1.25rem;
+	background-color: #fff
+}
+
+.task .title {
+	padding-left: 1.25rem;
+	background-color: #f3f3f3;
+	color: #333;
+	font-size: 1.4rem;
+	line-height: 2.1rem;
+	height: 2.1rem;
+	border-top: 1px solid #dfdfdf;
+	border-bottom: 1px solid #dfdfdf
+}
+
+.task .flow {
+	padding: 1.25rem;
+	position: relative
+}
+
+.task .flow li {
+	position: relative;
+	padding-left: 2rem;
+	margin-bottom: 1.5rem;
+	line-height: 1.25;
+	font-size: 1.4rem
+}
+
+.task .flow .last {
+	margin-bottom: 0
+}
+
+.task .flow .line {
+	width: 2px;
+	background-color: #32bcf6;
+	position: absolute;
+	left: 1.9rem;
+	top: 2rem;
+	font-size: 0;
+	z-index: 0;
+	padding: 0;
+	height: 9rem
+}
+
+.task .flow .num {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1.4rem;
+	height: 1.4rem;
+	line-height: 1.4rem;
+	display: inline-block;
+	background-color: #32bcf6;
+	color: #fff;
+	-webkit-border-radius: .7rem;
+	text-align: center;
+	font-size: 1.2rem;
+	border-radius: .7rem
+}
+
+.task .tips {
+	margin-left: 1.25rem;
+	padding: 1.25rem 0 1.25rem 1.25rem;
+	border-top: 1px solid #e1e1e1
+}
+
+.task .tips li {
+	margin: .3125rem 0;
+	font-size: 1.2rem;
+	color: #888;
+	list-style-type: disc
+}
+
+.labinfo {
+	background-color: #fff;
+	margin-top: 1.25rem;
+	padding-left: 1.25rem;
+	font-size: 1.4rem;
+	line-height: 3rem;
+	height: 3rem
+}
+
+.labinfo .arrow {
+	height: 1.4rem;
+	float: right;
+	margin: .8rem 1.25rem 0 0
+}
+
+a {
+	color: #00bcd5;
+	text-decoration: none
+}
+
+.to_app {
+	background-color: #00bcd5;
+	color: #fff;
+	line-height: 3;
+	font-size: 1.6rem;
+	margin-top: 1.25rem;
+	text-decoration: none;
+	display: block;
+	text-align: center
+}

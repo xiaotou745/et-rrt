@@ -10,7 +10,11 @@ import com.renrentui.renrenentity.req.UpdateActivityReq;
 public interface IActivityService {
 	List<Activity> getList();
 
+	Activity getSingleActivity(int id);
+	
 	int shutUpActivity(UpdateActivityReq req);
 
 	int startUpActivity(UpdateActivityReq req);
+
+	int updateActityData(int id);
 }
