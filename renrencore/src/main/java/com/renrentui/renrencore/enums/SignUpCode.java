@@ -5,7 +5,7 @@ public enum SignUpCode {
 	/**
 	 * 成功
 	 */
-	Success(200, "success"),
+	Success(200, "注册成功"),
 	/**
 	 * 验证码不正确
 	 */
