@@ -67,8 +67,8 @@ public class ClienterController {
 		String openid = request.getParameter("openid");
 		String cookieOpenId = CookieUtils.getCookie(request,
 				RedissCacheKey.cookieOpenId);
-		//|| !openid.equals(cookieOpenId)
-		if (openid == null ) {
+		//
+		if (openid == null || !openid.equals(cookieOpenId)) {
 			view.addObject("openid", "");
 		} else {
 			view.addObject("openid", openid);
