@@ -29,4 +29,14 @@ public class ActivityDao extends DaoBase implements IActivityDao {
 		return getMasterSqlSessionUtil().update("IActivityDao.startUpActivity",req);
 	}
 
+	@Override
+	public Activity getSingleActivity(int id) {
+		return getReadOnlySqlSessionUtil().selectOne("IActivityDao.getSingleActivity",id);
+	}
+
+	@Override
+	public int updateActityData(int id) {
+		return getMasterSqlSessionUtil().update("IActivityDao.updateActityData",id);
+	}
+
 }

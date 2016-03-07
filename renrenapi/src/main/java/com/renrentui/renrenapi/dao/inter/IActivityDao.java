@@ -15,4 +15,8 @@ public interface IActivityDao {
 
 	int startUpActivity(UpdateActivityReq req);
 
+	Activity getSingleActivity(int id);
+
+	int updateActityData(int id);
+
 }
