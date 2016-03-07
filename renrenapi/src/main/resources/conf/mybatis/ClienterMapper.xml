@@ -204,6 +204,11 @@
     SELECT COUNT(1) FROM  dbo.ClienterWx AS C (NOLOCK)
 	WHERE C.ClienterId=#{clienterId,jdbcType=INTEGER} AND c.OpenId=#{openid,jdbcType=VARCHAR}
   </select>
+    <select id="isBindWxByClienterId" resultType="int" parameterType="java.util.HashMap" >
+    SELECT COUNT(1) FROM  dbo.ClienterWx AS C (NOLOCK)
+	WHERE C.ClienterId=#{clienterId,jdbcType=INTEGER} 
+  </select>
+  
   <!-- 更新地推员绑定微信记录和 日志 wangchao -->
   <update  id="updateClienterBindWx" parameterType="java.util.HashMap" >
 	  update  dbo.ClienterWx

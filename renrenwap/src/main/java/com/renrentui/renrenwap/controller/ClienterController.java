@@ -19,6 +19,8 @@ import com.renrentui.renrenapi.service.inter.IActivityService;
 import com.renrentui.renrenapi.service.inter.IClienterBalanceService;
 import com.renrentui.renrenapi.service.inter.IClienterService;
 import com.renrentui.renrenapi.service.inter.IClienterWxService;
+import com.renrentui.renrenapi.service.inter.IRenRenTaskService;
+import com.renrentui.renrenapi.service.inter.ITaskTagService;
 import com.renrentui.renrencore.consts.RedissCacheKey;
 import com.renrentui.renrencore.enums.ActivityEnum;
 import com.renrentui.renrencore.enums.FetchRedbagEnum;
@@ -27,11 +29,15 @@ import com.renrentui.renrencore.util.ParseHelper;
 import com.renrentui.renrencore.util.PropertyUtils;
 import com.renrentui.renrenentity.Activity;
 import com.renrentui.renrenentity.Clienter;
+import com.renrentui.renrenentity.RenRenTask;
 import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.common.ResultModel;
+import com.renrentui.renrenentity.domain.ClienterWxModel;
+import com.renrentui.renrenentity.domain.TaskDetail;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.FetchRedbagReq;
 import com.renrentui.renrenentity.req.SignUpReq;
+import com.renrentui.renrenentity.req.TaskDatumDetailReq;
 
 @Controller
 @RequestMapping("clienter")
@@ -47,6 +53,8 @@ public class ClienterController {
 	private RedisService redisService;
 	@Autowired
 	private IActivityService activityService;
+	@Autowired
+	private IRenRenTaskService renRenTaskService;
 	/*
 	 * 领红包页面获取验证码 wangchao
 	 */
@@ -115,7 +123,7 @@ public class ClienterController {
 									+ "\" class=\"sub-btn\">马上注册</a></div>");
 		else {
 			// 判断是否绑定过微信
-			if (!clienterService.isBindWx(clienterId, req.getOpenid())) {
+			if (!clienterService.isBindWxByClienterId(clienterId)) {
 				// 未绑定，添加绑定关系，增加地推员余额，添加流水记录
 				boolean result = clienterBalanceService.fetchRedbag(clienterId,
 						req.getOpenid());
@@ -125,7 +133,7 @@ public class ClienterController {
 							.setMsg(FetchRedbagEnum.Success.desc())
 							.setData(
 									"<div class=\"success c1\"><p>恭喜您获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号"
-											+ req.getPhoneNo()
+											+ ParseHelper.hideCenterFourPhoneNo(req.getPhoneNo())
 											+ "<a href=\"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\" class=\"sub-btn\">前往查看</a></div>");
 				} else {
 					return resultModel
@@ -219,7 +227,7 @@ public class ClienterController {
 					.getClienterById((long) clienterId);
 			resultModel
 					.setData("<div class=\"success c1\"><p>您已参与过该活动，已获得现金奖励</p><p class=\"money\">¥ 2 元</p>奖励已放入人人推账号"
-							+ clienter.getPhoneNo().trim()
+							+ ParseHelper.hideCenterFourPhoneNo(clienter.getPhoneNo().trim())
 							+ "<a href=\"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\" class=\"sub-btn\">前往查看</a></div>");
 			return resultModel;
 		}
@@ -256,5 +264,18 @@ public class ClienterController {
 		view.addObject("viewPath", "clienter/registersuccess");
 		return view;
 	}
-	
+	/*
+	 * 分享任务页面 wangchao
+	 */
+	@RequestMapping("sharetask")
+	public ModelAndView sharetask(HttpServletRequest request,Long taskId) {
+		ModelAndView view = new ModelAndView();
+		view.addObject("viewPath", "clienter/sharetask");
+		TaskDatumDetailReq req=new TaskDatumDetailReq();
+		req.setTaskId(taskId);
+		req.setUserId(0);
+		TaskDetail task= renRenTaskService.getTaskDetail(req); //获取任务
+		view.addObject("task",task);
+		return view;
+	}	
 }

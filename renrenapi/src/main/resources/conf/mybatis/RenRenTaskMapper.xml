@@ -67,7 +67,7 @@
   <!-- 获取任务详情接口  2015年11月19日11:24:46 V1.0.2 茹化肖  -->
    <select id="getTaskDetail" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
 SELECT TOP 1  rrt.id,
-        b.Logo ,
+        b.Logo ,b.[Address] BusinessAddress,
         rrt.amount,
         rrt.TaskTitle ,
         rrt.TaskType ,

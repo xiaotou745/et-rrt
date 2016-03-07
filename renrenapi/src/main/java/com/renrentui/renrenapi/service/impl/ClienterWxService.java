@@ -92,4 +92,9 @@ public class ClienterWxService implements IClienterWxService {
 		return clienterWxDao.getlist(req);
 	}
 
+	@Override
+	public ClienterWxModel getByPhone(String phoneNo) {
+		return clienterWxDao.getByPhone(phoneNo);
+	}
+
 }

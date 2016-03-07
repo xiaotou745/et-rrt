@@ -30,4 +30,6 @@ public interface IClienterWxDao {
 	int hadFetchRedbag(String openid);
 
 	PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req);
+
+	ClienterWxModel getByPhone(String phoneNo);
 }

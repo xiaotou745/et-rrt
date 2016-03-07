@@ -65,4 +65,9 @@ public class ClienterWxDao extends DaoBase implements IClienterWxDao {
 		return getReadOnlySqlSessionUtil().selectPageList("IClienterWxDao.getlist", req);
 	}
 
+	@Override
+	public ClienterWxModel getByPhone(String phoneNo) {
+		return getReadOnlySqlSessionUtil().selectOne("IClienterWxDao.getByPhone", phoneNo);
+	}
+
 }

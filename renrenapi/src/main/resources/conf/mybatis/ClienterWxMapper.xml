@@ -46,7 +46,8 @@
 	</select>
 	<!-- 获取微信公众关注列表where条件 wangchao -->
   	<sql id="getClienterWxList_Where">
-		1=1  <if test="wxName != null and wxName !=''" >
+		1=1 
+	  <if test="wxName != null and wxName !=''" >
         	and cwx.FromUserName = ''${wxName}''
       </if>
       <if test="wxId != null and wxId != ''" >
@@ -55,7 +56,7 @@
       <if test="wxNo != null and wxNo!=''" >
         	and cwx.openId = ''${wxNo}''
       </if>
-      <if test="followStatus != null and followStatus!='' and followStatus!=-1" >
+      <if test="followStatus >=0 " >
         	and cwx.followStatus = ${followStatus} 
       </if>
       <if test="clienterPhoneNo != null and clienterPhoneNo!=''" >
@@ -83,7 +84,7 @@
        cwx.FollowTime ,
        cwx.UnFollowTime ,
        cwx.ClienterId,
-       c.PhoneNo ClienterPhoneNo 
+       ISNULL(c.PhoneNo,''-'') ClienterPhoneNo 
 	</sql>
    	<!-- 获取微信公众关注列表 wangchao -->
 	  <select id="getlist" resultType="com.renrentui.renrenentity.domain.ClienterWxModel"
@@ -101,4 +102,18 @@
 	#{totalPage,mode=OUT,jdbcType=VARCHAR}
 	)} 
 	  </select>
+	  <!-- 根据手机号获取该手机是否绑定过微信  -->
+	  <select id="getByPhone" resultType="com.renrentui.renrenentity.domain.ClienterWxModel" parameterType="java.lang.String" >
+	 	select cwx.OpenId ,
+       cwx.Id ,
+       cwx.FromUserName ,
+       cwx.WxId ,
+       cwx.FollowStatus ,
+       cwx.FollowTime ,
+       cwx.UnFollowTime ,
+       cwx.ClienterId from dbo.ClienterWx cwx WITH(NOLOCK) 
+       LEFT JOIN dbo.Clienter c WITH(NOLOCK) ON c.Id=cwx.ClienterId
+       where c.PhoneNo=#{phoneNo,jdbcType=VARCHAR} 
+	  </select>
+	  
 </mapper>

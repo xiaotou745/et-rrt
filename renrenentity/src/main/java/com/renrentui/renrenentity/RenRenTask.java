@@ -10,6 +10,7 @@ import com.renrentui.renrencore.util.PropertyUtils;
 public class RenRenTask {
     private String taskNotice;
     private Long businessId;
+    private String businessAddress;
     private String pusher;
     private String createName;
     private Date createTime;
@@ -373,5 +374,13 @@ public class RenRenTask {
 
 	public void setTagColorCode(String tagColorCode) {
 		this.tagColorCode = tagColorCode;
+	}
+
+	public String getBusinessAddress() {
+		return businessAddress;
+	}
+
+	public void setBusinessAddress(String businessAddress) {
+		this.businessAddress = businessAddress;
 	} 
 }

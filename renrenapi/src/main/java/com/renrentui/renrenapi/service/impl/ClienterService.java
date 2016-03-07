@@ -471,4 +471,9 @@ public class ClienterService implements IClienterService {
 	public int getClienterIdByPhone(String phoneNo) {
 		return clienterDao.getClienterIdByPhone(phoneNo);
 	}
+
+	@Override
+	public boolean isBindWxByClienterId(int clienterId) {
+		return clienterDao.isBindWxByClienterId(clienterId);
+	}
 }

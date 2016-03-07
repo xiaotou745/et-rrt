@@ -369,4 +369,14 @@ public class ParseHelper {
 		String fileex=url.substring(url.lastIndexOf(".")+1);//文件后最
 		return filenameString+"_0_0."+fileex;
 	}
+	/*
+	 * 隐藏手机号中间四位
+	 * wangchao
+	 */
+	public static String hideCenterFourPhoneNo(String phoneNo){
+		if(phoneNo == null || phoneNo == ""){
+			return "";
+		}
+		return phoneNo.substring(0,phoneNo.length()-(phoneNo.substring(3)).length())+"****"+phoneNo.substring(7);
+	}
 }

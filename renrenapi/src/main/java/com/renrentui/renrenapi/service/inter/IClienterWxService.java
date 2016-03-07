@@ -21,4 +21,7 @@ public interface IClienterWxService {
 
 
 	PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req);
+
+
+	ClienterWxModel getByPhone(String phoneNo);
 }

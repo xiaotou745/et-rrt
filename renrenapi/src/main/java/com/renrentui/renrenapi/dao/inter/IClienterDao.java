@@ -144,4 +144,7 @@ public interface IClienterDao {
 
 
 	int getClienterIdByPhone(String phoneNo);
+
+
+	boolean isBindWxByClienterId(int clienterId);
 }
