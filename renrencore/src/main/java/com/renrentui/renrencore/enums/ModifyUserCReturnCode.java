@@ -23,6 +23,14 @@ public enum ModifyUserCReturnCode {
 	 */
 	UserNameError(1903, "地推员姓名有误"),
 	/**
+	 * 地推员ID有误
+	 */
+	UserIDError(1904, "地推员ID有误"),
+	/**
+	 * 地推员信息不全
+	 */
+	InfoError(1906, "地推员信息不全"),
+	/**
 	 * 当前骑士不存在
 	 */
 	UserError(1905, "当前地推员不存在");

@@ -309,20 +309,32 @@ public class UsercService implements IUsercService {
 	@Override
 	public HttpResultModel<Object> modifyuserc(ModifyUserCReq req) {
 		HttpResultModel<Object> resultModel = new HttpResultModel<Object>();
-//		if (req.getAge() == null || req.getAge().intValue() <= 0) {
-//			return resultModel.setCode(ModifyUserCReturnCode.AgeError.value())
-//					.setMsg(ModifyUserCReturnCode.AgeError.desc());
-//		}
-		if (req.getSex() == null || (req.getSex().intValue() != 1 && req.getSex().intValue() != 2)) {
+		if (req.getUserId()<=0) {
+			return resultModel.setCode(ModifyUserCReturnCode.UserIDError.value())
+					.setMsg(ModifyUserCReturnCode.UserIDError.desc());
+		}
+		if ((req.getUserName()==null||req.getUserName().isEmpty())&&
+				(req.getSex()==null||(req.getSex().intValue() != 1 && req.getSex().intValue() != 2))&&
+				(req.getHeadImage()==null||req.getHeadImage().isEmpty())&&
+				(req.getBirthDay()==null||req.getBirthDay().isEmpty())&&
+				(req.getAge()==null||req.getAge().intValue()<=0)) {
+			return resultModel.setCode(ModifyUserCReturnCode.InfoError.value())
+					.setMsg(ModifyUserCReturnCode.InfoError.desc());
+		}
+		if (req.getAge() != null && req.getAge().intValue() < 0) {
+			return resultModel.setCode(ModifyUserCReturnCode.AgeError.value())
+					.setMsg(ModifyUserCReturnCode.AgeError.desc());
+		}
+		if (req.getSex() != null && (req.getSex().intValue() != 1 && req.getSex().intValue() != 2)) {
 			return resultModel.setCode(ModifyUserCReturnCode.SexError.value())
 					.setMsg(ModifyUserCReturnCode.SexError.desc());
 		}
-		if (req.getUserName() == null || req.getUserName().isEmpty()) {
-			return resultModel.setCode(
-					ModifyUserCReturnCode.UserNameError.value()).setMsg(
-					ModifyUserCReturnCode.UserNameError.desc());
-		}
-		if (req.getUserId() == 0 || clienterService.modifyuserc(req) <= 0) {
+//		if (req.getUserName() != null && req.getUserName().isEmpty()) {
+//			return resultModel.setCode(
+//					ModifyUserCReturnCode.UserNameError.value()).setMsg(
+//					ModifyUserCReturnCode.UserNameError.desc());
+//		}
+		if (clienterService.modifyuserc(req) <= 0) {
 			return resultModel.setCode(ModifyUserCReturnCode.UserError.value())
 					.setMsg(ModifyUserCReturnCode.UserError.desc());
 		}

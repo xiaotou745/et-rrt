@@ -137,6 +137,10 @@ $("#savetag").click(function(){
 		alert("标签名称不能为空");
 		return;
 	}
+	if($("#tagName").val().length>2){
+		alert("标签名称不能超过2个字符");
+		return;
+	}
 	if($("#tagColorCode").val()==""){
 		alert("颜色背景不能为空");
 		return;
