@@ -14,7 +14,6 @@
 <%
 	String basePath =PropertyUtils.getProperty("java.renrenwap.url");
 	TaskDetail task = (TaskDetail)request.getAttribute("task");
-	List<TaskSetp> taskstep=task.getTaskSetps();
 %>
 <html>
 <head>
@@ -27,10 +26,9 @@
 </head>
 
 <body>
-<% if(task==null) 
-{%>
+<% if(task==null) {%>
 	=====无数据，参数错误=====
-<%} else{%>
+<%} else{ List<TaskSetp> taskstep=task.getTaskSetps(); %>
     <div id="astro-wrap" class="g-main">
         <div class="baseinfo">
             <div class="base">
