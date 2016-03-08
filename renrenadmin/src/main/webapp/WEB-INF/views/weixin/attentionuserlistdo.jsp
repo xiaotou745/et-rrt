@@ -34,9 +34,17 @@ PagedResponse<ClienterWxModel> data = (PagedResponse<ClienterWxModel>) request.g
 			     <td><%=list.get(i).getFromUserName() %></td>
 			     <td><%=list.get(i).getWxId() %></td>
 			     <td><%=list.get(i).getOpenId() %></td>
-			     <td><%=list.get(i).getClienterPhoneNo() %></td>			     
-			     <td><%=ParseHelper.ToDateString(list.get(i).getFollowTime()) %></td>
+			     <td><%=list.get(i).getClienterPhoneNo() %></td>
+			     <%if(list.get(i).getFollowStatus().equals(1)){ %>			     
+			     <td><%=ParseHelper.ToDateString(list.get(i).getFollowTime())%></td>
+			     <% }else{ %>
+			     <td></td>
+			     <%} %>
+			     <%if(list.get(i).getFollowStatus().equals(0)){ %>
 			     <td><%=ParseHelper.ToDateString(list.get(i).getUnFollowTime()) %></td>
+			     <% }else{ %>
+			     <td></td>
+			     <%} %>
 			     <td><%=list.get(i).getFollowStatusString() %></td>
 			</tr>
 		 <%}%> 	 	
