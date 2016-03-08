@@ -124,6 +124,16 @@ public class ClienterController {
 		else {
 			// 判断是否绑定过微信
 			if (!clienterService.isBindWxByClienterId(clienterId)) {
+				if (clienterService.isBindWxByOpenId(req.getOpenid())) {
+					return resultModel
+							.setCode(FetchRedbagEnum.HadBindThisActivity.value())
+							.setMsg(FetchRedbagEnum.HadBindThisActivity.desc())
+							.setData(
+									"<div class=\"to_reg to_bind c4\"><div class=\"title\">领取失败</div>该微信号已被绑定，使用其他号码重新绑定<a href=\""
+											+ basePath
+											+ "/clienter/fetchredbag"
+											+ "\" class=\"sub-btn rebind\">返回重新绑定</a></div>");
+				}
 				// 未绑定，添加绑定关系，增加地推员余额，添加流水记录
 				boolean result = clienterBalanceService.fetchRedbag(clienterId,
 						req.getOpenid());

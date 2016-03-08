@@ -250,5 +250,14 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 		paramMap.put("clienterId", clienterId);
 		int res = getReadOnlySqlSessionUtil().selectOne(statement, paramMap);
 		return res > 0;
+	}
+
+	@Override
+	public boolean isBindWxByOpenId(String openid) {
+		String statement = "IClienterDao.isBindWxByOpenId";
+		HashMap<String, Object> paramMap = new HashMap<>();
+		paramMap.put("openid", openid);
+		int res = getReadOnlySqlSessionUtil().selectOne(statement, paramMap);
+		return res > 0;
 	} 
 }

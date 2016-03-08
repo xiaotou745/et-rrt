@@ -137,5 +137,8 @@ public interface IClienterService {
 
 	int getClienterIdByPhone(String phoneNo);
 
-	boolean isBindWxByClienterId(int clienterId);	 
+	boolean isBindWxByClienterId(int clienterId);
+	
+	boolean isBindWxByOpenId(String openid);
+	
 }

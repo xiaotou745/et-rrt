@@ -476,4 +476,9 @@ public class ClienterService implements IClienterService {
 	public boolean isBindWxByClienterId(int clienterId) {
 		return clienterDao.isBindWxByClienterId(clienterId);
 	}
+
+	@Override
+	public boolean isBindWxByOpenId(String openid) {
+		return clienterDao.isBindWxByOpenId(openid);
+	}
 }

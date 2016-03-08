@@ -147,4 +147,7 @@ public interface IClienterDao {
 
 
 	boolean isBindWxByClienterId(int clienterId);
+
+
+	boolean isBindWxByOpenId(String openid);
 }
