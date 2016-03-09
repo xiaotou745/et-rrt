@@ -133,7 +133,7 @@ function modify(id,tagName,tagColorCode) {
     $('#myModal').modal('show');
 }
 $("#savetag").click(function(){
-	if($("#tagName").val()==""){
+	if($("#tagName").val().trim()==""){
 		alert("标签名称不能为空");
 		return;
 	}
