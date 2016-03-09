@@ -232,7 +232,7 @@ public class ClienterDao extends DaoBase implements IClienterDao {
 
 	@Override
 	public int getClienterIdByPhone(String phoneNo) {
-		String statement = "IClienterDao.getClienterIdByPhone";
+		String statement = "IClienterDao.getClienterByPhoneNo";
 		HashMap<String, Object> paramMap = new HashMap<>();
 		paramMap.put("phoneNo", phoneNo);
 		Clienter clienter = getReadOnlySqlSessionUtil().selectOne(statement, paramMap);
