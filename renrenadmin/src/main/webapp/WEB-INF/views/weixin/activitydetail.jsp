@@ -16,6 +16,7 @@ Activity activity = (Activity)request.getAttribute("singleActivity");
 <div class="col-lg-12">
 <div class="row">
 <div class="col-lg-3">
+
 		<div class="form-group">
 			<label class="col-sm-4 control-label">活动：</label> 
 				<label class="col-sm-4 control-label"><%=activity.getActivityName() %>【<%=activity.getStatusString() %>】</label> 

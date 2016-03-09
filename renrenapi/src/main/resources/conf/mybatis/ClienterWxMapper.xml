@@ -124,7 +124,7 @@
 	' cwx.Id DESC ',
 	'<include refid="getClienterWxList_Column"/> ',
 	' dbo.ClienterWx cwx WITH(NOLOCK) LEFT JOIN dbo.Clienter c WITH(NOLOCK) ON c.Id=cwx.ClienterId 
-	  join dbo.ClienterBalanceRecord cbr(nolock) on cbr.OrderId=${activityid} and cbr.RecordType=${recordType}  
+	  join dbo.ClienterBalanceRecord cbr(nolock) on cbr.ClienterId=cwx.clienterid
 	',
 	' <include refid="getlistForActivityDetail_Where"/> ',
 	#{pageSize,mode=IN,jdbcType=INTEGER},
@@ -135,7 +135,7 @@
 	)} 
 	  </select>
 	  <sql id="getlistForActivityDetail_Where">
-		1=1 
+		cbr.OrderId=${activityid} and cbr.RecordType=${recordType} 
 	  <if test="wxName != null and wxName !=''" >
         	and cwx.FromUserName = ''${wxName}''
       </if>
