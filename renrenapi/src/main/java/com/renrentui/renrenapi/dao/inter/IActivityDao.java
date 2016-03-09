@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.renrentui.renrenentity.Activity;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.req.ActivityReq;
 import com.renrentui.renrenentity.req.PagedActivityReq;
 import com.renrentui.renrenentity.req.UpdateActivityReq;
 
@@ -15,7 +16,7 @@ public interface IActivityDao {
 
 	int startUpActivity(UpdateActivityReq req);
 
-	Activity getSingleActivity(int id);
+	Activity getSingleActivity(ActivityReq req);
 
 	int updateActityData(int id);
 

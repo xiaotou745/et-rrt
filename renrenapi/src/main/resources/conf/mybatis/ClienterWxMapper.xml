@@ -116,4 +116,46 @@
        where c.PhoneNo=#{phoneNo,jdbcType=VARCHAR} 
 	  </select>
 	  
+	  <!-- 获取微信公众关注详情列表 wangchao -->
+	  <select id="getlistForActivityDetail" resultType="com.renrentui.renrenentity.domain.ClienterWxModel"
+	parameterType="com.renrentui.renrenentity.req.PagedClienterWxReq"
+	statementType="CALLABLE">
+	{call Sp_CustomPage2015_V1(
+	' cwx.Id DESC ',
+	'<include refid="getClienterWxList_Column"/> ',
+	' dbo.ClienterWx cwx WITH(NOLOCK) LEFT JOIN dbo.Clienter c WITH(NOLOCK) ON c.Id=cwx.ClienterId 
+	  join dbo.ClienterBalanceRecord cbr(nolock) on cbr.OrderId=${activityid} and cbr.RecordType=${recordType}  
+	',
+	' <include refid="getlistForActivityDetail_Where"/> ',
+	#{pageSize,mode=IN,jdbcType=INTEGER},
+	#{currentPage,mode=IN,jdbcType=INTEGER},
+	1,
+	#{totalRecord,mode=OUT,jdbcType=VARCHAR},
+	#{totalPage,mode=OUT,jdbcType=VARCHAR}
+	)} 
+	  </select>
+	  <sql id="getlistForActivityDetail_Where">
+		1=1 
+	  <if test="wxName != null and wxName !=''" >
+        	and cwx.FromUserName = ''${wxName}''
+      </if>
+      <if test="wxId != null and wxId != ''" >
+        	and cwx.wxId = ''${wxId}''
+      </if> 
+      <if test="wxNo != null and wxNo!=''" >
+        	and cwx.openId = ''${wxNo}''
+      </if>
+      <if test="followStatus >=0 " >
+        	and cwx.followStatus = ${followStatus} 
+      </if>
+      <if test="clienterPhoneNo != null and clienterPhoneNo!=''" >
+        	and c.PhoneNo = ''${clienterPhoneNo}''
+      </if>
+      <if test="beiginAttentionDate != null and beiginAttentionDate!=''">
+			and cbr.OperateTime>= ''${beiginAttentionDate}''
+		</if>
+	     <if test="endAttentionDate != null and endAttentionDate!=''">
+			and ''${endAttentionDate}''>=cbr.OperateTime
+		</if>
+	</sql> 
 </mapper>

@@ -5,6 +5,7 @@ public class FetchRedbagReq {
 	private String code; //验证码
 	private String openid;
 	private String truename;
+	private int activityid;
 	public String getPhoneNo() {
 		return phoneNo;
 	}
@@ -28,5 +29,11 @@ public class FetchRedbagReq {
 	}
 	public void setTruename(String truename) {
 		this.truename = truename;
+	}
+	public int getActivityid() {
+		return activityid;
+	}
+	public void setActivityid(int activityid) {
+		this.activityid = activityid;
 	}
 }

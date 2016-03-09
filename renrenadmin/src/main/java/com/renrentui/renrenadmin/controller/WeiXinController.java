@@ -10,9 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.renrentui.renrenapi.service.inter.IActivityService;
 import com.renrentui.renrenapi.service.inter.IClienterWxService;
+import com.renrentui.renrencore.enums.CBalanceRecordType;
 import com.renrentui.renrenentity.Activity;
 import com.renrentui.renrenentity.common.PagedResponse;
 import com.renrentui.renrenentity.domain.ClienterWxModel;
+import com.renrentui.renrenentity.req.ActivityReq;
 import com.renrentui.renrenentity.req.PagedClienterWxReq;
 import com.renrentui.renrenentity.req.UpdateActivityReq;
 
@@ -71,13 +73,23 @@ public class WeiXinController {
 	}
 
 	@RequestMapping("activitydetail")
-	public ModelAndView activitydetail(UpdateActivityReq req) {
+	public ModelAndView activitydetail(ActivityReq req) {
 		ModelAndView view = new ModelAndView("adminView");
 		view.addObject("subtitle", "微信平台管理");
 		view.addObject("currenttitle", "活动详情");
 		view.addObject("viewPath", "weixin/activitydetail");
-		// List<Activity> list= iActivityService.getActivityDetail();
-		// view.addObject("listData", list);
+		Activity singleActivity= iActivityService.getSingleActivity(req);
+		view.addObject("singleActivity", singleActivity);
+		return view;
+	}
+	
+	@RequestMapping("activitydetaillistdo")
+	public ModelAndView activitydetaillistdo(PagedClienterWxReq req) {
+		ModelAndView view = new ModelAndView("weixin/activitydetaillistdo"); 
+		PagedResponse<ClienterWxModel> modelPagedResponse = new PagedResponse<ClienterWxModel>(); 
+		req.setRecordType(CBalanceRecordType.ActivityRewards.value());
+		modelPagedResponse = clienterWxService.getlistForActivityDetail(req);
+		view.addObject("listdata", modelPagedResponse); 
 		return view;
 	}
 }

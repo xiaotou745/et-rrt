@@ -32,4 +32,7 @@ public interface IClienterWxDao {
 	PagedResponse<ClienterWxModel> getlist(PagedClienterWxReq req);
 
 	ClienterWxModel getByPhone(String phoneNo);
+
+	PagedResponse<ClienterWxModel> getlistForActivityDetail(
+			PagedClienterWxReq req);
 }

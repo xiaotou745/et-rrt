@@ -8,6 +8,7 @@ import com.renrentui.renrenapi.common.DaoBase;
 import com.renrentui.renrenapi.dao.inter.IActivityDao;
 import com.renrentui.renrenentity.Activity;
 import com.renrentui.renrenentity.common.PagedResponse;
+import com.renrentui.renrenentity.req.ActivityReq;
 import com.renrentui.renrenentity.req.PagedActivityReq;
 import com.renrentui.renrenentity.req.UpdateActivityReq;
 
@@ -30,8 +31,8 @@ public class ActivityDao extends DaoBase implements IActivityDao {
 	}
 
 	@Override
-	public Activity getSingleActivity(int id) {
-		return getReadOnlySqlSessionUtil().selectOne("IActivityDao.getSingleActivity",id);
+	public Activity getSingleActivity(ActivityReq req) {
+		return getReadOnlySqlSessionUtil().selectOne("IActivityDao.getSingleActivity",req);
 	}
 
 	@Override

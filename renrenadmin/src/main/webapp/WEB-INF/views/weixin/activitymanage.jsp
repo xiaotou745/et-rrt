@@ -42,7 +42,7 @@ String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 					if (list.get(i).getHadRewardCount()>0)
 					{
 			%>
-			<td><a href="<%=basePath%>/weixin/activitydetail?id=<%=list.get(i).getId()%>">list.get(i).getHadRewardCount()</a></td>
+			<td><a href="<%=basePath%>/weixin/activitydetail?id=<%=list.get(i).getId()%>"><%=list.get(i).getHadRewardCount()%></a></td>
 			<%
 				} else {
 			%>

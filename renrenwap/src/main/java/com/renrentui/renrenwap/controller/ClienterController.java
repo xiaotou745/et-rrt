@@ -34,6 +34,7 @@ import com.renrentui.renrenentity.common.ResponseBase;
 import com.renrentui.renrenentity.common.ResultModel;
 import com.renrentui.renrenentity.domain.ClienterWxModel;
 import com.renrentui.renrenentity.domain.TaskDetail;
+import com.renrentui.renrenentity.req.ActivityReq;
 import com.renrentui.renrenentity.req.CSendCodeReq;
 import com.renrentui.renrenentity.req.FetchRedbagReq;
 import com.renrentui.renrenentity.req.SignUpReq;
@@ -136,7 +137,7 @@ public class ClienterController {
 				}
 				// 未绑定，添加绑定关系，增加地推员余额，添加流水记录
 				boolean result = clienterBalanceService.fetchRedbag(clienterId,
-						req.getOpenid());
+						req.getOpenid(),req.getActivityid());
 				if (result) {
 					return resultModel
 							.setCode(FetchRedbagEnum.Success.value())
@@ -189,7 +190,9 @@ public class ClienterController {
 									+ FetchRedbagEnum.ParaError.desc()
 									+ "</p></div>");
 		}
-		Activity activity= activityService.getSingleActivity(ActivityEnum.BindWeiXinFetchRedBag.value()); //绑定微信领奖励活动
+		ActivityReq activityReq=new ActivityReq();
+		activityReq.setId(ActivityEnum.BindWeiXinFetchRedBag.value());
+		Activity activity= activityService.getSingleActivity(activityReq); //绑定微信领奖励活动
 		if(activity==null || activity.getStatus() == 0){
 			return resultModel
 					.setCode(FetchRedbagEnum.ParaError.value())
