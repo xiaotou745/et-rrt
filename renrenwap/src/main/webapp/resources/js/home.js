@@ -57,7 +57,8 @@ $(function() {
             data    :{
                 "phoneNo": tel.val(),
                 "code" : code,
-                "openid":openid
+                "openid":openid,
+                "activityid":1
             },
             success:function(res){
             	var fetchurl=basepath+"/clienter/fetchredbag";
@@ -98,7 +99,7 @@ function validateQualification(openid){
         method  :'post',
         async:false,
         data    :{
-        	openid:openid
+        	"openid":openid
         },
         success:function(res){
         	if(res.code!=1000){

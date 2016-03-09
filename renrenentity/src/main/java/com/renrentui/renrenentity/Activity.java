@@ -48,6 +48,7 @@ public class Activity {
 	 */
 	private Integer status;
 
+	private String statusString;
 
 	/**
 	 * 获取主键
@@ -173,6 +174,15 @@ public class Activity {
 	 */
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	public String getStatusString() {
+		if(status.equals(1)){return "进行中";
+		}else{
+			return "已结束";
+		}
+	}
+	public void setStatusString(String statusString) {
+		this.statusString = statusString;
 	}
 
 }

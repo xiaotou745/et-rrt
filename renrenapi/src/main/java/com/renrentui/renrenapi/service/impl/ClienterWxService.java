@@ -97,4 +97,10 @@ public class ClienterWxService implements IClienterWxService {
 		return clienterWxDao.getByPhone(phoneNo);
 	}
 
+	@Override
+	public PagedResponse<ClienterWxModel> getlistForActivityDetail(
+			PagedClienterWxReq req) {
+		return clienterWxDao.getlistForActivityDetail(req);
+	}
+
 }

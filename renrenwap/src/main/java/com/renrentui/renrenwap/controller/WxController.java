@@ -147,15 +147,15 @@ public class WxController {
 
 		String hdBindUrl = redirectUrlDomain + "/wx/redirect";
 
-		String menuData = "{\"button\":[{ \"name\":\"活动\","
-				+ "\"sub_button\":[{\"type\":\"view\","
-				+ "\"name\":\"投票\","
-				+ "\"url\":\"http://mp.weixin.qq.com/s?__biz=MzA5NzQzOTk1Ng==&mid=402831696&idx=1&sn=ed73a8e94465a7ec20115a91d152b7c1#rd\"},"
-				+ "{ \"type\":\"view\",\"name\":\"绑定\",\"url\":\""
-				+ hdBindUrl
-				+ "\"	}]},"
-				+ "{\"type\":\"view\", \"name\":\"合伙人招募\",\"url\":\"https://jinshuju.net/f/ptT2lj\"},"
-				+ "{\"type\":\"view\", \"name\":\"APP下载\",\"url\":\"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\"}]}";
+		String menuData = "{	\"button\": "
+				+ "[{		\"type\": \"view\",		\"name\": \"APP下载\",		\"url\": \"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\"	}, "
+				+ "{		\"type\": \"view\",		\"name\": \"绑账号送现金\",		\"url\": \""+hdBindUrl+"\"	}, "
+				+ "{		\"name\": \"推广合作\",		"
+				+ "\"sub_button\": "
+				+ "[{			\"type\": \"view\",			\"name\": \"企业推广\",			\"url\": \"https://jinshuju.net/f/Pq7ncs\"		}, "
+				+ "{			\"type\": \"view\",			\"name\": \"团队入驻\",			\"url\": \"https://jinshuju.net/f/ptT2lj\"		}, "
+				+ "{			\"type\": \"view\",			\"name\": \"人人推吧\",			\"url\": \"http://tieba.baidu.com/f?kw=%C8%CB%C8%CB%CD%C6&fr=ala0&tpl=5\"		}"
+				+ "]	}]}";
 		String resultData = HttpUtil.sendPost(menuUrl, menuData,
 				"application/json");
 		System.out.println(resultData);

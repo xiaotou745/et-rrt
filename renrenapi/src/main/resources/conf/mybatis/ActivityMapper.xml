@@ -18,7 +18,7 @@
         EndTime ,
        [Status] FROM dbo.Activity(nolock) 
 </select> 
-<select id="getSingleActivity" resultType="com.renrentui.renrenentity.Activity" parameterType="java.lang.Integer" >
+<select id="getSingleActivity" resultType="com.renrentui.renrenentity.Activity" parameterType="com.renrentui.renrenentity.req.ActivityReq" >
    select  Id ,
         ActivityName ,
         RewardMoney ,

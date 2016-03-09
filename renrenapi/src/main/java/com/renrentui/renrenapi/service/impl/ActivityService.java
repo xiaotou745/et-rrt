@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.renrentui.renrenapi.dao.inter.IActivityDao;
 import com.renrentui.renrenapi.service.inter.IActivityService;
 import com.renrentui.renrenentity.Activity; 
+import com.renrentui.renrenentity.req.ActivityReq;
 import com.renrentui.renrenentity.req.UpdateActivityReq;
 
 @Service
@@ -28,8 +29,8 @@ public class ActivityService implements  IActivityService{
 		return iActivityDao.startUpActivity(req);
 	}
 	@Override
-	public Activity getSingleActivity(int id) {
-		return iActivityDao.getSingleActivity(id);
+	public Activity getSingleActivity(ActivityReq req) {
+		return iActivityDao.getSingleActivity(req);
 	}
 	@Override
 	public int updateActityData(int id) {

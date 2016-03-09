@@ -24,4 +24,8 @@ public interface IClienterWxService {
 
 
 	ClienterWxModel getByPhone(String phoneNo);
+
+
+	PagedResponse<ClienterWxModel> getlistForActivityDetail(
+			PagedClienterWxReq req);
 }

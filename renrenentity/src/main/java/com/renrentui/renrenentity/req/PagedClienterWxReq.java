@@ -21,6 +21,9 @@ public class PagedClienterWxReq extends PagedRequestBase {
 	private String endUnAttentionDate;
 	
 	private String clienterPhoneNo;
+	
+	private int activityid;
+	private int recordType;
 	public String getWxName() {
 		return wxName;
 	}
@@ -91,5 +94,21 @@ public class PagedClienterWxReq extends PagedRequestBase {
 
 	public void setClienterPhoneNo(String clienterPhoneNo) {
 		this.clienterPhoneNo = clienterPhoneNo;
+	}
+
+	public int getActivityid() {
+		return activityid;
+	}
+
+	public void setActivityid(int activityid) {
+		this.activityid = activityid;
+	}
+
+	public int getRecordType() {
+		return recordType;
+	}
+
+	public void setRecordType(int recordType) {
+		this.recordType = recordType;
 	} 
 }

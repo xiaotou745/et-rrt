@@ -48,11 +48,11 @@ public class ClienterBalanceService implements IClienterBalanceService{
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class, timeout = 30)
-	public boolean fetchRedbag(int clienterId,String openid) {
+	public boolean fetchRedbag(int clienterId,String openid,int activityid) {
 		boolean reg = false; 
 		boolean bindresult=clienterService.clienterBindWx(clienterId,openid);  //绑定地推员和微信关系
 		if(bindresult){
-			int a=insertBalanceRecordByWx(clienterId);  //增加流水
+			int a=insertBalanceRecordByWx(clienterId,activityid);  //增加流水
 			if(a>0){
 				int hongbao= modifyClienterBalanceByWx(clienterId); //增加余额
 				if(hongbao>0){
@@ -80,7 +80,7 @@ public class ClienterBalanceService implements IClienterBalanceService{
 		return clienterBalanceDao.updateMoneyByKey(cbr);
 	}
 	 
-	public int insertBalanceRecordByWx(int clienterId){
+	public int insertBalanceRecordByWx(int clienterId,int activityid){
 		ClienterBalanceRecord cbr = new ClienterBalanceRecord();
 		cbr.setClienterId((long)clienterId);
 		cbr.setAmount(2.0);
@@ -88,7 +88,7 @@ public class ClienterBalanceService implements IClienterBalanceService{
 		cbr.setOptName("系统操作");
 		cbr.setRemark("活动奖励");
 		cbr.setStatus((short)CBalanceRecordStatus.Success.value());
-		cbr.setOrderId(0l); 
+		cbr.setOrderId((long)activityid);
 		cbr.setRelationNo("");
 		return clienterBalanceRecordService.insert(cbr);		
 	}
