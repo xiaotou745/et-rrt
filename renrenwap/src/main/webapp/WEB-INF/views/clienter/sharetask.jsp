@@ -32,9 +32,9 @@
     <div id="astro-wrap" class="g-main">
         <div class="baseinfo">
             <div class="base">
-                <img src="<%=basePath %>/img/logo.jpg" alt="">
+                <img src="<%=task.getTask().getLogo()%>" alt="">
                 <h2><%=task.getTask().getTaskTitle() %></h2>
-                <div class="address"><%=task.getTask().getBusinessAddress() %></div>
+                <div class="address"></div>
                 <div class="price">
                     <div class="sign"><%=task.getTask().getTagName() %></div>
                     <p class="num"><%=task.getTask().getAmount() %></p>
@@ -44,7 +44,7 @@
             <div class="timeinfo">
                 <ul>
                     <li>
-                        <i class="icon i-view"></i>审核：<%=ParseHelper.ToInt(task.getTask().getTaskCycle()) %>天
+                        <i class="icon i-view"></i>审核：<%=ParseHelper.ToInt(task.getTask().getAuditCycle()) %>天
                     </li>
                     <li>
                         <i class="icon i-time"></i>截止日期：<%=ParseHelper.ToDateString(task.getTask().getEndTime(),"yyyy-MM-dd") %>
@@ -75,7 +75,7 @@
             <i class="icon i-phone"></i>咨询电话:<%=task.getTask().getHotLine() %>
         </div>
         <div class="labinfo">
-            任务参与人数<%=ParseHelper.ToInt(task.getTask().getPartnerNum(),0) %>
+            任务参与人数(<%=ParseHelper.ToInt(task.getTask().getPartnerNum(),0) %>)
             <img src="<%=basePath %>/img/arrow.jpg" class="arrow">
         </div>
         <a class="to_app" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app">前往APP做任务</a>

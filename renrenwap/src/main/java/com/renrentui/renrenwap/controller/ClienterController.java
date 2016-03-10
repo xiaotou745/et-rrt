@@ -229,7 +229,7 @@ public class ClienterController {
 					.setData(
 							"<div class=\"rcode_wrap c2\">进入<span class=\"stress\">公众号</span>点击<span class=\"stress\">“绑定账号送现金”</span>参与活动<img src=\""
 									+ basePath
-									+ "/img/rcode.png\" alt=\"\">长按二维码扫描<br>关注[人人推官方平台]</div>");
+									+ "/img/rcode.jpg\" alt=\"\">长按二维码扫描<br>关注[人人地推]</div>");
 		}
 		// 是否领取过奖励
 		int clienterId = clienterWxService.hadFetchRedbag(openid);

@@ -89,7 +89,8 @@
 		rrt.tagId,
 		isnull(k.tagName,'') as
 		tagName,
-		isnull(k.tagColorCode,'') as tagColorCode
+		isnull(k.tagColorCode,'') as tagColorCode,
+		rrt.PartnerNum 
 		FROM dbo.RenRenTask
 		AS rrt ( NOLOCK )
 		JOIN dbo.Business AS b ( NOLOCK ) ON rrt.BusinessId = b.id
