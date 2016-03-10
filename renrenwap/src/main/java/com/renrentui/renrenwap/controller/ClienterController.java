@@ -125,7 +125,7 @@ public class ClienterController {
 		else {
 			// 判断是否绑定过微信
 			if (!clienterService.isBindWxByClienterId(clienterId)) {
-				if (clienterService.isBindWxByOpenId(req.getOpenid())) {
+				if (!clienterService.isBindWxByOpenId(req.getOpenid())) {
 					return resultModel
 							.setCode(FetchRedbagEnum.HadBindThisActivity.value())
 							.setMsg(FetchRedbagEnum.HadBindThisActivity.desc())
