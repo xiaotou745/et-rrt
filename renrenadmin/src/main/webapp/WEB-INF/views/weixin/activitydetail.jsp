@@ -10,13 +10,14 @@
 <%
 String basePath =PropertyUtils.getProperty("java.renrenadmin.url");
 Activity activity = (Activity)request.getAttribute("singleActivity");
+int activityid = (int)request.getAttribute("activityid");
 %>
 <div class="wrapper wrapper-content animated fadeInRight form-horizontal">
 <div class="row">
 <div class="col-lg-12">
 <div class="row">
 <div class="col-lg-3">
-
+<input type="hidden" id="activityid" value=<%=activityid %> />
 		<div class="form-group">
 			<label class="col-sm-4 control-label">活动：</label> 
 				<label class="col-sm-4 control-label"><%=activity.getActivityName() %>【<%=activity.getStatusString() %>】</label> 
@@ -156,7 +157,8 @@ Activity activity = (Activity)request.getAttribute("singleActivity");
 						 "beiginAttentionDate":attentionstartDate,
 						 "endAttentionDate":attentionendDate,
 						 "clienterPhoneNo":txtclienterPhoneNo,
-						 "currentPage":currentPage
+						 "currentPage":currentPage,
+						 "activityid":$("#activityid").val()
 						 };        
 			        var url = "<%=basePath%>/weixin/activitydetaillistdo";
 			        $.ajax({

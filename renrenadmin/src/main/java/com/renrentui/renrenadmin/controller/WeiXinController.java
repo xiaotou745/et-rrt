@@ -80,6 +80,7 @@ public class WeiXinController {
 		view.addObject("viewPath", "weixin/activitydetail");
 		Activity singleActivity= iActivityService.getSingleActivity(req);
 		view.addObject("singleActivity", singleActivity);
+		view.addObject("activityid",req.getId());
 		return view;
 	}
 	
