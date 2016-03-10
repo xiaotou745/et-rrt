@@ -13,6 +13,25 @@ public class TaskReq extends PagedRequestBase{
 	
 	private int taskStatus;
 	private int orderBy;
+	private String platform;
+	private int isHideDown;
+
+	
+	public int getIsHideDown() {
+		return isHideDown;
+	}
+
+	public void setIsHideDown(int isHideDown) {
+		this.isHideDown = isHideDown;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
 
 	public int getUserId() {
 		return userId;
