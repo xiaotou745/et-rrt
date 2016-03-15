@@ -100,16 +100,18 @@ public class LogServiceBLL {
 	}
 
 	public void writeFile(String sourceSys, String jsonMsg) {
-		switch (sourceSys) {
-		case "renrenadmin":
-			renrenAdminLogger.info(jsonMsg);
-			break;
-		case "renrenapihttp":
-			renrenApiHttpLogger.info(jsonMsg);
-			break;
-		default:
-			break;
-		}
+		//现在请求日志都写入了mongo，异常请求发送邮件，因此没必要写入文本文件了
+		//而且每个站点都必须配置自己的logger
+//		switch (sourceSys) {
+//		case "renrenadmin":
+//			renrenAdminLogger.info(jsonMsg);
+//			break;
+//		case "renrenapihttp":
+//			renrenApiHttpLogger.info(jsonMsg);
+//			break;
+//		default:
+//			break;
+//		}
 	}
 
 	private String getAlertBody(Object logEngity) {
