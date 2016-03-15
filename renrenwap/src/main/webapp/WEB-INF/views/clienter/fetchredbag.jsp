@@ -95,7 +95,7 @@
                 活动规则
             </div>
             <ul>
-                <li><span class="num">1</span>关注人人推微信公众号【人人推官方平台】后进行绑定才能获得现金奖励</li>
+                <li><span class="num">1</span>关注人人推微信公众号【人人地推】后进行绑定才能获得现金奖励</li>
                 <li><span class="num">2</span>绑定的手机号必须已经注册为人人推用户</li>
                 <li><span class="num">3</span>活动期间，单个微信/人人推账号只能绑定一次</li>
                 <li><span class="num">4</span>绑定成功后，即可获得1-100元随机现金奖励，奖励发放到您的人人推账户，请登录人人推APP进行查看</li>

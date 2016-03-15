@@ -568,6 +568,12 @@ public class RenRenTaskService implements IRenRenTaskService {
 		if(req.getPageSize()<=0){
 			req.setPageSize(15);  //默认页容量
 		}
+		
+		if(req.getPlatform().toLowerCase().equals("ios") && PropertyUtils.getProperty("IsHideDownLoadTask").equals("1"))
+		{
+			req.setIsHideDown(1);
+		}
+		
 		return renRenTaskDao.getNewTaskList(req);
 	}
 

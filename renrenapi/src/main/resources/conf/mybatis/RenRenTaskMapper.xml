@@ -1,136 +1,144 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renrentui.renrenapi.dao.inter.IRenRenTaskDao" >
-  <sql id="Base_Column_List" >
-    Id, TaskTitle, TaskGeneralInfo, BusinessId, Pusher, CreateName, CreateTime, 
-    ModifyName, ModifyTime, BeginTime, EndTime,  Amount, status, 
-      PaymentMethod,AuditCycle,TargetPeople,TaskType,HotLine,DownUrl,
-      ScanTip,Reminder,TotalAmount,EstimatedTime,PartnerNum,TagId
-  </sql>
-  <select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from RenRenTask (NOLOCK)
-    where Id = #{id,jdbcType=BIGINT}
-  </select>
-  <!--添加一个任务 茹化肖 2015年11月16日13:45:54 -->
-  <insert id="insert" parameterType="com.renrentui.renrenentity.RenRenTask" >
-    	  <selectKey resultType="java.lang.Long" keyProperty="id"
-				order="AFTER">
-				select @@IDENTITY as id
-	  </selectKey>
-    insert into RenRenTask (
-	  TaskTitle,
-      TaskGeneralInfo,
-      BusinessId, 
-      Pusher, 
-      CreateName, 
-      CreateTime,
-      ModifyName, 
-      ModifyTime, 
-      BeginTime,
-      EndTime, 
-      Amount, 
-      status, 
-      AuditCycle,
-      HotLine,
-      TaskType,
-      DownUrl,
-      ScanTip,
-      Reminder,
-      TotalAmount,
-      EstimatedTime,
-      TagId)
-    values (
-      #{taskTitle,jdbcType=NVARCHAR},
-      #{taskGeneralInfo,jdbcType=NVARCHAR},
-      #{businessId,jdbcType=BIGINT}, 
-      #{pusher,jdbcType=NVARCHAR}, 
-      #{createName,jdbcType=NVARCHAR},
-       getdate(),
-       #{modifyName,jdbcType=NVARCHAR},
-        getdate(),
-      #{beginTime},
-       #{endTime}, 
-      #{amount,jdbcType=DECIMAL}, 
-      #{status,jdbcType=INTEGER},
-      #{auditCycle,jdbcType=BIGINT}, 
-      #{hotLine,jdbcType=NVARCHAR},
-       #{taskType,jdbcType=INTEGER},
-       #{downUrl,jdbcType=NVARCHAR},
-       #{scanTip,jdbcType=NVARCHAR},
-       #{reminder,jdbcType=NVARCHAR},
-       #{totalAmount,jdbcType=DECIMAL},
-       #{estimatedTime,jdbcType=INTEGER},
-       #{tagId,jdbcType=INTEGER})
-  </insert>
-  <!-- 获取任务详情接口  2015年11月19日11:24:46 V1.0.2 茹化肖  -->
-   <select id="getTaskDetail" resultType="com.renrentui.renrenentity.RenRenTask" parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
-SELECT TOP 1  rrt.id,
-        b.Logo ,b.[Address] BusinessAddress,
-        rrt.amount,
-        rrt.TaskTitle ,
-        rrt.TaskType ,
-        rrt.TaskGeneralInfo ,
-        AuditCycle ,
-        EndTime ,
-        HotLine,
-        CASE WHEN ct.id is NULL THEN 0 ELSE 1 END AS IsHad,
-        ISNULL(ct.id,0) AS CtId,
-        rrt.pusher,
-        rrt.DownUrl,
-        rrt.ScanTip,
-        rrt.Reminder,
+<mapper namespace="com.renrentui.renrenapi.dao.inter.IRenRenTaskDao">
+	<sql id="Base_Column_List">
+		Id, TaskTitle, TaskGeneralInfo, BusinessId, Pusher, CreateName,
+		CreateTime,
+		ModifyName, ModifyTime, BeginTime, EndTime, Amount, status,
+		PaymentMethod,AuditCycle,TargetPeople,TaskType,HotLine,DownUrl,
+		ScanTip,Reminder,TotalAmount,EstimatedTime,PartnerNum,TagId
+	</sql>
+	<select id="selectById" resultType="com.renrentui.renrenentity.RenRenTask"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from RenRenTask (NOLOCK)
+		where Id = #{id,jdbcType=BIGINT}
+	</select>
+	<!--添加一个任务 茹化肖 2015年11月16日13:45:54 -->
+	<insert id="insert" parameterType="com.renrentui.renrenentity.RenRenTask">
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
+		insert into RenRenTask (
+		TaskTitle,
+		TaskGeneralInfo,
+		BusinessId,
+		Pusher,
+		CreateName,
+		CreateTime,
+		ModifyName,
+		ModifyTime,
+		BeginTime,
+		EndTime,
+		Amount,
+		status,
+		AuditCycle,
+		HotLine,
+		TaskType,
+		DownUrl,
+		ScanTip,
+		Reminder,
+		TotalAmount,
+		EstimatedTime,
+		TagId)
+		values (
+		#{taskTitle,jdbcType=NVARCHAR},
+		#{taskGeneralInfo,jdbcType=NVARCHAR},
+		#{businessId,jdbcType=BIGINT},
+		#{pusher,jdbcType=NVARCHAR},
+		#{createName,jdbcType=NVARCHAR},
+		getdate(),
+		#{modifyName,jdbcType=NVARCHAR},
+		getdate(),
+		#{beginTime},
+		#{endTime},
+		#{amount,jdbcType=DECIMAL},
+		#{status,jdbcType=INTEGER},
+		#{auditCycle,jdbcType=BIGINT},
+		#{hotLine,jdbcType=NVARCHAR},
+		#{taskType,jdbcType=INTEGER},
+		#{downUrl,jdbcType=NVARCHAR},
+		#{scanTip,jdbcType=NVARCHAR},
+		#{reminder,jdbcType=NVARCHAR},
+		#{totalAmount,jdbcType=DECIMAL},
+		#{estimatedTime,jdbcType=INTEGER},
+		#{tagId,jdbcType=INTEGER})
+	</insert>
+	<!-- 获取任务详情接口 2015年11月19日11:24:46 V1.0.2 茹化肖 -->
+	<select id="getTaskDetail" resultType="com.renrentui.renrenentity.RenRenTask"
+		parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq">
+		SELECT TOP 1 rrt.id,
+		b.Logo ,b.[Address] BusinessAddress,
+		rrt.amount,
+		rrt.TaskTitle ,
+		rrt.TaskType ,
+		rrt.TaskGeneralInfo ,
+		AuditCycle ,
+		EndTime ,
+		HotLine,
+		CASE WHEN ct.id is NULL THEN 0 ELSE 1 END AS IsHad,
+		ISNULL(ct.id,0) AS CtId,
+		rrt.pusher,
+		rrt.DownUrl,
+		rrt.ScanTip,
+		rrt.Reminder,
 		rrt.status,
 		rrt.estimatedTime,
 		rrt.tagId,
-		isnull(k.tagName,'') as tagName,
-		isnull(k.tagColorCode,'') as tagColorCode
-		FROM    dbo.RenRenTask AS rrt ( NOLOCK )
-        JOIN dbo.Business AS b ( NOLOCK ) ON rrt.BusinessId = b.id
-          JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
-        LEFT JOIN dbo.ClienterTask AS ct ON ct.TaskId=rrt.id AND ct.ClienterId=${userId}
-WHERE   rrt.id =  ${taskId}
-  </select>
-  <!-- 验证任务是否可以领取 2015年9月29日17:13:19 茹化肖 v1.0.2 -->
- <select id="checkTask" resultType="com.renrentui.renrenentity.domain.CheckTask" parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq" >
-SELECT  BusinessId ,
-        Amount ,
-        TaskType
-FROM    dbo.RenRenTask AS rrt(NOLOCK)
-WHERE   DATEADD(d, 1, rrt.EndTime) > GETDATE()
-        AND rrt.Status = 1
-        AND rrt.id = ${taskId}
-  </select>
+		isnull(k.tagName,'') as
+		tagName,
+		isnull(k.tagColorCode,'') as tagColorCode,
+		rrt.PartnerNum 
+		FROM dbo.RenRenTask
+		AS rrt ( NOLOCK )
+		JOIN dbo.Business AS b ( NOLOCK ) ON rrt.BusinessId = b.id
+		JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+		LEFT JOIN dbo.ClienterTask AS ct ON ct.TaskId=rrt.id AND
+		ct.ClienterId=${userId}
+		WHERE rrt.id = ${taskId}
+	</select>
+	<!-- 验证任务是否可以领取 2015年9月29日17:13:19 茹化肖 v1.0.2 -->
+	<select id="checkTask" resultType="com.renrentui.renrenentity.domain.CheckTask"
+		parameterType="com.renrentui.renrenentity.req.TaskDatumDetailReq">
+		SELECT BusinessId ,
+		Amount ,
+		TaskType
+		FROM dbo.RenRenTask AS rrt(NOLOCK)
+		WHERE DATEADD(d, 1, rrt.EndTime) > GETDATE()
+		AND rrt.Status = 1
+		AND rrt.id = ${taskId}
+	</select>
 
-  <sql id="getPagedRenRenTaskListTable">
-  dbo.RenRenTask AS rrt (NOLOCK) 
-      <if test="areaCodeList != null" >
-		 JOIN  TaskCityRelation as tcr WITH (NOLOCK) ON rrt.Id = tcr.TaskId
-   	  </if> 
-		   JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
-		  LEFT JOIN ( SELECT  ct.TaskId ,
-                            SUM(CompleteNum) AS CompleteNum
-                    FROM    dbo.ClienterTask AS ct ( NOLOCK )
-                    GROUP BY ct.TaskId
-                  ) AS Tx ON Tx.TaskId = rrt.id 	
-</sql>
-    	<!-- 获取任务列表 WHERE茹化肖 2015年11月24日13:51:51 -->
-  <sql id="getPagedRenRenTaskListWhere">
-		1=1		
+	<sql id="getPagedRenRenTaskListTable">
+		dbo.RenRenTask AS rrt (NOLOCK)
+		<if test="areaCodeList != null">
+			JOIN TaskCityRelation as tcr WITH (NOLOCK) ON rrt.Id = tcr.TaskId
+		</if>
+		JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+		LEFT JOIN ( SELECT ct.TaskId ,
+		SUM(CompleteNum) AS CompleteNum
+		FROM dbo.ClienterTask AS ct ( NOLOCK )
+		GROUP BY ct.TaskId
+		) AS Tx ON Tx.TaskId = rrt.id
+	</sql>
+	<!-- 获取任务列表 WHERE茹化肖 2015年11月24日13:51:51 -->
+	<sql id="getPagedRenRenTaskListWhere">
+		1=1
 		<if test="createTimeBegin != null and createTimeBegin!=''">
 			and rrt.createTime >=''${createTimeBegin}''
 		</if>
 		<if test="createTimeEnd != null and createTimeEnd!=''">
 			and DATEADD(d, 1, ''${createTimeEnd}'')>rrt.createTime
 		</if>
-	    <if test="beginTime != null and beginTime!=''">
+		<if test="beginTime != null and beginTime!=''">
 			and DATEADD(d, 1, rrt.EndTime)>''${beginTime}''
 		</if>
 		<if test="endTime != null and endTime != ''">
 			and DATEADD(d, 1, ''${endTime}'')>rrt.beginTime
 		</if>
-	    <if test="status != null and status>-1">
+		<if test="status != null and status>-1">
 			and rrt.status=${status}
 		</if>
 		<if test="taskType != null and taskType>0">
@@ -138,42 +146,43 @@ WHERE   DATEADD(d, 1, rrt.EndTime) > GETDATE()
 		</if>
 		<if test="taskTitle != null and taskTitle!=''">
 			and rrt.taskTitle like ''%${taskTitle}%''
-		</if>	
+		</if>
 		<if test="pusher != null and pusher!=''">
 			and rrt.pusher like ''%${pusher}%''
-		</if>	
-		 <if test="areaCodeList != null" >
-		 and tcr.CityCode in
-		    	<foreach item="item" index="index" collection="areaCodeList" open="("
-					separator="," close=")">
-					${item}
-				</foreach>
-   	  </if> 
+		</if>
+		<if test="areaCodeList != null">
+			and tcr.CityCode in
+			<foreach item="item" index="index" collection="areaCodeList"
+				open="(" separator="," close=")">
+				${item}
+			</foreach>
+		</if>
 	</sql>
-  	<!-- 获取任务列表 茹化肖 2015年11月24日13:51:51 -->
-  	<select id="getPagedRenRenTaskList" resultType="com.renrentui.renrenentity.domain.RenRenTaskModel"
+	<!-- 获取任务列表 茹化肖 2015年11月24日13:51:51 -->
+	<select id="getPagedRenRenTaskList" resultType="com.renrentui.renrenentity.domain.RenRenTaskModel"
 		parameterType="com.renrentui.renrenentity.req.PagedRenRenTaskReq"
 		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		' rrt.Id DESC ',
 		'rrt.id ,
-        rrt.TaskTitle ,
-        rrt.CreateName ,
-        rrt.CreateTime ,
-        rrt.BeginTime ,
-        rrt.EndTime ,
-        rrt.Pusher ,
-        rrt.Amount ,
-        rrt.Status ,
-        rrt.TaskType,
-        ISNULL(Tx.CompleteNum, 0) AS CompleteNum,
-        rrt.PartnerNum,
-        rrt.tagId,
-        isnull(k.tagName,'''') as tagName,
-        isnull(k.tagColorCode,'''') as tagColorCode
-        ',
-		' <include refid="getPagedRenRenTaskListTable" />
-        ',
+		rrt.TaskTitle ,
+		rrt.CreateName ,
+		rrt.CreateTime ,
+		rrt.BeginTime ,
+		rrt.EndTime ,
+		rrt.Pusher ,
+		rrt.Amount ,
+		rrt.Status ,
+		rrt.TaskType,
+		ISNULL(Tx.CompleteNum, 0) AS CompleteNum,
+		rrt.PartnerNum,
+		rrt.tagId,
+		isnull(k.tagName,'''') as tagName,
+		isnull(k.tagColorCode,'''') as tagColorCode
+		',
+		'
+		<include refid="getPagedRenRenTaskListTable" />
+		',
 		'
 		<include refid="getPagedRenRenTaskListWhere" />
 		',
@@ -184,410 +193,441 @@ WHERE   DATEADD(d, 1, rrt.EndTime) > GETDATE()
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
 	</select>
-	  <update id="setTaskStatus" parameterType="com.renrentui.renrenentity.req.UpdateStatusReq" >
-	UPDATE dbo.RenRenTask 
-	<set >
-      <if test="status != null" >
-       status=#{status,jdbcType=BIGINT},
-      </if>
-      <if test="userName != null and userName!=''" >
-       modifyName=#{userName,jdbcType=NVARCHAR},modifyTime=getdate(),
-      </if>
-    </set>
-     where Id = #{reocrdId,jdbcType=BIGINT} and status=#{oldStatus,jdbcType=BIGINT}
-  </update>
+	<update id="setTaskStatus" parameterType="com.renrentui.renrenentity.req.UpdateStatusReq">
+		UPDATE dbo.RenRenTask
+		<set>
+			<if test="status != null">
+				status=#{status,jdbcType=BIGINT},
+			</if>
+			<if test="userName != null and userName!=''">
+				modifyName=#{userName,jdbcType=NVARCHAR},modifyTime=getdate(),
+			</if>
+		</set>
+		where Id = #{reocrdId,jdbcType=BIGINT} and
+		status=#{oldStatus,jdbcType=BIGINT}
+	</update>
 
-<sql id="getNewTaskListWhere">	
-	a.Status = 1
- 	and getdate()>=a.BeginTime and DATEADD(d, 1, a.EndTime)>getdate()  
- 	and  tcr.CityCode in(${cityCode},${provinceCode},-1)
-    <if test="userId != 0" >
-   	   AND c.id IS NULL
-   	</if> 
-</sql>
-<sql id="getNewTaskListTable">	
-	RenRenTask a WITH(nolock)
-    JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
-    JOIN TaskCityRelation tcr  WITH(nolock)  ON a.Id = tcr.TaskId
-    JOIN dbo.TaskTag k WITH(NOLOCK) ON a.tagId=k.id
-    <if test="userId != 0" >
-       LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
-	</if> 
-</sql>
-<sql id="getNewTaskListOrderBy">	
-	<if test="orderBy == 1" >
-			 a.amount desc,a.id desc
- 	</if> 
- 	<if test="orderBy == 2" >
+	<sql id="getNewTaskListWhere">
+		a.Status = 1
+		and getdate()>=a.BeginTime and DATEADD(d, 1, a.EndTime)>getdate()
+		and tcr.CityCode in(${cityCode},${provinceCode},-1)
+		<if test="isHideDown == 1">
+			and (a.TagId=1 or a.TagId=2)
+		</if>
+		<if test="userId != 0">
+			AND c.id IS NULL
+		</if>
+	</sql>
+	<sql id="getNewTaskListTable">
+		RenRenTask a WITH(nolock)
+		JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
+		JOIN TaskCityRelation tcr WITH(nolock) ON a.Id = tcr.TaskId
+		JOIN dbo.TaskTag k WITH(NOLOCK) ON a.tagId=k.id
+		<if test="userId != 0">
+			LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId
+			= ${userId}
+		</if>
+	</sql>
+	<sql id="getNewTaskListOrderBy">
+		<if test="orderBy == 1">
+			a.amount desc,a.id desc
+		</if>
+		<if test="orderBy == 2">
 			a.AuditCycle asc,a.id desc
- 	</if>
- 	<if test="orderBy == 3" >
+		</if>
+		<if test="orderBy == 3">
 			a.EstimatedTime asc,a.id desc
- 	</if>
- 	<if test="orderBy == 4" >
+		</if>
+		<if test="orderBy == 4">
 			a.PartnerNum desc,a.id desc
- 	</if>
- 	 <if test="orderBy == 5" >
+		</if>
+		<if test="orderBy == 5">
 			a.id desc
- 	</if>
-</sql>
-<select id="getNewTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel" 
-parameterType="com.renrentui.renrenentity.req.TaskReq" 
-statementType="CALLABLE">
+		</if>
+	</sql>
+	<select id="getNewTaskList" resultType="com.renrentui.renrenentity.domain.TaskModel"
+		parameterType="com.renrentui.renrenentity.req.TaskReq" statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
-		'<include refid="getNewTaskListOrderBy" />',
-		'a.Id as taskId ,a.taskGeneralInfo ,a.taskTitle as taskName ,a.tasktype,
-        a.amount,a.AuditCycle,a.EstimatedTime,a.status,a.PartnerNum,m.logo,
-        isnull(k.tagName,'''') as tagName,
-        isnull(k.tagColorCode,'''') as tagColorCode',
-		'<include refid="getNewTaskListTable" />',
-		'<include refid="getNewTaskListWhere" />',
+		'
+		<include refid="getNewTaskListOrderBy" />
+		',
+		'a.Id as taskId ,a.taskGeneralInfo ,a.taskTitle as taskName
+		,a.tasktype,
+		a.amount,a.AuditCycle,a.EstimatedTime,a.status,a.PartnerNum,m.logo,
+		isnull(k.tagName,'''') as tagName,
+		isnull(k.tagColorCode,'''') as tagColorCode',
+		'
+		<include refid="getNewTaskListTable" />
+		',
+		'
+		<include refid="getNewTaskListWhere" />
+		',
 		#{pageSize,mode=IN,jdbcType=INTEGER},
 		#{currentPage,mode=IN,jdbcType=INTEGER}
 		,1,
 		#{totalRecord,mode=OUT,jdbcType=INTEGER},
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
-  </select>   
-   <select id="getNewTaskListTotal" resultType="java.lang.Integer" parameterType="com.renrentui.renrenentity.req.TaskReq" >
-   	select count(1) 
-   	FROM      RenRenTask a WITH(nolock)
-   	  JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
-   	  JOIN TaskCityRelation as tcr  WITH(nolock) ON a.Id = tcr.TaskId
-            <if test="userId != 0" >
-            LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId =  ${userId}
-  			</if> 
-  WHERE     a.Status = 1
-  			and getdate()>=a.BeginTime and DATEADD(d, 1, a.EndTime)>getdate()  
-  			and  tcr.CityCode in(${cityCode},${provinceCode},-1)
-		    <if test="userId != 0" >
-		   	   AND c.id IS NULL
-		   	</if> 
-  </select> 
-  <!--  我的任务  已领取 -->
-  <select id="getMyReceivedTaskList" resultType="com.renrentui.renrenentity.domain.MyReceiveTask" 
-  parameterType="com.renrentui.renrenentity.req.TaskReq" >
-	select 
-	<if test="itemsCount != 0" >
-		top  ${itemsCount} 
-	</if>
- rrt.ID AS TaskId,
- rrt.TaskGeneralInfo,
- rrt.TaskTitle AS taskName,
- rrt.TaskType,
- rrt.Amount,
- rrt.DownUrl,
- rrt.ScanTip,
- rrt.Reminder,
- rrt.status,
- b.Logo,
- isnull(k.tagName,'') as tagName,
- isnull(k.tagColorCode,'') as tagColorCode,
- case  rrt.TaskType when 1 then  ISNULL(CTD.auditWaitNum,0)+ISNULL(CTD.auditPassNum,0)+ISNULL(CTD.auditRefuseNum,0)
- else  ct.CompleteNum end as CompleteNum,
- ct.id as CtId,
- isnull(CTD.auditWaitNum,0) as auditWaitNum,
- isnull(CTD.auditPassNum,0) as auditPassNum,
- isnull(CTD.auditRefuseNum,0) as auditRefuseNum
-FROM dbo.ClienterTask AS ct  (NOLOCK)
-INNER JOIN dbo.RenRenTask AS rrt(NOLOCK) ON ct.TaskId=rrt.id
-INNER JOIN dbo.Business AS b (NOLOCK) ON rrt.BusinessId=b.id
- JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
-LEFT JOIN (SELECT  CtId ,
-SUM(CASE [Status] WHEN 1 THEN 1 ELSE 0 END) AS auditWaitNum,
-SUM(CASE [Status] WHEN 2 THEN 1 ELSE 0 END) AS auditPassNum,
-SUM(CASE [Status] WHEN 3 THEN 1 ELSE 0 END) AS auditRefuseNum
-                    FROM    TaskDatum AS TD( NOLOCK )
-                    WHERE   ClienterId = ${userId} 
-                    GROUP BY CtId) AS CTD ON ctd.CtId=ct.id 
-WHERE ct.ClienterId= ${userId} 
-<if test="taskStatus == 3" >
-	and  rrt.status in (3,4)
-</if>
-<if test="taskStatus == 1" >
-	and  rrt.status =1
-</if> 
-<if test="nextId != 0" >
-	and   ${nextId}>rrt.id
-</if>
-	order by rrt.Id desc;
-</select>   
-    <!--  我的任务  已领取表头数量 -->
-   <select id="getMyReceivedTaskListTotal" resultType="com.renrentui.renrenentity.domain.ReceiveNum" parameterType="com.renrentui.renrenentity.req.TaskReq" >
-   SELECT  SUM(CASE WHEN rrt.Status = 1 THEN 1
-                 ELSE 0
-            END) AS passTotal ,
-        SUM(CASE WHEN rrt.Status != 1 THEN 1
-                 ELSE 0
-            END) AS refuseTotal
-FROM    dbo.ClienterTask AS ct ( NOLOCK )
-        JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON ct.ClienterId = ${userId}
-                                                 AND ct.TaskId = rrt.id
-  </select> 
-  
-  <!-- 超时关闭任务服务  茹化肖 -->
+	</select>
+	<select id="getNewTaskListTotal" resultType="java.lang.Integer"
+		parameterType="com.renrentui.renrenentity.req.TaskReq">
+		select count(1)
+		FROM RenRenTask a WITH(nolock)
+		JOIN dbo.Business m WITH(NOLOCK) ON a.BusinessId=m.id
+		JOIN TaskCityRelation as tcr WITH(nolock) ON a.Id = tcr.TaskId
+		<if test="userId != 0">
+			LEFT JOIN ClienterTask c WITH(nolock) ON a.id = c.TaskId and c.ClienterId
+			= ${userId}
+		</if>
+		WHERE a.Status = 1
+		and getdate()>=a.BeginTime and DATEADD(d, 1, a.EndTime)>getdate()
+		and tcr.CityCode in(${cityCode},${provinceCode},-1)
+		<if test="userId != 0">
+			AND c.id IS NULL
+		</if>
+	</select>
+	<!-- 我的任务 已领取 -->
+	<select id="getMyReceivedTaskList" resultType="com.renrentui.renrenentity.domain.MyReceiveTask"
+		parameterType="com.renrentui.renrenentity.req.TaskReq">
+		select
+		<if test="itemsCount != 0">
+			top ${itemsCount}
+		</if>
+		rrt.ID AS TaskId,
+		rrt.TaskGeneralInfo,
+		rrt.TaskTitle AS taskName,
+		rrt.TaskType,
+		rrt.Amount,
+		rrt.DownUrl,
+		rrt.ScanTip,
+		rrt.Reminder,
+		rrt.status,
+		b.Logo,
+		isnull(k.tagName,'') as tagName,
+		isnull(k.tagColorCode,'') as tagColorCode,
+		case rrt.TaskType when 1 then
+		ISNULL(CTD.auditWaitNum,0)+ISNULL(CTD.auditPassNum,0)+ISNULL(CTD.auditRefuseNum,0)
+		else ct.CompleteNum end as CompleteNum,
+		ct.id as CtId,
+		isnull(CTD.auditWaitNum,0) as auditWaitNum,
+		isnull(CTD.auditPassNum,0) as auditPassNum,
+		isnull(CTD.auditRefuseNum,0) as auditRefuseNum
+		FROM dbo.ClienterTask AS ct (NOLOCK)
+		INNER JOIN dbo.RenRenTask AS rrt(NOLOCK) ON ct.TaskId=rrt.id
+		INNER JOIN dbo.Business AS b (NOLOCK) ON rrt.BusinessId=b.id
+		JOIN dbo.TaskTag k WITH(NOLOCK) ON rrt.tagId=k.id
+		LEFT JOIN (SELECT CtId ,
+		SUM(CASE [Status] WHEN 1 THEN 1 ELSE 0 END) AS auditWaitNum,
+		SUM(CASE [Status] WHEN 2 THEN 1 ELSE 0 END) AS auditPassNum,
+		SUM(CASE [Status] WHEN 3 THEN 1 ELSE 0 END) AS auditRefuseNum
+		FROM TaskDatum AS TD( NOLOCK )
+		WHERE ClienterId = ${userId}
+		GROUP BY CtId) AS CTD ON ctd.CtId=ct.id
+		WHERE ct.ClienterId= ${userId}
+		<if test="taskStatus == 3">
+			and rrt.status in (3,4)
+		</if>
+		<if test="taskStatus == 1">
+			and rrt.status =1
+		</if>
+		<if test="nextId != 0">
+			and ${nextId}>rrt.id
+		</if>
+		order by rrt.Id desc;
+	</select>
+	<!-- 我的任务 已领取表头数量 -->
+	<select id="getMyReceivedTaskListTotal" resultType="com.renrentui.renrenentity.domain.ReceiveNum"
+		parameterType="com.renrentui.renrenentity.req.TaskReq">
+		SELECT SUM(CASE WHEN rrt.Status = 1 THEN 1
+		ELSE 0
+		END) AS passTotal ,
+		SUM(CASE WHEN rrt.Status != 1 THEN 1
+		ELSE 0
+		END) AS refuseTotal
+		FROM dbo.ClienterTask AS ct ( NOLOCK )
+		JOIN dbo.RenRenTask AS rrt ( NOLOCK ) ON ct.ClienterId = ${userId}
+		AND ct.TaskId = rrt.id
+	</select>
+
+	<!-- 超时关闭任务服务 茹化肖 -->
 	<update id="outTimeCanelTask">
-	      UPDATE  dbo.RenRenTask
-        SET     Status = 3
-        OUTPUT  inserted.Id ,
-                3 ,
-                '系统服务' ,
-                '超时任务自动过期'
-                INTO RenRenTasklog ( RenRenTaskId, OptType, OptName, Remark )
-        WHERE  Status = 1 AND GETDATE()>=DATEADD(d, 1, EndTime)
+		UPDATE dbo.RenRenTask
+		SET Status = 3
+		OUTPUT inserted.Id ,
+		3 ,
+		'系统服务' ,
+		'超时任务自动过期'
+		INTO RenRenTasklog ( RenRenTaskId, OptType, OptName, Remark )
+		WHERE Status = 1 AND GETDATE()>=DATEADD(d, 1, EndTime)
 	</update>
-	  <update id="update" parameterType="com.renrentui.renrenentity.RenRenTask" >
-    update RenRenTask
-    set TaskTitle = #{taskTitle,jdbcType=NVARCHAR},
-      TaskGeneralInfo = #{taskGeneralInfo,jdbcType=NVARCHAR},
-      BusinessId = #{businessId,jdbcType=BIGINT},
-      Pusher = #{pusher,jdbcType=NVARCHAR},
-      ModifyName = #{modifyName,jdbcType=NVARCHAR},
-      ModifyTime = getdate(),
-      BeginTime = #{beginTime,jdbcType=TIMESTAMP},
-      EndTime = #{endTime,jdbcType=TIMESTAMP},
-      Amount = #{amount,jdbcType=DECIMAL},
-      Status = #{status,jdbcType=INTEGER},
-      PaymentMethod = #{paymentMethod,jdbcType=SMALLINT},
-      AuditCycle=#{auditCycle,jdbcType=INTEGER},
-      TargetPeople = #{targetPeople,jdbcType=INTEGER},
-       tagId = #{tagId,jdbcType=INTEGER}
-    where Id = #{id,jdbcType=BIGINT} and (Status=0 or Status=2)
-  </update>
- 
-  <!-- 添加任务的步骤信息 茹化肖 2015年11月16日15:30:04 -->
-  <insert id="insertTaskSetp" parameterType="com.renrentui.renrenentity.domain.TaskSetp">
-  INSERT INTO dbo.TaskSetp
-  (TaskId,
-   LinkTitle,
-   SortNo,
-   SetpType,
-   [Content])
-   values (
-   ${taskId},
-   '${linkTitle}',
-   ${sortNo} ,
-   ${setpType},
-   '${content}')
-  </insert>
-    <!-- 添加任务的模板组信息 茹化肖 2015年11月16日15:30:04 -->
-  <insert id="insertTemplateGrpup" parameterType="com.renrentui.renrenentity.domain.TemplateGroup">
-  		<selectKey resultType="java.lang.Long" keyProperty="id"
-				order="AFTER">
-				select @@IDENTITY as id
-	    </selectKey>
-INSERT INTO dbo.TemplateGroup
-        ( TaskId ,
-          GroupType ,
-          Title
-        )
-VALUES  ( ${taskId} , 
-          ${groupType} , 
-          '${title}' 
-        )
-  </insert>
-  <!-- 参与任务 茹化肖 2015年11月19日14:40:41 -->
-  <select id="insertClienterTask" parameterType="com.renrentui.renrenentity.domain.ClienterTask" resultType="java.lang.Long">
-  IF NOT EXISTS (SELECT id FROM ClienterTask WHERE TaskId=${taskId} AND ClienterId=${clienterId})
-	BEGIN
-		INSERT INTO dbo.ClienterTask	
-		        ( TaskId ,
-		          ClienterId ,
-		          BusinessId ,
-		          Amount ,
-		          TaskType,
-		          cityCode
-		        )
-		VALUES  ( ${taskId} , 
-		          ${clienterId} , 
-		          ${businessId} , 
-		          ${amount} , 
-		          ${taskType},
-		          ${cityCode} 
-		        ); 
-	SELECT @@IDENTITY
-	END
-ELSE
-	BEGIN
-	SELECT -1
-	END
-  
-  </select>
-  <!-- 提交一次资料将完成次数加1 茹化肖2015年11月20日00:16:42 -->
-  <update id="addClienterCompleteCount" parameterType="java.lang.Long">
-  UPDATE ClienterTask SET CompleteNum=(CompleteNum+1) WHERE id=#{ctId,jdbcType=BIGINT}
-  </update>
-  <!-- 修改任务删除任务下的信息 茹化肖 2015年11月26日17:01:15 -->
-  <delete id="clearTaskInfo" parameterType="java.lang.Long">
-DELETE dbo.TemplateDetail  WHERE TemplateGroupId IN (
-SELECT Id FROM dbo.TemplateGroup (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT})
-DELETE dbo.TemplateGroup WHERE TaskId=#{taskId,jdbcType=BIGINT}
-DELETE dbo.TaskSetp WHERE TaskId=#{taskId,jdbcType=BIGINT}
-DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
-  
-  </delete>
-  
-    <!-- 修改任务 更新任务信息 -->
-  <update id="updateTaskInfo" parameterType="com.renrentui.renrenentity.RenRenTask">
-  UPDATE dbo.RenRenTask	SET
-      <trim suffixOverrides="," > 
-      ModifyTime=getdate(),
-      <if test="taskTitle != null" >
-       TaskTitle=#{taskTitle,jdbcType=NVARCHAR},
-      </if>
-	  <if test="taskGeneralInfo != null" >
-       TaskGeneralInfo=#{taskGeneralInfo,jdbcType=NVARCHAR},
-      </if>
-      <if test="businessId != null" >
-       BusinessId=#{businessId,jdbcType=BIGINT}, 
-      </if>
-      <if test="pusher != null" >
-      Pusher=#{pusher,jdbcType=NVARCHAR}, 
-      </if>
-      <if test="modifyName != null" >
-      ModifyName= #{modifyName,jdbcType=NVARCHAR}, 
-      </if>
- 	  <if test="beginTime != null" >
-      BeginTime= #{beginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endTime != null" >
-        EndTime= #{endTime,jdbcType=TIMESTAMP}, 
-      </if>
-      <if test="amount != null" >
-           Amount=#{amount,jdbcType=DECIMAL}, 
-      </if>
-      <if test="status != null" >
-           status=#{status,jdbcType=INTEGER}, 
-      </if>
-      <if test="auditCycle != null" >
-          AuditCycle=#{auditCycle,jdbcType=BIGINT}, 
-      </if>
-      <if test="hotLine != null" >
-          HotLine=#{hotLine,jdbcType=NVARCHAR}, 
-      </if>
-      <if test="taskType != null" >
-          TaskType=#{taskType,jdbcType=INTEGER},
-      </if>
-      <if test="downUrl!= null" >
-         DownUrl=#{downUrl,jdbcType=NVARCHAR},
-      </if>
-       <if test="scanTip!= null" >
-          ScanTip=#{scanTip,jdbcType=NVARCHAR},
-      </if>
-      <if test="reminder != null" >
-        Reminder=#{reminder,jdbcType=NVARCHAR},
-      </if>
-       <if test="totalAmount != null" >
-        TotalAmount=#{totalAmount,jdbcType=DECIMAL},
-      </if>
-       <if test="estimatedTime != null" >
-        EstimatedTime=#{estimatedTime,jdbcType=INTEGER},
-      </if>
-      <if test="tagId != null and tagId>0" >
-        tagId=#{tagId,jdbcType=INTEGER}
-      </if>
-      </trim>
-      WHERE id=#{id,jdbcType=BIGINT}
-  </update>
-  <!--  获取任务下面所有骑士ID -->
-  <select id="getClinerIdList" parameterType="java.lang.Long" resultType="java.lang.Long">
-  SELECT ClienterId FROM dbo.ClienterTask AS ct (NOLOCK) WHERE TaskId=#{taskId,jdbcType=BIGINT}
-  </select>
-   <!--  获取已经还有一天就过期的任务信息 -->
-  <select id="getTaskSendList"  resultType="com.renrentui.renrenentity.RenRenTask">
-SELECT  id ,
-        TaskTitle
-FROM    dbo.RenRenTask AS rrt ( NOLOCK )
-WHERE   rrt.Status = 1
-        AND IsSend = 0
-        AND GETDATE() >= rrt.EndTime
-        AND DATEADD(d, 1, rrt.EndTime) > GETDATE()
-  </select>
-  <!-- 设置任务为已经发过消息 -->
-  <update id="setTaskSend" parameterType="java.lang.Long">
-  UPDATE dbo.RenRenTask SET IsSend=1 WHERE id =#{taskId,jdbcType=BIGINT}
-  </update>
-    <!-- 任务参与人加1 -->
-  <update id="updatePartnerNum" parameterType="java.lang.Long">
-  UPDATE dbo.RenRenTask SET PartnerNum=PartnerNum+1 WHERE id =#{taskId,jdbcType=BIGINT}
-  </update>
-    <!-- 验证合同是否可以提交  2015年9月30日13:36:59茹化肖 -->
-  <select id="checkOrderSubmit" parameterType="com.renrentui.renrenentity.req.SubmitTaskReq" resultType="com.renrentui.renrenentity.domain.CheckSubmitTask">
-SELECT TOP 1
-        CASE WHEN  GETDATE()>= DATEADD(d, 1, rrt.EndTime) OR Status!=1 THEN 1
-             ELSE 0
-        END AS TaskClosed,
-        rrt.Amount as taskAmount
-FROM    dbo.RenRenTask AS rrt ( NOLOCK )
-WHERE   rrt.id = ${taskId}
-  </select>
-  <!-- 任务下资料数据导出 茹化肖 -->
-  <select id="taskDaumExport" parameterType="java.lang.Long" resultType="com.renrentui.renrenentity.domain.OrderAudit">
-DECLARE @TaskId BIGINT =#{taskId,jdbcType=BIGINT}
-SELECT * INTO #RenRenTask FROM dbo.RenRenTask AS rrt(NOLOCK) WHERE id=@TaskId
-SELECT * into #TaskDatum FROM dbo.TaskDatum AS TD (NOLOCK) WHERE TD.TaskId=@TaskId 
-SELECT * INTO #ClienterTask FROM dbo.ClienterTask AS ct (NOLOCK) WHERE ct.TaskId=@TaskId
-SELECT c.* INTO #Clienter  FROM dbo.Clienter AS c (NOLOCK)
-JOIN #ClienterTask AS ct ON ct.ClienterId=c.id
-SELECT tdc.* INTO #TaskDatumChild FROM #TaskDatum 
-JOIN TaskDatumChild AS TDC (NOLOCK) ON TDC.TaskDatumId=#TaskDatum.id 
-SELECT * INTO #TemplateGroup FROM dbo.TemplateGroup AS tg(nolock)WHERE tg.TaskId=@TaskId
-SELECT td.* INTO #TemplateDetail FROM #TemplateGroup
-JOIN dbo.TemplateDetail AS td(NOLOCK) ON td.TemplateGroupId=#TemplateGroup.Id
-SELECT td.id ,
-        td.ClienterId ,
-        c.ClienterName ,
-        rrt.Pusher ,
-        rrt.TaskTitle ,
-        rrt.Status AS taskStatus ,
-        ct.CompleteNum ,
-        ct.Amount ,
-        td.CreateDate AS finishTime ,
-        td.AuditTime ,
-        td.Status AS auditStatus ,
-        rrt.id AS TaskId ,
-        c.PhoneNo ,
-        rrt.TotalAmount ,
-        td.SubCommisson ,
-        CASE WHEN ( ct.Amount + td.SubCommisson ) > rrt.TotalAmount THEN -1
-             ELSE 1
-        END AS Profit ,
-        ( rrt.TotalAmount - ( ct.Amount + td.SubCommisson ) ) AS ProfitAmount ,
-        ( SELECT    ISNULL(td2.Title, 'A') + ':' + ISNULL(T1.ControlValue, 'B')
-                    + ';'
-          FROM      #TemplateGroup AS tg ( NOLOCK )
-                    LEFT JOIN #TemplateDetail AS td2 ( NOLOCK ) ON td2.TemplateGroupId = tg.Id
-                    JOIN ( SELECT   tdc.ControlValue ,
-                                    ControlName
-                           FROM     #TaskDatumChild AS tdc ( NOLOCK )
-                           WHERE    tdc.TaskDatumId = td.id
-                         ) AS T1 ON T1.ControlName = td2.Name
-          WHERE     tg.TaskId = RRT.ID
-                    AND td2.ControlId = 1
-        FOR
-          XML PATH('')
-        ) AS dataValue
- FROM   #TaskDatum AS td ( NOLOCK )
-        LEFT JOIN #ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
-        LEFT JOIN #RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
-        LEFT JOIN #Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id
-DROP TABLE #RenRenTask
-DROP TABLE #TaskDatum
-DROP TABLE #ClienterTask
-DROP TABLE #Clienter
-DROP TABLE #TaskDatumChild
-DROP TABLE #TemplateGroup
-DROP TABLE #TemplateDetail
-  
-  </select>
-      <!-- 任务参与人列表  20160224 zhaohl-->
-  <select id="getPagedTaskPartnerList" resultType="com.renrentui.renrenentity.domain.TaskPartnerItem" 
-parameterType="com.renrentui.renrenentity.req.PagedPartnerReq" 
-statementType="CALLABLE">
+	<update id="update" parameterType="com.renrentui.renrenentity.RenRenTask">
+		update RenRenTask
+		set TaskTitle = #{taskTitle,jdbcType=NVARCHAR},
+		TaskGeneralInfo = #{taskGeneralInfo,jdbcType=NVARCHAR},
+		BusinessId = #{businessId,jdbcType=BIGINT},
+		Pusher = #{pusher,jdbcType=NVARCHAR},
+		ModifyName = #{modifyName,jdbcType=NVARCHAR},
+		ModifyTime = getdate(),
+		BeginTime = #{beginTime,jdbcType=TIMESTAMP},
+		EndTime = #{endTime,jdbcType=TIMESTAMP},
+		Amount = #{amount,jdbcType=DECIMAL},
+		Status = #{status,jdbcType=INTEGER},
+		PaymentMethod = #{paymentMethod,jdbcType=SMALLINT},
+		AuditCycle=#{auditCycle,jdbcType=INTEGER},
+		TargetPeople = #{targetPeople,jdbcType=INTEGER},
+		tagId = #{tagId,jdbcType=INTEGER}
+		where Id = #{id,jdbcType=BIGINT} and (Status=0 or Status=2)
+	</update>
+
+	<!-- 添加任务的步骤信息 茹化肖 2015年11月16日15:30:04 -->
+	<insert id="insertTaskSetp" parameterType="com.renrentui.renrenentity.domain.TaskSetp">
+		INSERT INTO dbo.TaskSetp
+		(TaskId,
+		LinkTitle,
+		SortNo,
+		SetpType,
+		[Content])
+		values (
+		${taskId},
+		'${linkTitle}',
+		${sortNo} ,
+		${setpType},
+		'${content}')
+	</insert>
+	<!-- 添加任务的模板组信息 茹化肖 2015年11月16日15:30:04 -->
+	<insert id="insertTemplateGrpup" parameterType="com.renrentui.renrenentity.domain.TemplateGroup">
+		<selectKey resultType="java.lang.Long" keyProperty="id"
+			order="AFTER">
+			select @@IDENTITY as id
+		</selectKey>
+		INSERT INTO dbo.TemplateGroup
+		( TaskId ,
+		GroupType ,
+		Title
+		)
+		VALUES ( ${taskId} ,
+		${groupType} ,
+		'${title}'
+		)
+	</insert>
+	<!-- 参与任务 茹化肖 2015年11月19日14:40:41 -->
+	<select id="insertClienterTask" parameterType="com.renrentui.renrenentity.domain.ClienterTask"
+		resultType="java.lang.Long">
+		IF NOT EXISTS (SELECT id FROM ClienterTask WHERE TaskId=${taskId} AND
+		ClienterId=${clienterId})
+		BEGIN
+		INSERT INTO dbo.ClienterTask
+		( TaskId ,
+		ClienterId ,
+		BusinessId ,
+		Amount ,
+		TaskType,
+		cityCode
+		)
+		VALUES ( ${taskId} ,
+		${clienterId} ,
+		${businessId} ,
+		${amount} ,
+		${taskType},
+		${cityCode}
+		);
+		SELECT @@IDENTITY
+		END
+		ELSE
+		BEGIN
+		SELECT -1
+		END
+
+	</select>
+	<!-- 提交一次资料将完成次数加1 茹化肖2015年11月20日00:16:42 -->
+	<update id="addClienterCompleteCount" parameterType="java.lang.Long">
+		UPDATE ClienterTask SET CompleteNum=(CompleteNum+1) WHERE
+		id=#{ctId,jdbcType=BIGINT}
+	</update>
+	<!-- 修改任务删除任务下的信息 茹化肖 2015年11月26日17:01:15 -->
+	<delete id="clearTaskInfo" parameterType="java.lang.Long">
+		DELETE dbo.TemplateDetail WHERE TemplateGroupId IN (
+		SELECT Id FROM dbo.TemplateGroup (NOLOCK) WHERE
+		TaskId=#{taskId,jdbcType=BIGINT})
+		DELETE dbo.TemplateGroup WHERE TaskId=#{taskId,jdbcType=BIGINT}
+		DELETE dbo.TaskSetp WHERE TaskId=#{taskId,jdbcType=BIGINT}
+		DELETE TaskCityRelation WHERE TaskId=#{taskId,jdbcType=BIGINT}
+
+	</delete>
+
+	<!-- 修改任务 更新任务信息 -->
+	<update id="updateTaskInfo" parameterType="com.renrentui.renrenentity.RenRenTask">
+		UPDATE dbo.RenRenTask SET
+		<trim suffixOverrides=",">
+			ModifyTime=getdate(),
+			<if test="taskTitle != null">
+				TaskTitle=#{taskTitle,jdbcType=NVARCHAR},
+			</if>
+			<if test="taskGeneralInfo != null">
+				TaskGeneralInfo=#{taskGeneralInfo,jdbcType=NVARCHAR},
+			</if>
+			<if test="businessId != null">
+				BusinessId=#{businessId,jdbcType=BIGINT},
+			</if>
+			<if test="pusher != null">
+				Pusher=#{pusher,jdbcType=NVARCHAR},
+			</if>
+			<if test="modifyName != null">
+				ModifyName= #{modifyName,jdbcType=NVARCHAR},
+			</if>
+			<if test="beginTime != null">
+				BeginTime= #{beginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				EndTime= #{endTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="amount != null">
+				Amount=#{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="status != null">
+				status=#{status,jdbcType=INTEGER},
+			</if>
+			<if test="auditCycle != null">
+				AuditCycle=#{auditCycle,jdbcType=BIGINT},
+			</if>
+			<if test="hotLine != null">
+				HotLine=#{hotLine,jdbcType=NVARCHAR},
+			</if>
+			<if test="taskType != null">
+				TaskType=#{taskType,jdbcType=INTEGER},
+			</if>
+			<if test="downUrl!= null">
+				DownUrl=#{downUrl,jdbcType=NVARCHAR},
+			</if>
+			<if test="scanTip!= null">
+				ScanTip=#{scanTip,jdbcType=NVARCHAR},
+			</if>
+			<if test="reminder != null">
+				Reminder=#{reminder,jdbcType=NVARCHAR},
+			</if>
+			<if test="totalAmount != null">
+				TotalAmount=#{totalAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="estimatedTime != null">
+				EstimatedTime=#{estimatedTime,jdbcType=INTEGER},
+			</if>
+			<if test="tagId != null and tagId>0">
+				tagId=#{tagId,jdbcType=INTEGER}
+			</if>
+		</trim>
+		WHERE id=#{id,jdbcType=BIGINT}
+	</update>
+	<!-- 获取任务下面所有骑士ID -->
+	<select id="getClinerIdList" parameterType="java.lang.Long"
+		resultType="java.lang.Long">
+		SELECT ClienterId FROM dbo.ClienterTask AS ct (NOLOCK) WHERE
+		TaskId=#{taskId,jdbcType=BIGINT}
+	</select>
+	<!-- 获取已经还有一天就过期的任务信息 -->
+	<select id="getTaskSendList" resultType="com.renrentui.renrenentity.RenRenTask">
+		SELECT id ,
+		TaskTitle
+		FROM dbo.RenRenTask AS rrt ( NOLOCK )
+		WHERE rrt.Status = 1
+		AND IsSend = 0
+		AND GETDATE() >= rrt.EndTime
+		AND DATEADD(d, 1, rrt.EndTime) > GETDATE()
+	</select>
+	<!-- 设置任务为已经发过消息 -->
+	<update id="setTaskSend" parameterType="java.lang.Long">
+		UPDATE dbo.RenRenTask SET IsSend=1 WHERE id =#{taskId,jdbcType=BIGINT}
+	</update>
+	<!-- 任务参与人加1 -->
+	<update id="updatePartnerNum" parameterType="java.lang.Long">
+		UPDATE dbo.RenRenTask SET PartnerNum=PartnerNum+1 WHERE id
+		=#{taskId,jdbcType=BIGINT}
+	</update>
+	<!-- 验证合同是否可以提交 2015年9月30日13:36:59茹化肖 -->
+	<select id="checkOrderSubmit" parameterType="com.renrentui.renrenentity.req.SubmitTaskReq"
+		resultType="com.renrentui.renrenentity.domain.CheckSubmitTask">
+		SELECT TOP 1
+		CASE WHEN GETDATE()>= DATEADD(d, 1, rrt.EndTime) OR Status!=1 THEN 1
+		ELSE 0
+		END AS TaskClosed,
+		rrt.Amount as taskAmount
+		FROM dbo.RenRenTask AS rrt ( NOLOCK )
+		WHERE rrt.id = ${taskId}
+	</select>
+	<!-- 任务下资料数据导出 茹化肖 -->
+	<select id="taskDaumExport" parameterType="java.lang.Long"
+		resultType="com.renrentui.renrenentity.domain.OrderAudit">
+		DECLARE @TaskId BIGINT =#{taskId,jdbcType=BIGINT}
+		SELECT * INTO #RenRenTask FROM dbo.RenRenTask AS rrt(NOLOCK) WHERE
+		id=@TaskId
+		SELECT * into #TaskDatum FROM dbo.TaskDatum AS TD (NOLOCK) WHERE
+		TD.TaskId=@TaskId
+		SELECT * INTO #ClienterTask FROM dbo.ClienterTask AS ct (NOLOCK) WHERE
+		ct.TaskId=@TaskId
+		SELECT c.* INTO #Clienter FROM dbo.Clienter AS c (NOLOCK)
+		JOIN #ClienterTask AS ct ON ct.ClienterId=c.id
+		SELECT tdc.* INTO #TaskDatumChild FROM #TaskDatum
+		JOIN TaskDatumChild AS TDC (NOLOCK) ON TDC.TaskDatumId=#TaskDatum.id
+		SELECT * INTO #TemplateGroup FROM dbo.TemplateGroup AS tg(nolock)WHERE
+		tg.TaskId=@TaskId
+		SELECT td.* INTO #TemplateDetail FROM #TemplateGroup
+		JOIN dbo.TemplateDetail AS td(NOLOCK) ON
+		td.TemplateGroupId=#TemplateGroup.Id
+		SELECT td.id ,
+		td.ClienterId ,
+		c.ClienterName ,
+		rrt.Pusher ,
+		rrt.TaskTitle ,
+		rrt.Status AS taskStatus ,
+		ct.CompleteNum ,
+		ct.Amount ,
+		td.CreateDate AS finishTime ,
+		td.AuditTime ,
+		td.Status AS auditStatus ,
+		rrt.id AS TaskId ,
+		c.PhoneNo ,
+		rrt.TotalAmount ,
+		td.SubCommisson ,
+		CASE WHEN ( ct.Amount + td.SubCommisson ) > rrt.TotalAmount THEN -1
+		ELSE 1
+		END AS Profit ,
+		( rrt.TotalAmount - ( ct.Amount + td.SubCommisson ) ) AS ProfitAmount ,
+		( SELECT ISNULL(td2.Title, 'A') + ':' + ISNULL(T1.ControlValue, 'B')
+		+ ';'
+		FROM #TemplateGroup AS tg ( NOLOCK )
+		LEFT JOIN #TemplateDetail AS td2 ( NOLOCK ) ON td2.TemplateGroupId = tg.Id
+		JOIN ( SELECT tdc.ControlValue ,
+		ControlName
+		FROM #TaskDatumChild AS tdc ( NOLOCK )
+		WHERE tdc.TaskDatumId = td.id
+		) AS T1 ON T1.ControlName = td2.Name
+		WHERE tg.TaskId = RRT.ID
+		AND td2.ControlId = 1
+		FOR
+		XML PATH('')
+		) AS dataValue
+		FROM #TaskDatum AS td ( NOLOCK )
+		LEFT JOIN #ClienterTask AS ct ( NOLOCK ) ON ct.id = td.ctid
+		LEFT JOIN #RenRenTask AS rrt ( NOLOCK ) ON td.TaskId = rrt.id
+		LEFT JOIN #Clienter AS c ( NOLOCK ) ON td.ClienterId = c.id
+		DROP TABLE #RenRenTask
+		DROP TABLE #TaskDatum
+		DROP TABLE #ClienterTask
+		DROP TABLE #Clienter
+		DROP TABLE #TaskDatumChild
+		DROP TABLE #TemplateGroup
+		DROP TABLE #TemplateDetail
+
+	</select>
+	<!-- 任务参与人列表 20160224 zhaohl -->
+	<select id="getPagedTaskPartnerList" resultType="com.renrentui.renrenentity.domain.TaskPartnerItem"
+		parameterType="com.renrentui.renrenentity.req.PagedPartnerReq"
+		statementType="CALLABLE">
 		{call Sp_CustomPage2015_V1(
 		'tb.CompleteNum desc',
 		'*',
-		'<include refid="getPagedTaskPartnerListTable" />',
+		'
+		<include refid="getPagedTaskPartnerListTable" />
+		',
 		'1=1',
 		#{pageSize,mode=IN,jdbcType=INTEGER},
 		#{currentPage,mode=IN,jdbcType=INTEGER}
@@ -595,69 +635,70 @@ statementType="CALLABLE">
 		#{totalRecord,mode=OUT,jdbcType=INTEGER},
 		#{totalPage,mode=OUT,jdbcType=INTEGER}
 		)}
-  </select>  
-  <sql id="getPagedTaskPartnerListTable">
-	(SELECT a.ClienterId ,
-	isnull(c.PhoneNo,'''') as PhoneNo,
-	isnull(c.ClienterName,'''') as ClienterName ,
-	a.CityCode ,
-	isnull(ct.Name,'''') as cityName,
-	a.CreateDate AS receiveDate ,
-	a.CompleteNum ,
-	b.id AS taskId ,
-	b.TaskTitle ,
-	b.Status AS taskStatus ,
-	b.taskType,
-	SUM(CASE d.Status
-	WHEN 1 THEN 1
-	ELSE 0
-	END) AS waitAuditNum ,
-	SUM(CASE d.Status
-	WHEN 2 THEN 1
-	ELSE 0
-	END) AS auditPassNum ,
-	SUM(CASE d.Status
-	WHEN 3 THEN 1
-	ELSE 0
-	END) AS auditRefuseNum
-	FROM dbo.ClienterTask a WITH ( NOLOCK )
-	JOIN dbo.RenRenTask b WITH ( NOLOCK ) ON a.TaskId = b.id
-	left join PublicProvinceCity ct with(nolock) on a.CityCode=ct.code and ct.Jibie=3 AND ct.IsPublic=1
-	LEFT JOIN dbo.Clienter c WITH ( NOLOCK ) ON a.ClienterId = c.id
-	LEFT JOIN TaskDatum d WITH ( NOLOCK ) ON d.TaskId = b.id
-	AND d.ClienterId = a.ClienterId
-	WHERE 1=1 
-	<if test="taskId !=null and taskId>0">
-	 and a.TaskId = ${taskId}
-	</if>
-	<if test="taskTitle !=null and taskTitle!=''">
-	 and b.TaskTitle like ''%${taskTitle}%''
-	</if>
-	<if test="clienterName !=null and clienterName!=''">
-		 and  c.ClienterName like ''%${clienterName}%''
-	</if>
-	<if test="clienterPhoneNo !=null and clienterPhoneNo!=''">
-		  and c.PhoneNo=''${clienterPhoneNo}''
-	</if>
-	<if test="cityName !=null and cityName!=''">
-		  and ct.Name like ''%${cityName}%'' 
-	</if>
-	<if test="receiveTimeBegin !=null and receiveTimeBegin!=''">
-		 and a.CreateDate>=''${receiveTimeBegin} 00:00:00''  
-	</if>
-	<if test="receiveTimeEnd !=null and receiveTimeEnd!=''">
-		and  DATEADD(d, 1, ''${receiveTimeEnd}'')>a.CreateDate
-	</if>
-GROUP BY a.ClienterId ,
-        c.PhoneNo ,
-        c.ClienterName ,
-        a.CityCode ,
-        ct.Name,
-        a.CreateDate ,
-        a.CompleteNum ,
-        b.id ,
-        b.TaskTitle ,
-        b.Status,
-        b.taskType) as tb
-</sql>
+	</select>
+	<sql id="getPagedTaskPartnerListTable">
+		(SELECT a.ClienterId ,
+		isnull(c.PhoneNo,'''') as PhoneNo,
+		isnull(c.ClienterName,'''') as ClienterName ,
+		a.CityCode ,
+		isnull(ct.Name,'''') as cityName,
+		a.CreateDate AS receiveDate ,
+		a.CompleteNum ,
+		b.id AS taskId ,
+		b.TaskTitle ,
+		b.Status AS taskStatus ,
+		b.taskType,
+		SUM(CASE d.Status
+		WHEN 1 THEN 1
+		ELSE 0
+		END) AS waitAuditNum ,
+		SUM(CASE d.Status
+		WHEN 2 THEN 1
+		ELSE 0
+		END) AS auditPassNum ,
+		SUM(CASE d.Status
+		WHEN 3 THEN 1
+		ELSE 0
+		END) AS auditRefuseNum
+		FROM dbo.ClienterTask a WITH ( NOLOCK )
+		JOIN dbo.RenRenTask b WITH ( NOLOCK ) ON a.TaskId = b.id
+		left join PublicProvinceCity ct with(nolock) on a.CityCode=ct.code and
+		ct.Jibie=3 AND ct.IsPublic=1
+		LEFT JOIN dbo.Clienter c WITH ( NOLOCK ) ON a.ClienterId = c.id
+		LEFT JOIN TaskDatum d WITH ( NOLOCK ) ON d.TaskId = b.id
+		AND d.ClienterId = a.ClienterId
+		WHERE 1=1
+		<if test="taskId !=null and taskId>0">
+			and a.TaskId = ${taskId}
+		</if>
+		<if test="taskTitle !=null and taskTitle!=''">
+			and b.TaskTitle like ''%${taskTitle}%''
+		</if>
+		<if test="clienterName !=null and clienterName!=''">
+			and c.ClienterName like ''%${clienterName}%''
+		</if>
+		<if test="clienterPhoneNo !=null and clienterPhoneNo!=''">
+			and c.PhoneNo=''${clienterPhoneNo}''
+		</if>
+		<if test="cityName !=null and cityName!=''">
+			and ct.Name like ''%${cityName}%''
+		</if>
+		<if test="receiveTimeBegin !=null and receiveTimeBegin!=''">
+			and a.CreateDate>=''${receiveTimeBegin} 00:00:00''
+		</if>
+		<if test="receiveTimeEnd !=null and receiveTimeEnd!=''">
+			and DATEADD(d, 1, ''${receiveTimeEnd}'')>a.CreateDate
+		</if>
+		GROUP BY a.ClienterId ,
+		c.PhoneNo ,
+		c.ClienterName ,
+		a.CityCode ,
+		ct.Name,
+		a.CreateDate ,
+		a.CompleteNum ,
+		b.id ,
+		b.TaskTitle ,
+		b.Status,
+		b.taskType) as tb
+	</sql>
 </mapper>

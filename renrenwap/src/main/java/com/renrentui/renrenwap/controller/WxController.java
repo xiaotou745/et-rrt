@@ -38,18 +38,18 @@ import com.using.weixin.wxtools.vo.send.WxSendTextMsg;
 public class WxController {
 
 	/** 微信里配置的服务器第一次用到的token标识 */
-	private static final String TOKEN = "chenkai2016";
+	private static final String TOKEN = "renrentui2016";
 
-	private static final String appid = "wxb7e12931e4cbea51";
-	private static final String secret = "fa062d7088cc474b55148b86fc419820";
+	private static final String appid = "wx6fb3e7dcd50074f3";
+	private static final String secret = "de459685df302141ff8feb4451f47ae8";
 
 	/** 跳转授权地址 */
 	private static final String redirectUrlDomain = PropertyUtils
 			.getProperty("java.renrenwap.url");
-	
-	private static final String cookieDomain=
-			redirectUrlDomain.replace("http://", "").substring(0, redirectUrlDomain.replace("http://", "").indexOf("/"));
-	
+
+	private static final String cookieDomain = redirectUrlDomain.replace(
+			"http://", "");
+
 	@Autowired
 	IClienterWxService clienterWxService;
 	@Autowired
@@ -99,9 +99,9 @@ public class WxController {
 		// 这里把当前的openid存到cookie里
 		// 为的是让打开页面时判断传的参和cookie的是否一至
 		System.out.println("==========opendId:" + openId);
-		
-		CookieUtils.setCookie(request, response, RedissCacheKey.cookieOpenId, openId, 
-				60*60*24, false, cookieDomain, null);
+
+		CookieUtils.setCookie(request, response, RedissCacheKey.cookieOpenId,
+				openId, 60 * 60 * 24, false, cookieDomain, null);
 		response.sendRedirect(redirectUrlDomain
 				+ "/clienter/fetchredbag?openid=" + openId);
 	}
@@ -149,7 +149,9 @@ public class WxController {
 
 		String menuData = "{	\"button\": "
 				+ "[{		\"type\": \"view\",		\"name\": \"APP下载\",		\"url\": \"http://a.app.qq.com/o/simple.jsp?pkgname=com.renrentui.app\"	}, "
-				+ "{		\"type\": \"view\",		\"name\": \"绑账号送现金\",		\"url\": \""+hdBindUrl+"\"	}, "
+				+ "{		\"type\": \"view\",		\"name\": \"绑账号送现金\",		\"url\": \""
+				+ hdBindUrl
+				+ "\"	}, "
 				+ "{		\"name\": \"推广合作\",		"
 				+ "\"sub_button\": "
 				+ "[{			\"type\": \"view\",			\"name\": \"企业推广\",			\"url\": \"https://jinshuju.net/f/Pq7ncs\"		}, "
@@ -197,12 +199,11 @@ public class WxController {
 
 					WxUserInfo wxUserInfo = getUserInfoByOpenId(openId);
 					// 订阅消息
-					String gzStr="什么？\n"
+					String gzStr = "什么？\n"
 							+ "你还不知道人家是干嘛的？人人推是专门做推广的啦."
 							+ "\n\n"
 							+ "我们APP上有很多赚钱的任务，例如下载注册一个APP得到5-40元佣金，签约一个周围的店上口碑外卖300元等等啦，年后会有大量BAT等一线互联网企业靠谱任务上线，欢迎大家体验人人推APP哟。"
-							+ "\n\n"
-							+ "PS：合伙人分佣系统上线，让团队作战更有价值！";
+							+ "\n\n" + "PS：合伙人分佣系统上线，让团队作战更有价值！";
 					sendMsg = new WxSendTextMsg(sendMsg, gzStr);
 					WeiXinTools.send(sendMsg, response.getOutputStream());
 					System.out.println("订阅");
